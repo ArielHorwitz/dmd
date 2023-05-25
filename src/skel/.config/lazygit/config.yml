@@ -1,0 +1,17 @@
+
+gui:
+  sidePanelWidth: 0.3
+  mouseEvents: false
+  showFileTree: false
+  showBottomLine: false
+  commandLogSize: 3
+  # showIcons: true
+
+  log:
+    showGraph: 'always'
+    showWholeGraph: true
+
+git:
+  autoFetch: false
+
+promptToReturnFromSubprocess: false

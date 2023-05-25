@@ -1,0 +1,20 @@
+# groups: arrows, logo, multimedia, fkeys, modifiers, numeric, functions, indicators, keys
+
+a 00
+
+g keys ee
+
+k j 22
+k k 22
+k l 22
+k i 22
+
+k back 00
+k backslash 00
+k tilde 00
+k tab 00
+k capslock 00
+k space 00
+k enter 00
+
+c

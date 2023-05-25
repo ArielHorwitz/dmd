@@ -1,0 +1,125 @@
+# https://git-scm.com/docs/git-config
+
+[user]
+	# email = _@_._
+	email = ArielHorwitz@users.noreply.github.com
+	name = Ariel Horwitz
+[init]
+	defaultBranch = master
+[push]
+	# To push to a branch of the same name (this is the default in git)
+	default = simple
+	# To push to a branch of the same name (and create if missing)
+	# default = current
+	# To push to the configured upstream branch
+	# default = upstream
+[pull]
+    # merge
+    # rebase = false
+    # rebase
+    rebase = true
+    # fast-forward
+    # ff = only
+[rerere]
+	enabled = true
+[stash]
+	showStat = true
+[color "branch"]
+	upstream = brightcyan
+	remote = brightred
+[color "interactive"]
+	help = brightmagenta
+[advice]
+	statusHints = false
+
+# Aliases
+[alias]
+	files = ls-files
+	# Log all
+	l = log --oneline --graph --branches --tags --remotes
+	lv = log --stat --graph --branches --tags --remotes
+	# Log current branch
+	lb = log --oneline --graph --first-parent
+	lbv = log --stat --graph --first-parent
+	# Show
+	sh = show --stat -p
+	# Diff
+	d = diff -p --stat
+	ds = diff -p --stat --staged
+	dd = d origin/dev HEAD
+	dm = d origin/master HEAD
+	# Stash
+	stl = stash list --stat
+	stlp = stash list --stat -p
+	stp = stash pop
+	st = stash -m
+	sts = stash --staged -m
+	stus = !"git stash save --keep-index 'Unstaged only' && git stash save 'Staged only' && git stash pop && git add . --all && git status"
+	# Stage
+	a = add
+	au = add --update .
+	aa = add .
+	addall = add --all
+	uns = restore --staged
+	# Commit
+	c = commit -m
+	ca = !"git add . --all && git commit -m"
+	amend = commit --amend
+	redate = commit --amend --no-edit --date=now
+	fix = commit --amend --no-edit
+	fixall = !"git add . --all && git commit --amend --no-edit"
+	# Undo
+	und = checkout HEAD --
+	unc = reset --mixed HEAD^
+	# Blame
+	bl = blame --color-by-age
+	bls = !"\
+	    git st '__git_blame_stash__' && \
+	    git blame --color-by-age $@ && \
+	    git stp && echo "
+	# Branch
+	b = branch -a -vv
+	bm = branch -m
+	bd = branch -d
+	bD = branch -D
+	bDr = push origin --delete
+	co = checkout
+	newb = checkout -b
+	# Rebase
+	r = rebase
+	ri = rebase -i
+	ris = !"git rebase -i $(git remote-ref)"
+	rim = rebase -i origin/master
+	rid = rebase -i origin/dev
+	rih = rebase -i HEAD~3
+	rihh = rebase -i HEAD~6
+	rihhh = rebase -i HEAD~9
+	rihhhh = rebase -i HEAD~12
+	upm = branch -f master
+	# Remote
+	fp = fetch --all --prune
+	pushb = !"git push -u origin $(git rev-parse --abbrev-ref HEAD)"
+	href = rev-parse --abbrev-ref HEAD
+    rref = !"bash -c ' \
+        local_ref=$(git symbolic-ref HEAD); \
+        local_name=${local_ref##refs/heads/}; \
+        remote=$(git config branch.\"#local_name\".remote || echo origin); \
+        remote_ref=$(git config branch.\"$local_name\".merge); \
+        remote_name=${remote_ref##refs/heads/}; \
+        echo remotes/$remote/$remote_name'"
+	# Overview
+	o = overview
+	overview = !"\
+		echo '■■■ Branches ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■' && \
+		git branch -vv && \
+		echo '■■■ Log ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■' && \
+		git log --graph --oneline -10 && \
+		echo '■■■ Stash ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■' && \
+		git stash list && \
+		echo '■■■ Diff staged ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■' && \
+		git diff --staged --stat && \
+		echo '■■■ Diff ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■' && \
+		git diff --stat && \
+		echo '■■■ Status ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■' && \
+		git status"
+	live = !"while : ; do { clear; git overview; sleep ${1:-2}s; }; done;"

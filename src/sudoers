@@ -1,0 +1,2 @@
+# Allow "iukbtw" group to run iukbtw commands as root without password
+%iukbtw ALL=(root:root) NOPASSWD: /opt/iukbtw/bin/setlayer

@@ -1,0 +1,54 @@
+# i3 config file (v4)
+
+# DISPLAYS
+set $out1 "DP-3"
+set $out2 "HDMI-1"
+set $out3 "DP-2"
+
+# BASIC CONFIG
+font pango:Fira Code 8
+focus_follows_mouse no
+focus_wrapping no
+# smart_borders on
+floating_modifier Mod4
+tiling_drag modifier titlebar
+gaps inner 7
+gaps outer 0
+smart_gaps on
+mouse_warping none  # none | output
+for_window [all] title_window_icon yes
+
+# BASIC KEYBINDS
+# save me if kmonad is borked
+bindsym Shift+Mod4+Return exec --no-startup-id alacritty
+bindsym Shift+Mod4+r restart
+bindsym Control+Mod4+Mod1+space exec --no-startup-id kmdrun
+# display geometry
+bindsym Shift+Mod4+p exec --no-startup-id xrandr --output $out2 --right-of $out1 && xrandr --output $out3 --right-of $out2 && xrandr --output $out3 --primary
+
+# COLORS
+# class                 border  backgr. text    indicator child_border
+client.focused          #ffffff #7000c0 #ffffff #00ffff   #200050
+client.focused_inactive #333333 #200050 #ffffff #006666   #200050
+client.unfocused        #aaaaaa #000000 #ffffff #002222   #200050
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #221122
+
+# AUTOSTART
+exec --no-startup-id ~/.fehbg
+# exec --no-startup-id kmdrun
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -eft -i '/usr/share/backgrounds/lockscreen.png'
+exec --no-startup-id nm-applet
+
+# BARS
+bar {
+    status_command statusbar
+
+    tray_output $out3
+    font pango:DejaVu Sans Mono 14
+    position top
+    strip_workspace_numbers no
+    strip_workspace_name no
+    tray_padding 0
+}

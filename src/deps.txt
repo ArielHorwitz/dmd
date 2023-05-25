@@ -1,0 +1,11 @@
+python
+i3-wm
+i3-status
+i3-lock
+xss-lock
+xdotool
+dunst
+scrot
+kmonad-bin
+rofi
+g810-led
