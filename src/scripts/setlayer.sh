@@ -17,11 +17,12 @@ echo $LAYER | tee /var/opt/iukbtw/layer
 # Set keyboard LEDs
 GPROFILE="/etc/opt/iukbtw/g610profiles/$LAYER"
 [[ -f $GPROFILE ]] && g610-led -p $GPROFILE
-cat /etc/opt/iukbtw/leds | while read line ; do
+while read line ; do
     [[ -z $line ]] && continue
-    LED="/sys/class/leds/$(ls -l /sys/class/leds/ | grep $line)"
-    if [[ -f $LED ]] ; then
-        [[ $LAYER = "text" ]] && BRIGHTNESS=$($LED/max_brightness) || BRIGHTNESS=0
+    LED="/sys/class/leds/$(ls -1 /sys/class/leds/ | grep $line)/"
+    if [[ -d $LED ]] ; then
+        [[ $LAYER = "text" ]] && BRIGHTNESS=$(cat $LED/max_brightness) || BRIGHTNESS=0
+        printf "Switching $LED $(cat $LED/brightness) > "
         echo $BRIGHTNESS | tee $LED/brightness
     fi
-done
+done < /etc/opt/iukbtw/leds
