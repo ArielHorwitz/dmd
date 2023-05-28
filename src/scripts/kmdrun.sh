@@ -15,7 +15,7 @@ while read my_device; do
     [[ -z $my_device ]] && continue
     echo "Searching for device: $my_device"
     device=$(printf "$all_device_files" | grep -m 1 $my_device)
-    [[ -f $device ]] && break
+    [[ -n $device ]] && break
 done < /etc/opt/iukbtw/devices
 
 # Confirm device file found

@@ -19,8 +19,8 @@ GPROFILE="/etc/opt/iukbtw/g610profiles/$LAYER"
 [[ -f $GPROFILE ]] && g610-led -p $GPROFILE
 while read line ; do
     [[ -z $line ]] && continue
-    LED="/sys/class/leds/$(ls -1 /sys/class/leds/ | grep $line)/"
-    if [[ -d $LED ]] ; then
+    LED="/sys/class/leds/$(ls -1 /sys/class/leds/ | grep $line)"
+    if [[ -f $LED/brightness ]]; then
         [[ $LAYER = "text" ]] && BRIGHTNESS=$(cat $LED/max_brightness) || BRIGHTNESS=0
         printf "Switching $LED $(cat $LED/brightness) > "
         echo $BRIGHTNESS | tee $LED/brightness

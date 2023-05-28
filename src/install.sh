@@ -24,22 +24,26 @@ recreatedir $CONFDIR
 
 # Copy scripts
 ls -1 ./scripts/ | while read filename ; do
-    targetfile=$(echo $filename| cut -d. -f1)
-    sudo cp ./scripts/$filename $BINDIR/$targetfile
-    sudo chmod +x $BINDIR/$targetfile
-    sudo cp -s $BINDIR/$targetfile $USRBINDIR
+    targetfile=$BINDIR/$(echo $filename| cut -d. -f1)
+    sudo cp ./scripts/$filename $targetfile
+    sudo chmod +x $targetfile
+    sudo cp -s $targetfile $USRBINDIR
 done
 # Add bin dir to PATH
 USRPROF=$HOME/.profile
-[[ -f $USRPROF ]]
-sed -e $(cat $HOME/.profile | grep iuk -n | cut -d: -f1)d $USRPROF
-printf "\nexport PATH=$BINDIR:\$PATH  # Add iukbtw commands to PATH\b" >> $USRPROF
+if [[ -f $USRPROF ]]; then
+    # Remove export line if exists, for idempotency
+    PROFILE_LINE=$(cat $USRPROF | grep -nm 1 "iuk" | cut -d: -f1)
+    [[ -n $PROFILE_LINE ]] && echo POST-SED: $(sed -i $PROFILE_LINE"d" $USRPROF)
+fi
+printf "export PATH=$BINDIR:\$PATH  # Add iukbtw commands to PATH\n" >> $USRPROF
 # Copy config
 sudo cp --recursive ./config/* $CONFDIR
 
 
+# Install dependencies
 if [[ $1 != "nodeps" ]]; then
-    # Install dependencies
+    # Install packages
     subtitle "Installing dependencies"
     yay -S --needed --noconfirm - < ./deps.txt
     # Install Python libraries
