@@ -57,9 +57,10 @@ alias rustbt_full="export RUST_BACKTRACE=full"
 
 
 dointerval() {
-    while true ; do
-        $($2)
-        sleep "$1s"
+    while :; do
+        [[ $3 = "clear" ]] && clear
+        $2
+        sleep $1
     done
 }
 
