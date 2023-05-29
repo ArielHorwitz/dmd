@@ -129,9 +129,8 @@ def poll_weather() -> dict:
     response = requests.get(WEATHER_REQUEST)
     weather_data = response.json()["current_weather"]
 
-    dayphase = 2 - weather_data["is_day"]
     wcode = weather_data["weathercode"]
-    summary = WEATHER_CODE_ICONS[wcode][0]
+    dayphase = 2 - weather_data["is_day"]
     icon = WEATHER_CODE_ICONS[wcode][dayphase]
 
     temperature = weather_data["temperature"]
@@ -200,12 +199,7 @@ def get_audio_sink(state: State) -> dict:
     volume = round(float(parts[3].strip().removesuffix('%')))
 
     # mute
-    if is_muted:
-        color = "#ff0000"
-        status = SPEAKER_MUTED
-    else:
-        color = "#00ff00"
-        status = SPEAKER
+    color = "#ff0000" if is_muted else "#00ff00"
     return dict(
         full_text=f"{device_icon} {volume}%",
         min_width=f"{SPEAKER} 100%",
@@ -216,10 +210,6 @@ def get_audio_sink(state: State) -> dict:
 
 def get_power(state: State) -> dict:
     capacity = round(float(run("cat /sys/class/power_supply/BAT0/capacity")))
-    alarmpower = run("cat /sys/class/power_supply/BAT0/alarm")
-    currentpower = run("cat /sys/class/power_supply/BAT0/energy_now")
-    fullpower = run("cat /sys/class/power_supply/BAT0/energy_full")
-    fulldesign = run("cat /sys/class/power_supply/BAT0/energy_full_design")
     charging = run("cat /sys/class/power_supply/BAT0/status").lower() != "discharging"
     state = BATTERIES[round(capacity / 100 * (len(BATTERIES) - 1))]
     if charging:
