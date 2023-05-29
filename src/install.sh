@@ -15,6 +15,7 @@ recreatedir () {
 
 title "Installing iukbtw"
 
+OPTDIR=/opt/iukbtw
 BINDIR=/opt/iukbtw/bin
 USRBINDIR=/usr/bin/iukbtw
 CONFDIR=/etc/opt/iukbtw
@@ -22,19 +23,21 @@ recreatedir $BINDIR
 recreatedir $USRBINDIR
 recreatedir $CONFDIR
 
-# Copy scripts
-ls -1 ./scripts/ | while read filename ; do
-    targetfile=$BINDIR/$(echo $filename| cut -d. -f1)
-    sudo cp ./scripts/$filename $targetfile
-    sudo chmod +x $targetfile
-    sudo cp -s $targetfile $USRBINDIR
+# Copy opt
+sudo cp --recursive ./opt/* $OPTDIR
+sudo chmod +x --recursive $BINDIR
+# Remove .sh extension and symlink bin dir
+for filename in "$BINDIR"/* ; do
+    newname=$(echo $filename | rev | cut -d. -f2- | rev)
+    sudo mv $filename $newname
+    sudo cp -s $newname $USRBINDIR
 done
 # Add bin dir to PATH
 USRPROF=$HOME/.profile
 if [[ -f $USRPROF ]]; then
     # Remove export line if exists, for idempotency
     PROFILE_LINE=$(cat $USRPROF | grep -nm 1 "iuk" | cut -d: -f1)
-    [[ -n $PROFILE_LINE ]] && echo POST-SED: $(sed -i $PROFILE_LINE"d" $USRPROF)
+    [[ -n $PROFILE_LINE ]] && sed -i $PROFILE_LINE"d" $USRPROF
 fi
 printf "export PATH=$BINDIR:\$PATH  # Add iukbtw commands to PATH\n" >> $USRPROF
 # Copy config
