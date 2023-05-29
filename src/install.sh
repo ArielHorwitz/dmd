@@ -45,7 +45,7 @@ sudo cp --recursive ./config/* $CONFDIR
 
 
 # Install dependencies
-if [[ $1 != "nodeps" ]]; then
+if [[ $1 = "deps" ]]; then
     # Install packages
     subtitle "Installing dependencies"
     yay -S --needed --noconfirm - < ./deps.txt
