@@ -86,4 +86,4 @@ subtitle "Done."
     -z $(groups | grep uinput) ||
     -z $(groups | grep iukbtw)
 ]] && echo "Please login again for group config to apply."
-[[ -z $(echo $PATH | grep $USRBINDIR) ]] && echo "Please login again for PATH to apply"
+[[ -z $(echo $PATH | grep $BINDIR) ]] && echo "Please login again for PATH to apply"
