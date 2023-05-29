@@ -22,8 +22,6 @@ alias sshadd="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/id_ed25519.pub"
 # Git aliases
 alias gitlive="dointerval 2 'git overview'"
 # Apps
-alias positron="~/prog/positron/run-positron.sh"
-alias positronmini="~/prog/positron/run-positron.sh -s mini"
 alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
 # Django
 alias djm="python manage.py"
