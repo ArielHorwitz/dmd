@@ -142,21 +142,22 @@ WINDOW NAVIGATION
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     @klps XX    @kltb @wrfr @wtgt XX    @wprv @fup  @wnxt XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @wmfp XX    XX    @fuls @wtgs XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
+  _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @wrfn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrfw             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
+    wman (layer-toggle window_manipulation)
     klps (cmd-button "i3-msg kill")
     kltb C-w
-    wman (layer-toggle window_manipulation)
+    scrw (cmd-button "screenshot")
+    scrd (cmd-button "screenshotdesktop")
     wtrm (cmd-button "alacritty")
     wrfw (cmd-button "rofi -show window -matching fuzzy")
     wrfn (cmd-button "rofi -show drun -matching fuzzy")
     wrfr (cmd-button "rofi -show run -matching fuzzy")
     wtgt (cmd-button "i3-msg layout toggle tabbed split && mousewarp")
     wtgs (cmd-button "i3-msg layout toggle split && mousewarp")
-    wmfp (cmd-button "i3-msg focus parent")
     fuls (cmd-button "i3-msg fullscreen toggle && mousewarp")
     wnxt (cmd-button "i3-msg workspace next && mousewarp")
     wprv (cmd-button "i3-msg workspace prev && mousewarp")
@@ -174,13 +175,14 @@ WINDOW MANIPULATION
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wsrn XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @scrw @scrd @wtgm XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
-  _     XX    XX    XX    XX    XX    @wsn  @wsml @wmws @wsmr XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 @wtgf             _     _     _     _                  XX    XX    XX     XX    XX
+  _     @wmfp XX    XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
+  _     XX    XX    XX    XX    XX    @wsn  @wsml @wmmw @wsmr XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 @wtfl             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    wtgf (cmd-button "i3-msg floating toggle && mousewarp")
-    wtgm (cmd-button "i3-msg focus mode_toggle && mousewarp")
+    wmfp (cmd-button "i3-msg focus parent")
+    wtmd (cmd-button "i3-msg focus mode_toggle && mousewarp")
+    wtfl (cmd-button "i3-msg floating toggle && mousewarp")
     wsn  (cmd-button "i3-input -F 'workspace \"%s\"' -P 'Workspace name: '")
     wsml (cmd-button "i3-msg move workspace to output left && mousewarp")
     wsmr (cmd-button "i3-msg move workspace to output right && mousewarp")
@@ -188,14 +190,12 @@ WINDOW MANIPULATION
     wmvr (cmd-button "i3-msg move right && mousewarp")
     wmvu (cmd-button "i3-msg move up && mousewarp")
     wmvd (cmd-button "i3-msg move down && mousewarp")
-    wmws (cmd-button "i3-input -F 'move to workspace \"%s\"' -P 'Move window to workspace: ' && mousewarp")
+    wmmw (cmd-button "i3-input -F 'move to workspace \"%s\"' -P 'Move window to workspace: ' && mousewarp")
     wsrn (cmd-button "i3-input -F 'rename workspace to \"%s\"' -P 'Rename workspace: ' && mousewarp")
     wszr (cmd-button "i3-msg resize grow width 10 px or 10 ppt && mousewarp")
     wszl (cmd-button "i3-msg resize shrink width 10 px or 10 ppt && mousewarp")
     wszu (cmd-button "i3-msg resize grow height 10 px or 10 ppt && mousewarp")
     wszd (cmd-button "i3-msg resize shrink height 10 px or 10 ppt && mousewarp")
-    scrw (cmd-button "screenshot")
-    scrd (cmd-button "screenshotdesktop")
 )
 
 #| --------------------
