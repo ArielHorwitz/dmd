@@ -8,11 +8,9 @@ if [[ -z $(grep -x $LAYER < /etc/opt/iukbtw/layers) ]] ; then
     exit 1
 fi
 
-
 # Set layer state
 mkdir --parents /var/opt/iukbtw
 echo $LAYER | tee /var/opt/iukbtw/layer
-
 
 # Set keyboard LEDs
 GPROFILE="/etc/opt/iukbtw/g610profiles/$LAYER"
@@ -26,3 +24,10 @@ while read line ; do
         echo $BRIGHTNESS | tee $LED/brightness
     fi
 done < /etc/opt/iukbtw/leds
+
+# Play audio
+case $LAYER in
+    base)       aplay /opt/iukbtw/audio/base.wav ;;
+    text)       aplay /opt/iukbtw/audio/text.wav ;;
+    *)          echo "Unknown layer '$LAYER'" >&2 ;;
+esac
