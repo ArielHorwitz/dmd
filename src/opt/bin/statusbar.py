@@ -32,7 +32,8 @@ HEADPHONES_MUTED = ""
 SPEAKER = "墳"
 SPEAKER_MUTED = "婢"
 
-TEMP_MIN = 10.0
+TEMP_COLOR_SCALE = 0.8
+TEMP_MIN = 15.0
 TEMP_MAX = 35.0
 TEMP_RANGE = TEMP_MAX - TEMP_MIN
 WEATHER_UPDATE_INTERVAL = 5
@@ -137,7 +138,7 @@ def poll_weather() -> dict:
     bounded_temp = max(TEMP_MIN, min(temperature, TEMP_MAX))
     temp_scale = (bounded_temp - TEMP_MIN) / TEMP_RANGE
     temp_hue = 1 - temp_scale
-    color = hsv2hex(temp_hue)
+    color = hsv2hex(temp_hue * TEMP_COLOR_SCALE)
     temp_icon = float2icon(TEMPERATURES, temp_scale)
 
     windspeed = weather_data["windspeed"]
