@@ -58,7 +58,7 @@ fi
 
 # Configure
 subtitle "Configuring for $USER @ $HOME"
-# Add sudoer rule for /opt/iukbtw -- check with visudo before copy!
+# Add sudoer rules -- check with visudo before copy!
 sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
 if [[ $(visudo -csf ./sudoers | grep "parsed OK") = "" ]] ; then
     echo "Failed check on sudoer file"
