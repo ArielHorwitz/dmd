@@ -24,10 +24,3 @@ while read line ; do
         echo $BRIGHTNESS | tee $LED/brightness
     fi
 done < /etc/opt/iukbtw/leds
-
-# Play audio
-case $LAYER in
-    base)       aplay /opt/iukbtw/audio/base.wav ;;
-    text)       aplay /opt/iukbtw/audio/text.wav ;;
-    *)          echo "Unknown layer '$LAYER'" >&2 ;;
-esac
