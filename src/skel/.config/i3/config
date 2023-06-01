@@ -28,9 +28,9 @@ bindsym Shift+Mod4+p exec --no-startup-id xrandr --output $out2 --right-of $out1
 
 # COLORS
 # class                 border  backgr. text    indicator child_border
-client.focused          #ffffff #7000c0 #ffffff #00ffff   #200050
-client.focused_inactive #333333 #200050 #ffffff #006666   #200050
-client.unfocused        #aaaaaa #000000 #ffffff #002222   #200050
+client.focused          #ffffff #0070c0 #ffffff #00ffff   #200050
+client.focused_inactive #333333 #5000a0 #ffffff #006666   #200050
+client.unfocused        #aaaaaa #200050 #ffffff #002222   #200050
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #221122
