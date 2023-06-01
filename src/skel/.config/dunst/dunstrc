@@ -2,13 +2,13 @@
 
 [global]
     ### Display ###
-    monitor = 0
+    monitor = 2
     follow = none  # mouse | keyboard | none
 
     ### Geometry ###
     width = (250, 500)
     height = 500
-    origin = top-right
+    origin = center
     offset = 50x50
     scale = 0
     notification_limit = 20
