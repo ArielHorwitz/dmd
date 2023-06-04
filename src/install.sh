@@ -42,6 +42,8 @@ fi
 printf "export PATH=$BINDIR:\$PATH  # Add iukbtw commands to PATH\n" >> $USRPROF
 # Copy config
 sudo cp --recursive ./config/* $CONFDIR
+# Copy other config
+sudo cp --recursive ./etc/* /etc
 
 
 # Install dependencies
