@@ -1,6 +1,5 @@
 python
 i3-wm
-i3-status
 i3-lock
 xss-lock
 alacritty
