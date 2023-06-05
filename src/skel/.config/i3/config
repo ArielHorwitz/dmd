@@ -20,11 +20,11 @@ for_window [all] title_window_icon yes
 
 # BASIC KEYBINDS
 # save me if kmonad is borked
-bindsym Shift+Mod4+Return exec --no-startup-id alacritty
-bindsym Shift+Mod4+r restart
-bindsym Control+Mod4+Mod1+space exec --no-startup-id kmdrun
+bindsym Shift+Mod1+Return exec --no-startup-id alacritty
+bindsym Shift+Mod1+r restart
+bindsym Shift+Mod1+space exec --no-startup-id kmdrun
 # display geometry
-bindsym Shift+Mod4+p exec --no-startup-id xrandr --output $out2 --right-of $out1 && xrandr --output $out3 --right-of $out2 && xrandr --output $out3 --primary
+bindsym Shift+Mod1+p exec --no-startup-id xrandr --output $out2 --right-of $out1 && xrandr --output $out3 --right-of $out2 && xrandr --output $out3 --primary
 
 # COLORS
 # class                 border  backgr. text    indicator child_border
