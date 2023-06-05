@@ -41,6 +41,9 @@ exec --no-startup-id ~/.fehbg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -eft -i '/usr/share/backgrounds/lockscreen.png'
 exec --no-startup-id nm-applet
 
+# ASSIGNMENT
+for_window [class="iukbtw-prompt"] exec --no-startup-id setpopupwindow 750 25
+
 # BARS
 bar {
     status_command statusbar
