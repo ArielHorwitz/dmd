@@ -180,7 +180,7 @@ WINDOW MANIPULATION
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wsrn XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @wmfp @wmmw XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
-  _     XX    XX    XX    XX    XX    @wsn  @wsml XX    @wsmr XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @wsn  @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -195,6 +195,7 @@ WINDOW MANIPULATION
     wmvd (cmd-button "i3-msg move down 25 px or 5 ppt && mousewarp")
     wmmw (cmd-button "i3-input -F 'move to workspace \"%s\"' -P 'Move window to workspace: ' && mousewarp")
     wsrn (cmd-button "i3-input -F 'rename workspace to \"%s\"' -P 'Rename workspace: ' && mousewarp")
+    wmvc (cmd-button "windowcenter && mousewarp")
     wszr (cmd-button "i3-msg resize grow width 50 px or 5 ppt && mousewarp")
     wszl (cmd-button "i3-msg resize shrink width 50 px or 5 ppt && mousewarp")
     wszu (cmd-button "i3-msg resize grow height 25 px or 5 ppt && mousewarp")
