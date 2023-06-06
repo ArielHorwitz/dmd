@@ -32,7 +32,7 @@ set -e
 # Create new config file from template
 mkdir --parents "$HOME/.local/share/kmonad"
 kbd_file="$HOME/.local/share/kmonad/tmpconfig.kbd"
-cp -f /etc/opt/iukbtw/kmonad/template.kbd $kbd_file
+cp -f "/etc/opt/iukbtw/kmonad/template.hs" $kbd_file
 # Insert device file path into kbd config file
 sed -i "s;DEVICE_FILE_PATH;$device;" $kbd_file
 
