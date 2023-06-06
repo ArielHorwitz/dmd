@@ -9,7 +9,6 @@ set $out3 "DP-2"
 font pango:Fira Code 8
 focus_follows_mouse no
 focus_wrapping no
-# smart_borders on
 floating_modifier Mod4
 tiling_drag modifier titlebar
 gaps inner 7
@@ -19,12 +18,15 @@ mouse_warping none  # none | output
 for_window [all] title_window_icon yes
 
 # BASIC KEYBINDS
-# save me if kmonad is borked
-bindsym Shift+Mod1+Return exec --no-startup-id alacritty
-bindsym Shift+Mod1+r restart
 bindsym Shift+Mod1+space exec --no-startup-id kmdrun
-# display geometry
-bindsym Shift+Mod1+p exec --no-startup-id xrandr --output $out2 --right-of $out1 && xrandr --output $out3 --right-of $out2 && xrandr --output $out3 --primary
+bindsym Mod4+Return exec --no-startup-id alacritty
+bindsym Mod4+Mod1+Left exec --no-startup-id i3-msg workspace prev
+bindsym Mod4++Mod1+Right exec --no-startup-id i3-msg workspace next
+bindsym Mod4+Left exec --no-startup-id i3-msg focus left
+bindsym Mod4+Right exec --no-startup-id i3-msg focus right
+bindsym Mod4+Up exec --no-startup-id i3-msg focus up
+bindsym Mod4+Down exec --no-startup-id i3-msg focus down
+bindsym Mod4+p exec --no-startup-id displaygeometry $out1 $out2 $out3 --primary $out3
 
 # COLORS
 # class                 border  backgr. text    indicator child_border
@@ -37,7 +39,6 @@ client.background       #221122
 
 # AUTOSTART
 exec --no-startup-id ~/.fehbg
-# exec --no-startup-id kmdrun
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -eft -i '/usr/share/backgrounds/lockscreen.png'
 exec --no-startup-id nm-applet
 
