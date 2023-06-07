@@ -31,6 +31,8 @@ file_types = [
     "html",
     "css",
     "xml",
+    "conf",
+    "rasi",
     "",  # For files without extensions (like .gitignore)
 ]
 ignore_names = [
