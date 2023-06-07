@@ -36,6 +36,8 @@ if __name__ == "__main__":
     # Prompt user
     with NamedTemporaryFile() as tempfile:
         prompt_command = "; ".join([
+            "setpopupwindow 500 25",
+            "i3-msg border pixel 20",
             f"printf {shlex.quote(args.prompt)}",
             "read line",
             f"echo $line > {shlex.quote(tempfile.name)}"
@@ -46,6 +48,10 @@ if __name__ == "__main__":
             "User prompt",
             "--class",
             "iukbtw-prompt",
+            "-o",
+            "colors.primary.background='#aaffff'",
+            "-o",
+            "colors.primary.foreground='#000000'",
             "-e",
             "bash",
             "-c",
