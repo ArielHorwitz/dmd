@@ -29,7 +29,7 @@ i3 MANAGEMENT
 -------------------- |#
 (deflayer i3wm
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu _      XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wmrb XX    XX    XX    @i3re @wmlo @wmpo XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
@@ -46,6 +46,7 @@ i3 MANAGEMENT
     wmrb (cmd-button "systemctl reboot")
     brtu (cmd-button "sudo setmonbrightness -i")
     brtd (cmd-button "sudo setmonbrightness -d")
+    tgwt (cmd-button "i3-msg border toggle")
 )
 
 #| --------------------
