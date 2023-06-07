@@ -19,17 +19,18 @@ ignore = "E203,D,"
 [project]
 file_types = [
     "py",
+    "hs",
     "txt",
     "md",
     "toml",
     "json",
+    "yml",
     "sh",
     "log",
     "jinja2",
     "html",
     "css",
     "xml",
-    "kbd",
     "",  # For files without extensions (like .gitignore)
 ]
 ignore_names = [
