@@ -11,9 +11,12 @@ focus_follows_mouse no
 focus_wrapping no
 floating_modifier Mod4
 tiling_drag modifier titlebar
-gaps inner 7
+gaps inner 0
 gaps outer 0
-smart_gaps on
+default_border normal 5
+default_floating_border pixel 25
+smart_gaps off
+hide_edge_borders none
 mouse_warping none  # none | output
 for_window [all] title_window_icon yes
 
@@ -30,12 +33,12 @@ bindsym Mod4+p exec --no-startup-id displaygeometry $out1 $out2 $out3 --primary 
 
 # COLORS
 # class                 border  backgr. text    indicator child_border
-client.focused          #ffffff #0070c0 #ffffff #00ffff   #200050
-client.focused_inactive #333333 #5000a0 #ffffff #006666   #200050
-client.unfocused        #aaaaaa #200050 #ffffff #002222   #200050
+client.focused          #000000 #7000a0 #ffffff #00ffff   #552255
+client.focused_inactive #444444 #100020 #ffffff #006666   #333333
+client.unfocused        #222222 #000000 #ffffff #002222   #333333
 client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-client.background       #221122
+client.background       #111111
 
 # AUTOSTART
 exec --no-startup-id ~/.fehbg
@@ -47,9 +50,17 @@ bar {
     status_command statusbar
 
     tray_output $out3
-    font pango:DejaVu Sans Mono 14
     position top
+    tray_padding 0
+    font pango:DejaVu Sans Mono 10
+    workspace_min_width 100
     strip_workspace_numbers no
     strip_workspace_name no
-    tray_padding 0
+
+    colors {
+        focused_workspace  #000000 #bb00ff #000000
+        active_workspace   #333333 #100020 #ffffff
+        inactive_workspace #111111 #222222 #888888
+        urgent_workspace   #2f343a #900000 #ffffff
+    }
 }

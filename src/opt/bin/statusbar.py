@@ -214,7 +214,7 @@ def get_power(state: State) -> dict:
     charging = run("cat /sys/class/power_supply/BAT0/status").lower() != "discharging"
     state = BATTERIES[round(capacity / 100 * (len(BATTERIES) - 1))]
     if charging:
-        state = f"{PLUG}{state}"
+        state = f"{PLUG} {state}"
     else:
         state = f"{state}"
     color = hsv2hex(capacity / 200)
@@ -275,7 +275,7 @@ def get_kmd(state: State) -> dict:
 
     return dict(
         full_text=state,
-        min_width=100,
+        min_width="--------",
         color=fg,
         background=bg,
     )
