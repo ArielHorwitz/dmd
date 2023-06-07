@@ -54,16 +54,6 @@ alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
 
 
-dointerval() {
-    while :; do
-        [[ $3 = "clear" ]] && clear
-        $2
-        sleep $1
-    done
-}
-
-
-
 # ---------------------------------------------------------
 
 [[ $- != *i* ]] && return
