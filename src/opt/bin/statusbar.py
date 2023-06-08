@@ -20,9 +20,8 @@ NOCAPS = ""
 US = "Ꭺ"
 IL = "ℵ"
 
+REFRESH = ""
 PLUG = ""
-PLUG = "ﮣ"
-UNPLUG = "ﮤ"
 BATTERIES = ""
 TEMPERATURES = ""
 MICROPHONE = ""
@@ -118,11 +117,11 @@ def hsv2hex(h: float, s: float = 1, v: float = 1) -> str:
 def add_refresh_timer(data: dict) -> dict:
     since_last = arrow.now().timestamp() - data["_updated"]
     until_next = int(WEATHER_UPDATE_INTERVAL * 60 - since_last)
-    if until_next < 10:
-        return dict(
-            full_text=f"{until_next}s {data['full_text']}",
-            **{k: v for k, v in data.items() if k != "full_text"}
-        )
+    if until_next < 1:
+        modified = data.copy()
+        text = modified["full_text"]
+        modified["full_text"] = f"{REFRESH} {text}",
+        return modified
     return data
 
 
@@ -214,12 +213,13 @@ def get_power(state: State) -> dict:
     charging = run("cat /sys/class/power_supply/BAT0/status").lower() != "discharging"
     state = BATTERIES[round(capacity / 100 * (len(BATTERIES) - 1))]
     if charging:
-        state = f"{PLUG} {state}"
+        state = f"{PLUG}{state}"
+        color = "#00ffff"
     else:
-        state = f"{state}"
-    color = hsv2hex(capacity / 200)
+        color = hsv2hex(capacity / 300)
     return dict(
         full_text=f"{state} {capacity}%",
+        min_width=f"{PLUG}{BATTERIES[0]} 100%",
         color=color,
     )
 
