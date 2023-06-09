@@ -12,7 +12,7 @@ alias lsr="ls -lshR --color"
 # Python aliases
 alias pyvenv="python -m venv venv && pyactivate"
 alias pyactivate="source venv/bin/activate"
-alias pipi="pip install --upgrade pip && pip-requirements"
+alias pipi="pip install --upgrade pip && [[ -f requirements.txt ]] && pip install -r requirements.txt"
 alias py="python main.py"
 alias pytest="python -m unittest discover -v -s tests -t ."
 alias pytestf="python -m unittest discover -v -f -s tests -t ."
