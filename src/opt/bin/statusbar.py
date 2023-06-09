@@ -20,7 +20,9 @@ NOCAPS = ""
 US = "Ꭺ"
 IL = "ℵ"
 
-REFRESH = ""
+REFRESH = ""
+CPU = ""
+MEM = ""
 PLUG = ""
 BATTERIES = ""
 TEMPERATURES = ""
@@ -99,11 +101,6 @@ def run(command: str):
     return r.stdout.decode().strip()
 
 
-def stdp(text):
-    sys.stdout.write(f"{text}\n")
-    sys.stdout.flush()
-
-
 def float2icon(iconlist: str | list[str], value=float):
     return iconlist[round(value * (len(iconlist) - 1))]
 
@@ -170,6 +167,19 @@ def get_weather(state: State):
     except Exception as err:
         state.weather_data["full_text"] = f"weather update failed: {err}"
     return state.weather_data
+
+
+def get_resource_utilization(state: State) -> dict:
+    name, cpu = run(
+        "ps -e --no-header -o comm,pcpu --sort=-pcpu | grep statusbar | head -n 1"
+    ).split()
+    name, mem = run(
+        "ps -e --no-header -o comm,pmem --sort=-pmem | grep statusbar | head -n 1"
+    ).split()
+    return dict(
+        full_text=f"{CPU} %{cpu} {MEM} %{mem}",
+        align="left",
+    )
 
 
 def get_audio_source(state: State) -> dict:
@@ -283,7 +293,7 @@ def get_kmd(state: State) -> dict:
 
 def get_date(state: State) -> dict:
     return dict(
-        full_text=arrow.now().format("DD/MM/YY"),
+        full_text=arrow.now().format("DD/MM/YY ddd"),
         color="#884488",
         separator=False,
         separator_block_width=10,
@@ -299,6 +309,7 @@ def get_time(state: State) -> dict:
 
 SOURCES = [
     get_weather,
+    get_resource_utilization,
     get_audio_source,
     get_audio_sink,
     get_power,
@@ -323,11 +334,12 @@ def get_block_data(state: State) -> list[dict]:
     return blocks
 
 
+
 def main():
     state = State()
     # Print header
-    stdp(json.dumps(dict(version=1)))
-    stdp("[")
+    print(json.dumps(dict(version=1)))
+    print("[")
     # Start endless loop
     while True:
         try:
@@ -335,7 +347,7 @@ def main():
         except Exception as e:
             err = str(e).replace('\n', ' -- ')
             data = dict(full_text=err, min_width=1000)
-        stdp(f"{json.dumps(data)},")
+        print(f"{json.dumps(data)},", flush=True)
         time.sleep(0.1)
 
 
