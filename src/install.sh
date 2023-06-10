@@ -54,7 +54,7 @@ if [[ $1 = "deps" ]]; then
     # Install Python libraries
     subtitle "Installing Python libraries"
     python -m pip install arrow
-    python -m pip install requests
+    python -m pip install httpx
 fi
 
 
