@@ -63,4 +63,4 @@ if __name__ == "__main__":
     print(f"User input text: {user_text}")
     execute_command = shlex.split(args.execute.replace("{{}}", shlex.quote(user_text)))
     print(f"Executing command: {execute_command}")
-    run(*execute_command)
+    print(run(*execute_command))
