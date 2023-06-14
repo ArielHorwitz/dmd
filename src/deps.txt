@@ -6,6 +6,5 @@ alacritty
 xdotool
 dunst
 scrot
-kmonad-bin
 rofi
 g810-led
