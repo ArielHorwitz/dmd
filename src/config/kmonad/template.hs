@@ -56,22 +56,30 @@ MOUSE
 (deflayer mouse
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    @mou0 XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @mou4 @mou3 @mou2 XX    XX    XX    @msl1 @msd1 @msr1 @msb5 XX    @mstg                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    @mscn XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @msps @mscn @msrs XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     mstg (cmd-button "touchpadtoggle")
+    mou0 (layer-toggle mouse0)
     mou2 (layer-toggle mouse2)
     mou3 (layer-toggle mouse3)
     mou4 (layer-toggle mouse4)
     mscn (cmd-button "mousecenter")
+    msps (cmd-button "xdotool mousedown 1")
+    msrs (cmd-button "xdotool mouseup 1")
 
     msb1 (cmd-button "xdotool click 1")
     msb3 (cmd-button "xdotool click 3")
     msb4 (cmd-button "xdotool click 4")
     msb5 (cmd-button "xdotool click 5")
+
+    msu0 (cmd-button "xdotool mousemove_relative 0 -1")
+    msd0 (cmd-button "xdotool mousemove_relative 0 1")
+    msl0 (cmd-button "xdotool mousemove_relative -- -1 0")
+    msr0 (cmd-button "xdotool mousemove_relative 1 0")
 
     msu1 (cmd-button "xdotool mousemove_relative 0 -5")
     msd1 (cmd-button "xdotool mousemove_relative 0 5")
@@ -115,6 +123,14 @@ MOUSE
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu4 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl4 @msd4 @msr4 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer mouse0
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu0 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl0 @msd0 @msr0 _     _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
