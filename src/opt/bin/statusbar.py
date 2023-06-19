@@ -226,21 +226,21 @@ class Resources(Component):
         pcpu = 100 - float(cpuidle)
         cpu_color = hsv2hex((1 - pcpu/100) / 3)
         mem = resources[3].split(":")[1].split(",")
-        mem_total = float(mem[1].split()[0])
-        mem_used = float(mem[3].split()[0])
+        mem_total = float(mem[0].split()[0])
+        mem_used = float(mem[2].split()[0])
         pmem = 100 * mem_used / mem_total
         mem_color = hsv2hex((1 - pmem/100) / 3)
         cpu = self.block(
             full_text=f"{self.CPU} %{pcpu:.1f} (%{cpuuser})",
             align="left",
             color=cpu_color,
-            min_width=f"{self.CPU} %100.0 (%100.0)",
+            min_width=f"{self.CPU} %99.9 (%99.9)",
         )
         mem = self.block(
             full_text=f"{self.MEM} %{pmem:.1f}",
             align="left",
             color=mem_color,
-            min_width=f"{self.MEM} %100.0",
+            min_width=f"{self.MEM} %99.9",
         )
         return mem, cpu
 
