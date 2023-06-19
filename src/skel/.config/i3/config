@@ -1,10 +1,5 @@
 # i3 config file (v4)
 
-# DISPLAYS
-set $out1 "DP-3"
-set $out2 "HDMI-1"
-set $out3 "DP-2"
-
 # BASIC CONFIG
 font pango:Fira Code 8
 focus_follows_mouse no
@@ -29,7 +24,6 @@ bindsym Mod4+Left exec --no-startup-id i3-msg focus left
 bindsym Mod4+Right exec --no-startup-id i3-msg focus right
 bindsym Mod4+Up exec --no-startup-id i3-msg focus up
 bindsym Mod4+Down exec --no-startup-id i3-msg focus down
-bindsym Mod4+p exec --no-startup-id displaygeometry $out1 $out2 $out3 --primary $out3
 
 # COLORS
 # class                 border  backgr. text    indicator child_border
@@ -49,7 +43,6 @@ exec --no-startup-id nm-applet
 bar {
     status_command statusbar
 
-    tray_output $out3
     position top
     tray_padding 0
     # font pango:DejaVu Sans Mono 10

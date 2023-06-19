@@ -31,7 +31,7 @@ i3 MANAGEMENT
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wmrb XX    XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
-  _     XX    @wmss XX    XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
+  _     XX    @wmss @wmds XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -39,6 +39,7 @@ i3 MANAGEMENT
     kmdr (cmd-button "pkill -x kmonad ; sleep 0.1 ; kmdrun")
     i3re (cmd-button "i3-msg restart")
     wmlk (cmd-button "loginctl lock-session")
+    wmds (cmd-button "displaygeometry -f .iukdisplays")
     wmlo (cmd-button "i3-msg exit")
     wmss (cmd-button "loginctl lock-session && systemctl suspend")
     wmhb (cmd-button "systemctl hibernate")

@@ -1,6 +1,7 @@
 #!/bin/python
 
 import argparse
+import shlex
 import subprocess
 
 
@@ -15,6 +16,7 @@ def main():
     # Parse args
     parser = argparse.ArgumentParser()
     parser.add_argument("OUTPUT", nargs="*", help="List of outputs from left to right")
+    parser.add_argument("-f", "--file", help="Collect list of outputs from file")
     parser.add_argument("-p", "--primary", help="Set primary output")
     parser.add_argument(
         "-l",
@@ -26,7 +28,10 @@ def main():
     if args.list:
         print(run("xrandr", "--listmonitors"))
         quit()
-    outputs = args.OUTPUT
+    if args.file:
+        outputs = shlex.split(run("xargs", "--arg-file", shlex.quote(args.file)))
+    else:
+        outputs = args.OUTPUT
     if len(outputs) > 1:
         for outl, outr in zip(outputs[:-1], outputs[1:]):
             print(f"{outl} | {outr}")
