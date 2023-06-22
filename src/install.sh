@@ -32,14 +32,14 @@ for filename in "$BINDIR"/* ; do
     sudo mv $filename $newname
     sudo cp -s $newname $USRBINDIR
 done
-# Add bin dir to PATH
+# Add iukenv sourcing to profile
 USRPROF=$HOME/.profile
 if [[ -f $USRPROF ]]; then
     # Remove export line if exists, for idempotency
     PROFILE_LINE=$(cat $USRPROF | grep -nm 1 "iuk" | cut -d: -f1)
     [[ -n $PROFILE_LINE ]] && sed -i $PROFILE_LINE"d" $USRPROF
 fi
-printf "export PATH=$BINDIR:\$PATH  # Add iukbtw commands to PATH\n" >> $USRPROF
+printf "source .iukenv\n" >> $USRPROF
 # Copy config
 sudo cp --recursive ./config/* $CONFDIR
 # Copy other config
