@@ -3,9 +3,9 @@
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." && exit 1
 
 # Kill KMonad and reset state file
-sleep 0.2s
+sleep 0.1
 pkill -x kmonad
-sleep 0.2s
+sleep 0.1
 sudo /opt/iukbtw/bin/setlayer base
 
 # Find a keyboard device path

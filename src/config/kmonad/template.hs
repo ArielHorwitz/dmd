@@ -355,7 +355,7 @@ CONFIG AND SOURCE
 --------------------------------------------------------------------------------------------------------------------------- |#
 (defcfg
     input  (device-file "DEVICE_FILE_PATH")
-    output (uinput-sink "iukbtw" "sleep 1")
+    output (uinput-sink "iukbtw" "sleep 0.1")
     fallthrough true
     allow-cmd true
 )
