@@ -172,10 +172,10 @@ WINDOW NAVIGATION
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     @klps XX    @kltb @wrfr @wtgt XX    @wprv @fup  @wnxt XX    XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
+  _     @klps XX    @kltb XX    @wtgt XX    @wprv @fup  @wnxt XX    XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    @wrfn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     @wman             @wrfw             _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     wman (layer-toggle window_manipulation)
@@ -185,9 +185,7 @@ WINDOW NAVIGATION
     scrw (cmd-button "screenshot")
     scrd (cmd-button "screenshotdesktop")
     wtrm (cmd-button "alacritty")
-    wrfw (cmd-button "rofi -show window -matching fuzzy")
-    wrfn (cmd-button "rofi -show drun -matching fuzzy")
-    wrfr (cmd-button "rofi -show run -matching fuzzy")
+    wrof (cmd-button "rofi -show combi")
     wtgt (cmd-button "i3-msg layout toggle tabbed split && mousewarp")
     wtgs (cmd-button "i3-msg layout toggle split && mousewarp")
     fuls (cmd-button "i3-msg fullscreen toggle && mousewarp")

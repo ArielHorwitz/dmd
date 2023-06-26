@@ -1,5 +1,5 @@
 configuration {
-//    modes: "window,drun,run,ssh";
+    modes: "combi,window,drun,run,ssh";
 //    font: "mono 12";
 //    location: 0;
 //    yoffset: 0;
@@ -32,8 +32,8 @@ configuration {
 //    auto-select: false;
 //    parse-hosts: false;
 //    parse-known-hosts: true;
-//    combi-modes: "window,run";
-//    matching: "normal";
+    combi-modes: "drun,window,run";
+    matching: "fuzzy";
 //    tokenize: true;
     m: "-4";
 //    filter: ;
@@ -86,7 +86,7 @@ configuration {
 //    kb-delete-entry: "Shift+Delete";
 //    kb-mode-next: "Shift+Right,Control+Tab";
 //    kb-mode-previous: "Shift+Left,Control+ISO_Left_Tab";
-//    kb-mode-complete: "Control+l";
+    kb-mode-complete: "Control+l,Control+period";
 //    kb-row-left: "Control+Page_Up";
 //    kb-row-right: "Control+Page_Down";
 //    kb-row-up: "Up,Control+p";
