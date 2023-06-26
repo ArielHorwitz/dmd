@@ -2,10 +2,9 @@
 # ~/.bashrc
 #
 
-# Reread .bashrc
-alias resource="source ~/.bashrc"
-# Directory aliases
-alias cwd="echo $PWD"
+alias resource="source ~/.bashrc" # Reread .bashrc
+alias cat="bat"
+alias less="bat"
 alias lsl="ls -lsh --color"
 alias lsa="ls -lsha --color"
 alias lsr="ls -lshR --color"
