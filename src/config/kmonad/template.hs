@@ -57,7 +57,7 @@ MOUSE
 (deflayer mouse
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @mou0 XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  @mou0 XX    XX    XX    XX    XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @mou4 @mou3 @mou2 XX    XX    XX    @msl1 @msd1 @msr1 @msb5 XX    @mstg                           XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @msps @mscn @msrs XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
@@ -65,6 +65,7 @@ MOUSE
 (defalias
     mstg (cmd-button "touchpadtoggle")
     mou0 (layer-toggle mouse0)
+    mou1 (layer-toggle mouse1)
     mou2 (layer-toggle mouse2)
     mou3 (layer-toggle mouse3)
     mou4 (layer-toggle mouse4)
@@ -82,27 +83,43 @@ MOUSE
     msl0 (cmd-button "xdotool mousemove_relative -- -1 0")
     msr0 (cmd-button "xdotool mousemove_relative 1 0")
 
-    msu1 (cmd-button "xdotool mousemove_relative 0 -5")
-    msd1 (cmd-button "xdotool mousemove_relative 0 5")
-    msl1 (cmd-button "xdotool mousemove_relative -- -5 0")
-    msr1 (cmd-button "xdotool mousemove_relative 5 0")
+    msu1 (cmd-button "xdotool mousemove_relative 0 -10")
+    msd1 (cmd-button "xdotool mousemove_relative 0 10")
+    msl1 (cmd-button "xdotool mousemove_relative -- -10 0")
+    msr1 (cmd-button "xdotool mousemove_relative 10 0")
 
-    msu2 (cmd-button "xdotool mousemove_relative 0 -40")
-    msd2 (cmd-button "xdotool mousemove_relative 0 40")
-    msl2 (cmd-button "xdotool mousemove_relative -- -40 0")
-    msr2 (cmd-button "xdotool mousemove_relative 40 0")
+    msu2 (cmd-button "xdotool mousemove_relative 0 -30")
+    msd2 (cmd-button "xdotool mousemove_relative 0 30")
+    msl2 (cmd-button "xdotool mousemove_relative -- -30 0")
+    msr2 (cmd-button "xdotool mousemove_relative 30 0")
 
-    msu3 (cmd-button "xdotool mousemove_relative 0 -200")
-    msd3 (cmd-button "xdotool mousemove_relative 0 200")
-    msl3 (cmd-button "xdotool mousemove_relative -- -200 0")
-    msr3 (cmd-button "xdotool mousemove_relative 200 0")
+    msu3 (cmd-button "xdotool mousemove_relative 0 -90")
+    msd3 (cmd-button "xdotool mousemove_relative 0 90")
+    msl3 (cmd-button "xdotool mousemove_relative -- -90 0")
+    msr3 (cmd-button "xdotool mousemove_relative 90 0")
 
-    msu4 (cmd-button "xdotool mousemove_relative 0 -1000")
-    msd4 (cmd-button "xdotool mousemove_relative 0 1000")
-    msl4 (cmd-button "xdotool mousemove_relative -- -1000 0")
-    msr4 (cmd-button "xdotool mousemove_relative 1000 0")
+    msu4 (cmd-button "xdotool mousemove_relative 0 -270")
+    msd4 (cmd-button "xdotool mousemove_relative 0 270")
+    msl4 (cmd-button "xdotool mousemove_relative -- -270 0")
+    msr4 (cmd-button "xdotool mousemove_relative 270 0")
 )
 
+(deflayer mouse0
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu0 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl0 @msd0 @msr0 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer mouse1
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu1 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl1 @msd1 @msr1 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
 (deflayer mouse2
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
@@ -124,14 +141,6 @@ MOUSE
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu4 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl4 @msd4 @msr4 _     _     _                               XX    XX    XX
-  _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
-)
-(deflayer mouse0
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
-  _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @msu0 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     @msl0 @msd0 @msr0 _     _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
