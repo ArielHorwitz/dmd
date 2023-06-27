@@ -25,7 +25,7 @@ alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_
 # Django
 alias djm="python manage.py"
 alias djrun="djm runserver"
-alias djboot="djm makemigrations && djm migrate && djm createsuperuser --username admin --email _@_.com"
+alias djboot="djm makemigrations && djm migrate && djm createsuperuser --username admin --email admin@ariel.ninja"
 alias djnuke="
 if [ -f "manage.py" ] ; then
     python manage.py flush --noinput && sleep 1 && rm -rf ./media && djboot ;
