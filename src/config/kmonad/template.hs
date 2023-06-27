@@ -185,7 +185,7 @@ WINDOW NAVIGATION
     scrw (cmd-button "screenshot")
     scrd (cmd-button "screenshotdesktop")
     wtrm (cmd-button "alacritty")
-    wrof (cmd-button "rofi -show combi")
+    wrof (cmd-button "rofi -show drun")
     wtgt (cmd-button "i3-msg layout toggle tabbed split && mousewarp")
     wtgs (cmd-button "i3-msg layout toggle split && mousewarp")
     fuls (cmd-button "i3-msg fullscreen toggle && mousewarp")
