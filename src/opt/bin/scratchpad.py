@@ -29,7 +29,7 @@ def main():
             "getactivewindow",
             "set_window",
             "--class",
-            f"'Scratchpad {args.move}'",
+            f"Scratchpad {args.move}",
         ]
         subprocess.run(set_command, check=True)
         subprocess.run(["i3-msg", "move", "scratchpad"], check=True)
