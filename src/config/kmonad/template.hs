@@ -172,8 +172,8 @@ WINDOW NAVIGATION
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     @klps XX    @kltb XX    @wtgt XX    @wprv @fup  @wnxt XX    XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
-  _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
+  _     @klps XX    @kltb XX    @wtgt XX    @wprv @fup  @wnxt @wmfp XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
+  _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -195,6 +195,8 @@ WINDOW NAVIGATION
     flft (cmd-button "i3-msg focus left && mousewarp")
     fup  (cmd-button "i3-msg focus up && mousewarp")
     fdwn (cmd-button "i3-msg focus down && mousewarp")
+    wmfp (cmd-button "i3-msg focus parent")
+    wmfc (cmd-button "i3-msg focus child")
 )
 
 
@@ -205,12 +207,11 @@ WINDOW MANIPULATION
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wsrn XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @wmfp @wmmw XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
+  _     XX    @wmmw XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    @wsn  @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    wmfp (cmd-button "i3-msg focus parent")
     wtmd (cmd-button "i3-msg focus mode_toggle && mousewarp")
     wsn  (cmd-button "userprompt -p 'Workspace name: ' -e 'i3-msg workspace {{}}'")
     wsml (cmd-button "i3-msg move workspace to output left && mousewarp")
