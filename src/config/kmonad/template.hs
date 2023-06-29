@@ -2,7 +2,7 @@
 BASE
 --------------------------------------------------------------------------------------------------------------------------- |#
 (deflayer base
-  _     f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12          @test XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            @test XX    @kill
   @i3wm XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @wnav @edit XX    @txtm XX    home  up    end   pgup  XX    XX    XX     @rkrl XX    XX     XX    XX    XX    XX
   @text @audi @scrp XX    @mous XX    XX    left  down  right pgdn  XX    _                               XX    XX    XX
