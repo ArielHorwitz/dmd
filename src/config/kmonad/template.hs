@@ -399,6 +399,3 @@ CONFIG AND SOURCE
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
-(defalias
-    nrml (layer-toggle normal_keyboard)
-)
