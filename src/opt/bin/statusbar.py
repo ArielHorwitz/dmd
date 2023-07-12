@@ -3,18 +3,17 @@
 import argparse
 import asyncio
 import colorsys
+import itertools
 import json
 import shlex
 import subprocess
 import time
 from abc import ABC, abstractmethod
-import itertools
 from pathlib import Path
 from typing import NamedTuple, Optional
 
 import arrow
 import httpx
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--debug", help="Debug mode", action="store_true")
@@ -61,7 +60,7 @@ def float2icon(iconlist: str | list[str], value: float):
 
 def hsv2hex(h: float, s: float = 1, v: float = 1) -> str:
     rgb = colorsys.hsv_to_rgb(h, s, v)
-    rgb_hex = ''.join(f"{round(c*255):x}".rjust(2, "0") for c in rgb)
+    rgb_hex = "".join(f"{round(c*255):x}".rjust(2, "0") for c in rgb)
     return f"#{rgb_hex}"
 
 
@@ -81,10 +80,12 @@ class Component(ABC):
                 blocks = await asyncio.wait_for(self._update(), 3)
                 assert isinstance(blocks, tuple)
             except Exception as exc:
-                return self.block(
-                    full_text=f"{self.__class__} failed: {exc}",
-                    color="#ff0000",
-                ),
+                return (
+                    self.block(
+                        full_text=f"{self.__class__} failed: {exc}",
+                        color="#ff0000",
+                    ),
+                )
             self._last_updated = arrow.now()
             self._cached_blocks = blocks
         return self._cached_blocks
@@ -207,7 +208,7 @@ class Weather(Component):
         )
         with open(self.CACHE_FILE, "w") as file:
             json.dump([data], file)
-        return data,
+        return (data,)
 
 
 @register_component
@@ -224,12 +225,12 @@ class Resources(Component):
         cpuidle = cpuraw[3].split()[0]
         cpuuser = float(cpuraw[0].split()[-2])
         pcpu = 100 - float(cpuidle)
-        cpu_color = hsv2hex((1 - pcpu/100) / 3)
+        cpu_color = hsv2hex((1 - pcpu / 100) / 3)
         mem = resources[3].split(":")[1].split(",")
         mem_total = float(mem[0].split()[0])
         mem_used = float(mem[2].split()[0])
         pmem = 100 * mem_used / mem_total
-        mem_color = hsv2hex((1 - pmem/100) / 3)
+        mem_color = hsv2hex((1 - pmem / 100) / 3)
         cpu = self.block(
             full_text=f"{self.CPU} %{pcpu:.1f} (%{cpuuser})",
             align="left",
@@ -278,7 +279,7 @@ class Audio(Component):
         else:
             device_icon = self.NOT_AVAILABLE
         volume_details = run("pactl get-sink-volume @DEFAULT_SINK@")
-        volume = volume_details.split("/")[3].strip().removesuffix('%')
+        volume = volume_details.split("/")[3].strip().removesuffix("%")
         volume = round(float(volume))
         color = "#ff0000" if sink_muted else "#00ff00"
         audio_sink = self.block(
@@ -307,11 +308,13 @@ class Power(Component):
             color = "#00ffff"
         else:
             color = hsv2hex(capacity / 300)
-        return self.block(
-            full_text=f"{state} {capacity}%",
-            min_width=f"{self.PLUG}{self.BATTERIES[0]} 100%",
-            color=color,
-        ),
+        return (
+            self.block(
+                full_text=f"{state} {capacity}%",
+                min_width=f"{self.PLUG}{self.BATTERIES[0]} 100%",
+                color=color,
+            ),
+        )
 
 
 @register_component
@@ -370,12 +373,14 @@ class Kmd(Component):
         else:
             bg = "#000000"
 
-        return self.block(
-            full_text=state,
-            min_width="- - - -",
-            color=fg,
-            background=bg,
-        ),
+        return (
+            self.block(
+                full_text=state,
+                min_width="- - - -",
+                color=fg,
+                background=bg,
+            ),
+        )
 
 
 @register_component
@@ -399,8 +404,7 @@ class Time(Component):
 class StatusBar:
     def __init__(self):
         self._components = [
-            component() for component in REGISTERED_COMPONENTS
-            if component.INSTALLED
+            component() for component in REGISTERED_COMPONENTS if component.INSTALLED
         ]
 
     async def get(self) -> list[dict]:
