@@ -15,8 +15,10 @@ recreatedir () {
 
 title "Installing iukbtw"
 
+subtitle "Updating System"
 [[ $(pacman -Q yay) ]] || sudo pacman --noconfirm -Syuq yay
 
+subtitle "Copying binaries"
 OPTDIR=/opt/iukbtw
 BINDIR=/opt/iukbtw/bin
 USRBINDIR=/usr/bin/iukbtw
@@ -52,16 +54,15 @@ sudo cp --recursive ./etc/* /etc
 if [[ $1 = "deps" ]]; then
     # Install packages
     subtitle "Installing dependencies"
-    yay -S --needed --noconfirm - < ./deps.txt
+    yay -Sq --needed --noconfirm - < ./deps.txt
     # Install Python libraries
     subtitle "Installing Python libraries"
-    python -m pip install arrow
-    python -m pip install httpx
+    python -m pip install --no-input --break-system-packages --user arrow httpx
 fi
 
 
 # Configure
-subtitle "Configuring for $USER @ $HOME"
+subtitle "Configuring $USER @ $HOME"
 # Add sudoer rules -- check with visudo before copy!
 sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
 if [[ $(visudo -csf ./sudoers | grep "parsed OK") = "" ]] ; then
@@ -74,8 +75,8 @@ fi
 # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
 sudo groupadd -f uinput && sudo usermod -aG uinput $USER
 sudo usermod -aG input $USER
-echo uinput | sudo tee /etc/modules-load.d/uinput.conf
-echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/90-uinput.rules
+echo uinput | sudo tee /etc/modules-load.d/uinput.conf 1>/dev/null
+echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/90-uinput.rules 1>/dev/null
 
 
 # Copy dotfiles
