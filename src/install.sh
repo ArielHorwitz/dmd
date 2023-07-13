@@ -15,6 +15,8 @@ recreatedir () {
 
 title "Installing iukbtw"
 
+[[ $(pacman -Q yay) ]] || sudo pacman --noconfirm -Syuq yay
+
 OPTDIR=/opt/iukbtw
 BINDIR=/opt/iukbtw/bin
 USRBINDIR=/usr/bin/iukbtw
