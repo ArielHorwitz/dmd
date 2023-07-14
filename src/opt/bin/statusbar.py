@@ -17,7 +17,12 @@ import httpx
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--debug", help="Debug mode", action="store_true")
-parser.add_argument("-s", "--stop-after", help="Stop after seconds", type=float)
+parser.add_argument(
+    "-s",
+    "--stop-after",
+    help="Stop after seconds",
+    type=float,
+)
 parser.add_argument(
     "--no-weather",
     help="Do not update weather",
@@ -71,7 +76,14 @@ class Component(ABC):
     _cached_blocks = tuple()
 
     def block(self, **kwargs) -> dict:
-        kwargs = dict(separator=True, separator_block_width=20, align="center") | kwargs
+        kwargs = (
+            dict(
+                separator=True,
+                separator_block_width=20,
+                align="center",
+            )
+            | kwargs
+        )
         return dict(name=self.__class__.__name__, **kwargs)
 
     async def get_blocks(self) -> tuple[dict, ...]:
@@ -209,41 +221,6 @@ class Weather(Component):
         with open(self.CACHE_FILE, "w") as file:
             json.dump([data], file)
         return (data,)
-
-
-@register_component
-class Resources(Component):
-    UPDATE_INTERVAL_SECONDS = 3
-    REFRESH = ""
-    CPU = ""
-    MEM = ""
-
-    async def _update(self) -> tuple[dict, ...]:
-        resources = run(f"top -bd {self.UPDATE_INTERVAL_SECONDS} -n 1 -p 0")
-        resources = resources.splitlines()
-        cpuraw = resources[2].split(",")
-        cpuidle = cpuraw[3].split()[0]
-        cpuuser = float(cpuraw[0].split()[-2])
-        pcpu = 100 - float(cpuidle)
-        cpu_color = hsv2hex((1 - pcpu / 100) / 3)
-        mem = resources[3].split(":")[1].split(",")
-        mem_total = float(mem[0].split()[0])
-        mem_used = float(mem[2].split()[0])
-        pmem = 100 * mem_used / mem_total
-        mem_color = hsv2hex((1 - pmem / 100) / 3)
-        cpu = self.block(
-            full_text=f"{self.CPU} %{pcpu:.1f} (%{cpuuser})",
-            align="left",
-            color=cpu_color,
-            min_width=f"{self.CPU} %99.9 (%99.9)",
-        )
-        mem = self.block(
-            full_text=f"{self.MEM} %{pmem:.1f}",
-            align="left",
-            color=mem_color,
-            min_width=f"{self.MEM} %99.9",
-        )
-        return mem, cpu
 
 
 @register_component
@@ -439,3 +416,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
