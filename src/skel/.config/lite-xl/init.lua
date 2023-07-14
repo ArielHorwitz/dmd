@@ -3,6 +3,9 @@ local keymap = require "core.keymap"
 local config = require "core.config"
 local style = require "core.style"
 
+-- DATADIR - installed Lite XL Lua code, default color schemes and fonts.
+-- USERDIR - configuration directory.
+
 
 ----------------------------- General ----------------------------------------
 
@@ -40,52 +43,34 @@ core.reload_module("colors.synthwave")
 
 --------------------------- Key bindings -------------------------------------
 
--- key binding:
--- keymap.add { ["ctrl+escape"] = "core:quit" }
-
--- pass 'true' for second parameter to overwrite an existing binding
--- keymap.add({ ["ctrl+pageup"] = "root:switch-to-previous-tab" }, true)
--- keymap.add({ ["ctrl+pagedown"] = "root:switch-to-next-tab" }, true)
-
- keymap.add({ ["alt+down"] = "root:switch-to-down" }, true)
- keymap.add({ ["alt+left"] = "root:switch-to-left" }, true)
- keymap.add({ ["alt+right"] = "root:switch-to-right" }, true)
- keymap.add({ ["alt+up"] = "root:switch-to-up" }, true)
+keymap.add({ ["alt+down"] = "root:switch-to-down" }, true)
+keymap.add({ ["alt+left"] = "root:switch-to-left" }, true)
+keymap.add({ ["alt+right"] = "root:switch-to-right" }, true)
+keymap.add({ ["alt+up"] = "root:switch-to-up" }, true)
+keymap.add({ ["alt+shift+down"] = "root:split-down" }, true)
+keymap.add({ ["alt+shift+left"] = "root:split-left" }, true)
+keymap.add({ ["alt+shift+right"] = "root:split-right" }, true)
+keymap.add({ ["alt+shift+up"] = "root:split-up" }, true)
 
 
 ------------------------------- Fonts ----------------------------------------
 
--- customize fonts:
 style.code_font = renderer.font.load(
   "/home/wiw/.local/share/fonts/firacode/FiraCodeNerdFont-Regular.ttf",
-  12 * SCALE
+  12
 )
 style.font = renderer.font.load(
   "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
-  10 * SCALE
+  10
 )
 style.big_font = renderer.font.load(
   "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
-  14 * SCALE
+  14
 )
+-- style.icon_font
+-- style.icon_big_font
 
-
--- DATADIR is the location of the installed Lite XL Lua code, default color
--- schemes and fonts.
--- USERDIR is the location of the Lite XL configuration directory.
---
--- font names used by lite:
--- style.font          : user interface
--- style.big_font      : big text in welcome screen
--- style.icon_font     : icons
--- style.icon_big_font : toolbar icons
--- style.code_font     : code
---
--- the function to load the font accept a 3rd optional argument like:
---
--- {antialiasing="grayscale", hinting="full", bold=true, italic=true, underline=true, smoothing=true, strikethrough=true}
---
--- possible values are:
+-- Third argument options:
 -- antialiasing: grayscale, subpixel
 -- hinting: none, slight, full
 -- bold: true, false
@@ -110,6 +95,7 @@ config.plugins.nerdicons.draw_tab_icons = true
 config.plugins.nerdicons.draw_treeview_icons = true
 config.plugins.spellcheck = "/home/wiw/.local/share/dict/words"
 config.plugins.treeview.size = 420
+config.plugins.treeview.hide_on_startup = true
 
 
 --------------------------------- LSP -----------------------------------------
