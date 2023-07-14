@@ -95,7 +95,7 @@ config.plugins.nerdicons.draw_tab_icons = true
 config.plugins.nerdicons.draw_treeview_icons = true
 config.plugins.spellcheck = "/home/wiw/.local/share/dict/words"
 config.plugins.treeview.size = 420
-config.plugins.treeview.hide_on_startup = true
+config.plugins.treeview.visible = false
 
 
 --------------------------------- LSP -----------------------------------------
