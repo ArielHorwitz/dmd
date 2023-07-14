@@ -219,7 +219,7 @@ class Resources(Component):
     MEM = ""
 
     async def _update(self) -> tuple[dict, ...]:
-        resources = run(f"top -bd {self.UPDATE_INTERVAL_SECONDS} n1 -p 0")
+        resources = run(f"top -bd {self.UPDATE_INTERVAL_SECONDS} -n 1 -p 0")
         resources = resources.splitlines()
         cpuraw = resources[2].split(",")
         cpuidle = cpuraw[3].split()[0]
