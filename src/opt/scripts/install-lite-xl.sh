@@ -53,8 +53,11 @@ git clone https://github.com/liquidev/lintplus plugins/lintplus
 wget https://raw.githubusercontent.com/vqns/lite-xl-snippets/main/snippets.lua -O plugins/snippets.lua
 wget https://raw.githubusercontent.com/vqns/lite-xl-snippets/main/lsp_snippets.lua -O plugins/lsp_snippets.lua
 
+echo "Installing Python LSP..."
 python -m pip install --break-system-packages python-lsp-server
+echo "Installing bash LSP..."
 npm install -g bash-language-server
+echo "Installing dockerfile LSP..."
 npm install -g dockerfile-language-server-nodejs
 
 
