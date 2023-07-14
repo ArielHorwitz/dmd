@@ -101,7 +101,24 @@ config.plugins.treeview.hide_on_startup = true
 --------------------------------- LSP -----------------------------------------
 local lspconfig = require "plugins.lsp.config"
 
-lspconfig.pylsp.setup()
+lspconfig.pylsp.setup {
+  settings = {
+    pylsp = {
+      plugins = {
+        flake8 = {
+          maxLineLength = 88,
+          enabled = true,
+        },
+        autopep8 = { enabled = false },
+        yapf = { enabled = false },
+        pycodestyle = { enabled = false },
+        pydocstyle = { enabled = false },
+        pyflakes = { enabled = false },
+        pylint = { enabled = false },
+      }
+    }
+  }
+}
 lspconfig.rls.setup()
 lspconfig.dockerls.setup()
 lspconfig.bashls.setup()
