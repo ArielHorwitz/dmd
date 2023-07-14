@@ -1,6 +1,11 @@
 [Desktop Entry]
-Name=Lite XL
 Type=Application
+Name=Lite XL
+Comment=A lightweight text editor written in Lua
+Exec=lite-xl %F
 Icon=lite-xl
-Exec=lite-xl
+Terminal=false
+StartupWMClass=lite-xl
+Categories=Development;IDE;
+MimeType=text/plain;inode/directory;
 
