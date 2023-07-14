@@ -3,7 +3,7 @@
 #
 
 alias resource="source ~/.bashrc" # Reread .bashrc
-alias cat="bat"
+alias lxl="lite-xl"
 alias less="bat"
 alias lsl="ls -lsh --color"
 alias lsa="ls -lsha --color"
