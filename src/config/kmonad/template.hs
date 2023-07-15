@@ -161,7 +161,7 @@ EDITING
     past C-v
     cut  C-x
     undo C-z
-    redo C-r
+    redo C-y
     save C-s
     sela C-a
 )
