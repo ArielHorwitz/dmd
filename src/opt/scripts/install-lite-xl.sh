@@ -41,6 +41,11 @@ cp -f $DATADIR/lite-xl.desktop $DESKTOP_APPS
 cp -f $DATADIR/lite-xl.png $DESKTOP_ICONS
 xdg-desktop-menu forceupdate
 
+# Plugin Manager (lpm)
+URL="https://github.com/lite-xl/lite-xl-plugin-manager/releases/download/latest/lpm.x86_64-linux"
+wget $URL -O $HOME/.local/bin/lpm
+chmod +x $HOME/.local/bin/lpm
+
 # LSP
 set +e
 
@@ -56,9 +61,9 @@ wget https://raw.githubusercontent.com/vqns/lite-xl-snippets/main/lsp_snippets.l
 echo "Installing Python LSP..."
 python -m pip install --break-system-packages python-lsp-server
 echo "Installing bash LSP..."
-npm install -g bash-language-server
+sudo npm install -g bash-language-server
 echo "Installing dockerfile LSP..."
-npm install -g dockerfile-language-server-nodejs
+sudo npm install -g dockerfile-language-server-nodejs
 
 
 echo "Cleaning up temporary working directory $TMPDIR"
