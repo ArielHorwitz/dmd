@@ -25,13 +25,13 @@ window:
 font:
   size: 10
   normal:
-    family: FiraCode
+    family: FiraCode Nerd Font
   bold:
-    family: FiraCode
+    family: FiraCode Nerd Font
   italic:
-    family: FiraCode
+    family: FiraCode Nerd Font
   bold_italic:
-    family: FiraCode
+    family: FiraCode Nerd Font
 
 
 colors:
