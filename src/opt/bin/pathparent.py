@@ -5,30 +5,26 @@ import argparse
 import sys
 from pathlib import Path
 
-DESCRIPTION = """Get the parent directory of a given path.
-
-If basepath is given and filepath is relative, concatenate the paths.
-
-Use --resolve to resolve symlinks and expand the path as an absolute path.
-
-Use --confirm-exists to ensure the resulting path exists.
-"""
+DESCRIPTION = (
+    "Get the parent directory of a given path. If basepath is given and"
+    " filepath is relative to it, concatenate the paths."
+)
 
 # Parse args
-parser = argparse.ArgumentParser(description="")
+parser = argparse.ArgumentParser(description=DESCRIPTION)
 parser.add_argument("FILEPATH", help="File path")
 parser.add_argument("BASEPATH", nargs="?", help="Absolute base path")
 parser.add_argument(
     "-r",
     "--resolve",
     action="store_true",
-    help="Resolve links and expand absolute",
+    help="resolve links and expand absolute",
 )
 parser.add_argument(
     "-e",
     "--confirm-exists",
     action="store_true",
-    help="Fail if result does not exist",
+    help="fail if result does not exist",
 )
 args = parser.parse_args()
 
