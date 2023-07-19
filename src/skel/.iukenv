@@ -3,3 +3,7 @@ export PATH=/opt/iukbtw/bin:$PATH
 
 export VISUAL=nvim
 export EDITOR=nvim
+
+xset s 7200
+xset -dpms
+

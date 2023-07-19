@@ -43,7 +43,7 @@ if [[ -f $USRPROF ]]; then
     PROFILE_LINE=$(cat $USRPROF | grep -nm 1 "iuk" | cut -d: -f1)
     [[ -n $PROFILE_LINE ]] && sed -i $PROFILE_LINE"d" $USRPROF
 fi
-printf "source .iukenv\n" >> $USRPROF
+printf "[[ -f ~/.iukenv ]] && source ~/.iukenv\n" >> $USRPROF
 # Copy config
 sudo cp --recursive ./config/* $CONFDIR
 # Copy other config
