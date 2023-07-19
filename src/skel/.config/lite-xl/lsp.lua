@@ -42,7 +42,7 @@ lspconfig.sumneko_lua.setup {
 }
 
 -- Rust
-lspconfig.rls.setup()
+lspconfig.rust_analyzer.setup()
 
 -- Bash
 lspconfig.bashls.setup()

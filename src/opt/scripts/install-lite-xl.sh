@@ -41,14 +41,15 @@ cp -f $DATADIR/lite-xl.desktop $DESKTOP_APPS
 cp -f $DATADIR/lite-xl.png $DESKTOP_ICONS
 xdg-desktop-menu forceupdate
 
+set +e
+
 # Plugin Manager (lpm)
+echo "Installing lpm (plugin manager)..."
 URL="https://github.com/lite-xl/lite-xl-plugin-manager/releases/download/latest/lpm.x86_64-linux"
 wget $URL -O $HOME/.local/bin/lpm
 chmod +x $HOME/.local/bin/lpm
 
 # LSP
-set +e
-
 echo "Installing LSP..."
 mkdir -p $HOME/.config/lite-xl/
 cd $HOME/.config/lite-xl/
@@ -60,9 +61,16 @@ wget https://raw.githubusercontent.com/vqns/lite-xl-snippets/main/lsp_snippets.l
 
 echo "Installing Python LSP..."
 python -m pip install --break-system-packages python-lsp-server
-echo "Installing bash LSP..."
+
+echo "Installing Rust LSP..."
+URL="https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz"
+curl -L $URL | gunzip -c - > ~/.local/bin/rust-analyzer
+chmod +x ~/.local/bin/rust-analyzer
+
+echo "Installing Bash LSP..."
 sudo npm install -g bash-language-server
-echo "Installing dockerfile LSP..."
+
+echo "Installing Dockerfile LSP..."
 sudo npm install -g dockerfile-language-server-nodejs
 
 
