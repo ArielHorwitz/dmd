@@ -174,7 +174,7 @@ WINDOW NAVIGATION
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     @klps XX    @kltb XX    @wtgt XX    @wprv @fup  @wnxt @wmfp XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    @wspt XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -186,6 +186,7 @@ WINDOW NAVIGATION
     scrd (cmd-button "screenshotdesktop")
     wtrm (cmd-button "alacritty")
     wrof (cmd-button "rofi -show drun")
+    wspt (cmd-button "i3-msg split vertical && mousewarp")
     wtgt (cmd-button "i3-msg layout toggle tabbed split && mousewarp")
     wtgs (cmd-button "i3-msg layout toggle split && mousewarp")
     fuls (cmd-button "i3-msg fullscreen toggle && mousewarp")
