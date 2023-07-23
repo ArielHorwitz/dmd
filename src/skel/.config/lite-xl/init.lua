@@ -22,7 +22,7 @@ config.tab_close_button = false
 config.ignore_files = {
   -- folders
   "^%.svn/",        "^%.git/",   "^%.hg/",        "^CVS/", "^%.Trash/", "^%.Trash%-.*/",
-  "^node_modules/", "^%.cache/", "^__pycache__/", ".%.egg-info/",
+  "^node_modules/", "^%.cache/", "^__pycache__/", "^target/",
   -- files
   "%.pyc$",         "%.pyo$",       "%.exe$",        "%.dll$",   "%.obj$", "%.o$",
   "%.a$",           "%.lib$",       "%.so$",         "%.dylib$", "%.ncb$", "%.sdf$",
