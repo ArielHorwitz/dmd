@@ -30,10 +30,10 @@ recreatedir $CONFDIR
 # Copy opt
 sudo cp --recursive ./opt/* $OPTDIR
 sudo chmod +x --recursive $BINDIR
-# Remove .sh extension and symlink bin dir
+# Remove extensions and symlink bin dir
 for filename in "$BINDIR"/* ; do
     newname=$(echo $filename | rev | cut -d. -f2- | rev)
-    sudo mv $filename $newname
+    [[ $filename != $newname ]] && sudo mv $filename $newname
     sudo cp -s $newname $USRBINDIR
 done
 # Add iukenv sourcing to profile
