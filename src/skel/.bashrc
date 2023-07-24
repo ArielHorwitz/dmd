@@ -2,37 +2,31 @@
 # ~/.bashrc
 #
 
-alias resource="source ~/.bashrc" # Reread .bashrc
-alias lxl="lite-xl"
-alias less="bat"
-alias lsl="ls -lsh --color"
-alias lsa="ls -lsha --color"
-alias lsr="ls -lshR --color"
-# Python aliases
+# SSH
+alias keygen="ssh-keygen -t ed25519 -C 'ariel.ninja' && cat ~/.ssh/id_ed25519.pub"
+alias sshadd="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/id_ed25519.pub"
+# Git aliases
+alias gitlive="dointerval 2 'git overview'"
+
+# Docker
+alias dkdaemon="sudo systemctl start docker"
+alias dklast="docker ps -la"
+alias dkall="docker images -a && echo && docker ps -a"
+dkbash() {
+    docker container exec -i $(docker ps -lq) /bin/bash
+}
+dkkill() {
+    docker kill $(docker ps -lq)
+}
+
+# Python
 alias pyvenv="python -m venv venv && pyactivate"
 alias pyactivate="source venv/bin/activate"
 alias pipi="pip install --upgrade pip && [[ -f requirements.txt ]] && pip install -r requirements.txt"
 alias py="python main.py"
 alias pytest="python -m unittest discover -v -s tests -t ."
 alias pytestf="python -m unittest discover -v -f -s tests -t ."
-# SSH
-alias keygen="ssh-keygen -t ed25519 -C 'ariel.ninja' && cat ~/.ssh/id_ed25519.pub"
-alias sshadd="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/id_ed25519.pub"
-# Git aliases
-alias gitlive="dointerval 2 'git overview'"
-# Apps
-alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
-# Django
-alias djm="python manage.py"
-alias djrun="djm runserver"
-alias djboot="djm makemigrations && djm migrate && djm createsuperuser --username admin --email admin@ariel.ninja"
-alias djnuke="
-if [ -f "manage.py" ] ; then
-    python manage.py flush --noinput && sleep 1 && rm -rf ./media && djboot ;
-else
-    echo 'Not in correct directory.' ;
-fi
-"
+
 # Rust
 alias crun="cargo run --"
 alias cclippy="cargo clippy --"
@@ -45,13 +39,29 @@ alias cclip="cclip_basic"\
 " -W clippy::verbose_file_reads"
 alias cclip_indexing_slicing="cclippy -W clippy::indexing_slicing"
 alias crunq="cargo run -q --"
-alias ctest="cargo test"
-alias cdoc="cargo doc --all-features --open"
-alias ctestp="cargo test -- --nocapture"
 alias rustbt_on="export RUST_BACKTRACE=1"
 alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
 
+# Django
+alias djm="python manage.py"
+alias djrun="djm runserver"
+alias djboot="djm makemigrations && djm migrate && djm createsuperuser --username admin --email admin@ariel.ninja"
+alias djnuke="
+	if [ -f "manage.py" ] ; then
+		python manage.py flush --noinput && sleep 1 && rm -rf ./media && djboot ;
+	else
+		echo 'Not in correct directory.' ;
+	fi"
+
+# Misc
+alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
+alias resource="source ~/.bashrc" # Reread .bashrc
+alias lxl="lite-xl"
+alias less="bat"
+alias lsl="ls -lsh --color"
+alias lsa="ls -lsha --color"
+alias lsr="ls -lshR --color"
 
 # ---------------------------------------------------------
 
