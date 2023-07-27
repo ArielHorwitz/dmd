@@ -17,7 +17,7 @@ subtitle "Updating System"
 if [[ $1 = "deps" ]]; then
     # Install packages
     subtitle "Installing dependencies"
-    yay -Sq --needed --noconfirm - < ./deps.txt
+    yay -Sq --needed --noconfirm - < ./root/opt/iukbtw/data/dependencies.txt
     # Install Python libraries
     subtitle "Installing Python libraries"
     python -m pip install --no-input --break-system-packages --user arrow httpx
@@ -37,15 +37,17 @@ recreatedir $BINDIR
 recreatedir $USRBINDIR
 recreatedir $CONFDIR
 
-# Copy opt
-sudo cp --verbose --recursive ./opt/* $OPTDIR
+# Copy non-user data
+cd ./root && sudo cp --verbose --recursive ./ / && cd ..
 sudo chmod +x --recursive $BINDIR
-# Remove extensions and symlink bin dir
+
+# Remove binary file extensions and symlink bin dir
 for filename in "$BINDIR"/* ; do
     newname=$(echo $filename | rev | cut -d. -f2- | rev)
     [[ $filename != $newname ]] && sudo mv $filename $newname
     sudo cp --verbose --symbolic-link $newname $USRBINDIR
 done
+
 # Add iukenv sourcing to profile
 USRPROF=$HOME/.profile
 if [[ -f $USRPROF ]]; then
@@ -54,21 +56,17 @@ if [[ -f $USRPROF ]]; then
     [[ -n $PROFILE_LINE ]] && sed -i $PROFILE_LINE"d" $USRPROF
 fi
 printf "[[ -f ~/.iukenv ]] && source ~/.iukenv\n" >> $USRPROF
-# Copy config
-sudo cp --verbose --recursive ./config/* $CONFDIR
-# Copy other config
-sudo cp --verbose --recursive ./etc/* /etc
 
 
 # Configure
 subtitle "Configuring $USER @ $HOME"
 # Add sudoer rules -- check with visudo before copy!
 sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
-if [[ $(visudo -csf ./sudoers | grep "parsed OK") = "" ]] ; then
+if [[ $(visudo -csf ./root/opt/iukbtw/data/sudoers | grep "parsed OK") = "" ]] ; then
     echo "Failed check on sudoer file"
     exit 1
 else
-    sudo cp --verbose --force ./sudoers /etc/sudoers.d/50-iukbtw
+    sudo cp --verbose --force ./root/opt/iukbtw/data/sudoers /etc/sudoers.d/50-iukbtw
 fi
 # Add udev rules for KMonad
 # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
@@ -80,7 +78,7 @@ echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinpu
 
 # Copy dotfiles
 subtitle "Copying user home skeleton"
-cd ./skel && cp --recursive --parents ./ $HOME && cd ..
+cd ./home && cp --verbose --recursive --parents ./ $HOME && cd ..
 
 
 # Completion tasks
