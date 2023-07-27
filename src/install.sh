@@ -2,53 +2,16 @@
 
 set -e
 
-
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." && exit 1
 
+title () { printf "\n█▓▒░ $1 ░▒▓█\n" ; }
+subtitle () { printf "\n░▒▓█ $1\n" ; }
 
-title () { printf "\n░▒▓█ $1 \n" ; }
-subtitle () { printf "\n■► $1\n" ; }
-recreatedir () {
-    [[ -d $1 ]] && sudo rm -rf $1
-    sudo mkdir --parents $1
-}
 
 title "Installing iukbtw"
 
 subtitle "Updating System"
 [[ $(pacman -Q yay) ]] || sudo pacman --noconfirm -Syuq yay
-
-subtitle "Copying binaries"
-OPTDIR=/opt/iukbtw
-BINDIR=/opt/iukbtw/bin
-USRBINDIR=/usr/bin/iukbtw
-CONFDIR=/etc/opt/iukbtw
-recreatedir $BINDIR
-recreatedir $USRBINDIR
-recreatedir $CONFDIR
-
-# Copy opt
-sudo cp --recursive ./opt/* $OPTDIR
-sudo chmod +x --recursive $BINDIR
-# Remove extensions and symlink bin dir
-for filename in "$BINDIR"/* ; do
-    newname=$(echo $filename | rev | cut -d. -f2- | rev)
-    [[ $filename != $newname ]] && sudo mv $filename $newname
-    sudo cp -s $newname $USRBINDIR
-done
-# Add iukenv sourcing to profile
-USRPROF=$HOME/.profile
-if [[ -f $USRPROF ]]; then
-    # Remove export line if exists, for idempotency
-    PROFILE_LINE=$(cat $USRPROF | grep -nm 1 "iuk" | cut -d: -f1)
-    [[ -n $PROFILE_LINE ]] && sed -i $PROFILE_LINE"d" $USRPROF
-fi
-printf "[[ -f ~/.iukenv ]] && source ~/.iukenv\n" >> $USRPROF
-# Copy config
-sudo cp --recursive ./config/* $CONFDIR
-# Copy other config
-sudo cp --recursive ./etc/* /etc
-
 
 # Install dependencies
 if [[ $1 = "deps" ]]; then
@@ -61,6 +24,42 @@ if [[ $1 = "deps" ]]; then
 fi
 
 
+subtitle "Copying binaries"
+recreatedir () {
+    [[ -d $1 ]] && sudo rm --verbose -rf $1
+    sudo mkdir --verbose --parents $1
+}
+OPTDIR=/opt/iukbtw
+BINDIR=/opt/iukbtw/bin
+USRBINDIR=/usr/bin/iukbtw
+CONFDIR=/etc/opt/iukbtw
+recreatedir $BINDIR
+recreatedir $USRBINDIR
+recreatedir $CONFDIR
+
+# Copy opt
+sudo cp --verbose --recursive ./opt/* $OPTDIR
+sudo chmod +x --recursive $BINDIR
+# Remove extensions and symlink bin dir
+for filename in "$BINDIR"/* ; do
+    newname=$(echo $filename | rev | cut -d. -f2- | rev)
+    [[ $filename != $newname ]] && sudo mv $filename $newname
+    sudo cp --verbose --symbolic-link $newname $USRBINDIR
+done
+# Add iukenv sourcing to profile
+USRPROF=$HOME/.profile
+if [[ -f $USRPROF ]]; then
+    # Remove export line if exists, for idempotency
+    PROFILE_LINE=$(cat $USRPROF | grep -nm 1 "iuk" | cut -d: -f1)
+    [[ -n $PROFILE_LINE ]] && sed -i $PROFILE_LINE"d" $USRPROF
+fi
+printf "[[ -f ~/.iukenv ]] && source ~/.iukenv\n" >> $USRPROF
+# Copy config
+sudo cp --verbose --recursive ./config/* $CONFDIR
+# Copy other config
+sudo cp --verbose --recursive ./etc/* /etc
+
+
 # Configure
 subtitle "Configuring $USER @ $HOME"
 # Add sudoer rules -- check with visudo before copy!
@@ -69,7 +68,7 @@ if [[ $(visudo -csf ./sudoers | grep "parsed OK") = "" ]] ; then
     echo "Failed check on sudoer file"
     exit 1
 else
-    sudo cp --force ./sudoers /etc/sudoers.d/50-iukbtw
+    sudo cp --verbose --force ./sudoers /etc/sudoers.d/50-iukbtw
 fi
 # Add udev rules for KMonad
 # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
