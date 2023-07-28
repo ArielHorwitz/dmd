@@ -1,0 +1,12 @@
+[package]
+name = "iuk"
+description = "I Use Kmonad, BTW"
+version = "0.1.0"
+edition = "2021"
+default-run = "iuk"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4.3", features = ["derive"] }
+
