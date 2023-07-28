@@ -52,6 +52,8 @@ bar {
     strip_workspace_name no
 
     colors {
+        focused_background #001a1a
+        background         #001111
         focused_workspace  #000000 #bb00ff #000000
         active_workspace   #333333 #100020 #ffffff
         inactive_workspace #111111 #222222 #888888
