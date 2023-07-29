@@ -4,6 +4,7 @@ i3-lock
 xss-lock
 alacritty
 xdotool
+mons
 dunst
 scrot
 rofi
