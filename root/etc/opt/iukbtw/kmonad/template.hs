@@ -28,7 +28,7 @@ BASE
 i3 MANAGEMENT
 -------------------- |#
 (deflayer i3wm
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  @lock _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wmrb XX    XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss @wmds XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
@@ -356,6 +356,82 @@ ALT TEXT
 (defalias
     engl (cmd-button "setxkbmap us")
     hebr (cmd-button "setxkbmap il")
+)
+
+#| --------------------
+LOCKED
+-------------------- |#
+(deflayer locked
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock        @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lck1 @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                           @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                    @lock        @lock @lock @lock @lock
+  @lock @lock @lock             @lock             @lock @lock @lock @lock              @lock @lock @lock  @lock @lock
+)
+(defalias
+    lock (around (layer-switch locked) (cmd-button "gamma red"))
+    lck1 (layer-switch locked1)
+    lck2 (layer-switch locked2)
+    lck3 (layer-switch locked3)
+    lck4 (layer-switch locked4)
+    lck5 (layer-switch locked5)
+)
+
+#| --------------------
+LOCKED 1
+-------------------- |#
+(deflayer locked1
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock        @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lck2 @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                           @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                    @lock        @lock @lock @lock @lock
+  @lock @lock @lock             @lock             @lock @lock @lock @lock              @lock @lock @lock  @lock @lock
+)
+#| --------------------
+LOCKED 2
+-------------------- |#
+(deflayer locked2
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock        @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lck3 @lock @lock @lock @lock                           @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                    @lock        @lock @lock @lock @lock
+  @lock @lock @lock             @lock             @lock @lock @lock @lock              @lock @lock @lock  @lock @lock
+)
+#| --------------------
+LOCKED 3
+-------------------- |#
+(deflayer locked3
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock        @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                           @lock @lock @lock
+  @lock @lock @lock @lock @lock @lck4 @lock @lock @lock @lock @lock @lock                    @lock        @lock @lock @lock @lock
+  @lock @lock @lock             @lock             @lock @lock @lock @lock              @lock @lock @lock  @lock @lock
+)
+#| --------------------
+LOCKED 4
+-------------------- |#
+(deflayer locked4
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock        @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lck5 @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                           @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                    @lock        @lock @lock @lock @lock
+  @lock @lock @lock             @lock             @lock @lock @lock @lock              @lock @lock @lock  @lock @lock
+)
+#| --------------------
+LOCKED 5
+-------------------- |#
+(deflayer locked5
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock        @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @base @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock  @lock @lock @lock  @lock @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                           @lock @lock @lock
+  @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock @lock                    @lock        @lock @lock @lock @lock
+  @lock @lock @lock             @lock             @lock @lock @lock @lock              @lock @lock @lock  @lock @lock
 )
 
 
