@@ -12,6 +12,12 @@ fi
 mkdir --parents /var/opt/iukbtw
 echo $LAYER | tee /var/opt/iukbtw/layer
 
+# Set display gamma
+case $LAYER in
+    base ) /opt/iukbtw/bin/gamma;;
+    text ) /opt/iukbtw/bin/gamma red;;
+esac
+
 # Set keyboard LEDs
 GPROFILE="/etc/opt/iukbtw/g610profiles/$LAYER"
 echo "Setting g610 profile: $GPROFILE"
