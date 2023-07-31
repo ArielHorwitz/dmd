@@ -2,15 +2,14 @@
 BASE
 --------------------------------------------------------------------------------------------------------------------------- |#
 (deflayer base
-  _     _     _     _     _     _     _     _     _     _     _     _     _            @test XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   @i3wm XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    @wnav @edit XX    @txtm XX    home  up    end   pgup  XX    XX    XX     @rkrl XX    XX     XX    XX    XX    XX
+  _     XX    @wnav @edit XX    @txtm XX    home  up    end   pgup  XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   @text @audi @scrp XX    @mous XX    XX    left  down  right pgdn  XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    test (cmd-button "$HOME/.test")
     base (around (layer-switch base) (cmd-button "sudo /opt/iukbtw/bin/setlayer base"))
     text (around (layer-switch text) (cmd-button "sudo /opt/iukbtw/bin/setlayer text"))
     mous (layer-toggle mouse)
@@ -20,22 +19,21 @@ BASE
     scrp (layer-toggle scratchpad)
     edit (layer-toggle editing)
     audi (layer-toggle audio)
-    rkrl (cmd-button "mpv ~/media/rr.mkv --fullscreen --no-input-default-bindings")
-    kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
 )
 
 #| --------------------
 i3 MANAGEMENT
 -------------------- |#
 (deflayer i3wm
-  @lock _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  @lock _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @wmrb XX    XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
+  _     @kill XX    XX    @wmrb @test XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss @wmds XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
+    kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
     kmdr (cmd-button "pkill -x kmonad ; sleep 0.1 ; kmdrun")
     i3re (cmd-button "i3-msg restart")
     wmlk (cmd-button "loginctl lock-session")
@@ -49,13 +47,14 @@ i3 MANAGEMENT
     brtd (cmd-button "sudo setmonbrightness --decrease")
     tgwt (cmd-button "i3-msg border toggle")
     tgbr (cmd-button "i3-msg bar mode toggle, bar hidden_state hide")
+    test (cmd-button "$HOME/.test")
 )
 
 #| --------------------
 MOUSE
 -------------------- |#
 (deflayer mouse
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   @mou0 XX    XX    XX    XX    XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @mou4 @mou3 @mou2 XX    XX    XX    @msl1 @msd1 @msr1 @msb5 XX    @mstg                           XX    XX    XX
@@ -105,7 +104,7 @@ MOUSE
 )
 
 (deflayer mouse0
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu0 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl0 @msd0 @msr0 _     _     _                               XX    XX    XX
@@ -113,7 +112,7 @@ MOUSE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse1
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu1 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl1 @msd1 @msr1 _     _     _                               XX    XX    XX
@@ -121,7 +120,7 @@ MOUSE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse2
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu2 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl2 @msd2 @msr2 _     _     _                               XX    XX    XX
@@ -129,7 +128,7 @@ MOUSE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse3
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu3 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl3 @msd3 @msr3 _     _     _                               XX    XX    XX
@@ -137,7 +136,7 @@ MOUSE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse4
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     @msu4 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     @msl4 @msd4 @msr4 _     _     _                               XX    XX    XX
@@ -149,7 +148,7 @@ MOUSE
 EDITING
 -------------------- |#
 (deflayer editing
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @undo XX    @redo XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @sela @save XX    XX    XX    XX    bspc  XX    del   XX    XX    XX    _                               XX    XX
@@ -170,7 +169,7 @@ EDITING
 WINDOW NAVIGATION
 -------------------- |#
 (deflayer window_navigation
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     @klps XX    @kltb XX    @wtgt XX    @wprv @fup  @wnxt @wmfp XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
@@ -205,7 +204,7 @@ WINDOW NAVIGATION
 WINDOW MANIPULATION
 -------------------- |#
 (deflayer window_manipulation
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wsrn XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    @wmmw                           XX    XX    XX
@@ -234,7 +233,7 @@ WINDOW MANIPULATION
 SCRATCHPAD
 -------------------- |#
 (deflayer scratchpad
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @sps7 @sps8 @sps9 XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @sps4 @sps5 @sps6 XX    XX    _                               XX    XX    XX
@@ -260,7 +259,7 @@ SCRATCHPAD
 SCRATCHPAD MANIPULATION
 -------------------- |#
 (deflayer scratchpad_alt
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @spm7 @spm8 @spm9 XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @spm4 @spm5 @spm6 XX    XX    _                               XX    XX    XX
@@ -285,7 +284,7 @@ SCRATCHPAD MANIPULATION
 AUDIO
 -------------------- |#
 (deflayer audio
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @aimt @volu @aium @sksp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @prev @vold @next @skhd XX    _                               XX    XX    XX
@@ -311,7 +310,7 @@ AUDIO
 TEXT MACROS
 -------------------- |#
 (deflayer text_macros
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @webs XX    XX    XX    XX    XX    XX    XX    @lorm XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @lmgt XX    XX    XX    @lnkd XX    XX    _                               XX    XX    XX
@@ -331,7 +330,7 @@ TEXT MACROS
 TEXT
 --------------------------------------------------------------------------------------------------------------------------- |#
 (deflayer text
-  _     _     _     _     _     _     _     _     _     _     _     _     _            _     _     @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
   @base _     _     _     _     _     _     _     _     _     _     _     _                               _     _     _
@@ -461,7 +460,7 @@ CONFIG AND SOURCE
   lctl  lmet  lalt              spc               ralt  rmet  cmp   rctl               left  down  rght   kp0   kp.
 )
 (deflayer blocked_all_but_modifiers
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
@@ -469,7 +468,7 @@ CONFIG AND SOURCE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer transparent
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    @kill
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _                               XX    XX    XX
