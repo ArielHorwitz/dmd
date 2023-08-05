@@ -25,7 +25,7 @@ BASE
 i3 MANAGEMENT
 -------------------- |#
 (deflayer i3wm
-  @lock _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  @lock @wmmp @wmms @wmml @wmmd @wmmr _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
   _     @kill XX    XX    @wmrb @test XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss @wmds XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
@@ -43,6 +43,11 @@ i3 MANAGEMENT
     wmhb (cmd-button "systemctl hibernate")
     wmpo (cmd-button "systemctl poweroff")
     wmrb (cmd-button "systemctl reboot")
+    wmmp (cmd-button "mons -o")
+    wmms (cmd-button "mons -s")
+    wmmd (cmd-button "mons -m")
+    wmml (cmd-button "mons -e left")
+    wmmr (cmd-button "mons -e right")
     brtu (cmd-button "sudo setmonbrightness --increase")
     brtd (cmd-button "sudo setmonbrightness --decrease")
     tgwt (cmd-button "i3-msg border toggle")
