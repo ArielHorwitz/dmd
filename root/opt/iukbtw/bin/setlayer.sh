@@ -15,7 +15,7 @@ echo $LAYER | tee /var/opt/iukbtw/layer
 # Set display gamma
 case $LAYER in
     base ) /opt/iukbtw/bin/gamma;;
-    text ) /opt/iukbtw/bin/gamma red;;
+    text ) /opt/iukbtw/bin/gamma blue;;
 esac
 
 # Set keyboard LEDs
