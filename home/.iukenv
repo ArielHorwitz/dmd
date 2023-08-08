@@ -1,8 +1,8 @@
 # Add iukbtw commands to PATH
 export PATH=/opt/iukbtw/bin:$PATH
 
-export VISUAL=nvim
-export EDITOR=nvim
+export VISUAL=lite-xl
+export EDITOR=lite-xl
 
 xset s 7200
 xset -dpms
