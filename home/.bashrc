@@ -30,6 +30,7 @@ alias pytestf="python -m unittest discover -v -f -s tests -t ."
 
 # Rust
 alias crun="cargo run --"
+alias crunb="cargo run --bin"
 alias cclippy="cargo clippy --"
 alias cclip_basic="cclippy"\
 " -W clippy::panic"\
