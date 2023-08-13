@@ -30,20 +30,20 @@ alias pytestf="python -m unittest discover -v -f -s tests -t ."
 
 # Rust
 alias crun="cargo run --"
-alias crunb="cargo run --bin"
-alias cclippy="cargo clippy --"
-alias cclip_basic="cclippy"\
-" -W clippy::panic"\
-" -W clippy::unwrap_used"\
-" -W clippy::unwrap_in_result"
-alias cclip="cclip_basic"\
-" -W clippy::str_to_string"\
-" -W clippy::verbose_file_reads"
-alias cclip_indexing_slicing="cclippy -W clippy::indexing_slicing"
 alias crunq="cargo run -q --"
+alias crunb="cargo run --bin"
+alias cclip="cargo clippy --"
 alias rustbt_on="export RUST_BACKTRACE=1"
 alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
+alias baconm="bacon clippy -- --"\
+" --warn clippy::panic"\
+" --warn clippy::unwrap_used"\
+" --warn clippy::unwrap_in_result"\
+" --warn clippy::str_to_string"\
+" --warn clippy::verbose_file_reads"\
+" --warn clippy::indexing_slicing"\
+""
 
 # Django
 alias djm="python manage.py"
