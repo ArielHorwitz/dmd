@@ -3,7 +3,7 @@ BASE
 --------------------------------------------------------------------------------------------------------------------------- |#
 (deflayer base
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  @i3wm XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @wnav @edit XX    @txtm XX    home  up    end   pgup  XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   @text @audi @scrp XX    @mous XX    XX    left  down  right pgdn  XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
@@ -14,7 +14,7 @@ BASE
     text (around (layer-switch text) (cmd-button "sudo /opt/iukbtw/bin/setlayer text"))
     mous (layer-toggle mouse)
     txtm (layer-toggle text_macros)
-    i3wm (layer-toggle i3wm)
+    sys  (layer-toggle system)
     wnav (layer-toggle window_navigation)
     scrp (layer-toggle scratchpad)
     edit (layer-toggle editing)
@@ -22,18 +22,18 @@ BASE
 )
 
 #| --------------------
-i3 MANAGEMENT
+SYSTEM MANAGEMENT
 -------------------- |#
-(deflayer i3wm
+(deflayer system
   @lock @wmmp @wmms @wmml @wmmd @wmmr _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
-  _     @kill XX    XX    @wmrb @test XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    @wmrb @test XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss @wmds XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     @sysa             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
+    sysa (layer-toggle systemalt)
     kmdr (cmd-button "pkill -x kmonad ; sleep 0.1 ; kmdrun")
     i3re (cmd-button "i3-msg restart")
     wmlk (cmd-button "loginctl lock-session")
@@ -53,6 +53,22 @@ i3 MANAGEMENT
     tgwt (cmd-button "i3-msg border toggle")
     tgbr (cmd-button "i3-msg bar mode toggle, bar hidden_state hide")
     test (cmd-button "$HOME/.test")
+)
+
+(deflayer systemalt
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
+  XX    @kll1 @kll2 @kll3 XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     @kill @panc XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(defalias
+    kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
+    kll1 (cmd-button "killall firefox")
+    kll2 (cmd-button "killall lite-xl")
+    kll3 (cmd-button "killall alacritty")
+    panc (cmd-button "killall firefox lite-xl alacritty")
 )
 
 #| --------------------
