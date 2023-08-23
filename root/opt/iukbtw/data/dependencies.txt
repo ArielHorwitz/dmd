@@ -10,6 +10,5 @@ mons
 dunst
 scrot
 rofi
-g810-led
 bat
 tree
