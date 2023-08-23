@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-DATADIR="$(pathparent $BASH_SOURCE $PWD -re)/data"
+DATADIR="$(pathparent $(pathparent $BASH_SOURCE $PWD -r))/data"
 [[ ! -d $DATADIR ]] && echo "Missing data directory: $DATADIR" >&2 && exit 1
 
 set -e

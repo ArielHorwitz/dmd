@@ -46,7 +46,7 @@ bar {
     position top
     tray_padding 0
     # font pango:DejaVu Sans Mono 10
-    font pango:FiraCode 10
+    font pango:FiraCode Nerd Font 10
     workspace_min_width 100
     strip_workspace_numbers no
     strip_workspace_name no

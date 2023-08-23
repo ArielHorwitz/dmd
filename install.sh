@@ -72,6 +72,7 @@ fi
 # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
 sudo groupadd -f uinput && sudo usermod -aG uinput $USER
 sudo usermod -aG input $USER
+sudo chmod g+rw /dev/uinput
 echo uinput | sudo tee /etc/modules-load.d/uinput.conf 1>/dev/null
 echo 'KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"' | sudo tee /etc/udev/rules.d/90-uinput.rules 1>/dev/null
 

@@ -1,4 +1,6 @@
+libnotify
 python
+python-pip
 i3-wm
 i3-lock
 xss-lock
@@ -10,3 +12,4 @@ scrot
 rofi
 g810-led
 bat
+tree
