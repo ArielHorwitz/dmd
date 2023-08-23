@@ -10,8 +10,8 @@ BASE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    base (around (layer-switch base) (cmd-button "sudo /opt/iukbtw/bin/setlayer base"))
-    text (around (layer-switch text) (cmd-button "sudo /opt/iukbtw/bin/setlayer text"))
+    base (around (layer-switch base) (cmd-button "sudo /usr/bin/iukbtw/setlayer base"))
+    text (around (layer-switch text) (cmd-button "sudo /usr/bin/iukbtw/setlayer text"))
     mous (layer-toggle mouse)
     txtm (layer-toggle text_macros)
     sys  (layer-toggle system)

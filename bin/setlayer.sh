@@ -5,11 +5,11 @@
 [[ -n $1 ]] && LAYER=$1 || LAYER="base"
 
 # Set layer state
-mkdir --parents /var/opt/iukbtw
-echo $LAYER | tee /var/opt/iukbtw/layer
+mkdir --parents /var/iukbtw
+echo $LAYER | tee /var/iukbtw/layer
 
 # Set display gamma
 case $LAYER in
-    base ) /opt/iukbtw/bin/gamma;;
-    text ) /opt/iukbtw/bin/gamma blue;;
+    base ) /usr/bin/iukbtw/gamma;;
+    text ) /usr/bin/iukbtw/gamma blue;;
 esac

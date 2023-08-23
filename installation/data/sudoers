@@ -1,0 +1,2 @@
+# Allow "iukbtw" group to run some iukbtw commands as root without password
+%iukbtw ALL=(root:root) NOPASSWD: /usr/bin/iukbtw/setlayer, /usr/bin/iukbtw/setmonbrightness

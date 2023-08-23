@@ -310,7 +310,7 @@ class Kmd(Component):
         if not kmd_running:
             mode = "warning"
         else:
-            with open("/var/opt/iukbtw/layer", "r") as mode_file:
+            with open("/var/iukbtw/layer", "r") as mode_file:
                 mode = mode_file.read().strip().lower()
         layout = run("setxkbmap -query")
         layout = grep("layout", layout).split(":")[1].strip()

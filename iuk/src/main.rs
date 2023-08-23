@@ -19,7 +19,7 @@ fn main() -> Result<()> {
     if args.list {
         run(Command::new("ls")
             .arg("-1")
-            .arg("/opt/iukbtw/bin/"))?;
+            .arg("/usr/bin/iukbtw/"))?;
     }
     Ok(())
 }
