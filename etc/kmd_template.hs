@@ -10,8 +10,8 @@ BASE
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    base (around (layer-switch base) (cmd-button "sudo /usr/bin/iukbtw/setlayer base"))
-    text (around (layer-switch text) (cmd-button "sudo /usr/bin/iukbtw/setlayer text"))
+    base (around (layer-switch base) (cmd-button "setlayer base"))
+    text (around (layer-switch text) (cmd-button "setlayer text"))
     mous (layer-toggle mouse)
     txtm (layer-toggle text_macros)
     sys  (layer-toggle system)
@@ -34,7 +34,7 @@ SYSTEM MANAGEMENT
 )
 (defalias
     sysa (layer-toggle systemalt)
-    kmdr (cmd-button "pkill -x kmonad ; sleep 0.1 ; kmdrun")
+    kmdr (cmd-button "kmdrun")
     i3re (cmd-button "i3-msg restart")
     wmlk (cmd-button "loginctl lock-session")
     wmds (cmd-button "displaygeometry --file .iukdisplays")

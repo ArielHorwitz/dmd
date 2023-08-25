@@ -4,6 +4,7 @@ python-pip
 i3-wm
 i3-lock
 xss-lock
+polybar
 alacritty
 xdotool
 mons

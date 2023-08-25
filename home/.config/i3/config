@@ -38,25 +38,5 @@ client.background       #111111
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -eft -i '/usr/share/backgrounds/lockscreen.png'
 exec --no-startup-id nm-applet
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
-# BARS
-bar {
-    status_command statusbar
-
-    position top
-    tray_padding 0
-    # font pango:DejaVu Sans Mono 10
-    font pango:FiraCode Nerd Font 10
-    workspace_min_width 100
-    strip_workspace_numbers no
-    strip_workspace_name no
-
-    colors {
-        focused_background #001a1a
-        background         #001111
-        focused_workspace  #000000 #bb00ff #000000
-        active_workspace   #333333 #100020 #ffffff
-        inactive_workspace #111111 #222222 #888888
-        urgent_workspace   #2f343a #900000 #ffffff
-    }
-}

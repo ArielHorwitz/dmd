@@ -24,12 +24,8 @@ subtitle "Updating System"
 
 # Install dependencies
 if [[ $1 = "deps" ]]; then
-    # Install packages
     subtitle "Installing dependencies"
     yay -Sq --needed --noconfirm - < $DATADIR/dependencies.txt
-    # Install Python libraries
-    subtitle "Installing Python libraries"
-    python -m pip install --no-input --break-system-packages --user arrow httpx
 fi
 
 

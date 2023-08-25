@@ -32,7 +32,7 @@ sed -i "s;DEVICE_FILE_PATH;$device;" $kbd_file
 # Kill KMonad
 sleep 0.1
 pkill -x kmonad
-sudo /usr/bin/iukbtw/setlayer base
+setlayer base
 
 # Start KMonad
 notify-send -u critical -t 3000 -i ~/tux.png "Starting KMonad" "$(echo $device | cut -d'/' -f5)"
