@@ -13,3 +13,4 @@ scrot
 rofi
 bat
 tree
+neofetch

@@ -38,5 +38,5 @@ client.background       #111111
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -eft -i '/usr/share/backgrounds/lockscreen.png'
 exec --no-startup-id nm-applet
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.config/launchers/polybar.sh
 

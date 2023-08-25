@@ -6,7 +6,7 @@ BASE
   @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @wnav @edit XX    @txtm XX    home  up    end   pgup  XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   @text @audi @scrp XX    @mous XX    XX    left  down  right pgdn  XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     @lnch XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -17,6 +17,7 @@ BASE
     sys  (layer-toggle system)
     wnav (layer-toggle window_navigation)
     scrp (layer-toggle scratchpad)
+    lnch (layer-toggle launchers)
     edit (layer-toggle editing)
     audi (layer-toggle audio)
 )
@@ -248,6 +249,22 @@ WINDOW MANIPULATION
     wszl (cmd-button "i3-msg resize shrink width 50 px or 5 ppt && mousewarp")
     wszu (cmd-button "i3-msg resize grow height 25 px or 5 ppt && mousewarp")
     wszd (cmd-button "i3-msg resize shrink height 25 px or 5 ppt && mousewarp")
+)
+
+#| --------------------
+LAUNCHERS
+-------------------- |#
+(deflayer launchers
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    @lnlg XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @lntm                           XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(defalias
+    lntm (cmd-button "~/.config/launchers/greetings.sh")
+    lnlg (cmd-button "~/.config/launchers/lazygit.sh")
 )
 
 #| --------------------
