@@ -4,8 +4,7 @@ gui:
   mouseEvents: false
   showFileTree: false
   showBottomLine: false
-  commandLogSize: 3
-  # showIcons: true
+  nerdFontsVersion: '3'
 
   log:
     showGraph: 'always'
@@ -13,5 +12,6 @@ gui:
 
 git:
   autoFetch: false
+  parseEmoji: true
 
-promptToReturnFromSubprocess: false
+disableStartupPopups: true
