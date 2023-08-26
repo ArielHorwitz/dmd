@@ -37,7 +37,7 @@ font:
 colors:
   # Default colors
   primary:
-    background: '0x001600'
+    background: '0x030603'
     foreground: '0xffffff'
 
   # Normal colors
