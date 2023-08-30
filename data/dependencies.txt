@@ -1,6 +1,6 @@
-libnotify
 python
 python-pip
+npm
 i3-wm
 i3-lock
 xss-lock
@@ -8,9 +8,11 @@ polybar
 alacritty
 xdotool
 mons
+libnotify
 dunst
 scrot
 rofi
 bat
 tree
 neofetch
+words

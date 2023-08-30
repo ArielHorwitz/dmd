@@ -11,7 +11,6 @@ config.file_size_limit = 5
 -- Animations
 -- config.transitions = false
 config.animation_rate = 0.5
--- config.disabled_transitions.scroll = true
 
 -- Miscallaneous
 config.fps = 30

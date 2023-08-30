@@ -26,20 +26,7 @@ lspconfig.pylsp.setup {
 }
 
 -- Lua
-lspconfig.sumneko_lua.setup {
-  command = {
-    "/home/wiw/temp/lua-language-server/lua-language-server",
-    "-E",
-    "/home/wiw/temp/lua-language-server/main.lua",
-  },
-  settings = {
-    Lua = {
-      diagnostics = {
-        enable = false
-      }
-    }
-  }
-}
+lspconfig.sumneko_lua.setup()
 
 -- Rust
 lspconfig.rust_analyzer.setup()

@@ -1,9 +1,5 @@
-# Add iukbtw commands to PATH
 export PATH=/usr/bin/iukbtw:$HOME/.local/bin:$PATH
 
 export VISUAL=lite-xl
 export EDITOR=lite-xl
-
-xset s 7200
-xset -dpms
 
