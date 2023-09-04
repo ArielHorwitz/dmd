@@ -21,11 +21,11 @@ if [[ -z $device ]]; then
 fi
 echo "kmd device: $device"
 
-# Create new config file from template
+# Create (combine) new config file
 LOCAL_CONFIG=$HOME/.local/share/kmonad
 mkdir --parents $LOCAL_CONFIG
 kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
-cp -f "/etc/iukbtw/kmd_template.hs" $kbd_file
+cat /etc/iukbtw/kmd/* > $kbd_file
 # Insert device file path into kbd config file
 sed -i "s;DEVICE_FILE_PATH;$device;" $kbd_file
 
