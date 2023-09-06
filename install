@@ -1,4 +1,42 @@
-#!/bin/bash
+#! /bin/bash
+
+USAGE_TEXT="Usage: install [OPTIONS]...
+
+Installation:
+  -u, --update
+      Install and update system and dependencies.
+  -s, --soft-update
+      Install and update dependencies (overwrites -u).
+
+Info:
+  -h, --help
+      Print this help and exit.
+"
+SHORT=u,s,h
+LONG=update,soft-update,help
+OPTS=$(getopt --quiet --name install --options $SHORT --longoptions $LONG -- "$@")
+
+while :
+do
+    [[ -z $1 ]] && break
+    case "$1" in
+        -s | --soft-update ) shift
+            [[ $DO_UPDATE -lt 2 ]] && DO_UPDATE=2
+            ;;
+        -u | --update ) shift
+            [[ $DO_UPDATE -lt 1 ]] && DO_UPDATE=1
+            ;;
+        -h | --help)
+            echo -n "$USAGE_TEXT"
+            exit 2
+            ;;
+        *)
+            echo "Unexpected option: $1"
+            echo -n "$USAGE_TEXT"
+            exit 1
+            ;;
+    esac
+done
 
 set -e
 
@@ -17,13 +55,15 @@ subtitle () { printf "\n░▒▓█ $1\n" ; }
 
 title "Installing iukbtw"
 
-subtitle "Updating System"
-sudo pacman -Syuq --noconfirm
-
-# Install dependencies
-if [[ $1 = "--deps" ]]; then
-    subtitle "Installing dependencies"
-    yay -Sq --needed --noconfirm - < $DATADIR/dependencies.txt
+if [[ $DO_UPDATE -gt 0 ]]; then
+    if [[ $DO_UPDATE -le 1 ]]; then
+        subtitle "Updating System"
+        sudo pacman -Syuq --noconfirm
+    fi
+    if [[ $DO_UPDATE -le 2 ]]; then
+        subtitle "Installing dependencies"
+        yay -Sq --needed --noconfirm - < $DATADIR/dependencies.txt
+    fi
 fi
 
 
