@@ -18,6 +18,8 @@ for_window [all] title_window_icon yes
 # BASIC KEYBINDS
 bindsym Shift+Mod1+space exec --no-startup-id kmdrun
 bindsym Mod4+Return exec --no-startup-id alacritty
+bindsym Mod4+Mod1+Return exec --no-startup-id rofi -show drun
+bindsym Mod4+Mod1+space exec --no-startup-id i3-msg workspace 4, workspace 3, workspace 2, workspace 1
 bindsym Mod4+Mod1+Left exec --no-startup-id i3-msg workspace prev
 bindsym Mod4++Mod1+Right exec --no-startup-id i3-msg workspace next
 bindsym Mod4+Left exec --no-startup-id i3-msg focus left
