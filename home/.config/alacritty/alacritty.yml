@@ -37,7 +37,7 @@ font:
 colors:
   # Default colors
   primary:
-    background: '0x030603'
+    background: '0x111111'
     foreground: '0xffffff'
 
   # Normal colors
@@ -278,8 +278,8 @@ cursor:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-key_bindings:
-  - { key: Q, mods: Shift|Control, action: Quit}
+# key_bindings:
+  #- { key: Q, mods: Shift|Control, action: Quit}
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }

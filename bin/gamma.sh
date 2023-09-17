@@ -2,8 +2,8 @@
 
 N=1
 H=0.9
-M=0.8
-L=0.7
+M=0.75
+L=0.6
 gamma="1"
 case $1 in
     red       ) gamma=$N:$M:$M ;;
