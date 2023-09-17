@@ -74,9 +74,7 @@ echo "Installing Python LSP..."
 python -m pip install -q --break-system-packages python-lsp-server
 
 echo "Installing Rust LSP..."
-URL="https://github.com/rust-lang/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz"
-curl --silent -L $URL | gunzip -c - > ~/.local/bin/rust-analyzer
-chmod +x ~/.local/bin/rust-analyzer
+rustup component add rust-analyzer
 
 echo "Installing Lua LSP..."
 sudo pacman -Sq --needed --noconfirm lua-language-server
