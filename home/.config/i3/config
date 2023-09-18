@@ -37,6 +37,7 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #111111
 
 # AUTOSTART
+exec --no-startup-id xset -dpms s 7200
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --ignore-empty-password --show-failed-attempts --tiling --image '/usr/share/backgrounds/lockscreen.png'
 exec --no-startup-id nm-applet
