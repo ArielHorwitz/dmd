@@ -7,24 +7,33 @@ Installation:
       Install and update system and dependencies.
   -s, --soft-update
       Install and update dependencies (overwrites -u).
+  -v, --verbose
+      Show more verbose output.
 
 Info:
   -h, --help
       Print this help and exit.
 "
-SHORT=u,s,h
-LONG=update,soft-update,help
-OPTS=$(getopt --quiet --name install --options $SHORT --longoptions $LONG -- "$@")
+SHORT=u,s,v,h
+LONG=update,soft-update,verbose,help
+OPTS=$(getopt --name install --options $SHORT --longoptions $LONG -- "$@")
 
+VERBOSE=""
 while :
 do
     [[ -z $1 ]] && break
     case "$1" in
         -s | --soft-update ) shift
             [[ $DO_UPDATE -lt 2 ]] && DO_UPDATE=2
+            continue
             ;;
         -u | --update ) shift
             [[ $DO_UPDATE -lt 1 ]] && DO_UPDATE=1
+            continue
+            ;;
+        -v | --verbose ) shift
+            VERBOSE="--verbose"
+            continue
             ;;
         -h | --help)
             echo -n "$USAGE_TEXT"
@@ -58,29 +67,32 @@ title "Installing iukbtw"
 if [[ $DO_UPDATE -gt 0 ]]; then
     if [[ $DO_UPDATE -le 1 ]]; then
         subtitle "Updating System"
-        sudo pacman -Syuq --noconfirm
+        VVV=`[[ -n $VERBOSE ]] && echo "--verbose" || echo "-q"`
+        sudo pacman -Syu --noconfirm $VVV || sudo pacman -Syuq --noconfirm;
     fi
     if [[ $DO_UPDATE -le 2 ]]; then
         subtitle "Installing dependencies"
-        yay -Sq --needed --noconfirm - < $DATADIR/dependencies.txt
+        VVV=`[[ -n $VERBOSE ]] && echo "--verbose" || echo "-q"`
+        # EEE=`[[ -n $VERBOSE ]] && echo "" || echo "&2>/dev/null"`
+        yay $VERBOSE -S --needed --noconfirm $VVV - < $DATADIR/dependencies.txt
     fi
 fi
 
 
 subtitle "Copying binaries"
 recreatedir () {
-    [[ -d $1 ]] && sudo rm -rf $1
-    sudo mkdir --parents $1
+    [[ -d $1 ]] && sudo rm -rf $VERBOSE $1
+    sudo mkdir --parents $VERBOSE $1
 }
 recreatedir $BINDIR
 recreatedir $CONFDIR
 
 # Copy non-user data
-sudo cp --verbose --recursive $SRCDIR/bin/* $BINDIR
-sudo cp --verbose --recursive $SRCDIR/etc/* $CONFDIR
+sudo cp $VERBOSE --recursive $SRCDIR/bin/* $BINDIR
+sudo cp $VERBOSE --recursive $SRCDIR/etc/* $CONFDIR
 
 # Remove binary file extensions and make executable
-sudo chmod +x --recursive $BINDIR
+sudo chmod $VERBOSE +x --recursive $BINDIR
 for filename in $BINDIR/* ; do
     newname=$(echo $filename | rev | cut -d. -f2- | rev)
     [[ $filename != $newname ]] && sudo mv $filename $newname
@@ -94,18 +106,18 @@ if [[ $(visudo -csf $DATADIR/sudoers | grep "parsed OK") = "" ]] ; then
     echo "Failed check on sudoer file"
     exit 1
 else
-    sudo cp --verbose --force $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
+    sudo cp $VERBOSE --force $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
 fi
 # Add udev rules for KMonad
 # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
 sudo groupadd -f uinput && sudo usermod -aG uinput $USER
 sudo usermod -aG input $USER
-sudo cp --verbose $DATADIR/uinput.conf /etc/modules-load.d/
-sudo cp --verbose $DATADIR/90-uinput.rules /etc/udev/rules.d/
+sudo cp $VERBOSE $DATADIR/uinput.conf /etc/modules-load.d/
+sudo cp $VERBOSE $DATADIR/90-uinput.rules /etc/udev/rules.d/
 
 # Copy dotfiles
 subtitle "Copying user home skeleton"
-cd $SRCDIR/home && cp --verbose --recursive --parents . $HOME && cd $SRCDIR
+cd $SRCDIR/home && cp $VERBOSE --recursive --parents . $HOME && cd $SRCDIR
 
 
 # Completion tasks
@@ -116,3 +128,4 @@ subtitle "Done."
     -z $(groups | grep iukbtw)
 ]] && echo "Please login again for group config to apply."
 [[ -z $(echo $PATH | grep $BINDIR) ]] && echo "Please login again for PATH to apply"
+
