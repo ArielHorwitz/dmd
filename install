@@ -109,8 +109,10 @@ else
     sudo cp $VERBOSE --force $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
 fi
 # Add udev rules for KMonad
+# (https://github.com/kmonad/kmonad/blob/master/doc/faq.md#q-how-do-i-get-uinput-permissions)
 # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
-sudo groupadd -f uinput && sudo usermod -aG uinput $USER
+sudo groupadd -f uinput
+sudo usermod -aG uinput $USER
 sudo usermod -aG input $USER
 sudo cp $VERBOSE $DATADIR/uinput.conf /etc/modules-load.d/
 sudo cp $VERBOSE $DATADIR/90-uinput.rules /etc/udev/rules.d/
