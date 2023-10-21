@@ -25,25 +25,20 @@ do
     case "$1" in
         -s | --soft-update ) shift
             [[ $DO_UPDATE -lt 2 ]] && DO_UPDATE=2
-            continue
-            ;;
+            continue;;
         -u | --update ) shift
             [[ $DO_UPDATE -lt 1 ]] && DO_UPDATE=1
-            continue
-            ;;
+            continue;;
         -v | --verbose ) shift
             VERBOSE="--verbose"
-            continue
-            ;;
+            continue;;
         -h | --help)
             echo -n "$USAGE_TEXT"
-            exit 2
-            ;;
+            exit 2;;
         *)
             echo "Unexpected option: $1"
             echo -n "$USAGE_TEXT"
-            exit 1
-            ;;
+            exit 1;;
     esac
 done
 

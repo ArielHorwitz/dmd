@@ -1,23 +1,13 @@
-use crate::{DBUS_NAME, DBUS_TIMEOUT_SECONDS};
+use commander::{DBUS_NAME, DBUS_TIMEOUT_SECONDS};
 use anyhow::{anyhow, Result};
-use clap::Args;
 use dbus::nonblock;
 use dbus_tokio::connection;
-use std::time::Duration;
-use tokio::runtime::Runtime;
+use std::{env, time::Duration};
 
-/// Send a message to the iuk server
-#[derive(Debug, Args)]
-pub struct Cli {
-    #[arg(value_name = "COMMAND")]
-    command: String,
-}
-
-pub fn resolve(args: Cli) -> Result<()> {
-    Runtime::new().expect("tokio runtime").block_on(run(args))
-}
-
-async fn run(args: Cli) -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
+    let user_input: String = env::args().collect::<Vec<String>>().join(" ");
+    println!("User input: {user_input:?}");
     let (resource, conn) = connection::new_session_sync()?;
     let _handle = tokio::spawn(async {
         let err = resource.await;
@@ -37,7 +27,7 @@ async fn run(args: Cli) -> Result<()> {
         conn.clone(),
     );
     let (response,): (String,) = proxy
-        .method_call(DBUS_NAME, "command", (args.command,))
+        .method_call(DBUS_NAME, "command", (user_input,))
         .await
         .expect("switch layer method call");
     println!("{response}");

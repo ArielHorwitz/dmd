@@ -180,6 +180,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 
 [[package]]
+name = "commander"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "dbus",
+ "dbus-crossroads",
+ "dbus-tokio",
+ "futures",
+ "shellwords",
+ "tokio",
+]
+
+[[package]]
 name = "dbus"
 version = "0.9.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -357,11 +371,11 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "commander",
  "dbus",
  "dbus-crossroads",
  "dbus-tokio",
  "futures",
- "shellwords",
  "tokio",
 ]
 

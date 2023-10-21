@@ -1,19 +1,14 @@
-use crate::{DBUS_NAME, run, Cli as BaseCli};
 use anyhow::{anyhow, Result};
-use clap::{Args, Parser};
+use clap::Args;
+use commander::{DBUS_NAME, run_from_command};
 use dbus::channel::MatchingReceiver;
 use dbus::message::MatchRule;
 use dbus_crossroads::Crossroads;
 use dbus_tokio::connection;
 use futures::future;
-use tokio::runtime::Runtime;
 
 #[derive(Debug, Args)]
 pub struct Cli {}
-
-pub fn resolve(_args: Cli) -> Result<()> {
-    Runtime::new().expect("tokio runtime").block_on(main())
-}
 
 #[derive(Debug, Clone)]
 enum Layer {
@@ -39,6 +34,7 @@ impl Default for State {
     }
 }
 
+#[tokio::main]
 pub async fn main() -> Result<()> {
     let (resource, dbus_conn) = connection::new_session_sync()?;
     let _handle = tokio::spawn(async {
@@ -62,18 +58,7 @@ pub async fn main() -> Result<()> {
             |mut ctx, _cr, (command,): (String,)| {
                 async move {
                     println!("Command received: {command}");
-                    let words = match shellwords::split(command.as_str()) {
-                        Ok(mut words) => {
-                            words.insert(0, "iuk client".to_owned());
-                            words
-                        },
-                        Err(e) => return ctx.reply(Ok((e.to_string(),))),
-                    };
-                    let args = match BaseCli::try_parse_from(words) {
-                        Ok(args) => args,
-                        Err(e) => return ctx.reply(Ok((e.to_string(),))),
-                    };
-                    match run(args) {
+                    match run_from_command(command.as_str()) {
                         Ok(_) => ctx.reply(Ok(("success".to_owned(),))),
                         Err(e) => ctx.reply(Ok((e.to_string(),))),
                     }
@@ -88,6 +73,7 @@ pub async fn main() -> Result<()> {
             |_ctx, _cr, _: ()| {
                 async move {
                     // Reply
+                    #![allow(clippy::panic)]
                     panic!("Server shutdown");
                     #[allow(unreachable_code)]
                     _ctx.reply(Ok(("Shutting down",)))

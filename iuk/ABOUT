@@ -1,8 +1,5 @@
-IUK is a suite of utilities for using Arch Linux without a mouse.
-I use KMonad, btw.
+I use KMonad BTW is a suite of utilities for using Arch Linux without a mouse.
 
 ** WIP **
 
-Below are all the commands available using iuk. While these can be run directly
-iuk is intended to be run as a service (using the server command), while the
-client (using the client command) sends messages.
+Below are all the commands available using iuk. While these can be run directly iuk is intended to be run as a service daemon, and send commands via the messenger.
