@@ -10,10 +10,10 @@ pub struct Cli {
     #[arg(value_name = "PERCENT")]
     volume: Option<f32>,
     /// Increase volume
-    #[arg(short = 'i', long = "increase", value_name = "PERCENT")]
+    #[arg(short, long, value_name = "PERCENT")]
     increase: Option<f32>,
     /// Decrease volume
-    #[arg(short = 'd', long = "decrease", value_name = "PERCENT")]
+    #[arg(short, long, value_name = "PERCENT")]
     decrease: Option<f32>,
     /// Mute volume
     #[arg(short, long)]
@@ -21,6 +21,12 @@ pub struct Cli {
     /// Unmute volume
     #[arg(short, long)]
     unmute: bool,
+    /// Set default device
+    #[arg(long, value_name = "DEVICE")]
+    default: Option<String>,
+    /// Devices
+    #[arg(long)]
+    devices: bool,
 }
 
 pub fn resolve(cli: Cli) -> Result<()> {
@@ -34,6 +40,10 @@ pub fn resolve(cli: Cli) -> Result<()> {
         set_mute(Some(true))?;
     } else if cli.unmute {
         set_mute(Some(false))?;
+    } else if let Some(device) = cli.default {
+        set_default(device)?;
+    } else if cli.devices {
+        print_devices()?;
     } else {
         println!("{}", get_volume()?);
     };
@@ -56,6 +66,12 @@ pub fn get_volume() -> Result<u32> {
     .sum::<u32>()
         / 2;
     Ok(average)
+}
+
+pub fn print_devices() -> Result<()> {
+    let output = run(Command::new("pactl").arg("list").arg("short"))?;
+    println!("{output}");
+    Ok(())
 }
 
 pub fn set_volume(value: f32) -> Result<()> {
@@ -104,5 +120,10 @@ pub fn set_mute(value: Option<bool>) -> Result<()> {
         .arg("set-sink-mute")
         .arg("@DEFAULT_SINK@")
         .arg(format!("{set_as}")))?;
+    Ok(())
+}
+
+pub fn set_default(device: String) -> Result<()> {
+    run(Command::new("pactl").arg("set-default-sink").arg(device.as_str()))?;
     Ok(())
 }
