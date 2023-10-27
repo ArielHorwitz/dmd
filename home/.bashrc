@@ -63,9 +63,12 @@ alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_
 alias resource="source ~/.bashrc" # Reread .bashrc
 alias lxl="lite-xl"
 alias less="bat"
-alias lsl="ls -lsh --group-directories-first --color"
-alias lsa="ls -lsha --group-directories-first --color"
-alias lsr="ls -lshR --group-directories-first --color"
+# alias lsl="ls -lsh --group-directories-first --color"
+# alias lsa="ls -lsha --group-directories-first --color"
+# alias lsr="ls -lshR --group-directories-first --color"
+alias lsl="exa -l --group-directories-first"
+alias lsa="exa -la --group-directories-first"
+alias lsr="exa -lR --group-directories-first --git-ignore"
 alias cpi="cp -i"
 
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
