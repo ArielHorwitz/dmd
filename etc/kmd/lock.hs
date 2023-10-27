@@ -48,7 +48,7 @@
 )
 (defalias
     lock (around (layer-switch locked) (cmd-button "gamma red"))
-    lck1 (layer-switch locked1)
+    lck1 (around (layer-switch locked1) (cmd-button "gamma green"))
     lck2 (layer-switch locked2)
     lck3 (layer-switch locked3)
     lck4 (layer-switch locked4)

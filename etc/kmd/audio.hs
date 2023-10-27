@@ -1,6 +1,3 @@
-#| --------------------
-AUDIO
--------------------- |#
 (deflayer audio
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX

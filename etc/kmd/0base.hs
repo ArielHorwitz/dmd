@@ -3,7 +3,7 @@
   @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @wnav @edit XX    @txtm XX    home  up    end   pgup  XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   @text @audi @scrp XX    @mous XX    XX    left  down  right pgdn  XX    _                               XX    XX    XX
-  _     @lnch XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     @lnch @term XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -17,5 +17,6 @@
     lnch (layer-toggle launchers)
     edit (layer-toggle editing)
     audi (layer-toggle audio)
+    term (layer-toggle terminal)
 )
 
