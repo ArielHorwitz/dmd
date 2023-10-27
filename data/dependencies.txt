@@ -12,7 +12,6 @@ libnotify
 dunst
 scrot
 rofi
-bat
 tree
 neofetch
 words

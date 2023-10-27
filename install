@@ -69,6 +69,7 @@ if [[ $DO_UPDATE -gt 0 ]]; then
         subtitle "Installing dependencies"
         VVV=`[[ -n $VERBOSE ]] && echo "--verbose" || echo "-q"`
         yay $VERBOSE -S --needed --noconfirm $VVV - < $DATADIR/dependencies.txt
+        cargo install $(cat $DATADIR/rust-dependencies.txt)
     fi
 fi
 

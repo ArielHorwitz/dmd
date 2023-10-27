@@ -1,0 +1,6 @@
+exa
+bat
+ripgrep
+fd-find
+du-dust
+
