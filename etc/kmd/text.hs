@@ -11,8 +11,8 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
   @base _     _     _     _     _     _     _     _     _     _     _     _                               _     _     _
-  _     _     _     _     _     _     _     _     _     _     _     _                        _            _     _     _     _
-  _     @txt2 _                 _                 _     _     _     _                  _     _     _      _     _
+  @txt2 _     _     _     _     _     _     _     _     _     _     _                        _            _     _     _     _
+  _     @txt1 _                 _                 _     _     _     _                  _     _     _      _     _
 )
 (deflayer text_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            _     _     _
@@ -21,6 +21,14 @@
   _     _     _     _     _     _     *     4     5     6     +     _     _                               _     _     _
   caps  _     _     _     _     _     0     1     2     3     .     _                        _            _     _     _     _
   _     _     _                 0                 _     _     _     _                  _     _     _      _     _
+)
+(deflayer text_alt2
+  _     _     _     _     _     _     _     _     _     _     _     _     _            _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
+  caps  _     _     _     _     _     _     _     _     _     _     _     _                               _     _     _
+  XX    _     _     _     _     _     _     _     _     _     _     _                        _            _     _     _     _
+  _     _     _                 _                 _     _     _     _                  _     _     _      _     _
 )
 (deflayer text_macros
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
@@ -31,7 +39,8 @@
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    txt2 (layer-toggle text_alt)
+    txt1 (layer-toggle text_alt)
+    txt2 (around lsft (layer-toggle text_alt2))
     engl (cmd-button "setxkbmap us")
     hebr (cmd-button "setxkbmap il")
     copy C-c
