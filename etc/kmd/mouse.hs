@@ -3,8 +3,8 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   @mou0 XX    XX    XX    XX    XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @mou4 @mou3 @mou2 XX    XX    XX    @msl1 @msd1 @msr1 @msb5 XX    @mstg                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @msps @mscn @msrs XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    XX    XX    XX    XX    XX    @msps @mwcn @msrs XX    _                        XX           XX    XX    XX    XX
+  _     _     @mswn             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse0
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
@@ -46,14 +46,24 @@
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
+(deflayer mousewindow
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @mwtl @mwtt @mwtr _     _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @mwll @mwcn @mwrr _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     @mwbl @mwbb @mwbr _     _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
 (defalias
     mou0 (layer-toggle mouse0)
     mou1 (layer-toggle mouse1)
     mou2 (layer-toggle mouse2)
     mou3 (layer-toggle mouse3)
     mou4 (layer-toggle mouse4)
+    mswn (layer-toggle mousewindow)
+
     mstg (cmd-button "touchpadtoggle")
-    mscn (cmd-button "mousecenter")
+    mscn (cmd-button "iukmessenger mouse --window")
     msps (cmd-button "xdotool mousedown 1")
     msrs (cmd-button "xdotool mouseup 1")
     msb1 (cmd-button "xdotool click 1")
@@ -85,5 +95,15 @@
     msd4 (cmd-button "xdotool mousemove_relative 0 270")
     msl4 (cmd-button "xdotool mousemove_relative -- -270 0")
     msr4 (cmd-button "xdotool mousemove_relative 270 0")
+
+    mwtl (cmd-button "iukmessenger mouse --window top left")
+    mwtt (cmd-button "iukmessenger mouse --window top")
+    mwtr (cmd-button "iukmessenger mouse --window top right")
+    mwrr (cmd-button "iukmessenger mouse --window right")
+    mwbr (cmd-button "iukmessenger mouse --window bottom right")
+    mwbb (cmd-button "iukmessenger mouse --window bottom")
+    mwbl (cmd-button "iukmessenger mouse --window bottom left")
+    mwll (cmd-button "iukmessenger mouse --window left")
+    mwcn (cmd-button "iukmessenger mouse --window")
 )
 

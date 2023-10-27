@@ -10,15 +10,15 @@ AUDIO
   _     _     _                 @pp               _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    sksp (cmd-button "pa2pci")
-    skhd (cmd-button "pa2usb")
-    volu (cmd-button "volumeup")
-    vold (cmd-button "volumedown")
-    vol0 (cmd-button "volumezero")
+    sksp (cmd-button "iukmessenger --default alsa_output.pci-0000_00_1f.3.analog-stereo")
+    skhd (cmd-button "iukmessenger --default alsa_output.pci-0000_00_1f.3.analog-stereo")
+    volu (cmd-button "iukmessenger audio --increase 5")
+    vold (cmd-button "iukmessenger audio --decrease 5")
+    vol0 (cmd-button "iukmessenger audio 0")
     aimt (cmd-button "micmute")
     aium (cmd-button "micunmute")
-    aomt (cmd-button "mute")
-    aoum (cmd-button "unmute")
+    aomt (cmd-button "iukmessenger audio --mute")
+    aoum (cmd-button "iukmessenger audio --unmute")
     prev PreviousSong
     next NextSong
     pp   PlayPause
