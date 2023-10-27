@@ -3,7 +3,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   @mou0 XX    XX    XX    XX    XX    XX    @msb1 @msu1 @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @mou4 @mou3 @mou2 XX    XX    XX    @msl1 @msd1 @msr1 @msb5 XX    @mstg                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @msps @mwcn @msrs XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @msps @mwrr @msrs XX    _                        XX           XX    XX    XX    XX
   _     _     @mswn             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse0
