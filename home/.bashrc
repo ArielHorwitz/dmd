@@ -67,6 +67,7 @@ alias lsa="ls -lsha --group-directories-first --color"
 alias lsr="ls -lshR --group-directories-first --color"
 alias cpi="cp -i"
 
+alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
 # shopt
 shopt -s histappend
