@@ -58,6 +58,7 @@ alias djnuke="
 	fi"
 
 # Misc
+alias xo="xdg-open"
 alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
 alias resource="source ~/.bashrc" # Reread .bashrc
 alias lxl="lite-xl"
@@ -135,7 +136,7 @@ if ${use_color} ; then
 	if [[ ${EUID} == 0 ]] ; then
 		PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
 	else
-		PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
+		PS1='\[\e[01;34m\][[[ \[\e[01;35m\]\u@\H\[\e[01;36m\] \w \[\e[01;34m\]]]]\n\[\e[01;32m\]\$\[\e[00m\] '
 	fi
 
 	alias ls='ls --color=auto'
