@@ -68,11 +68,17 @@ if [[ $DO_UPDATE -gt 0 ]]; then
     if [[ $DO_UPDATE -le 2 ]]; then
         subtitle "Installing dependencies"
         VVV=`[[ -n $VERBOSE ]] && echo "--verbose" || echo "-q"`
-        # EEE=`[[ -n $VERBOSE ]] && echo "" || echo "&2>/dev/null"`
         yay $VERBOSE -S --needed --noconfirm $VVV - < $DATADIR/dependencies.txt
     fi
 fi
 
+
+subtitle "Building iuk"
+(
+    cd iuk;
+    cargo build --release;
+    cp --force --remove-destination -t ../bin/ $(find target/release/* -maxdepth 0 -type f -executable);
+)
 
 subtitle "Copying binaries"
 recreatedir () {
@@ -114,7 +120,10 @@ sudo cp $VERBOSE $DATADIR/90-uinput.rules /etc/udev/rules.d/
 
 # Copy dotfiles
 subtitle "Copying user home skeleton"
-cd $SRCDIR/home && cp $VERBOSE --recursive --parents . $HOME && cd $SRCDIR
+(
+    cd $SRCDIR/home;
+    cp $VERBOSE --recursive --parents . $HOME;
+)
 
 
 # Completion tasks
