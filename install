@@ -78,7 +78,7 @@ subtitle "Building iuk"
 (
     cd iuk;
     cargo build --release;
-    cp --force --remove-destination -t ../bin/ $(find target/release/* -maxdepth 0 -type f -executable);
+    cp --force -t ../bin/ $(find target/release/* -maxdepth 0 -type f -executable);
 )
 
 subtitle "Copying binaries"
@@ -90,8 +90,8 @@ recreatedir $BINDIR
 recreatedir $CONFDIR
 
 # Copy non-user data
-sudo cp $VERBOSE --recursive $SRCDIR/bin/* $BINDIR
-sudo cp $VERBOSE --recursive $SRCDIR/etc/* $CONFDIR
+sudo cp $VERBOSE --force --recursive $SRCDIR/bin/* $BINDIR
+sudo cp $VERBOSE --force --recursive $SRCDIR/etc/* $CONFDIR
 
 # Remove binary file extensions and make executable
 sudo chmod $VERBOSE +x --recursive $BINDIR
@@ -116,14 +116,14 @@ fi
 sudo groupadd -f uinput
 sudo usermod -aG uinput $USER
 sudo usermod -aG input $USER
-sudo cp $VERBOSE $DATADIR/uinput.conf /etc/modules-load.d/
-sudo cp $VERBOSE $DATADIR/90-uinput.rules /etc/udev/rules.d/
+sudo cp --force $VERBOSE $DATADIR/uinput.conf /etc/modules-load.d/
+sudo cp --force $VERBOSE $DATADIR/90-uinput.rules /etc/udev/rules.d/
 
 # Copy dotfiles
 subtitle "Copying user home skeleton"
 (
     cd $SRCDIR/home;
-    cp $VERBOSE --recursive --parents . $HOME;
+    cp $VERBOSE --remove-destination --recursive --parents . $HOME;
 )
 
 
