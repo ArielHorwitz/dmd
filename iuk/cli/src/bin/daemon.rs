@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::Args;
-use commander::{DBUS_NAME, run_from_command};
+use commander::{DBUS_NAME, run_from_command, log::log};
 use dbus::channel::MatchingReceiver;
 use dbus::message::MatchRule;
 use dbus_crossroads::Crossroads;
@@ -35,7 +35,10 @@ pub async fn main() -> Result<()> {
             ("errors",),
             |mut ctx, _cr, (command,): (String,)| {
                 async move {
-                    println!("Command received: {command}");
+                    let log_msg = format!("iukdaemon: received command {command:?}");
+                    if let Err(e) = log(log_msg, true, true) {
+                        return ctx.reply(Ok((e.to_string(),)));
+                    };
                     match run_from_command(command.as_str()) {
                         Ok(_) => ctx.reply(Ok(("success".to_owned(),))),
                         Err(e) => ctx.reply(Ok((e.to_string(),))),
@@ -69,7 +72,7 @@ pub async fn main() -> Result<()> {
             true
         }),
     );
-    println!("Running iuk server.");
+    log("Running iuk daemon.", true, true)?;
     future::pending::<()>().await;
     unreachable!()
 }

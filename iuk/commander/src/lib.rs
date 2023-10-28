@@ -2,6 +2,7 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 use std::env;
 mod audio;
+pub mod log;
 mod mouse;
 mod run_external;
 mod scratch;
@@ -20,6 +21,7 @@ pub fn run_from_command(command: &str) -> Result<()> {
 
 fn run_from_parsed(cli: Cli) -> Result<()> {
     match cli.command {
+        Commands::Log(args) => log::resolve(args),
         Commands::Env => print_env(),
         Commands::Audio(args) => audio::resolve(args),
         Commands::Mouse(args) => mouse::resolve(args),
@@ -29,9 +31,7 @@ fn run_from_parsed(cli: Cli) -> Result<()> {
 }
 
 fn print_env() -> Result<()> {
-    for v in env::vars() {
-        println!("{}={:?}", v.0, v.1);
-    }
+    env::vars().into_iter().for_each(|v| println!("{}={:?}", v.0, v.1));
     Ok(())
 }
 
@@ -49,6 +49,7 @@ enum Commands {
     Audio(audio::Cli),
     Mouse(mouse::Cli),
     Scratch(scratch::Cli),
+    Log(log::Args),
     /// Print environment variables
     Env,
 }
