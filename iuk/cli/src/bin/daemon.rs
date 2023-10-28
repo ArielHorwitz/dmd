@@ -10,29 +10,7 @@ use futures::future;
 #[derive(Debug, Args)]
 pub struct Cli {}
 
-#[derive(Debug, Clone)]
-enum Layer {
-    Base,
-    Text,
-}
-
-fn match_layer(text: &str) -> Result<Layer> {
-    match text {
-        "base" => Ok(Layer::Base),
-        "text" => Ok(Layer::Text),
-        _ => Err(anyhow!("Unknown layer {text}")),
-    }
-}
-
-struct State {
-    layer: Layer,
-}
-
-impl Default for State {
-    fn default() -> Self {
-        Self { layer: Layer::Base }
-    }
-}
+struct State;
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
@@ -80,30 +58,9 @@ pub async fn main() -> Result<()> {
                 }
             },
         );
-        // Switch kmonad layer
-        dbus.signal::<(String,), _>("LayerSwitch", ("layer",));
-        dbus.method_with_cr_async(
-            "switchlayer",
-            ("name",),
-            ("success",),
-            |mut ctx, cr, (name,): (String,)| {
-                let state: &mut State = cr.data_mut(ctx.path()).expect("state from cr");
-                state.layer = match_layer(name.as_str()).expect("match layer");
-                let layer_name = format!("{:?}", state.layer);
-                let response = format!("Switched to layer {layer_name}");
-                println!("{response}");
-                async move {
-                    // Emit signal
-                    let signal_msg = ctx.make_signal("LayerSwitch", (layer_name,));
-                    ctx.push_msg(signal_msg);
-                    // Reply
-                    ctx.reply(Ok((response,)))
-                }
-            },
-        );
     });
     // Register interface token
-    cross.insert("/", &[interface_token], State::default());
+    cross.insert("/", &[interface_token], State);
     // Start listening
     dbus_conn.start_receive(
         MatchRule::new_method_call(),
