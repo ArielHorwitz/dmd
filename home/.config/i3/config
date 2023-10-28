@@ -41,5 +41,6 @@ exec --no-startup-id xset -dpms s 7200
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --ignore-empty-password --show-failed-attempts --tiling --image '/usr/share/backgrounds/lockscreen.png'
 exec --no-startup-id nm-applet
+exec --no-startup-id ~/.config/i3/startup.sh
 exec_always --no-startup-id ~/.config/launchers/polybar.sh
 
