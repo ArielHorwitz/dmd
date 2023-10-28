@@ -12,7 +12,7 @@
   _     XX    XX    XX    @wsrn XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    @wmmw                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @wsn  @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     _                 @wsn              _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     wman (layer-toggle window_manipulation)
