@@ -63,7 +63,6 @@
     mswn (layer-toggle mousewindow)
 
     mstg (cmd-button "touchpadtoggle")
-    mscn (cmd-button "iukmessenger mouse --window")
     msps (cmd-button "xdotool mousedown 1")
     msrs (cmd-button "xdotool mouseup 1")
     msb1 (cmd-button "xdotool click 1")

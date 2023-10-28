@@ -16,7 +16,7 @@
 )
 (defalias
     scpa (layer-toggle scratchpad_alt)
-    tgfl (cmd-button "i3-msg floating toggle && iukmessenger mouse --window")
+    tgfl (cmd-button "i3-msg floating toggle")
     sps0 (cmd-button "i3-msg scratchpad show")
     sps1 (cmd-button "iukmessenger scratch -s 1")
     sps2 (cmd-button "iukmessenger scratch -s 2")
