@@ -3,22 +3,15 @@
 # ~/.bashrc
 #
 
-# SSH
-alias keygen="ssh-keygen -t ed25519 -C 'ariel.ninja' && cat ~/.ssh/id_ed25519.pub"
-alias sshadd="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/id_ed25519.pub"
-# Git aliases
-alias gitlive="dointerval 2 'git overview'"
-
-# Docker
-alias dkdaemon="sudo systemctl start docker"
-alias dklast="docker ps -la"
-alias dkall="docker images -a && echo && docker ps -a"
-dkbash() {
-    docker container exec -i $(docker ps -lq) /bin/bash
-}
-dkkill() {
-    docker kill $(docker ps -lq)
-}
+# Aliases
+alias resource="source ~/.bashrc" # Reread .bashrc
+alias xo="xdg-open"
+alias lsl="exa -l --group-directories-first"
+alias lsa="exa -la --group-directories-first"
+alias lsr="exa -lR --group-directories-first --git-ignore"
+alias cpi="cp -i"
+alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
+alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
 # Python
 alias pyvenv="python -m venv venv && pyactivate"
@@ -26,8 +19,6 @@ alias pyactivate="source venv/bin/activate"
 alias pipi="pip install --upgrade pip && [[ -f requirements.txt ]] && pip install -r requirements.txt"
 alias py="python main.py"
 alias pyflint="black --fast .; isort --profile black -l 88 .; flake8 --max-line-length 88 ."
-alias pytest="python -m unittest discover -v -s tests -t ."
-alias pytestf="python -m unittest discover -v -f -s tests -t ."
 
 # Rust
 alias crun="cargo run --"
@@ -46,32 +37,20 @@ alias baconm="bacon clippy -- --"\
 " --warn clippy::indexing_slicing"\
 ""
 
-# Django
-alias djm="python manage.py"
-alias djrun="djm runserver"
-alias djboot="djm makemigrations && djm migrate && djm createsuperuser --username admin --email admin@ariel.ninja"
-alias djnuke="
-	if [ -f "manage.py" ] ; then
-		python manage.py flush --noinput && sleep 1 && rm -rf ./media && djboot ;
-	else
-		echo 'Not in correct directory.' ;
-	fi"
+# SSH
+alias keygen="ssh-keygen -t ed25519 -C 'ariel.ninja' && cat ~/.ssh/id_ed25519.pub"
+alias sshadd="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/id_ed25519.pub"
 
-# Misc
-alias xo="xdg-open"
-alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
-alias resource="source ~/.bashrc" # Reread .bashrc
-alias lxl="lite-xl"
-alias less="bat"
-# alias lsl="ls -lsh --group-directories-first --color"
-# alias lsa="ls -lsha --group-directories-first --color"
-# alias lsr="ls -lshR --group-directories-first --color"
-alias lsl="exa -l --group-directories-first"
-alias lsa="exa -la --group-directories-first"
-alias lsr="exa -lR --group-directories-first --git-ignore"
-alias cpi="cp -i"
-
-alias historylog="HISTTIMEFORMAT='%c ' history | bat"
+# Docker
+alias dkdaemon="sudo systemctl start docker"
+alias dklast="docker ps -la"
+alias dkall="docker images -a && echo && docker ps -a"
+dkbash() {
+    docker container exec -i $(docker ps -lq) /bin/bash
+}
+dkkill() {
+    docker kill $(docker ps -lq)
+}
 
 # shopt
 shopt -s histappend
@@ -139,7 +118,7 @@ if ${use_color} ; then
 	if [[ ${EUID} == 0 ]] ; then
 		PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
 	else
-		PS1='\[\e[01;34m\][[[ \[\e[00;35m\]\u@\H\[\e[01;36m\] \w \[\e[01;34m\]]]]\n\[\e[01;32m\]\$\[\e[00m\] '
+		PS1='\[\e[0;34m\]╌╌╌\[\e[0;35m\] \u@\H\[\e[01;36m\] \w \[\e[0;34m\]╌╌╌\[\e[m\]\n\[\e[1;32m\]\$\[\e[0m\] '
 	fi
 
 	alias ls='ls --color=auto'

@@ -1,4 +1,3 @@
-iuk log -r "Startup script"
+iuk log -r "Startup"
 $HOME/.config/i3/lembay.sh
-iuk log "Startup script complete"
 

@@ -53,11 +53,12 @@ CONFDIR=/etc/iukbtw
 [[ ! -d $SRCDIR ]] && echo "Failed to resolve source directory: $SRCDIR" >&2 && exit 1
 [[ ! -d $DATADIR ]] && echo "Missing data directory: $DATADIR" >&2 && exit 1
 
-title () { printf "\n█▓▒░ $1 ░▒▓█\n" ; }
-subtitle () { printf "\n░▒▓█ $1\n" ; }
+title () { printf "\n\e[33m█▓▒░ $1 ░▒▓█\e[0m\n" ; }
+subtitle () { printf "\n\e[33m░▒▓█\e[37m $1\e[0m\n" ; }
 
 
 title "Installing iukbtw"
+echo "Source directory: $SRCDIR"
 
 if [[ $DO_UPDATE -gt 0 ]]; then
     if [[ $DO_UPDATE -le 1 ]]; then
