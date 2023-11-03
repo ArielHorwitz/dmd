@@ -44,7 +44,7 @@ done
 
 set -e
 
-SRCDIR=$(pathparent -r $BASH_SOURCE $PWD)
+SRCDIR=$PWD/`dirname "$0"`
 DATADIR=$SRCDIR/data
 BINDIR=/usr/bin/iukbtw
 CONFDIR=/etc/iukbtw

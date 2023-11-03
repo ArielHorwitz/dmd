@@ -1,10 +1,9 @@
 #!/usr/bin/bash
 
-DATADIR="$(pathparent $BASH_SOURCE $PWD --resolve)/"
-sudo echo "Root privileges aquired."
-
 set -e
 
+sudo echo "Root privileges aquired."
+DATADIR=$PWD/`dirname "$0"`
 TMPDIR="/tmp/install-lite-xl/"
 echo "Temporary working directory: $TMPDIR"
 rm -rf $TMPDIR
