@@ -7,8 +7,8 @@
   _     _     _                 @pp               _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    sksp (cmd-button "iukmessenger --default alsa_output.pci-0000_00_1f.3.analog-stereo")
-    skhd (cmd-button "iukmessenger --default alsa_output.pci-0000_00_1f.3.analog-stereo")
+    sksp (cmd-button "audio_speakers")
+    skhd (cmd-button "audio_headphones")
     volu (cmd-button "iukmessenger audio --increase 5")
     vold (cmd-button "iukmessenger audio --decrease 5")
     vol0 (cmd-button "iukmessenger audio 0")

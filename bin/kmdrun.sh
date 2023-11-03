@@ -3,7 +3,7 @@
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." >&2 && exit 1
 
 # Find a keyboard device path
-device_file=/etc/iukbtw/devices
+device_file=/etc/iukbtw/devices/input
 all_device_files="$(find /dev/input/by-path/ /dev/input/by-id/)"
 while read my_device; do
     my_device="$(echo $my_device | cut -d'#' -f1 | xargs)"
