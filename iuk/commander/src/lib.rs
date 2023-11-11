@@ -22,10 +22,11 @@ pub fn run_from_command(command: &str) -> Result<()> {
 fn run_from_parsed(cli: Cli) -> Result<()> {
     match cli.command {
         Commands::Log(args) => log::resolve(args),
-        Commands::Env => print_env(),
         Commands::Audio(args) => audio::resolve(args),
         Commands::Mouse(args) => mouse::resolve(args),
         Commands::Scratch(args) => scratch::resolve(args),
+        Commands::External(args) => run_external::resolve(args),
+        Commands::Env => print_env(),
     }?;
     Ok(())
 }
@@ -46,10 +47,11 @@ struct Cli {
 
 #[derive(Debug, Subcommand)]
 enum Commands {
+    Log(log::Args),
     Audio(audio::Cli),
     Mouse(mouse::Cli),
     Scratch(scratch::Cli),
-    Log(log::Args),
+    External(run_external::Args),
     /// Print environment variables
     Env,
 }

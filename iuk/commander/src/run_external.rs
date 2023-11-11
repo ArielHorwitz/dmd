@@ -1,5 +1,6 @@
 use anyhow::{anyhow, Result};
-use std::process::Command;
+use clap::Parser;
+use std::process::{Command, Stdio};
 
 #[derive(Clone, Debug)]
 pub struct CommandOutput {
@@ -42,3 +43,22 @@ pub fn run_nocapture_output(cmd: &mut Command) {
     };
 }
 
+pub fn resolve(args: Args) -> Result<()> {
+    Command::new("bash")
+        .arg("-c")
+        .arg(args.command)
+        .stdin(Stdio::null())
+        .stdout(Stdio::null())
+        .spawn()?;
+    Ok(())
+}
+
+/// Run arbitrary external command
+///
+/// Command is run via a spawned bash process. Standard I/O is blocked.
+#[derive(Debug, Parser)]
+pub struct Args {
+    /// Full command
+    #[arg(value_name = "COMMAND")]
+    command: String,
+}

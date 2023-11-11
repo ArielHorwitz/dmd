@@ -46,21 +46,6 @@ pub async fn main() -> Result<()> {
                 }
             },
         );
-        // Shutdown
-        dbus.method_with_cr_async(
-            "shutdown",
-            (),
-            ("success",),
-            |_ctx, _cr, _: ()| {
-                async move {
-                    // Reply
-                    #![allow(clippy::panic)]
-                    panic!("Server shutdown");
-                    #[allow(unreachable_code)]
-                    _ctx.reply(Ok(("Shutting down",)))
-                }
-            },
-        );
     });
     // Register interface token
     cross.insert("/", &[interface_token], State);
