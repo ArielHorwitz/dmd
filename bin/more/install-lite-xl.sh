@@ -11,8 +11,8 @@ mkdir -p $TMPDIR
 cd $TMPDIR
 
 # Download Lite XL v2.1.1
-echo "Downloading..."
 URL="https://github.com/lite-xl/lite-xl/releases/download/v2.1.1/lite-xl-v2.1.1-addons-linux-x86_64-portable.tar.gz"
+echo "Downloading..."
 echo "  $URL"
 wget -q --output-document "lite-xl.tar.gz" $URL
 
