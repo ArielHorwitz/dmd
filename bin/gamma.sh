@@ -2,7 +2,7 @@
 
 H=1.2
 M=1
-L=0.7
+L=0.5
 gamma="1"
 case $1 in
     red       ) gamma=$H:$M:$M ;;

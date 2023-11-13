@@ -35,8 +35,11 @@ pub async fn main() -> Result<()> {
             ("errors",),
             |mut ctx, _cr, (command,): (String,)| {
                 async move {
-                    let log_msg = format!("iukdaemon: received command {command:?}");
-                    if let Err(e) = log(log_msg, true, true) {
+                    if let Err(e) = log(
+                        format!("iukdaemon: received command {command:?}"),
+                        true,
+                        true,
+                    ) {
                         return ctx.reply(Ok((e.to_string(),)));
                     };
                     match run_from_command(command.as_str()) {

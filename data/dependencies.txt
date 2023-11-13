@@ -1,11 +1,15 @@
+lemurs
 python
 python-pip
 npm
 i3-wm
 i3-lock
 xss-lock
+networkmanager
 polybar
 alacritty
+firefox
+lazygit
 xdotool
 mons
 libnotify
