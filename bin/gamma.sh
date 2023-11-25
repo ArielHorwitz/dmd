@@ -5,6 +5,8 @@ M=1
 L=0.5
 gamma="1"
 case $1 in
+    bright    ) gamma=$H:$H:$H ;;
+    dark      ) gamma=$L:$L:$L ;;
     red       ) gamma=$H:$M:$M ;;
     green     ) gamma=$M:$H:$M ;;
     blue      ) gamma=$M:$M:$H ;;
