@@ -1,9 +1,12 @@
 #!/bin/bash
 
-TEXTCOLOR="cyan"
+setlayer() {
+    polybar-msg action kmd hook $1
+    gamma $2
+}
 
 case $1 in
-    base ) polybar-msg action kmd hook 0 && /usr/bin/iukbtw/gamma;;
-    text ) polybar-msg action kmd hook 1 && /usr/bin/iukbtw/gamma $TEXTCOLOR;;
-    *    ) echo "No such layer" >&2;;
+    base ) iuk log "$(setlayer 0)" ;;
+    text ) iuk log "$(setlayer 1 cyan)" ;;
+    *    ) iuk log "No such layer $1" ;;
 esac

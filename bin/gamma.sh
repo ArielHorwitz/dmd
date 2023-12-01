@@ -3,7 +3,6 @@
 H=1.2
 M=1
 L=0.5
-gamma="1"
 case $1 in
     bright    ) gamma=$H:$H:$H ;;
     dark      ) gamma=$L:$L:$L ;;
@@ -13,6 +12,7 @@ case $1 in
     orange    ) gamma=$H:$M:$L ;;
     cyan      ) gamma=$L:$H:$M ;;
     purple    ) gamma=$M:$L:$H ;;
+    *         ) gamma=1 ;;
 esac
 
 for monitor in $(listmonitors) ; do
