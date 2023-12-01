@@ -9,7 +9,7 @@ use std::{
     path::Path,
 };
 
-const LOGFILE_NAME: &str = "/.iuklog";
+const LOGFILE_NAME: &str = ".iuklog";
 
 fn logfile_path() -> Result<String> {
     Ok(format!("{}/{LOGFILE_NAME}", env::var("HOME")?))
@@ -30,21 +30,29 @@ pub struct Args {
     /// Reset the log file
     #[arg(short, long)]
     reset: bool,
+    /// Print path of log file
+    #[arg(short, long)]
+    file_path: bool,
 }
 
 pub fn resolve(args: Args) -> Result<()> {
+    if args.file_path {
+        println!("{}", logfile_path()?);
+        return Ok(());
+    };
     if args.reset {
         let log_path = logfile_path()?;
         if Path::new(&log_path).exists() {
             remove_file(log_path.clone())?;
             OpenOptions::new().create(true).open(log_path)?;
         };
+        return Ok(());
     };
     if let Some(message) = args.message {
         log(message, !args.no_timestamp, !args.no_print)?;
-    } else if !args.reset {
-        print_logfile()?;
+        return Ok(());
     };
+    print_logfile()?;
     Ok(())
 }
 
