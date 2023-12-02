@@ -1,12 +1,11 @@
 #! /usr/bin/bash
 
+LOG_FILE=$(iuk log --file-path)
+iuk log "restarting polybar, logging to '$LOG_FILE'"
 polybar-msg cmd quit
-
-LOGFILE="/tmp/polybar-main.log"
-
-echo "---" | tee -a /tmp/polybar-main.log
-
-for m in $(polybar --list-monitors | cut -d":" -f1); do
-    MONITOR=$m polybar --reload main 2>&1 | tee -a $LOGFILE &
-done
+sleep 3
+polybar --reload main 2>&1 | tee -a $LOG_FILE & disown
+sleep 1
+SHOW=$([[ -d /mnt/white ]] && echo show || echo hide)
+polybar-msg action "#filesystem2.module_$SHOW"
 
