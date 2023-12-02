@@ -2,10 +2,12 @@
 
 SLEEPTIME=0.5
 
-iuk log -r "Startup"
+iuk log --reset
+iuk log "iuk startup"
 
 # iuk
-alacritty --title "iukdaemon" --command iukdaemon &
+iuk log "starting iuk daemon"
+alacritty --title "iukdaemon" --command iukdaemon & disown
 sleep $SLEEPTIME
 iukmessenger scratch --move 7
 iukmessenger scratch --show 7
@@ -14,8 +16,8 @@ xdotool getactivewindow windowsize --sync 1875 500 &&
 xdotool getactivewindow windowmove --sync 25 25
 iukmessenger scratch --show 7
 
-# kmd
-alacritty --title "kmonad" --command kmdrun &
+iuk log "starting kmonad"
+alacritty --title "kmonad" --command kmdrun & disown
 sleep $SLEEPTIME
 iukmessenger scratch --move 7
 iukmessenger scratch --show 7
@@ -24,8 +26,8 @@ xdotool getactivewindow windowsize --sync 1875 500 &&
 xdotool getactivewindow windowmove --sync 25 550
 iukmessenger scratch --show 7
 
-# lazygit
-alacritty --title "lazygit" --command lazygit &
+iuk log "starting lazygit"
+alacritty --title "lazygit" --command lazygit & disown
 sleep $SLEEPTIME
 iukmessenger scratch --move 8
 iukmessenger scratch --show 8
@@ -35,5 +37,12 @@ windowcenter
 iukmessenger scratch --show 8
 
 
-$HOME/.config/i3/lembay.sh
+iuk log "Lembay layout"
+$HOME/.config/launchers/lembay.sh
+
+iuk log "configuring displays"
+~/.config/launchers/displays.sh
+~/.config/launchers/polybar.sh
+
+iuk log "iuk startup complete"
 

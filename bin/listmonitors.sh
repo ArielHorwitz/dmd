@@ -1,8 +1,8 @@
 #! /bin/bash
 
-output=$(mons | grep "(enabled)")
-printf "$output\n" | while read -r line ; do
+xrandr --listactivemonitors | grep -P "^\s*\d+:\s" | while read -r line ; do
+    [[ -z $line ]] && continue
     details=($line)
-    monitor=${details[1]}
+    monitor=${details[3]}
     echo $monitor
 done

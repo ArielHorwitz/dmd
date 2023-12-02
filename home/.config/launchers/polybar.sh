@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-LOG_FILE=$(iuk log --file-path)
+LOG_FILE=/tmp/polybar.log
 iuk log "restarting polybar, logging to '$LOG_FILE'"
 polybar-msg cmd quit
 sleep 3
