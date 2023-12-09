@@ -6,7 +6,7 @@ setlayer() {
 }
 
 case $1 in
-    base ) iuk log "$(setlayer 0)" ;;
+    base ) iuk log "$(setlayer 0; setxkbmap us)" ;;
     text ) iuk log "$(setlayer 1 cyan)" ;;
     *    ) iuk log "No such layer $1" ;;
 esac
