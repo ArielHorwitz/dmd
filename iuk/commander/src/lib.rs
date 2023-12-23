@@ -32,7 +32,7 @@ fn run_from_parsed(cli: Cli) -> Result<()> {
 }
 
 fn print_env() -> Result<()> {
-    env::vars().into_iter().for_each(|v| println!("{}={:?}", v.0, v.1));
+    env::vars().for_each(|v| println!("{}={:?}", v.0, v.1));
     Ok(())
 }
 

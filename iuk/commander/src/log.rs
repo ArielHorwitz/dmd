@@ -4,8 +4,8 @@ use clap::Parser;
 use std::{
     env,
     fmt::Display,
-    fs::{OpenOptions, remove_file},
-    io::{Write, Read},
+    fs::{OpenOptions, remove_file, read_to_string},
+    io::Write,
     path::Path,
 };
 
@@ -58,9 +58,7 @@ pub fn resolve(args: Args) -> Result<()> {
 
 
 pub fn print_logfile() -> Result<()> {
-    let mut file = std::fs::File::open(logfile_path()?)?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+    let contents = read_to_string(logfile_path()?)?;
     print!("{contents}");
     Ok(())
 }
