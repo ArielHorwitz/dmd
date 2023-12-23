@@ -10,6 +10,8 @@ alias cpi="cp -i"
 alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
+alias watcha="watch "
+
 # Python
 alias pyvenv="python -m venv venv && pyactivate"
 alias pyactivate="source venv/bin/activate"
@@ -31,8 +33,8 @@ alias baconm="bacon clippy -- --"\
 " --warn clippy::unwrap_in_result"\
 " --warn clippy::str_to_string"\
 " --warn clippy::verbose_file_reads"\
-" --warn clippy::indexing_slicing"\
 ""
+#" --warn clippy::indexing_slicing"\
 
 # SSH
 alias keygen="ssh-keygen -t ed25519 -C 'ariel.ninja' && cat ~/.ssh/id_ed25519.pub"

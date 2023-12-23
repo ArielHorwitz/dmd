@@ -23,7 +23,7 @@ window:
 
 
 font:
-  size: 8
+  size: 9.5
   normal:
     family: FiraCode Nerd Font
   bold:
