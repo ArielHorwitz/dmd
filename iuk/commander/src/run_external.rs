@@ -24,7 +24,7 @@ pub fn run_capture_output(cmd: &mut Command) -> Result<CommandOutput> {
 pub fn run(cmd: &mut Command) -> Result<String> {
     let result = run_capture_output(cmd)?;
     match result.stderr {
-        Some(stderr) => Err(anyhow!("{stderr} [command: {cmd:?}]")),
+        Some(stderr) => Err(anyhow!("{stderr}\nFailed command: [{cmd:?}]")),
         None => Ok(result.stdout),
     }
 }
