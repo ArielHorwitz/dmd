@@ -1,14 +1,13 @@
 (deflayer terminal
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    @resu XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    @rere @rebt XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @trmc @trmb XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    rere #(! ! spc)
-    resu #(s u d o spc ! !)
-    rebt #(! ! spc | spc b a t)
+    trmc #(spc - - c o l o r = a l w a y s spc | spc b a t spc)
+    trmb #(spc | spc b a t spc)
 )
 

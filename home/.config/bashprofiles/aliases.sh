@@ -3,9 +3,9 @@
 alias resource="source ~/.bashrc" # Reread .bashrc
 alias c="clear"
 alias xo="xdg-open"
-alias lsl="exa -l --group-directories-first"
-alias lsa="exa -la --group-directories-first"
-alias lsr="exa -lR --group-directories-first --git-ignore"
+alias lsl="exa -l --group-directories-first --color=always"
+alias lsa="exa -la --group-directories-first --color=always"
+alias lsr="exa -laTR --group-directories-first --color=always --git-ignore"
 alias cpi="cp -i"
 alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"

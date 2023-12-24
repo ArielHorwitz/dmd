@@ -1,2 +1,4 @@
-/bin/iuk*
+/bin/iuk
+/bin/iukdaemon
+/bin/iukmsg
 

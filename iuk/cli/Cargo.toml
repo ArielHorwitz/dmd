@@ -10,7 +10,7 @@ name = "iuk"
 path = "src/bin/cli.rs"
 
 [[bin]]
-name = "iukmessenger"
+name = "iukmsg"
 path = "src/bin/messenger.rs"
 
 [[bin]]

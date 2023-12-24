@@ -18,15 +18,15 @@
     aud2 (layer-toggle audio_alt)
     sksp (cmd-button "audio_speakers")
     skhd (cmd-button "audio_headphones")
-    volu (cmd-button "iukmessenger audio --increase 2")
-    vold (cmd-button "iukmessenger audio --decrease 2")
-    volU (cmd-button "iukmessenger audio --increase 10")
-    volD (cmd-button "iukmessenger audio --decrease 10")
-    vol0 (cmd-button "iukmessenger audio 10")
+    volu (cmd-button "iukmsg audio --increase 2")
+    vold (cmd-button "iukmsg audio --decrease 2")
+    volU (cmd-button "iukmsg audio --increase 10")
+    volD (cmd-button "iukmsg audio --decrease 10")
+    vol0 (cmd-button "iukmsg audio 10")
     aimt (cmd-button "micmute")
     aium (cmd-button "micunmute")
-    aomt (cmd-button "iukmessenger audio --mute")
-    aoum (cmd-button "iukmessenger audio --unmute")
+    aomt (cmd-button "iukmsg audio --mute")
+    aoum (cmd-button "iukmsg audio --unmute")
     prev PreviousSong
     next NextSong
     pp   PlayPause

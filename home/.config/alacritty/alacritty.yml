@@ -62,6 +62,7 @@ colors:
     cyan:    '0x00ffff'
     white:   '0xffffff'
 
+draw_bold_text_with_bright_colors: false
 
 cursor:
   style:

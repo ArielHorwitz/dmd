@@ -1,6 +1,5 @@
 #!/bin/bash
 
-tree_args="-aC"
-tree_ignore="-I .git/ -I venv/ -I __pycache__/ -I *.egg-info/ -I target/"
+ignore="*.git"
+exa -laFTR --group-directories-first --git-ignore -I $ignore --color=always $@ | bat
 
-tree $@ $tree_args $tree_ignore | bat

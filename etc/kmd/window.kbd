@@ -21,14 +21,10 @@
     wrnm (cmd-button "settitle")
     scrw (cmd-button "screenshot")
     scrd (cmd-button "screenshotdesktop")
-    wtrm (cmd-button "alacritty")
-    wrof (cmd-button "rofi -show drun")
-    wspt (cmd-button "i3-msg split vertical")
-    wtgt (cmd-button "i3-msg layout toggle tabbed split")
-    wtgs (cmd-button "i3-msg layout toggle split")
-    fuls (cmd-button "i3-msg fullscreen toggle")
-    wnxt (cmd-button "i3-msg workspace next")
-    wprv (cmd-button "i3-msg workspace prev")
+    wtrm (cmd-button "alacritty & disown")
+    wrof (cmd-button "rofi -show drun & disown")
+
+    ;; Focus
     frgt (cmd-button "i3-msg focus right")
     flft (cmd-button "i3-msg focus left")
     fup  (cmd-button "i3-msg focus up")
@@ -36,9 +32,19 @@
     wmfp (cmd-button "i3-msg focus parent")
     wmfc (cmd-button "i3-msg focus child")
     wtmd (cmd-button "i3-msg focus mode_toggle")
+
+    ;; Workspaces
+    wnxt (cmd-button "i3-msg workspace next")
+    wprv (cmd-button "i3-msg workspace prev")
     wsn  (cmd-button "userprompt -p 'Workspace name: ' -e 'i3-msg workspace {{}}'")
     wsml (cmd-button "i3-msg move workspace to output left")
     wsmr (cmd-button "i3-msg move workspace to output right")
+    wspt (cmd-button "i3-msg split vertical")
+    wtgt (cmd-button "i3-msg layout toggle tabbed split")
+    wtgs (cmd-button "i3-msg layout toggle split")
+    fuls (cmd-button "i3-msg fullscreen toggle")
+
+    ;; Window movement
     wmvl (cmd-button "i3-msg move left 5 ppt")
     wmvr (cmd-button "i3-msg move right 5 ppt")
     wmvu (cmd-button "i3-msg move up 5 ppt")
@@ -46,9 +52,11 @@
     wmvc (cmd-button "windowcenter")
     wmmw (cmd-button "userprompt -p 'Move window to workspace: ' -e 'i3-msg move to workspace {{}}'")
     wsrn (cmd-button "userprompt -p 'Rename workspace: ' -e 'i3-msg rename workspace to {{}}'")
+
+    ;; Window size
     wszr (cmd-button "i3-msg resize grow width 25 px")
     wszl (cmd-button "i3-msg resize shrink width 25 px")
-    wszu (cmd-button "i3-msg resize grow height 25 px")
-    wszd (cmd-button "i3-msg resize shrink height 25 px")
+    wszu (cmd-button "i3-msg resize shrink height 25 px")
+    wszd (cmd-button "i3-msg resize grow height 25 px")
 )
 

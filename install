@@ -1,6 +1,9 @@
 #! /bin/bash
 
-USAGE_TEXT="Usage: install [OPTIONS]...
+USAGE_TEXT="
+Installer for iukbtw.
+
+Usage: install [OPTIONS...]
 
 Installation:
   -u, --update
@@ -14,35 +17,33 @@ Info:
   -h, --help
       Print this help and exit.
 "
-SHORT=u,s,v,h
-LONG=update,soft-update,verbose,help
-OPTS=$(getopt --name install --options $SHORT --longoptions $LONG -- "$@")
 
-VERBOSE=""
-while :
+set -e
+
+while [[ $@ ]]
 do
     [[ -z $1 ]] && break
-    case "$1" in
-        -s | --soft-update ) shift
+    arg=$1
+    shift
+    case $arg in
+        -s | --soft-update )
             [[ $DO_UPDATE -lt 2 ]] && DO_UPDATE=2
             continue;;
-        -u | --update ) shift
+        -u | --update )
             [[ $DO_UPDATE -lt 1 ]] && DO_UPDATE=1
             continue;;
-        -v | --verbose ) shift
+        -v | --verbose )
             VERBOSE="--verbose"
             continue;;
         -h | --help)
-            echo -n "$USAGE_TEXT"
+            echo "$USAGE_TEXT"
             exit 2;;
         *)
-            echo "Unexpected option: $1"
-            echo -n "$USAGE_TEXT"
+            echo "Unexpected option: $arg"
+            echo "$USAGE_TEXT"
             exit 1;;
     esac
 done
-
-set -e
 
 SRCDIR=$PWD/`dirname "$0"`
 DATADIR=$SRCDIR/data
@@ -55,6 +56,10 @@ CONFDIR=/etc/iukbtw
 
 title () { printf "\n\e[33m█▓▒░ $1 ░▒▓█\e[0m\n" ; }
 subtitle () { printf "\n\e[33m░▒▓█\e[37m $1\e[0m\n" ; }
+recreatedir () {
+    [[ -d $1 ]] && sudo rm -rf $VERBOSE $1
+    sudo mkdir --parents $VERBOSE $1
+}
 
 
 title "Installing iukbtw"
@@ -84,12 +89,9 @@ subtitle "Building iuk"
 )
 
 subtitle "Copying binaries"
-recreatedir () {
-    [[ -d $1 ]] && sudo rm -rf $VERBOSE $1
-    sudo mkdir --parents $VERBOSE $1
-}
 recreatedir $BINDIR
 recreatedir $CONFDIR
+chmod +x $SRCDIR/bin/*
 
 # Copy non-user data
 sudo cp $VERBOSE --force --recursive $SRCDIR/bin/* $BINDIR
