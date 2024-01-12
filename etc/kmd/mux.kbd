@@ -1,0 +1,44 @@
+(deflayer multiplexer
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mxa1 @mxb1 @mxc1 @mxd1 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mxa2 @mxb2 @mxc2 @mxd2 XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mxa3 @mxb3 @mxc3 @mxd3 _                        XX           XX    XX    XX    XX
+  _     _     @muxa             _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer multiplexer_alt
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mma1 @mmb1 @mmc1 @mmd1 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mma2 @mmb2 @mmc2 @mmd2 XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mma3 @mmb3 @mmc3 @mmd3 _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(defalias
+    muxa (layer-toggle multiplexer_alt)
+    mxa1 (cmd-button "i3-msg workspace a1")
+    mxa2 (cmd-button "i3-msg workspace a2")
+    mxa3 (cmd-button "i3-msg workspace a3")
+    mxb1 (cmd-button "i3-msg workspace b1")
+    mxb2 (cmd-button "i3-msg workspace b2")
+    mxb3 (cmd-button "i3-msg workspace b3")
+    mxc1 (cmd-button "i3-msg workspace c1")
+    mxc2 (cmd-button "i3-msg workspace c2")
+    mxc3 (cmd-button "i3-msg workspace c3")
+    mxd1 (cmd-button "i3-msg workspace d1")
+    mxd2 (cmd-button "i3-msg workspace d2")
+    mxd3 (cmd-button "i3-msg workspace d3")
+    mma1 (cmd-button "i3-msg move to workspace a1")
+    mma2 (cmd-button "i3-msg move to workspace a2")
+    mma3 (cmd-button "i3-msg move to workspace a3")
+    mmb1 (cmd-button "i3-msg move to workspace b1")
+    mmb2 (cmd-button "i3-msg move to workspace b2")
+    mmb3 (cmd-button "i3-msg move to workspace b3")
+    mmc1 (cmd-button "i3-msg move to workspace c1")
+    mmc2 (cmd-button "i3-msg move to workspace c2")
+    mmc3 (cmd-button "i3-msg move to workspace c3")
+    mmd1 (cmd-button "i3-msg move to workspace d1")
+    mmd2 (cmd-button "i3-msg move to workspace d2")
+    mmd3 (cmd-button "i3-msg move to workspace d3")
+)
+
