@@ -1,0 +1,56 @@
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.bright]
+black = "0x7f7f7f"
+blue = "0x6c6cff"
+cyan = "0x00ffff"
+green = "0x00ff00"
+magenta = "0xff00ff"
+red = "0xff0000"
+white = "0xffffff"
+yellow = "0xffff00"
+
+[colors.normal]
+black = "0x000000"
+blue = "0x4040ff"
+cyan = "0x00cdcd"
+green = "0x00cd00"
+magenta = "0xcd00cd"
+red = "0xcd0000"
+white = "0xe5e5e5"
+yellow = "0xcdcd00"
+
+[colors.primary]
+background = "0x111111"
+foreground = "0xffffff"
+
+[cursor]
+blink_interval = 350
+
+[cursor.style]
+blinking = "On"
+shape = "Beam"
+
+[font]
+size = 9.5
+
+[font.bold]
+family = "FiraCode Nerd Font"
+
+[font.bold_italic]
+family = "FiraCode Nerd Font"
+
+[font.italic]
+family = "FiraCode Nerd Font"
+
+[font.normal]
+family = "FiraCode Nerd Font"
+
+[window]
+dynamic_title = true
+startup_mode = "Windowed"
+
+[window.padding]
+x = 2
+y = 2
