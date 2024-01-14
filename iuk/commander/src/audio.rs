@@ -1,11 +1,11 @@
-use anyhow::{anyhow, Result};
-use clap::Args;
 use crate::run_external::run;
+use anyhow::Result;
+use clap::Parser;
 use std::process::Command;
 
 /// Get and set properties of default audio device
-#[derive(Debug, Args)]
-pub struct Cli {
+#[derive(Debug, Parser)]
+pub struct Args {
     /// Set audio volume in percentage
     #[arg(value_name = "PERCENT")]
     volume: Option<f32>,
@@ -29,20 +29,20 @@ pub struct Cli {
     devices: bool,
 }
 
-pub fn resolve(cli: Cli) -> Result<()> {
-    if let Some(volume) = cli.volume {
+pub fn resolve(args: Args) -> Result<()> {
+    if let Some(volume) = args.volume {
         set_volume(volume)?;
-    } else if let Some(increase) = cli.increase {
+    } else if let Some(increase) = args.increase {
         increment_volume(increase)?;
-    } else if let Some(decrease) = cli.decrease {
+    } else if let Some(decrease) = args.decrease {
         increment_volume(-decrease)?;
-    } else if cli.mute {
+    } else if args.mute {
         set_mute(Some(true))?;
-    } else if cli.unmute {
+    } else if args.unmute {
         set_mute(Some(false))?;
-    } else if let Some(device) = cli.default {
+    } else if let Some(device) = args.default {
         set_default(device)?;
-    } else if cli.devices {
+    } else if args.devices {
         print_devices()?;
     } else {
         println!("{}", get_volume()?);
@@ -90,40 +90,22 @@ pub fn increment_volume(value: f32) -> Result<()> {
     Ok(())
 }
 
-pub fn get_mute() -> Result<bool> {
-    let s = run(Command::new("pactl")
-        .arg("get-sink-mute")
-        .arg("@DEFAULT_SINK@"))?;
-    let s = s
-        .split(':')
-        .collect::<Vec<&str>>()
-        .get(1)
-        .ok_or_else(|| anyhow!("parsing error"))?
-        .trim();
-    match s {
-        "no" => Ok(false),
-        "yes" => Ok(true),
-        _ => Err(anyhow!("unknown value")),
-    }
-}
-
 pub fn set_mute(value: Option<bool>) -> Result<()> {
-    let value = match value {
-        Some(v) => v,
-        None => get_mute()?,
-    };
     let set_as = match value {
-        true => 1,
-        false => 0,
+        Some(true) => "1",
+        Some(false) => "0",
+        None => "toggle",
     };
     run(Command::new("pactl")
         .arg("set-sink-mute")
         .arg("@DEFAULT_SINK@")
-        .arg(format!("{set_as}")))?;
+        .arg(set_as))?;
     Ok(())
 }
 
 pub fn set_default(device: String) -> Result<()> {
-    run(Command::new("pactl").arg("set-default-sink").arg(device.as_str()))?;
+    run(Command::new("pactl")
+        .arg("set-default-sink")
+        .arg(device.as_str()))?;
     Ok(())
 }

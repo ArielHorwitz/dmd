@@ -1,6 +1,6 @@
 use anyhow::{anyhow, Result};
 use clap::Args;
-use commander::{DBUS_NAME, run_from_command, log::log};
+use commander::{log::log, run_from_command, DBUS_NAME};
 use dbus::channel::MatchingReceiver;
 use dbus::message::MatchRule;
 use dbus_crossroads::Crossroads;
@@ -19,7 +19,9 @@ pub async fn main() -> Result<()> {
         let err = resource.await;
         anyhow!("Lost connection to D-Bus: {err}")
     });
-    dbus_conn.request_name(DBUS_NAME, false, true, false).await?;
+    dbus_conn
+        .request_name(DBUS_NAME, false, true, false)
+        .await?;
     let mut cross = Crossroads::new();
     cross.set_async_support(Some((
         dbus_conn.clone(),
@@ -33,19 +35,11 @@ pub async fn main() -> Result<()> {
             "command",
             ("command",),
             ("errors",),
-            |mut ctx, _cr, (command,): (String,)| {
-                async move {
-                    if let Err(e) = log(
-                        format!("iukdaemon: received command {command:?}"),
-                        true,
-                        true,
-                    ) {
-                        return ctx.reply(Ok((e.to_string(),)));
-                    };
-                    match run_from_command(command.as_str()) {
-                        Ok(_) => ctx.reply(Ok(("success".to_owned(),))),
-                        Err(e) => ctx.reply(Ok((e.to_string(),))),
-                    }
+            |mut ctx, _cr, (command,): (String,)| async move {
+                println!("iukdaemon: received command {command:?}");
+                match run_from_command(command.as_str()) {
+                    Ok(_) => ctx.reply(Ok(("success".to_owned(),))),
+                    Err(e) => ctx.reply(Ok((e.to_string(),))),
                 }
             },
         );

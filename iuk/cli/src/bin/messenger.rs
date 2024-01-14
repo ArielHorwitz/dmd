@@ -1,5 +1,5 @@
-use commander::{DBUS_NAME, DBUS_TIMEOUT_SECONDS};
 use anyhow::Result;
+use commander::{DBUS_NAME, DBUS_TIMEOUT_SECONDS};
 use dbus::nonblock;
 use dbus_tokio::connection;
 use std::{env, time::Duration};

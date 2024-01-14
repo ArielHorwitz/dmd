@@ -4,7 +4,7 @@ use clap::Parser;
 use std::{
     env,
     fmt::Display,
-    fs::{OpenOptions, remove_file, read_to_string},
+    fs::{read_to_string, remove_file, OpenOptions},
     io::Write,
     path::Path,
 };
@@ -22,10 +22,10 @@ pub struct Args {
     #[arg(value_name = "MESSAGE")]
     message: Option<String>,
     /// Do not print message to stdout
-    #[arg(short='p', long)]
+    #[arg(short = 'p', long)]
     no_print: bool,
     /// Do not prefix timestamp to message
-    #[arg(short='t', long)]
+    #[arg(short = 't', long)]
     no_timestamp: bool,
     /// Reset the log file
     #[arg(short, long)]
@@ -55,7 +55,6 @@ pub fn resolve(args: Args) -> Result<()> {
     print_logfile()?;
     Ok(())
 }
-
 
 pub fn print_logfile() -> Result<()> {
     let contents = read_to_string(logfile_path()?)?;
@@ -87,4 +86,3 @@ where
     };
     Ok(())
 }
-

@@ -4,4 +4,3 @@ use commander::run;
 fn main() -> Result<()> {
     run()
 }
-

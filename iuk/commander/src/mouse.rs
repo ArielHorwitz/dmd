@@ -1,21 +1,16 @@
-use anyhow::{anyhow, Result};
 use crate::run_external::run;
+use anyhow::{anyhow, Result};
+use clap::{Parser, ValueEnum};
 use std::collections::HashMap;
 use std::process::Command;
-use clap::{Args, ValueEnum};
 
 const PARSE_ERROR_MSG: &str = "failed to parse console output";
 
-/// Control mouse
-#[derive(Debug, Args)]
-pub struct Cli {
-    /// Move mouse to window corner
-    #[arg(
-        long,
-        value_name = "EDGE",
-        num_args = 0..=2,
-        value_enum
-    )]
+/// Move mouse to center or edges of the active window.
+#[derive(Debug, Parser)]
+pub struct Args {
+    /// Edges of active window (defaults to center)
+    #[arg(long, value_name = "EDGE", num_args = 0..=2, value_enum)]
     window: Vec<WindowEdge>,
 }
 
@@ -27,16 +22,15 @@ pub enum WindowEdge {
     Right,
 }
 
-pub fn resolve(cli: Cli) -> Result<()> {
+pub fn resolve(args: Args) -> Result<()> {
     move_window_corner(
-        cli.window.contains(&WindowEdge::Top),
-        cli.window.contains(&WindowEdge::Bottom),
-        cli.window.contains(&WindowEdge::Left),
-        cli.window.contains(&WindowEdge::Right),
+        args.window.contains(&WindowEdge::Top),
+        args.window.contains(&WindowEdge::Bottom),
+        args.window.contains(&WindowEdge::Left),
+        args.window.contains(&WindowEdge::Right),
     )?;
     Ok(())
 }
-
 
 #[derive(Debug)]
 struct WindowGeometry {
@@ -46,15 +40,10 @@ struct WindowGeometry {
     h: i32,
 }
 
-/// Move mouse to center/corner/edge of window
+/// Move mouse to center or edges of the active window.
 ///
 /// Top overrides bottom and left overrides right.
-pub fn move_window_corner(
-    top: bool,
-    bottom: bool,
-    left: bool,
-    right: bool,
-) -> Result<()> {
+pub fn move_window_corner(top: bool, bottom: bool, left: bool, right: bool) -> Result<()> {
     let stdout = run(Command::new("xdotool")
         .arg("getactivewindow")
         .arg("getwindowgeometry")

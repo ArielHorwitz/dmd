@@ -1,11 +1,11 @@
-use anyhow::Result;
 use crate::run_external::run;
+use anyhow::{anyhow, Result};
+use clap::{Parser, Subcommand, ValueEnum};
 use std::{path::Path, process::Command};
-use clap::{Args, ValueEnum, Subcommand};
 
 /// Backup and restore a directory to/from a compressed archive.
-#[derive(Debug, Args)]
-pub struct CliArgs {
+#[derive(Debug, Parser)]
+pub struct Args {
     #[command(subcommand)]
     command: Commands,
 }
@@ -14,10 +14,11 @@ pub struct CliArgs {
 enum Commands {
     Backup(BackupArgs),
     Restore(RestoreArgs),
+    Home(HomeArgs),
 }
 
 /// Backup a directory recursively to a compressed archive.
-#[derive(Debug, Args)]
+#[derive(Debug, Parser)]
 pub struct BackupArgs {
     /// Path to the directory to backup
     #[arg()]
@@ -37,7 +38,7 @@ pub struct BackupArgs {
 }
 
 /// Restore a directory recursively from a compressed archive.
-#[derive(Debug, Args)]
+#[derive(Debug, Parser)]
 pub struct RestoreArgs {
     /// Path to the archive file
     #[arg()]
@@ -54,6 +55,27 @@ pub struct RestoreArgs {
     #[arg(short, long)]
     pub verbose: bool,
 }
+/// Backup and restore your home directory.
+#[derive(Debug, Parser)]
+pub struct HomeArgs {
+    #[command(subcommand)]
+    command: HomeCommands,
+    /// Set verbosity
+    #[arg(short, long)]
+    verbose: bool,
+}
+
+#[derive(Debug, Subcommand)]
+enum HomeCommands {
+    /// Backup the home directory
+    Backup,
+    /// Restore the home directory
+    Restore,
+    /// List files in the archive
+    List,
+    /// Print the archive file path
+    Archive,
+}
 
 /// Overwrite behavior
 #[derive(Debug, Clone, ValueEnum)]
@@ -68,10 +90,11 @@ pub enum Overwrite {
     Numbered,
 }
 
-pub fn resolve(args: CliArgs) -> Result<()> {
+pub fn resolve(args: Args) -> Result<()> {
     match args.command {
         Commands::Backup(args) => backup(args),
         Commands::Restore(args) => restore(args),
+        Commands::Home(args) => home(args),
     }
 }
 
@@ -79,8 +102,7 @@ pub fn backup(args: BackupArgs) -> Result<()> {
     let source = Path::new(&args.directory);
     let archive = Path::new(&args.archive);
     let mut cmd = Command::new("tar");
-    cmd
-        .arg("-C")
+    cmd.arg("-C")
         .arg(source.as_os_str())
         .arg("-zcf")
         .arg(archive.as_os_str());
@@ -93,9 +115,7 @@ pub fn backup(args: BackupArgs) -> Result<()> {
             spec_file = Path::new("/etc/iukbtw/home_spec");
         }
         let spec_contents = std::fs::read_to_string(spec_file)?;
-        for path in spec_contents.split('\n').filter(|p| !p.is_empty()) {
-            cmd.arg(path);
-        }
+        cmd.args(spec_contents.split('\n').filter(|p| !p.is_empty()));
     } else {
         cmd.arg(".");
     }
@@ -108,8 +128,7 @@ pub fn restore(args: RestoreArgs) -> Result<()> {
     if let Some(directory) = args.directory {
         let target = Path::new(&directory);
         let mut cmd = Command::new("tar");
-        cmd
-            .arg("-C")
+        cmd.arg("-C")
             .arg(target.as_os_str())
             .arg("-zxf")
             .arg(archive.as_os_str());
@@ -136,3 +155,52 @@ pub fn restore(args: RestoreArgs) -> Result<()> {
     Ok(())
 }
 
+pub fn home(args: HomeArgs) -> Result<()> {
+    let home_env = std::env::var("HOME")?;
+    let home_path = Path::new(&home_env);
+    if !home_path.is_dir() {
+        return Err(anyhow!("invalid home directory: {home_path:?}"));
+    }
+    let home = home_path
+        .to_str()
+        .ok_or_else(|| anyhow!("invalid home directory: {home_path:?}"))?
+        .to_owned();
+    let archive = format!("{home}/.local/share/iukbtw/home.tgz");
+    let mut spec = format!("{home}/.local/share/iukbtw/home_spec");
+    if !Path::new(&spec).is_file() {
+        spec = String::from("/etc/iukbtw/home_spec");
+    }
+    match args.command {
+        HomeCommands::Backup => {
+            let args = BackupArgs {
+                directory: home,
+                archive,
+                spec: Some(spec),
+                verbose: args.verbose,
+            };
+            backup(args)
+        }
+        HomeCommands::Restore => {
+            let args = RestoreArgs {
+                directory: Some(home),
+                archive,
+                overwrite: Some(Overwrite::Force),
+                verbose: args.verbose,
+            };
+            restore(args)
+        }
+        HomeCommands::List => {
+            let args = RestoreArgs {
+                directory: None,
+                archive,
+                overwrite: None,
+                verbose: args.verbose,
+            };
+            restore(args)
+        }
+        HomeCommands::Archive => {
+            println!("{archive}");
+            Ok(())
+        }
+    }
+}

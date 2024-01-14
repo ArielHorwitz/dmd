@@ -44,21 +44,29 @@ pub fn run_nocapture_output(cmd: &mut Command) {
 }
 
 pub fn resolve(args: Args) -> Result<()> {
-    Command::new("bash")
-        .arg("-c")
-        .arg(args.command)
-        .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .spawn()?;
+    let mut cmd = Command::new("bash");
+    cmd.arg("-c").arg(args.command);
+    if args.disable_stdio {
+        cmd.stdin(Stdio::null()).stdout(Stdio::null());
+    }
+    if args.wait {
+        run_nocapture_output(&mut cmd);
+    } else {
+        cmd.spawn()?;
+    };
     Ok(())
 }
 
-/// Run arbitrary external command
-///
-/// Command is run via a spawned bash process. Standard I/O is blocked.
+/// Run arbitrary external command via bash.
 #[derive(Debug, Parser)]
 pub struct Args {
     /// Full command
     #[arg(value_name = "COMMAND")]
     command: String,
+    /// Wait for completion instead of spawning child process
+    #[arg(short, long)]
+    wait: bool,
+    /// Disable standard I/O
+    #[arg(short, long)]
+    disable_stdio: bool,
 }
