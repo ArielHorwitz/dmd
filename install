@@ -6,10 +6,12 @@ Installer for iukbtw.
 Usage: install [OPTIONS...]
 
 Installation:
-  -u, --update
-      Install and update system and dependencies.
-  -s, --soft-update
-      Install and update dependencies (overwrites -u).
+  -d, --update-dependencies
+      Install and update dependencies.
+  -s, --update-system
+      Update system packages.
+  -q, --quiet
+      Show less output.
   -v, --verbose
       Show more verbose output.
 
@@ -26,14 +28,21 @@ do
     arg=$1
     shift
     case $arg in
-        -s | --soft-update )
-            [[ $DO_UPDATE -lt 2 ]] && DO_UPDATE=2
+        -d | --update-dependencies )
+            UPDATE_DEPENDENCIES=1
             continue;;
-        -u | --update )
-            [[ $DO_UPDATE -lt 1 ]] && DO_UPDATE=1
+        -s | --update-system )
+            UPDATE_SYSTEM=1
+            continue;;
+        -q | --quiet )
+            VERB=""
+            VERBQ="--quiet"
+            QUIET="--quiet"
             continue;;
         -v | --verbose )
-            VERBOSE="--verbose"
+            VERB="--verbose"
+            VERBQ="--verbose"
+            QUIET=""
             continue;;
         -h | --help)
             echo "$USAGE_TEXT"
@@ -45,74 +54,95 @@ do
     esac
 done
 
+TMPDIR=/tmp/iukinstall
+TMPBIN=/tmp/iukinstall/bin
 SRCDIR=$PWD/`dirname "$0"`
 DATADIR=$SRCDIR/data
 BINDIR=/usr/bin/iukbtw
 CONFDIR=/etc/iukbtw
 
-[[ $EUID -eq 0 ]] && echo "Do not run $0 as root." && exit 1
-[[ ! -d $SRCDIR ]] && echo "Failed to resolve source directory: $SRCDIR" >&2 && exit 1
-[[ ! -d $DATADIR ]] && echo "Missing data directory: $DATADIR" >&2 && exit 1
-
+exit_with_error () {
+    printf "\e[1;31m$1\e[0m\n" >&2
+    exit 1
+}
 title () { printf "\n\e[33m█▓▒░ $1 ░▒▓█\e[0m\n" ; }
-subtitle () { printf "\n\e[33m░▒▓█\e[37m $1\e[0m\n" ; }
 recreatedir () {
-    [[ -d $1 ]] && sudo rm -rf $VERBOSE $1
-    sudo mkdir --parents $VERBOSE $1
+    [[ -d $1 ]] && sudo rm -rf $1
+    sudo mkdir --parents $1
+}
+showdir () {
+    exa -laFTR --group-directories-first $@
 }
 
+[[ $EUID -eq 0 ]] && exit_with_error "Do not run $0 as root."
+[[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
+[[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
 
 title "Installing iukbtw"
+recreatedir $TMPDIR
+recreatedir $TMPBIN
+sudo chown --recursive $EUID $TMPDIR
+cd $TMPDIR
 echo "Source directory: $SRCDIR"
 
-if [[ $DO_UPDATE -gt 0 ]]; then
-    if [[ $DO_UPDATE -le 1 ]]; then
-        subtitle "Updating System"
-        VVV=`[[ -n $VERBOSE ]] && echo "--verbose" || echo "-q"`
-        sudo pacman -Syu --noconfirm $VVV || sudo pacman -Syuq --noconfirm;
+if [[ $UPDATE_SYSTEM ]]; then
+    title "Updating System"
+    sudo pacman $VERBQ -Syuu --noconfirm
+fi
+
+if [[ $UPDATE_DEPENDENCIES ]]; then
+    title "Installing dependencies"
+    # AUR (paru)
+    if [[ -z $(paru --version 2>/dev/null) ]] then
+        sudo pacman $VERBQ -S --needed --noconfirm base-devel git
+        git clone $VERBQ https://aur.archlinux.org/paru.git $TMPDIR/paru
+        cd $TMPDIR/paru
+        makepkg -si --needed --noconfirm
     fi
-    if [[ $DO_UPDATE -le 2 ]]; then
-        subtitle "Installing dependencies"
-        [[ -z $(yay --version) ]] && echo "Missing yay (AUR helper)" >&2 && exit 1
-        VVV=`[[ -n $VERBOSE ]] && echo "--verbose" || echo "-q"`
-        yay $VERBOSE -S --needed --noconfirm $VVV - < $DATADIR/dependencies.txt
-        cargo install $(cat $DATADIR/rust-dependencies.txt)
-    fi
+    paru $VERBQ -S --needed --noconfirm $(cat $DATADIR/deps-aur.txt)
+    # Cargo install
+    cargo install $(cat $DATADIR/deps-rust.txt)
+    # Web
+    while read dep; do
+        [[ -n $dep ]] || continue
+        name=$(echo $dep | cut -d' ' -f1)
+        url=$(echo $dep | cut -d' ' -f2-)
+        [[ -z $VERB ]] || echo downloading $name from: $url
+        wget $VERBQ --https-only --show-progress --output-document $TMPBIN/$name "$url"
+        chmod +x $TMPBIN/$name
+    done < $DATADIR/deps-web.txt
 fi
 
 
-subtitle "Building iuk"
-(
-    cd iuk;
-    cargo build --release;
-    cp --force -t ../bin/ $(find target/release/* -maxdepth 0 -type f -executable);
-)
+title "Building iuk"
+cargo build $QUIET --manifest-path $SRCDIR/iuk/Cargo.toml --release;
+cp $VERB -ft $TMPBIN $(find $SRCDIR/iuk/target/release -maxdepth 1 -type f -executable);
 
-subtitle "Copying binaries"
-recreatedir $BINDIR
+
+title "Installing data"
 recreatedir $CONFDIR
-chmod +x $SRCDIR/bin/*
+sudo cp -r $SRCDIR/etc/* $CONFDIR
+[[ $QUIET ]] || showdir $CONFDIR
 
-# Copy non-user data
-sudo cp $VERBOSE --force --recursive $SRCDIR/bin/* $BINDIR
-sudo cp $VERBOSE --force --recursive $SRCDIR/etc/* $CONFDIR
+title "Installing binaries"
+cp -r $SRCDIR/bin/* $TMPBIN
+# remove suffixes
+find $TMPBIN -maxdepth 1 -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+recreatedir $BINDIR
+sudo cp -r $TMPBIN/* $BINDIR
+sudo chown --recursive root $BINDIR
+sudo chmod +x --recursive $BINDIR
+[[ $QUIET ]] || showdir $BINDIR
 
-# Remove binary file extensions and make executable
-sudo chmod $VERBOSE +x --recursive $BINDIR
-for filename in $BINDIR/* ; do
-    newname=$(echo $filename | rev | cut -d. -f2- | rev)
-    [[ $filename != $newname ]] && sudo mv $filename $newname
-done
 
-# Configure
-subtitle "Configuring $USER @ $HOME"
+title "Configuring user $USER"
 # Add sudoer rules -- check with visudo before copy!
 sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
 if [[ $(visudo -csf $DATADIR/sudoers | grep "parsed OK") = "" ]] ; then
     echo "Failed check on sudoer file"
     exit 1
 else
-    sudo cp $VERBOSE --force $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
+    sudo cp $VERB -f $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
 fi
 # Add udev rules for KMonad
 # (https://github.com/kmonad/kmonad/blob/master/doc/faq.md#q-how-do-i-get-uinput-permissions)
@@ -120,23 +150,26 @@ fi
 sudo groupadd -f uinput
 sudo usermod -aG uinput $USER
 sudo usermod -aG input $USER
-sudo cp --force $VERBOSE $DATADIR/uinput.conf /etc/modules-load.d/
-sudo cp --force $VERBOSE $DATADIR/90-uinput.rules /etc/udev/rules.d/
+sudo cp -f $VERB $DATADIR/uinput.conf /etc/modules-load.d/
+sudo cp -f $VERB $DATADIR/90-uinput.rules /etc/udev/rules.d/
 
-# Copy dotfiles
-subtitle "Copying user home skeleton"
-(
-    cd $SRCDIR/home;
-    cp $VERBOSE --remove-destination --recursive --parents . $HOME;
-)
+title "Copying user files @ $HOME"
+[[ $QUIET ]] || showdir $SRCDIR/home
+cd $SRCDIR/home
+cp $VERB -rf --parents . $HOME
+cd $TMPDIR
 
 
-# Completion tasks
-subtitle "Done."
+title "Cleaning up"
+[[ ! $VERB ]] || showdir $TMPDIR
+sudo rm -rf $TMPDIR
+
+
+title "Done."
 [[
-    -z $(groups | grep input) ||
-    -z $(groups | grep uinput) ||
-    -z $(groups | grep iukbtw)
-]] && echo "Please login again for group config to apply."
-[[ -z $(echo $PATH | grep $BINDIR) ]] && echo "Please login again for PATH to apply"
+    -n $(groups | grep input) &&
+    -n $(groups | grep uinput) &&
+    -n $(groups | grep iukbtw)
+]] || echo "Please login again for group config to apply."
+[[ -n $(echo $PATH | grep $BINDIR) ]] || echo "Please login again for PATH to apply"
 
