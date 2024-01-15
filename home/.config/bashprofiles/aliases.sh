@@ -51,3 +51,7 @@ dkkill() {
     docker kill $(docker ps -lq)
 }
 
+# Miscallaneous
+view_source() {
+    bat $(which $@)
+}
