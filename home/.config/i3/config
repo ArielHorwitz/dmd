@@ -16,12 +16,9 @@ mouse_warping none  # none | output
 for_window [all] title_window_icon yes
 
 # BASIC KEYBINDS
-bindsym Shift+Mod1+space exec --no-startup-id kmdrun
 bindsym Mod4+Return exec --no-startup-id alacritty
-bindsym Mod4+Mod1+Return exec --no-startup-id rofi -show drun
-bindsym Mod4+Mod1+space exec --no-startup-id i3-msg workspace 4, workspace 3, workspace 2, workspace 1
 bindsym Mod4+Mod1+Left exec --no-startup-id i3-msg workspace prev
-bindsym Mod4++Mod1+Right exec --no-startup-id i3-msg workspace next
+bindsym Mod4+Mod1+Right exec --no-startup-id i3-msg workspace next
 bindsym Mod4+Left exec --no-startup-id i3-msg focus left
 bindsym Mod4+Right exec --no-startup-id i3-msg focus right
 bindsym Mod4+Up exec --no-startup-id i3-msg focus up
@@ -37,6 +34,5 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #111111
 
 # AUTOSTART
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork --ignore-empty-password --show-failed-attempts --tiling --image "/usr/share/backgrounds/lockscreen.png"
-exec --no-startup-id ~/.config/launchers/startup.sh
+exec --no-startup-id ~/.config/startup.sh
 
