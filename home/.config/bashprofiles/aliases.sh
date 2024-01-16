@@ -1,5 +1,6 @@
 #! /usr/bin/bash
 
+alias startup="~/.config/startup.sh"
 alias resource="source ~/.bashrc" # Reread .bashrc
 alias c="clear"
 alias xo="xdg-open"
@@ -54,4 +55,12 @@ dkkill() {
 # Miscallaneous
 view_source() {
     bat $(which $@)
+}
+
+set_wallpaper() {
+    sudo cp -f $1 /usr/share/backgrounds/desktop.png
+    feh --bg-fill --no-xinerama '/usr/share/backgrounds/desktop.png'
+}
+batl() {
+    bat -l log $@
 }

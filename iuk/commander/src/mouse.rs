@@ -6,12 +6,15 @@ use std::process::Command;
 
 const PARSE_ERROR_MSG: &str = "failed to parse console output";
 
-/// Move mouse to center or edges of the active window.
+/// Control the mouse
 #[derive(Debug, Parser)]
 pub struct Args {
-    /// Edges of active window (defaults to center)
+    /// Move mouse to center or edges of the active window (defaults to center)
     #[arg(long, value_name = "EDGE", num_args = 0..=2, value_enum)]
-    window: Vec<WindowEdge>,
+    window: Option<Vec<WindowEdge>>,
+    /// Click a button
+    #[arg(long)]
+    click: Option<u8>,
 }
 
 #[derive(ValueEnum, Copy, Clone, Debug, PartialEq, Eq)]
@@ -23,12 +26,17 @@ pub enum WindowEdge {
 }
 
 pub fn resolve(args: Args) -> Result<()> {
-    move_window_corner(
-        args.window.contains(&WindowEdge::Top),
-        args.window.contains(&WindowEdge::Bottom),
-        args.window.contains(&WindowEdge::Left),
-        args.window.contains(&WindowEdge::Right),
-    )?;
+    if let Some(edges) = args.window {
+        move_window_corner(
+            edges.contains(&WindowEdge::Top),
+            edges.contains(&WindowEdge::Bottom),
+            edges.contains(&WindowEdge::Left),
+            edges.contains(&WindowEdge::Right),
+        )?;
+    }
+    if let Some(click) = args.click {
+        click_button(click)?;
+    }
     Ok(())
 }
 
@@ -40,10 +48,19 @@ struct WindowGeometry {
     h: i32,
 }
 
+
+/// Click a mouse button.
+fn click_button(button: u8) -> Result<()> {
+    run(Command::new("xdotool")
+        .arg("click")
+        .arg(format!("{button}")))?;
+    Ok(())
+}
+
 /// Move mouse to center or edges of the active window.
 ///
 /// Top overrides bottom and left overrides right.
-pub fn move_window_corner(top: bool, bottom: bool, left: bool, right: bool) -> Result<()> {
+fn move_window_corner(top: bool, bottom: bool, left: bool, right: bool) -> Result<()> {
     let stdout = run(Command::new("xdotool")
         .arg("getactivewindow")
         .arg("getwindowgeometry")

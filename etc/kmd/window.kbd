@@ -1,7 +1,7 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     @klps XX    @kltb XX    @wtgt XX    @wprv @fup  @wnxt @wmfp XX    XX    @wrnm  XX    XX    XX     XX    XX    XX    XX
+  _     @klps XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr @wmfp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    @wspt XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
@@ -9,20 +9,23 @@
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @wsrn XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @wtmd XX    XX    @wmvl @wmvd @wmvr @wszd XX    @wmmw                           XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 @wsn              _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     wman (layer-toggle window_manipulation)
-    klps (cmd-button "i3-msg kill")
-    kltb C-w
-    wrnm (cmd-button "settitle")
     scrw (cmd-button "screenshot")
     scrd (cmd-button "screenshotdesktop")
+
+    ;; Launch and close
     wtrm (cmd-button "alacritty & disown")
     wrof (cmd-button "rofi -show drun & disown")
+    klps (cmd-button "i3-msg kill")
+    kltb C-w
+    tabr C-tab
+    tabl C-S-tab
 
     ;; Focus
     frgt (cmd-button "i3-msg focus right")
@@ -34,9 +37,7 @@
     wtmd (cmd-button "i3-msg focus mode_toggle")
 
     ;; Workspaces
-    wnxt (cmd-button "i3-msg workspace next")
-    wprv (cmd-button "i3-msg workspace prev")
-    wsn  (cmd-button "userprompt -p 'Workspace name: ' -e 'i3-msg workspace {{}}'")
+    wflt (cmd-button "i3-msg floating toggle")
     wsml (cmd-button "i3-msg move workspace to output left")
     wsmr (cmd-button "i3-msg move workspace to output right")
     wspt (cmd-button "i3-msg split vertical")
@@ -50,8 +51,7 @@
     wmvu (cmd-button "i3-msg move up 5 ppt")
     wmvd (cmd-button "i3-msg move down 5 ppt")
     wmvc (cmd-button "windowcenter")
-    wmmw (cmd-button "userprompt -p 'Move window to workspace: ' -e 'i3-msg move to workspace {{}}'")
-    wsrn (cmd-button "userprompt -p 'Rename workspace: ' -e 'i3-msg rename workspace to {{}}'")
+    wmmw (cmd-button "i3-msg border toggle 2")
 
     ;; Window size
     wszr (cmd-button "i3-msg resize grow width 25 px")

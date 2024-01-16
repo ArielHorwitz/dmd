@@ -27,7 +27,14 @@ mkdir --parents $LOCAL_CONFIG
 kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
 cat /etc/iukbtw/kmd/* > $kbd_file
 # Insert device file path into kbd config file
-sed -i "s;DEVICE_FILE_PATH;$device;" $kbd_file
+
+sedcmd=("\
+s|DEVICE_FILE_PATH|$device|;\
+s|<KMD_MONITOR_LEFT>|HDMI-1|;\
+s|<KMD_MONITOR_CENTER>|HDMI-1|;\
+s|<KMD_MONITOR_RIGHT>|DP-2|;\
+")
+sed -i "${sedcmd[@]}" $kbd_file
 
 # Kill KMonad
 sleep 0.1
