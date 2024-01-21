@@ -1,12 +1,11 @@
 #!/bin/bash
 
-setlayer() {
+polyhook() {
     polybar-msg action kmd hook $1
-    gamma $2
 }
 
 case $1 in
-    base ) setlayer 0; setxkbmap us ;;
-    text ) setlayer 1 cyan ;;
+    base ) polyhook 0; setxkbmap us; gamma ;;
+    text ) polyhook 1; setxkbmap $2; gamma cyan ;;
     *    ) echo "No such layer $1" ;;
 esac

@@ -1,14 +1,18 @@
 (deflayer base
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    @wnav @edit XX    @txtm @scrU home  up    end   pgup  XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     esc   @wnav @edit XX    @txtm @scrU home  up    end   pgup  XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   @text @audi @muxr XX    @mous @mswn @scrD left  down  right pgdn  XX    _                               XX    XX    XX
-  _     _     @term XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     base (around (layer-switch base) (cmd-button "setlayer base"))
-    text (around (layer-switch text) (cmd-button "setlayer text"))
+    text (multi-tap
+        250 (around (layer-switch text) (cmd-button "setlayer text us"))
+        250 (around (layer-switch text) (cmd-button "setlayer text il"))
+        (layer-toggle normal_keyboard)
+    )
     sys  (layer-toggle system)
     wnav (layer-toggle window_navigation)
     muxr (layer-toggle multiplexer)
@@ -17,4 +21,7 @@
     audi (layer-toggle audio)
     term (layer-toggle terminal)
     txtm (layer-toggle text_macros)
+    ctlt (around lctl (layer-toggle normal_keyboard))
+    altt (around lalt (layer-toggle normal_keyboard))
 )
+
