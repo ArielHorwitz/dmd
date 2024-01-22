@@ -3,6 +3,8 @@
 local keymap = require "core.keymap"
 local add = keymap.add
 
+add({ ["ctrl+shift+r"] = "core:restart" }, true)
+add({ ["ctrl+shift+e"] = "lsp:restart-servers" }, true)
 
 -- Navigation
 add({ ["alt+down"] = "root:switch-to-down" }, true)

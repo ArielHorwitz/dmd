@@ -17,5 +17,4 @@ config.plugins.lsp.mouse_hover_delay = 750
 config.plugins.lsp.more_yielding = true
 config.plugins.nerdicons.draw_tab_icons = true
 config.plugins.nerdicons.draw_treeview_icons = true
-config.plugins.treeview.visible = false
 

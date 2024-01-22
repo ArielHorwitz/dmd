@@ -5,6 +5,12 @@
 local lspconfig = require "plugins.lsp.config"
 
 
+-- Bash
+lspconfig.bashls.setup()
+
+-- Rust
+lspconfig.rust_analyzer.setup()
+
 -- Python
 lspconfig.pylsp.setup {
   settings = {
@@ -27,12 +33,6 @@ lspconfig.pylsp.setup {
 
 -- Lua
 lspconfig.sumneko_lua.setup()
-
--- Rust
-lspconfig.rust_analyzer.setup()
-
--- Bash
-lspconfig.bashls.setup()
 
 -- Dockerfile
 lspconfig.dockerls.setup()
