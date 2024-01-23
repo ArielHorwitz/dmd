@@ -61,6 +61,11 @@ set_wallpaper() {
     sudo cp -f $1 /usr/share/backgrounds/desktop.png
     feh --bg-fill --no-xinerama '/usr/share/backgrounds/desktop.png'
 }
+
+set_lockscreen() {
+    sudo cp -f $1 /usr/share/backgrounds/lockscreen.png
+}
+
 batl() {
     bat -l log $@
 }
