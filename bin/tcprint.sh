@@ -10,6 +10,8 @@ USAGE: tcprint OPTIONS]TEXT
 tcprint error]Error encountered!
 tcprint debug]Processing entries...
 tcprint black red bu]Black on red, bold and underline text.
+tcprint Normal text.
+tcprint ]Normal text with [brackets].
 "
     exit 1
 fi
