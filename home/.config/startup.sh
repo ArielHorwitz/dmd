@@ -20,9 +20,15 @@ xset -dpms s 7200
 xsetroot -solid "#000000"
 
 log "configuring locksreen"
-xss-lock --transfer-sleep-lock -- i3lock \
-    --nofork --ignore-empty-password --show-failed-attempts --tiling \
-    --image "/usr/share/backgrounds/lockscreen.png" &> $LOGDIR/lock.log &
+lockscreen_image="/usr/share/backgrounds/lockscreen.png"
+i3lock_args=(
+    "--nofork"
+    "--ignore-empty-password"
+    "--show-failed-attempts"
+    "--tiling"
+    "--image" "$lockscreen_image"
+)
+xss-lock --transfer-sleep-lock -- i3lock ${i3lock_args[@]} &> $LOGDIR/lock.log &
 
 log "running services"
 polybar-msg cmd quit
