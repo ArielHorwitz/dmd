@@ -70,11 +70,3 @@ batl() {
     bat -l log $@
 }
 
-all_colors() {
-    for i in {0..255}; do
-        printf '\e[%sm %s \e[m' "$i" "$i"
-        [[ $(expr $i % 10) = 9 ]] && printf "\n"
-    done
-
-    echo
-}
