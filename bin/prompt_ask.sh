@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# Usage: prompt_ask [TIMEOUT] [PROMPT_TEXT]
+# Use 0 TIMEOUT to disable timeout.
+
 [[ -n $1 ]] && [[ $1 -ne 0 ]] && timeout="-t $1" && timeout_indicator="[$1s]"
 [[ -n $2 ]] && prompt="$2" || prompt="Continue?"
 # Prompt
