@@ -1,2 +1,3 @@
 spongecrab https://github.com/ArielHorwitz/spongecrab/releases/download/v0.1.0/spongecrab
+rhinopuffin https://github.com/ArielHorwitz/rhinopuffin/releases/download/v0.1.0/rhinopuffin
 
