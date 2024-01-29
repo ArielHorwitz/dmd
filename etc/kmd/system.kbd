@@ -1,7 +1,7 @@
 (deflayer system
   @lock @wmmp @wmms @wmml @wmmd @wmmr _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @brtd @brtu @tgwt  XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @wmrb @test XX    XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    @wmrb @tst1 @tst2 XX    @i3re @wmlo @wmpo XX    XX    @tgbr  XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss @wmds XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @sysa             _                 _     _     _     _                  XX    XX    XX     XX    XX
@@ -39,6 +39,7 @@
     brtd (cmd-button "sudo setmonbrightness --decrease")
     tgwt (cmd-button "i3-msg border toggle")
     tgbr (cmd-button "i3-msg bar mode toggle, bar hidden_state hide")
-    test (cmd-button "$HOME/.test")
+    tst1 (cmd-button "bash -c ~/.test")
+    tst2 (cmd-button "bash -c ~/.test2")
 )
 
