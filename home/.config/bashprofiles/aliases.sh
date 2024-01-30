@@ -6,8 +6,12 @@ alias c="clear"
 alias xo="xdg-open"
 alias lsl="exa -l --group-directories-first --color=always"
 alias lsa="exa -la --group-directories-first --color=always"
-alias lsr="exa -laTR --group-directories-first --color=always --git-ignore"
+alias lsr="exa -laTR --group-directories-first --color=always"
 alias cpi="cp -i"
+alias tarz="tar -vzcf"
+alias taru="tar -vkxf"
+alias tarl="tar -tf"
+alias rp="rhinopuffin"
 alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
