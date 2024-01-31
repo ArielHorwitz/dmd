@@ -60,6 +60,7 @@ SRCDIR=$PWD/`dirname "$0"`
 DATADIR=$SRCDIR/data
 BINDIR=/usr/bin/iukbtw
 CONFDIR=/etc/iukbtw
+CACHEDIR=/var/iukbtw/cache
 
 exit_with_error () {
     printf "\e[1;31m$1\e[0m\n" >&2
@@ -81,7 +82,8 @@ showdir () {
 title "Installing iukbtw"
 recreatedir $TMPDIR
 recreatedir $TMPBIN
-sudo chown --recursive $EUID $TMPDIR
+[[ -d $CACHEDIR/bin ]] || sudo mkdir -p $CACHEDIR/bin
+sudo chown --recursive $EUID $TMPDIR $CACHEDIR
 cd $TMPDIR
 echo "Source directory: $SRCDIR"
 
@@ -103,13 +105,15 @@ if [[ $UPDATE_DEPENDENCIES ]]; then
     # Cargo install
     cargo install $(cat $DATADIR/deps-rust.txt)
     # Web
+    recreatedir $CACHEDIR/bin
+    sudo chown --recursive $USER $CACHEDIR/bin
     while read dep; do
         [[ -n $dep ]] || continue
         name=$(echo $dep | cut -d' ' -f1)
         url=$(echo $dep | cut -d' ' -f2-)
         [[ -z $VERB ]] || echo downloading $name from: $url
-        wget $VERBQ --https-only --show-progress --output-document $TMPBIN/$name "$url"
-        chmod +x $TMPBIN/$name
+        wget $VERBQ --https-only --show-progress --output-document $CACHEDIR/bin/$name "$url"
+        chmod +x $CACHEDIR/bin/$name
     done < $DATADIR/deps-web.txt
 fi
 
@@ -125,6 +129,7 @@ sudo cp -r $SRCDIR/etc/* $CONFDIR
 [[ $QUIET ]] || showdir $CONFDIR
 
 title "Installing binaries"
+cp -r $CACHEDIR/bin/* $TMPBIN
 cp -r $SRCDIR/bin/* $TMPBIN
 # remove suffixes
 find $TMPBIN -maxdepth 1 -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
