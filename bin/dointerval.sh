@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 [[ $# -lt 2 ]] && echo "Usage: $0 SLEEP [-c | --clear] COMMAND" >&2 && exit 1
 ARGV=( "$@" )
 
