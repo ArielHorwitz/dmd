@@ -9,7 +9,7 @@ alias tarz="tar -vzcf"
 alias taru="tar -vkxf"
 alias tarl="tar -tf"
 alias rp="rhinopuffin"
-alias i3windetails='xprop | grep -iE "wm_class|wm_window_role|wm_window_type|wm_name"'
+alias gp="geckopanda"
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
 alias watcha="watch "
@@ -67,7 +67,14 @@ set_lockscreen() {
     sudo cp -f $1 /usr/share/backgrounds/lockscreen.png
 }
 
-batl() {
+blog() {
     bat -l log $@
 }
 
+mkcd() {
+    mkdir -p $1 && cd $1
+}
+
+cdl() {
+    cd $1 && lsl
+}

@@ -61,7 +61,7 @@
 # Overlays
 #     bO Broken link path
 
-C+="sn=38;5;15" # normal file
+C+="fi=38;5;15" # normal file
 C+=":sn=38;5;166" # size number
 C+=":sb=38;5;8" # size unit
 C+=":da=38;5;8" # timestamp
