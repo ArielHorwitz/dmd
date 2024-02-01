@@ -1,3 +1,4 @@
-spongecrab https://github.com/ArielHorwitz/spongecrab/releases/download/v0.1.0/spongecrab
+spongecrab https://github.com/ArielHorwitz/spongecrab/releases/download/v0.2.0/spongecrab
 rhinopuffin https://github.com/ArielHorwitz/rhinopuffin/releases/download/v0.1.0/rhinopuffin
+termcolors https://github.com/ArielHorwitz/termcolors/releases/download/v0.1.0/termcolors
 
