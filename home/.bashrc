@@ -7,6 +7,7 @@ shopt -s checkwinsize  # https://tiswww.case.edu/php/chet/bash/FAQ (E11)
 
 source ~/.config/bashprofiles/aliases.sh
 source ~/.config/bashprofiles/style_exa.sh
+eval $(psprompt)
 # [[ $- = *i* ]] && apply_colors.sh
 
 

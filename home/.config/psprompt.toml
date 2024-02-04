@@ -1,0 +1,38 @@
+# See also: https://wiki.archlinux.org/title/Bash/Prompt_customization
+#           
+
+style = "Double"
+
+[text]
+user = "\\u"
+host = "\\H"
+loc = "\\w"
+prompt = " "
+icon = " $?"
+at = "@"
+sleft = "❰"
+sright = "❱"
+
+[fg]
+user = "55CCFF"
+host = "CC55FF"
+loc = "FFCC00"
+prompt = "00FF00"
+icon = "FF77FF"
+at = "777777"
+sleft = "FF33CC"
+sright = "FF33CC"
+
+[command]
+fg = "339933"
+
+[ps0] # After each command, before any output
+text = ""
+color = "FFFFFF"
+[ps2] # Multiline prompt
+text = " "
+color = "FF8800"
+[ps4] # Levels of indirection (bash debugging)
+text = "↳"
+color = "55FFCC"
+
