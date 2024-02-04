@@ -10,6 +10,8 @@ CLI=(
     -o "dir;Target directory"
     -O "depth;Recursion depth;;d"
     -f "recursive;Recursively list directories;;r"
+    -O "sort;Sorting;;s"
+    -O "reverse;Reverse sorting (overrides --sort);;S"
     -f "hide;Hide hidden files;;H"
     -f "nogit;Don't show git status and show gitignored files;;g"
     -f "header;Show header"
@@ -25,6 +27,8 @@ GRAPHICS="--color=always --icons"
 [[ -z $hide ]] || HIDDEN=""
 [[ -z $recursive ]] || RECURSE="--tree"
 [[ -z $depth ]] || LEVEL="--level $depth"
+[[ -z $sort ]] || SORT="--sort $sort"
+[[ -z $reverse ]] || SORT="--reverse --sort $reverse"
 [[ -n $nogit ]] || GIT="--git-ignore --git"
 
 
@@ -34,5 +38,5 @@ if [[ -n $nographics ]]; then
     [[ $RECURSE != "--tree" ]] || RECURSE="--recurse"
 fi
 
-exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $GIT $GRAPHICS $HEADER $dir
+exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER $dir
 

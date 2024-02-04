@@ -21,7 +21,7 @@ style.font = renderer.font.load(
 )
 style.big_font = renderer.font.load(
   "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
-  18
+  12
 )
 -- style.icon_font
 -- style.icon_big_font
