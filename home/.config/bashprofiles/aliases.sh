@@ -28,6 +28,7 @@ alias pyflint="black --fast .; isort --profile black -l 88 .; flake8 --max-line-
 
 # Rust
 alias crq="cargo run -q --"
+alias crqf="cargo fmt; cargo run -q --"
 alias rustbt_on="export RUST_BACKTRACE=1"
 alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
@@ -79,4 +80,10 @@ mkcd() {
 
 cdl() {
     cd $1 && lsl
+}
+
+starttest() {
+    rm -rf /tmp/terminaltest
+    mkcd /tmp/terminaltest
+    tcprint "debug]Empty test directory."
 }
