@@ -3,4 +3,5 @@ rhinopuffin https://github.com/ArielHorwitz/rhinopuffin/releases/download/v0.2.0
 geckopanda https://github.com/ArielHorwitz/geckopandacli/releases/download/v0.1.0/geckopanda
 termcolors https://github.com/ArielHorwitz/termcolors/releases/download/v0.1.0/termcolors
 psprompt https://github.com/ArielHorwitz/psprompt/releases/download/v0.1.0/psprompt
+matchpick https://github.com/ArielHorwitz/matchpick/releases/download/v0.1.0/matchpick
 

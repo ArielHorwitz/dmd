@@ -33,17 +33,18 @@ blinking = "On"
 shape = "Beam"
 
 [font]
-size = 9.5
+# ~>>>
+size = 10
+# ~>>> lemnos
+size = 12
+# ~<<<
 
 [font.bold]
 family = "FiraCode Nerd Font"
-
 [font.bold_italic]
 family = "FiraCode Nerd Font"
-
 [font.italic]
 family = "FiraCode Nerd Font"
-
 [font.normal]
 family = "FiraCode Nerd Font"
 

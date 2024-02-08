@@ -155,6 +155,14 @@ configure_kmonad() {
 copy_home_dir() {
     progress "Copying user files to $HOME"
     cd $SRCDIR/home
+    recreatedir $TMPDIR/home
+    cp $VERB -rf --parents . $TMPDIR/home
+    local mp_pattern=$(matchpick --print-start)
+    local mp_files=$(grep --files-with-match --recursive $mp_pattern $TMPDIR/home)
+    for file in $mp_files; do
+        matchpick $file -o $file -m $HOSTNAME
+    done
+    cd $TMPDIR/home
     cp $VERB -rf --parents . $HOME
 }
 
