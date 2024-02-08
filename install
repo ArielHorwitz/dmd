@@ -1,52 +1,60 @@
 #! /bin/bash
 
-USAGE_TEXT="
-Installer for iukbtw.
+set -e
+
+USAGE_TEXT="Installer for iukbtw.
 
 Usage: install [OPTIONS...]
 
 Installation:
-  -d, --update-dependencies
-      Install and update dependencies.
-  -s, --update-system
-      Update system packages.
-  -q, --quiet
-      Show less output.
-  -v, --verbose
-      Show more verbose output.
+  -A, --all                 Perform all stages (excluding -s and -d).
+  -c, --config              Install and update configurations.
+  -b, --binaries            Install and update binaries.
+  -u, --user-files          Copy user files to home directory.
+  -n, --hostname <name>     Use custom hostname.
+  -s, --system              Update system packages.
+  -d, --dependencies        Install and update dependencies (implies -b).
+  -v, --verbose             Show more verbose output.
 
 Info:
-  -h, --help
-      Print this help and exit.
+  -h, --help            Print this help and exit.
 "
 
-set -e
-
+# Parse arguments
+VERBQ="--quiet"
+QUIET="--quiet"
+HOSTNAME=$(hostnamectl hostname)
 while [[ $@ ]]
 do
     [[ -z $1 ]] && break
     arg=$1
     shift
     case $arg in
-        -d | --update-dependencies )
+        -d | --dependencies )
             UPDATE_DEPENDENCIES=1
-            continue;;
-        -s | --update-system )
-            UPDATE_SYSTEM=1
-            continue;;
-        -q | --quiet )
-            VERB=""
-            VERBQ="--quiet"
-            QUIET="--quiet"
-            continue;;
+            UPDATE_BINARIES=1;;
+        -s | --system )
+            UPDATE_SYSTEM=1;;
+        -c | --config )
+            UPDATE_CONFIG=1;;
+        -b | --binaries )
+            UPDATE_BINARIES=1;;
+        -u | --user-files )
+            COPY_HOME=1;;
+        -n | --hostname )
+            HOSTNAME=$1
+            shift;;
+        -A | --all )
+            UPDATE_CONFIG=1
+            UPDATE_BINARIES=1
+            COPY_HOME=1;;
         -v | --verbose )
             VERB="--verbose"
             VERBQ="--verbose"
-            QUIET=""
-            continue;;
+            QUIET="";;
         -h | --help)
             echo "$USAGE_TEXT"
-            exit 2;;
+            exit;;
         *)
             echo "Unexpected option: $arg"
             echo "$USAGE_TEXT"
@@ -54,46 +62,36 @@ do
     esac
 done
 
-TMPDIR=/tmp/iukinstall
-TMPBIN=/tmp/iukinstall/bin
-SRCDIR=$PWD/`dirname "$0"`
-DATADIR=$SRCDIR/data
-BINDIR=/usr/bin/iukbtw
-CONFDIR=/etc/iukbtw
-CACHEDIR=/var/iukbtw/cache
-
 exit_with_error () {
     printf "\e[1;31m$1\e[0m\n" >&2
     exit 1
 }
-title () { printf "\n\e[33m█▓▒░ $1 ░▒▓█\e[0m\n" ; }
+progress () { printf "\e[32m$1\e[0m\n" ; }
 recreatedir () {
     [[ -d $1 ]] && sudo rm -rf $1
     sudo mkdir --parents $1
-}
-showdir () {
-    exa -laFTR --group-directories-first $@
+    sudo chown $EUID $1
 }
 
-[[ $EUID -eq 0 ]] && exit_with_error "Do not run $0 as root."
-[[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
-[[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
+setup_installation_dirs() {
+    recreatedir $TMPDIR
+    [[ -d $CACHEDIR/bin ]] || sudo mkdir -p $CACHEDIR/bin
+    cd $TMPDIR
+    echo "Source directory: $SRCDIR"
+}
 
-title "Installing iukbtw"
-recreatedir $TMPDIR
-recreatedir $TMPBIN
-[[ -d $CACHEDIR/bin ]] || sudo mkdir -p $CACHEDIR/bin
-sudo chown --recursive $EUID $TMPDIR $CACHEDIR
-cd $TMPDIR
-echo "Source directory: $SRCDIR"
+cleanup_installation() {
+    progress "Cleaning up temporary installation files"
+    sudo rm -rf $TMPDIR
+}
 
-if [[ $UPDATE_SYSTEM ]]; then
-    title "Updating System"
+update_system() {
+    progress "Updating System"
     sudo pacman $VERBQ -Syuu --noconfirm
-fi
+}
 
-if [[ $UPDATE_DEPENDENCIES ]]; then
-    title "Installing dependencies"
+update_dependencies() {
+    progress "Installing dependencies"
     # AUR (paru)
     if [[ -z $(paru --version 2>/dev/null) ]] then
         sudo pacman $VERBQ -S --needed --noconfirm base-devel git
@@ -106,7 +104,6 @@ if [[ $UPDATE_DEPENDENCIES ]]; then
     cargo install $(cat $DATADIR/deps-rust.txt)
     # Web
     recreatedir $CACHEDIR/bin
-    sudo chown --recursive $USER $CACHEDIR/bin
     while read dep; do
         [[ -n $dep ]] || continue
         name=$(echo $dep | cut -d' ' -f1)
@@ -115,66 +112,72 @@ if [[ $UPDATE_DEPENDENCIES ]]; then
         wget $VERBQ --https-only --show-progress --output-document $CACHEDIR/bin/$name "$url"
         chmod +x $CACHEDIR/bin/$name
     done < $DATADIR/deps-web.txt
-fi
+}
 
+install_binaries() {
+    TMPBIN=$TMPDIR/bin
+    recreatedir $TMPBIN
+    progress "Building iuk"
+    cargo build $VERBQ --manifest-path $SRCDIR/iuk/Cargo.toml --release;
+    cp $VERB -ft $TMPBIN $(find $SRCDIR/iuk/target/release -maxdepth 1 -type f -executable);
+    progress "Installing binaries"
+    cp -r $SRCDIR/bin/* $TMPBIN
+    cp -r $CACHEDIR/bin/* $TMPBIN
+    # remove suffixes
+    find $TMPBIN -maxdepth 1 -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+    recreatedir $BINDIR
+    sudo cp -r $TMPBIN/* $BINDIR
+    sudo chmod +x --recursive $BINDIR
+}
 
-title "Building iuk"
-cargo build $QUIET --manifest-path $SRCDIR/iuk/Cargo.toml --release;
-cp $VERB -ft $TMPBIN $(find $SRCDIR/iuk/target/release -maxdepth 1 -type f -executable);
+configure_group_iuk() {
+    progress "Configuring iuk"
+    # Add sudoer rules -- check with visudo before copy!
+    if [[ -z $(visudo -csf $DATADIR/sudoers | grep "parsed OK") ]] ; then
+        exit_with_error "Failed check on sudoer file (corrupt installation data)"
+    else
+        sudo cp $VERB -f $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
+    fi
+    sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
+}
 
+configure_kmonad() {
+    progress "Configuring KMonad"
+    # Add udev rules for KMonad
+    # (https://github.com/kmonad/kmonad/blob/master/doc/faq.md#q-how-do-i-get-uinput-permissions)
+    # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
+    sudo groupadd -f uinput
+    sudo usermod -aG input,uinput $USER
+    sudo cp -f $VERB $DATADIR/uinput.conf /etc/modules-load.d/
+    sudo cp -f $VERB $DATADIR/90-uinput.rules /etc/udev/rules.d/
+}
 
-title "Installing data"
-recreatedir $CONFDIR
-sudo cp -r $SRCDIR/etc/* $CONFDIR
-[[ $QUIET ]] || showdir $CONFDIR
+copy_home_dir() {
+    progress "Copying user files to $HOME"
+    cd $SRCDIR/home
+    cp $VERB -rf --parents . $HOME
+}
 
-title "Installing binaries"
-cp -r $CACHEDIR/bin/* $TMPBIN
-cp -r $SRCDIR/bin/* $TMPBIN
-# remove suffixes
-find $TMPBIN -maxdepth 1 -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
-recreatedir $BINDIR
-sudo cp -r $TMPBIN/* $BINDIR
-sudo chown --recursive root $BINDIR
-sudo chmod +x --recursive $BINDIR
-[[ $QUIET ]] || showdir $BINDIR
+TMPDIR=/tmp/iukinstall
+SRCDIR=$PWD/`dirname "$0"`
+DATADIR=$SRCDIR/data
+BINDIR=/usr/bin/iukbtw
+CACHEDIR=/var/iukbtw/cache
 
+# Checks
+[[ $EUID -eq 0 ]] && exit_with_error "Do not run $0 as root."
+[[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
+[[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
 
-title "Configuring user $USER"
-# Add sudoer rules -- check with visudo before copy!
-sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
-if [[ $(visudo -csf $DATADIR/sudoers | grep "parsed OK") = "" ]] ; then
-    echo "Failed check on sudoer file"
-    exit 1
-else
-    sudo cp $VERB -f $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
-fi
-# Add udev rules for KMonad
-# (https://github.com/kmonad/kmonad/blob/master/doc/faq.md#q-how-do-i-get-uinput-permissions)
-# (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
-sudo groupadd -f uinput
-sudo usermod -aG uinput $USER
-sudo usermod -aG input $USER
-sudo cp -f $VERB $DATADIR/uinput.conf /etc/modules-load.d/
-sudo cp -f $VERB $DATADIR/90-uinput.rules /etc/udev/rules.d/
-
-title "Copying user files @ $HOME"
-[[ $QUIET ]] || showdir $SRCDIR/home
-cd $SRCDIR/home
-cp $VERB -rf --parents . $HOME
-cd $TMPDIR
-
-
-title "Cleaning up"
-[[ ! $VERB ]] || showdir $TMPDIR
-sudo rm -rf $TMPDIR
-
-
-title "Done."
-[[
-    -n $(groups | grep input) &&
-    -n $(groups | grep uinput) &&
-    -n $(groups | grep iukbtw)
-]] || echo "Please login again for group config to apply."
-[[ -n $(echo $PATH | grep $BINDIR) ]] || echo "Please login again for PATH to apply"
-
+# Installation
+progress "Installing iukbtw"
+setup_installation_dirs
+[[ -z $UPDATE_SYSTEM ]] || update_system
+[[ -z $UPDATE_DEPENDENCIES ]] || update_dependencies
+[[ -z $UPDATE_BINARIES ]] || install_binaries
+[[ -z $UPDATE_CONFIG ]] || configure_group_iuk
+[[ -z $UPDATE_CONFIG ]] || configure_kmonad
+[[ -z $COPY_HOME ]] || copy_home_dir
+cleanup_installation
+progress "Done."
+echo "Please login again for configs to apply."

@@ -15,7 +15,7 @@ log () {
 log "iuk startup"
 
 log "configuring displays"
-displaygeometry -f /etc/iukbtw/devices/monitors
+displaygeometry -f $HOME/.config/iuk/hardware/displays
 xset -dpms s 7200
 xsetroot -solid "#000000"
 

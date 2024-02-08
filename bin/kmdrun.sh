@@ -3,7 +3,7 @@
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." >&2 && exit 1
 
 # Find a keyboard device path
-device_file=/etc/iukbtw/devices/input
+device_file=$HOME/.config/iuk/hardware/input
 all_device_files="$(find /dev/input/by-path/ /dev/input/by-id/)"
 while read my_device; do
     my_device="$(echo $my_device | cut -d'#' -f1 | xargs)"
@@ -25,7 +25,7 @@ echo "kmd device: $device"
 LOCAL_CONFIG=$HOME/.local/share/kmonad
 mkdir --parents $LOCAL_CONFIG
 kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
-cat /etc/iukbtw/kmd/* > $kbd_file
+cat $HOME/.config/kmd/* > $kbd_file
 # Insert device file path into kbd config file
 
 sedcmd=("\

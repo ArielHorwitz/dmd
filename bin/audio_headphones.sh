@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEVICE_FILE=/etc/iukbtw/devices/headphones
+DEVICE_FILE=$HOME/.config/iuk/hardware/headphones
 
 all_devices=`pactl list short`
 while read selected_device; do
