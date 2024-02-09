@@ -13,7 +13,11 @@ core.reload_module("colors.synthwave")
 
 style.code_font = renderer.font.load(
   "/home/wiw/.local/share/fonts/firacode/FiraCodeNerdFont-Regular.ttf",
+-- ~>>>
   14
+-- ~>>> lemnos
+  15
+-- ~<<<
 )
 style.font = renderer.font.load(
   "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",

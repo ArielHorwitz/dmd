@@ -36,7 +36,7 @@ shape = "Beam"
 # ~>>>
 size = 10
 # ~>>> lemnos
-size = 12
+size = 7
 # ~<<<
 
 [font.bold]
