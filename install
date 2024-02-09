@@ -2,65 +2,47 @@
 
 set -e
 
-USAGE_TEXT="Installer for iukbtw.
+SRCDIR=$PWD/`dirname "$0"`
+DATADIR=$SRCDIR/data
+TMPDIR=/tmp/iukinstall
+BINDIR=/usr/bin/iukbtw
+CACHEDIR=/var/iukbtw/cache
 
-Usage: install [OPTIONS...]
-
-Installation:
-  -A, --all                 Perform all stages (excluding -s and -d).
-  -c, --config              Install and update configurations.
-  -b, --binaries            Install and update binaries.
-  -u, --user-files          Copy user files to home directory.
-  -n, --hostname <name>     Use custom hostname.
-  -s, --system              Update system packages.
-  -d, --dependencies        Install and update dependencies (implies -b).
-  -v, --verbose             Show more verbose output.
-
-Info:
-  -h, --help            Print this help and exit.
-"
-
-# Parse arguments
+APP_NAME=$(basename "$0")
+ABOUT="Installer for iukbtw."
+CLI=(
+    --prefix "args_"
+    -O "hostname;Use custom hostname;$(hostnamectl hostname);n"
+    -f "all;All normal targets (no remote updates);;a"
+    -f "all-really;All targets (including remote updates);;A"
+    -f "config;Install and update configurations;;c"
+    -f "binaries;Install and update binaries;;b"
+    -f "user-files;Copy user files to home directory;;u"
+    -f "system;Update system packages;;s"
+    -f "dependencies;Update and install dependencies (implies -b);;d"
+    -f "verbose;Show more verbose output;;v"
+)
+CLI=$($DATADIR/spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
+eval "$CLI" || exit 1
+# Post process args
+if [[ -n $args_all_really ]]; then
+    args_system=1
+    args_dependencies=1
+    args_all=1
+fi
+if [[ -n $args_all ]]; then
+    args_config=1
+    args_binaries=1
+    args_user_files=1
+fi
 VERBQ="--quiet"
 QUIET="--quiet"
-HOSTNAME=$(hostnamectl hostname)
-while [[ $@ ]]
-do
-    [[ -z $1 ]] && break
-    arg=$1
-    shift
-    case $arg in
-        -d | --dependencies )
-            UPDATE_DEPENDENCIES=1
-            UPDATE_BINARIES=1;;
-        -s | --system )
-            UPDATE_SYSTEM=1;;
-        -c | --config )
-            UPDATE_CONFIG=1;;
-        -b | --binaries )
-            UPDATE_BINARIES=1;;
-        -u | --user-files )
-            COPY_HOME=1;;
-        -n | --hostname )
-            HOSTNAME=$1
-            shift;;
-        -A | --all )
-            UPDATE_CONFIG=1
-            UPDATE_BINARIES=1
-            COPY_HOME=1;;
-        -v | --verbose )
-            VERB="--verbose"
-            VERBQ="--verbose"
-            QUIET="";;
-        -h | --help)
-            echo "$USAGE_TEXT"
-            exit;;
-        *)
-            echo "Unexpected option: $arg"
-            echo "$USAGE_TEXT"
-            exit 1;;
-    esac
-done
+if [[ $args_verbose ]]; then
+    VERB="--verbose"
+    VERBQ="--verbose"
+    QUIET=""
+fi
+HOSTNAME=$args_hostname
 
 exit_with_error () {
     printf "\e[1;31m$1\e[0m\n" >&2
@@ -166,12 +148,6 @@ copy_home_dir() {
     cp $VERB -rf --parents . $HOME
 }
 
-TMPDIR=/tmp/iukinstall
-SRCDIR=$PWD/`dirname "$0"`
-DATADIR=$SRCDIR/data
-BINDIR=/usr/bin/iukbtw
-CACHEDIR=/var/iukbtw/cache
-
 # Checks
 [[ $EUID -eq 0 ]] && exit_with_error "Do not run $0 as root."
 [[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
@@ -180,12 +156,12 @@ CACHEDIR=/var/iukbtw/cache
 # Installation
 progress "Installing iukbtw"
 setup_installation_dirs
-[[ -z $UPDATE_SYSTEM ]] || update_system
-[[ -z $UPDATE_DEPENDENCIES ]] || update_dependencies
-[[ -z $UPDATE_BINARIES ]] || install_binaries
-[[ -z $UPDATE_CONFIG ]] || configure_group_iuk
-[[ -z $UPDATE_CONFIG ]] || configure_kmonad
-[[ -z $COPY_HOME ]] || copy_home_dir
+[[ -z $args_system ]] || update_system
+[[ -z $args_dependencies ]] || update_dependencies
+[[ -z $args_binaries ]] || install_binaries
+[[ -z $args_config ]] || configure_group_iuk
+[[ -z $args_config ]] || configure_kmonad
+[[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation
 progress "Done."
 echo "Please login again for configs to apply."
