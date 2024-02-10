@@ -164,4 +164,4 @@ setup_installation_dirs
 [[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation
 progress "Done."
-echo "Please login again for configs to apply."
+echo "You may need to login again for configs to apply."

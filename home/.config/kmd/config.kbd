@@ -1,5 +1,5 @@
 (defcfg
-    input  (device-file "DEVICE_FILE_PATH")
+    input  (device-file "<KMD_DEVICE_PATH>")
     output (uinput-sink "iukbtw" "sleep 0.1")
     fallthrough true
     allow-cmd true

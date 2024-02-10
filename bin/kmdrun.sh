@@ -29,10 +29,10 @@ cat $HOME/.config/kmd/* > $kbd_file
 # Insert device file path into kbd config file
 
 sedcmd=("\
-s|DEVICE_FILE_PATH|$device|;\
 s|<KMD_MONITOR_LEFT>|HDMI-1|;\
 s|<KMD_MONITOR_CENTER>|HDMI-1|;\
 s|<KMD_MONITOR_RIGHT>|DP-2|;\
+s|<KMD_DEVICE_PATH>|$device|;\
 ")
 sed -i "${sedcmd[@]}" $kbd_file
 

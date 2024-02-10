@@ -78,7 +78,7 @@ display_summary() {
     wind=$(jq '.current.wind_speed' "$response_cache")
     [[ -n $noicons ]] || printf "${color}${reset} "
     printf "$wind"
-    [[ -n $nounits ]] || printf " ${faded}km/s${reset}"
+    [[ -n $nounits ]] || printf " ${faded}km/h${reset}"
     # pres
     printf " "
     pres=$(jq '.current.pressure' "$response_cache")
