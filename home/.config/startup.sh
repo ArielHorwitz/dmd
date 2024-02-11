@@ -13,6 +13,7 @@ log () {
 }
 
 log "iuk startup"
+localtestinstall -c
 
 log "configuring displays"
 displaygeometry -f $HOME/.config/iuk/hardware/displays
