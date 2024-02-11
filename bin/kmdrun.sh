@@ -2,6 +2,9 @@
 
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." >&2 && exit 1
 
+# Find displays
+mapfile -t displays < ~/.config/iuk/hardware/displays
+
 # Find a keyboard device path
 device_file=$HOME/.config/iuk/hardware/input
 all_device_files="$(find /dev/input/by-path/ /dev/input/by-id/)"
@@ -26,13 +29,13 @@ LOCAL_CONFIG=$HOME/.local/share/kmonad
 mkdir --parents $LOCAL_CONFIG
 kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
 cat $HOME/.config/kmd/* > $kbd_file
-# Insert device file path into kbd config file
 
+# Insert substitutions into kbd config file
 sedcmd=("\
-s|<KMD_MONITOR_LEFT>|HDMI-1|;\
-s|<KMD_MONITOR_CENTER>|HDMI-1|;\
-s|<KMD_MONITOR_RIGHT>|DP-2|;\
 s|<KMD_DEVICE_PATH>|$device|;\
+s|<KMD_MONITOR_LEFT>|${displays[0]}|;\
+s|<KMD_MONITOR_CENTER>|${displays[1]}|;\
+s|<KMD_MONITOR_RIGHT>|${displays[2]}|;\
 ")
 sed -i "${sedcmd[@]}" $kbd_file
 

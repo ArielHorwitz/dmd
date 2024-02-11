@@ -16,7 +16,7 @@ log "iuk startup"
 localtestinstall -c
 
 log "configuring displays"
-displaygeometry -f $HOME/.config/iuk/hardware/displays
+displaygeometry --file $HOME/.config/iuk/hardware/displays
 xset -dpms s 7200
 xsetroot -solid "#000000"
 
@@ -38,7 +38,7 @@ pkill -x kmonad
 sleep 1
 iukdaemon &> $LOGDIR/iukdaemon.log &
 kmdrun &> $LOGDIR/kmd.log &
-for MONITOR in $(listmonitors); do
+for MONITOR in $(displaygeometry --list); do
     sleep 0.5
     POLYBAR_MONITOR=$MONITOR polybar --reload main &> $LOGDIR/polybar-main-$MONITOR.log &
 done
