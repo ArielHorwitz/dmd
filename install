@@ -78,7 +78,7 @@ update_dependencies() {
     # AUR (paru)
     if [[ -z $(paru --version 2>/dev/null) ]] then
         sudo pacman $VERBQ -S --needed --noconfirm base-devel git
-        git clone $VERBQ https://aur.archlinux.org/paru.git $TMPDIR/paru
+        git clone $VERBQ --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMPDIR/paru
         cd $TMPDIR/paru
         makepkg -si --needed --noconfirm
     fi
