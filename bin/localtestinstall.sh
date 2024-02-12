@@ -18,7 +18,7 @@ eval "$CLI" || exit 1
 [[ -z $clear ]] || rm -rf $BINDIR/*
 if [[ -n "$bin" ]]; then
     target="$(basename $bin)"
-    [[ -z $keep_suffix ]] || target="${target%.*}"
+    [[ -n $keep_suffix ]] || target="${target%.*}"
     cp "$bin" "$BINDIR/$target"
 fi
 
