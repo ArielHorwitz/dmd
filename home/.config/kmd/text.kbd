@@ -11,7 +11,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      _     _     _      _     _     _     _
   @base _     _     _     _     _     _     _     _     _     _     _     _                               _     _     _
-  @sftc _     _     _     _     _     _     _     _     _     _     _                        _            _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     @sftc                    _            _     _     _     _
   _     @txt1 _                 _                 _     _     _     _                  _     _     _      _     _
 )
 (deflayer text_alt
@@ -33,7 +33,7 @@
 (defalias
     txt1 (layer-toggle text_alt)
     txt2 (around lsft (layer-toggle text_alt))
-    sftc (tap-next-press caps lsft)
+    sftc (tap-next-press caps rsft)
     copy C-c
     past C-v
     cut  C-x

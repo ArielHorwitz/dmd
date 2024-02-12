@@ -13,12 +13,12 @@ ABOUT="Installer for iukbtw."
 CLI=(
     --prefix "args_"
     -O "hostname;Use custom hostname;$(hostnamectl hostname);n"
+    -f "user-files;Copy user files to home directory;;u"
+    -f "binaries;Install binaries;;b"
+    -f "config;Apply configurations;;c"
+    -f "system;Update system packages;;s"
     -f "all;All normal targets (no remote updates);;a"
     -f "all-really;All targets (including remote updates);;A"
-    -f "config;Install and update configurations;;c"
-    -f "binaries;Install and update binaries;;b"
-    -f "user-files;Copy user files to home directory;;u"
-    -f "system;Update system packages;;s"
     -f "dependencies;Update and install dependencies (implies -b);;d"
     -f "verbose;Show more verbose output;;v"
 )
@@ -43,6 +43,7 @@ if [[ $args_verbose ]]; then
     QUIET=""
 fi
 HOSTNAME=$args_hostname
+NOTIFY_RELOGIN=$args_config
 
 exit_with_error () {
     printf "\e[1;31m$1\e[0m\n" >&2
@@ -164,4 +165,4 @@ setup_installation_dirs
 [[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation
 progress "Done."
-echo "You may need to login again for configs to apply."
+[[ -z $NOTIFY_RELOGIN ]] || echo "You may need to login again for configs to apply."
