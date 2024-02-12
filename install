@@ -99,11 +99,8 @@ update_dependencies() {
 
 install_binaries() {
     TMPBIN=$TMPDIR/bin
-    recreatedir $TMPBIN
-    progress "Building iuk"
-    cargo build $VERBQ --manifest-path $SRCDIR/iuk/Cargo.toml --release;
-    cp $VERB -ft $TMPBIN $(find $SRCDIR/iuk/target/release -maxdepth 1 -type f -executable);
     progress "Installing binaries"
+    recreatedir $TMPBIN
     cp -r $SRCDIR/bin/* $TMPBIN
     cp -r $CACHEDIR/bin/* $TMPBIN
     # remove suffixes

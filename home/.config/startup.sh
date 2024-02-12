@@ -31,13 +31,11 @@ i3lock_args=(
 )
 xss-lock --transfer-sleep-lock -- i3lock ${i3lock_args[@]} &> $LOGDIR/lock.log &
 
-log "running services"
-polybar-msg cmd quit
-pkill -x iukdaemon
-pkill -x kmonad
-sleep 1
-iukdaemon &> $LOGDIR/iukdaemon.log &
+log "running kmonad"
 kmdrun &> $LOGDIR/kmd.log &
+
+log "running polybar"
+polybar-msg cmd quit
 for MONITOR in $(displaygeometry --list); do
     sleep 0.5
     POLYBAR_MONITOR=$MONITOR polybar --reload main &> $LOGDIR/polybar-main-$MONITOR.log &
