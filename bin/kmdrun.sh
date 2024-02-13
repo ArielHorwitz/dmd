@@ -7,14 +7,12 @@ mapfile -t displays < ~/.config/iuk/hardware/displays
 
 # Find a keyboard device path
 device_file=$HOME/.config/iuk/hardware/input
-all_device_files="$(find /dev/input/by-path/ /dev/input/by-id/)"
+all_device_files=`find /dev/input/by-path/ /dev/input/by-id/ -type l`
 while read my_device; do
-    my_device="$(echo $my_device | cut -d'#' -f1 | xargs)"
-    [[ -z $my_device ]] && continue
     echo "Searching for device: $my_device"
-    device=$(printf "$all_device_files" | grep -m 1 $my_device)
+    device=$(printf "$all_device_files" | grep -m 1 $my_device || echo '')
     [[ -n $device ]] && break
-done < $device_file
+done <<< `decomment $device_file`
 
 # Confirm device file found
 if [[ -z $device ]]; then
@@ -31,11 +29,11 @@ kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
 cat $HOME/.config/kmd/* > $kbd_file
 
 # Insert substitutions into kbd config file
-sedcmd=("\
-s|<KMD_DEVICE_PATH>|$device|;\
-s|<KMD_MONITOR_LEFT>|${displays[0]}|;\
-s|<KMD_MONITOR_CENTER>|${displays[1]}|;\
-s|<KMD_MONITOR_RIGHT>|${displays[2]}|;\
+sedcmd=("
+s|<KMD_DEVICE_PATH>|$device|;
+s|<KMD_MONITOR_LEFT>|${displays[0]}|;
+s|<KMD_MONITOR_CENTER>|${displays[1]}|;
+s|<KMD_MONITOR_RIGHT>|${displays[2]}|;
 ")
 sed -i "${sedcmd[@]}" $kbd_file
 
