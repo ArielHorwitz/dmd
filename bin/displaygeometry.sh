@@ -18,12 +18,16 @@ eval "$CLI" || exit 1
 
 xrandr --auto
 
+[[ -n $displays ]] || mapfile -t displays < ~/.config/iuk/hardware/displays
+
 left=${displays[0]}
-for next_display in "${displays[@]}"; do
-    echo "$left < $next_display"
+echo -n "$left"
+for next_display in "${displays[@]:1}"; do
+    echo -n " | $next_display"
     [[ $left = $next_display ]] || xrandr --output $next_display --right-of $left
     left=$next_display
 done
+echo
 
 [[ -z $primary ]] || xrandr --output $primary --primary
 
