@@ -3,7 +3,7 @@ if [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; then
     echo "
 Get format codes for coloring text in the terminal.
 
-USAGE: tcformat [STYLES..] [COLORS..] [OPTIONS..]
+USAGE: $0 [STYLES..] [COLORS..] [OPTIONS..]
 
 # STYLES
 A style can be named from the following list:
@@ -40,12 +40,11 @@ More options are available:
 * t - Do not include a placeholder for text
 
 # EXAMPLES
-iukformat error             # bold red text
-iukformat blue              # blue text
-iukformat blue green        # blue text, green background
-iukformat green un          # underlined green text, no newline
-
-Written for iukbtw."
+$0 error             # bold red text
+$0 blue              # blue text
+$0 blue green        # blue text, green background
+$0 green un          # underlined green text, no newline
+"
     exit 1
 fi
 

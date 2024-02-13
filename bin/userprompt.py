@@ -31,8 +31,8 @@ if __name__ == "__main__":
     if "{{}}" not in args.execute:
         raise Exception("Missing '{{}}' placeholder in execute argument")
     # Kill existing prompts
-    while run("xdotool", "search", "--class", "iukbtw-prompt", check=False):
-        run("xdotool", "search", "--class", "iukbtw-prompt", "windowkill")
+    while run("xdotool", "search", "--class", "iukprompt", check=False):
+        run("xdotool", "search", "--class", "iukprompt", "windowkill")
     # Prompt user
     with NamedTemporaryFile() as tempfile:
         prompt_command = "; ".join([
@@ -47,7 +47,7 @@ if __name__ == "__main__":
             "--title",
             "User prompt",
             "--class",
-            "iukbtw-prompt",
+            "iukprompt",
             "-o",
             "colors.primary.background='#aaffff'",
             "-o",

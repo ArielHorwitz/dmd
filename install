@@ -9,7 +9,7 @@ BINDIR=/usr/bin/iukbtw
 CACHEDIR=/var/iukbtw/cache
 
 APP_NAME=$(basename "$0")
-ABOUT="Installer for iukbtw."
+ABOUT="Installer for iuk."
 CLI=(
     --prefix "args_"
     -O "hostname;Use custom hostname;$(hostnamectl hostname);n"
@@ -108,7 +108,7 @@ configure_group_iuk() {
     mkdir $wd
     local drop_in="$wd/90-iukbtw"
     echo '# Allow "iukbtw" group to run some commands as root without password' > $drop_in
-    echo '%iukbtw ALL=(root:root) NOPASSWD: /usr/bin/iukbtw/setmonbrightness' >> $drop_in
+    echo "%iukbtw ALL=(root:root) NOPASSWD: $BINDIR/setmonbrightness" >> $drop_in
     sudo checksudo --quiet --force --apply --noconfirm $drop_in
     sudo groupadd -f iukbtw
     sudo usermod -aG iukbtw $USER
@@ -147,7 +147,7 @@ copy_home_dir() {
 [[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
 
 # Installation
-progress "Installing iukbtw"
+progress "Installing iuk"
 setup_installation_dirs
 [[ -z $args_system ]] || update_system
 [[ -z $args_dependencies ]] || update_dependencies
