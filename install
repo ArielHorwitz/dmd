@@ -16,15 +16,15 @@ CLI=(
     -f "user-files;Copy user files to home directory;;u"
     -f "binaries;Install binaries;;b"
     -f "config;Apply configurations;;c"
+    -f "dependencies;Update and install dependencies (implies -b);;d"
     -f "system;Update system packages;;s"
     -f "all;All normal targets (no remote updates);;a"
     -f "all-really;All targets (including remote updates);;A"
-    -f "dependencies;Update and install dependencies (implies -b);;d"
-    -f "verbose;Show more verbose output;;v"
 )
 CLI=$($DATADIR/spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 # Post process args
+[[ -z $args_dependencies ]] || args_binaries=1
 if [[ -n $args_all_really ]]; then
     args_system=1
     args_dependencies=1
@@ -34,13 +34,6 @@ if [[ -n $args_all ]]; then
     args_config=1
     args_binaries=1
     args_user_files=1
-fi
-VERBQ="--quiet"
-QUIET="--quiet"
-if [[ $args_verbose ]]; then
-    VERB="--verbose"
-    VERBQ="--verbose"
-    QUIET=""
 fi
 HOSTNAME=$args_hostname
 NOTIFY_RELOGIN=$args_config
@@ -70,19 +63,19 @@ cleanup_installation() {
 
 update_system() {
     progress "Updating System"
-    sudo pacman $VERBQ -Syuu --noconfirm
+    sudo pacman -Syuu --noconfirm
 }
 
 update_dependencies() {
     progress "Installing dependencies"
     # AUR (paru)
     if [[ -z $(paru --version 2>/dev/null) ]] then
-        sudo pacman $VERBQ -S --needed --noconfirm base-devel git
-        git clone $VERBQ --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMPDIR/paru
+        sudo pacman -S --quiet --needed --noconfirm base-devel git
+        git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMPDIR/paru
         cd $TMPDIR/paru
         makepkg -si --needed --noconfirm
     fi
-    paru $VERBQ -S --needed --noconfirm $(cat $DATADIR/deps-aur.txt)
+    paru -S --quiet --needed --noconfirm $(cat $DATADIR/deps-aur.txt)
     # Cargo install
     cargo install $(cat $DATADIR/deps-rust.txt)
     # Web
@@ -91,8 +84,7 @@ update_dependencies() {
         [[ -n $dep ]] || continue
         name=$(echo $dep | cut -d' ' -f1)
         url=$(echo $dep | cut -d' ' -f2-)
-        [[ -z $VERB ]] || echo downloading $name from: $url
-        wget $VERBQ --https-only --show-progress --output-document $CACHEDIR/bin/$name "$url"
+        wget --quiet --https-only --show-progress --output-document $CACHEDIR/bin/$name "$url"
         chmod +x $CACHEDIR/bin/$name
     done < $DATADIR/deps-web.txt
 }
@@ -115,7 +107,7 @@ configure_group_iuk() {
     local wd=$TMPDIR/sudoers
     mkdir $wd
     cp $DATADIR/sudoers $wd/50-iukbtw
-    sudo checksudo $QUIET --force --apply --noconfirm $wd/50-iukbtw
+    sudo checksudo --quiet --force --apply --noconfirm $wd/50-iukbtw
     sudo groupadd -f iukbtw
     sudo usermod -aG iukbtw $USER
 }
@@ -127,22 +119,22 @@ configure_kmonad() {
     # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
     sudo groupadd -f uinput
     sudo usermod -aG input,uinput $USER
-    sudo cp -f $VERB $DATADIR/uinput.conf /etc/modules-load.d/
-    sudo cp -f $VERB $DATADIR/90-uinput.rules /etc/udev/rules.d/
+    sudo cp -f $DATADIR/uinput.conf /etc/modules-load.d/
+    sudo cp -f $DATADIR/90-uinput.rules /etc/udev/rules.d/
 }
 
 copy_home_dir() {
     progress "Copying user files to $HOME"
     cd $SRCDIR/home
     recreatedir $TMPDIR/home
-    cp $VERB -rf --parents . $TMPDIR/home
+    cp -rf --parents . $TMPDIR/home
     local mp_pattern=$(matchpick --print-start)
     local mp_files=$(grep --files-with-match --recursive $mp_pattern $TMPDIR/home)
     for file in $mp_files; do
         matchpick $file -o $file -m $HOSTNAME
     done
     cd $TMPDIR/home
-    cp $VERB -rf --parents . $HOME
+    cp -rf --parents . $HOME
 }
 
 # Checks
