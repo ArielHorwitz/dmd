@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-DEVICE_FILE=$HOME/.config/iuk/hardware/speakers
+DEVICE_FILE=$HOME/.config/iuk/audio/speakers
 
 all_devices=`pactl list short`
 while read selected_device; do

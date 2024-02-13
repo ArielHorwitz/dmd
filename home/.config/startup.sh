@@ -16,7 +16,7 @@ log "iuk startup"
 localtestinstall -c
 
 log "configuring displays"
-displaygeometry --file $HOME/.config/iuk/hardware/displays
+displaygeometry --file $HOME/.config/iuk/displays
 xset -dpms s 7200
 xsetroot -solid "#000000"
 

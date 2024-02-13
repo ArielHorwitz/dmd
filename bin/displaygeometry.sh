@@ -18,7 +18,7 @@ eval "$CLI" || exit 1
 
 xrandr --auto
 
-[[ -n $displays ]] || mapfile -t displays < ~/.config/iuk/hardware/displays
+[[ -n $displays ]] || mapfile -t displays < ~/.config/iuk/displays
 
 left=${displays[0]}
 echo -n "$left"
