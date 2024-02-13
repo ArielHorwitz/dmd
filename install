@@ -112,13 +112,12 @@ install_binaries() {
 
 configure_group_iuk() {
     progress "Configuring iuk"
-    # Add sudoer rules -- check with visudo before copy!
-    if [[ -z $(visudo -csf $DATADIR/sudoers | grep "parsed OK") ]] ; then
-        exit_with_error "Failed check on sudoer file (corrupt installation data)"
-    else
-        sudo cp $VERB -f $DATADIR/sudoers "/etc/sudoers.d/50-iukbtw"
-    fi
-    sudo groupadd -f iukbtw && sudo usermod -aG iukbtw $USER
+    local wd=$TMPDIR/sudoers
+    mkdir $wd
+    cp $DATADIR/sudoers $wd/50-iukbtw
+    sudo checksudo $QUIET --force --apply --noconfirm $wd/50-iukbtw
+    sudo groupadd -f iukbtw
+    sudo usermod -aG iukbtw $USER
 }
 
 configure_kmonad() {
