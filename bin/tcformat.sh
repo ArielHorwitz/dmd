@@ -68,7 +68,7 @@ get_opt_codes() {
 
 get_post_format() {
     # Text placeholder
-    [[ $1 != *t* ]] && echo -n "%s"
+    [[ $1 != *t* ]] && echo -n "%b"
     # Reset color
     [[ $1 != *r* ]] && echo -n "\e[0m"
     # Newline
