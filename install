@@ -16,7 +16,7 @@ CLI=(
     -f "user-files;Copy user files to home directory;;u"
     -f "binaries;Install binaries;;b"
     -f "config;Apply configurations;;c"
-    -f "dependencies;Update and install dependencies (implies -b);;d"
+    -f "dependencies;Install dependencies (implies -b);;d"
     -f "system;Update system packages;;s"
     -f "all;All normal targets (no remote updates);;a"
     -f "all-really;All targets (including remote updates);;A"
@@ -106,8 +106,10 @@ configure_group_iuk() {
     progress "Configuring iuk"
     local wd=$TMPDIR/sudoers
     mkdir $wd
-    cp $DATADIR/sudoers $wd/50-iukbtw
-    sudo checksudo --quiet --force --apply --noconfirm $wd/50-iukbtw
+    local drop_in="$wd/90-iukbtw"
+    echo '# Allow "iukbtw" group to run some commands as root without password' > $drop_in
+    echo '%iukbtw ALL=(root:root) NOPASSWD: /usr/bin/iukbtw/setmonbrightness' >> $drop_in
+    sudo checksudo --quiet --force --apply --noconfirm $drop_in
     sudo groupadd -f iukbtw
     sudo usermod -aG iukbtw $USER
 }
@@ -119,8 +121,10 @@ configure_kmonad() {
     # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
     sudo groupadd -f uinput
     sudo usermod -aG input,uinput $USER
-    sudo cp -f $DATADIR/uinput.conf /etc/modules-load.d/
-    sudo cp -f $DATADIR/90-uinput.rules /etc/udev/rules.d/
+    local tee_args='--output-error=exit-nopipe'
+    local rules='KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"'
+    echo $rules | sudo tee $tee_args /etc/udev/rules.d/90-uinput.rules >/dev/null
+    echo 'uinput' | sudo tee $tee_args /etc/modules-load.d/uinput.conf >/dev/null
 }
 
 copy_home_dir() {
