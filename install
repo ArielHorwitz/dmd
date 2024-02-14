@@ -38,7 +38,7 @@ fi
 if [[ -n $args_dependencies ]]; then
     args_web_dependencies=1
 fi
-if [[ -z $args_dependencies ]] && [[ -z $args_web_dependencies ]]; then
+if [[ -n $args_dependencies ]] || [[ -n $args_web_dependencies ]]; then
     args_binaries=1
 fi
 HOSTNAME=$args_hostname
@@ -49,6 +49,7 @@ exit_with_error () {
     exit 1
 }
 progress () { printf "\e[32m$1\e[0m\n" ; }
+notice () { printf "\e[36m$1\e[0m\n" ; }
 recreatedir () {
     [[ -d $1 ]] && sudo rm -rf $1
     sudo mkdir --parents $1
@@ -176,6 +177,10 @@ copy_home_dir() {
 [[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
 [[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
 
+# Shortcut if noop
+operations=$((args_system + args_dependencies + args_web_dependencies + args_config + args_binaries + args_user_files))
+[[ $operations -gt 0 ]] || { notice "No operations selected."; exit 0; }
+
 # Installation
 progress "Installing iuk"
 setup_installation_dirs
@@ -188,4 +193,4 @@ setup_installation_dirs
 [[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation
 progress "Done."
-[[ -z $NOTIFY_RELOGIN ]] || echo "You may need to login again for configs to apply."
+[[ -z $NOTIFY_RELOGIN ]] || notice "You may need to login again for configs to apply."
