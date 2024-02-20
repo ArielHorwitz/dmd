@@ -18,6 +18,7 @@ CLI=(
     -f "config;Apply configurations;;c"
     -f "dependencies;Install dependencies (implies -b -w);;d"
     -f "web-dependencies;Install web dependencies (implies -b);;w"
+    -f "skip-unknown-dependencies;Skip updating dependencies that don't report their version;;W"
     -f "system;Update system packages;;s"
     -f "all;All normal targets (no remote updates);;a"
     -f "all-really;All targets (including remote updates);;A"
@@ -90,34 +91,35 @@ update_dependencies() {
 update_dependencies_web() {
     progress "Installing web dependencies"
     local dependencies_file=$DATADIR/deps-web.txt
-    local cache_dir=$CACHEDIR/bin
+    local skip_unknown=$args_skip_unknown_dependencies
     while read dep; do
         [[ -n $dep ]] || continue
         local name=$(echo $dep | cut -d' ' -f1)
         local required_version=$(echo $dep | cut -d' ' -f2)
         local url=$(echo $dep | cut -d' ' -f3-)
-        # Check if valid version exists in cache
-        local cached_bin="$cache_dir/$name"
+        local cached_bin="$CACHEDIR/bin/$name"
         if [[ -x $cached_bin ]]; then
-            eval "cached_version=\"$($cached_bin --version 2>/dev/null || echo $name 0.1.0)\""
-            echo -n "cached version: '$cached_version'"
-            if [[ $cached_version = *${required_version}* ]]; then
-                echo " - up to date [v$required_version]"
-                continue
+            eval "cached_version=\"$($cached_bin --version 2>/dev/null || echo UNKNOWNVERSION)\""
+            if [[ $cached_version = 'UNKNOWNVERSION' ]]; then
+                echo -n "cached: $name unknown"
+                if [[ -n $skip_unknown ]]; then
+                    echo " - skipping [latest: v$required_version]"
+                    continue
+                fi
+                echo " - updating to latest [v$required_version]"
             else
+                echo -n "cached: $cached_version"
+                if [[ $cached_version = *${required_version}* ]]; then
+                    echo " - up to date [v$required_version]"
+                    continue
+                fi
                 echo " - version mismatch [$cached_version != *$required_version*]"
             fi
         fi
         echo "Installing $name v$required_version"
-        install_web_dependency $url $cached_bin
+        wget --quiet --https-only --show-progress --output-document $cached_bin $url
+        chmod +x $cached_bin
     done < $dependencies_file
-}
-
-install_web_dependency() {
-    local url="$1"
-    local file="$2"
-    wget --no-verbose --https-only --show-progress --output-document $file $url
-    chmod +x $file
 }
 
 install_binaries() {
