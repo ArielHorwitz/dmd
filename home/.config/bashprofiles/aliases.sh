@@ -57,16 +57,16 @@ dkkill() {
 }
 
 # Miscallaneous
-view_source() {
+view-source() {
     bat $(which $@)
 }
 
-set_wallpaper() {
+set-wallpaper() {
     sudo cp -f $1 /usr/share/backgrounds/desktop.png
     feh --bg-fill --no-xinerama '/usr/share/backgrounds/desktop.png'
 }
 
-set_lockscreen() {
+set-lockscreen() {
     sudo cp -f $1 /usr/share/backgrounds/lockscreen.png
 }
 

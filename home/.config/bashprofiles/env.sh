@@ -3,6 +3,7 @@
 export PAGER=bat
 export VISUAL=lite-xl
 export EDITOR=lite-xl
+export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
 # ~>>>

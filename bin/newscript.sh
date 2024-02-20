@@ -26,7 +26,8 @@ ABOUT="DESCRIPTION"
 CLI=(
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
-eval "$CLI" || exit 1' > $filename
+eval "$CLI" || exit 1
+' > $filename
 
 # Make executable
 chmod +x $filename
