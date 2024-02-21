@@ -24,6 +24,7 @@ set -e
 APP_NAME=$(basename "$0")
 ABOUT="DESCRIPTION"
 CLI=(
+    --prefix "args_"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1

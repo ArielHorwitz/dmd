@@ -38,6 +38,7 @@ More options are available:
 * r - Do not reset colors after printing
 * n - Do not print newline at the end of format
 * t - Do not include a placeholder for text
+* y - Interpret text as bytes instead of string
 
 # EXAMPLES
 $0 error             # bold red text
@@ -68,7 +69,7 @@ get_opt_codes() {
 
 get_post_format() {
     # Text placeholder
-    [[ $1 != *t* ]] && echo -n "%b"
+    [[ $1 != *t* ]] && { [[ $1 != *y* ]] && echo -n "%s" || echo -n "%b"; }
     # Reset color
     [[ $1 != *r* ]] && echo -n "\e[0m"
     # Newline
