@@ -1,5 +1,7 @@
 #! /usr/bin/bash
 
+unalias -a
+
 alias startup="~/.config/startup.sh"
 alias resource="source ~/.bashrc" # Reread .bashrc
 alias c="clear"
