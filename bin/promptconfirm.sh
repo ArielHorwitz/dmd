@@ -4,8 +4,9 @@ set -e
 APP_NAME=$(basename "$0")
 ABOUT="Prompt the user for confirmation. Defaults to accept."
 CLI=(
-    -o "text;Prompt text;Confirm?"
+    -o "text;Prompt text (is passed through tcprint);Confirm?"
     -O "timeout;Timeout in seconds;;t"
+    -f "raw-text;Do not pass through tcprint;;r"
     -f "deny;Deny by default;;d"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
@@ -18,7 +19,14 @@ fi
 
 # Prompt
 [[ -n $deny ]] && yesno="(y/N)" || yesno="(Y/n)"
-printf "%b \e[35m%s\e[2;37m%b\e[0m " "$text" "$yesno" "$timeout_indicator"
+if [[ $raw_text ]]; then
+    printf "%s" "$text"
+elif [[ $text == *]* ]]; then
+    tcprint "n $text"
+else
+    tcprint "n]$text"
+fi
+printf " \e[35m%s\e[2;37m%b\e[0m " "$yesno" "$timeout_indicator"
 read $timeout -n 1 answer || answer_timeout=1
 
 # Print newline
