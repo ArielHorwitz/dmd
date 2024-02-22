@@ -81,7 +81,7 @@ visudo $quiet --check --strict --file $WORKING_DIR/sudoers >&2 || exit_error "vi
 # Confirm
 if [[ -z $noconfirm ]]; then
     bat --paging=never $WORKING_DIR/sudoers.d/*
-    prompt_ask 0 "Apply these to system?" || exit_error "User cancelled the operation."
+    promptconfirm -d "Apply these to system?" || exit_error "User cancelled the operation."
 fi
 # Copy to system
 rm --force /etc/sudoers.d/*
