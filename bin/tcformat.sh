@@ -13,7 +13,6 @@ A style can be named from the following list:
 * notice
 * warn
 * error
-* faint
 * retro
 
 # COLORS
@@ -92,13 +91,12 @@ get_color() {
 get_style_codes() {
     case $1 in
         # debugging
-        ok        ) echo -n "1;32;"    ;;
-        notice    ) echo -n "1;35;"    ;;
-        debug     ) echo -n "2;36;"    ;;
-        info      ) echo -n "1;36;"    ;;
-        warn      ) echo -n "1;33;"    ;;
-        error     ) echo -n "1;31;"    ;;
-        faint     ) echo -n "2;"       ;;
+        ok        ) echo -n "32;"    ;;
+        notice    ) echo -n "35;"    ;;
+        debug     ) echo -n "2;36;"  ;;
+        info      ) echo -n "36;"    ;;
+        warn      ) echo -n "33;"    ;;
+        error     ) echo -n "31;"    ;;
         # themes
         retro     ) echo -n "1;42;30;" ;;
     esac
