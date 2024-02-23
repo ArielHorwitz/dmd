@@ -9,6 +9,7 @@ config.plugins.autocomplete.min_len = 0
 config.plugins.autoreload.always_show_nagview = true
 config.plugins.bracketmatch.line_size = 4
 config.plugins.drawwhitespace = { enabled = true, show_leading = false, show_middle_min = 2 }
+config.plugins.lineguide.width = 0.5
 config.plugins.lineguide.enabled = true
 config.plugins.lineguide.rulers = { [1] = 80, [2] = 90, [3] = 100 }
 config.plugins.linenumbers.relative = true

@@ -1,8 +1,8 @@
 #! /bin/bash
 
-H=1.2
-M=1
-L=0.5
+H=1.0
+M=0.9
+L=0.7
 case $1 in
     bright    ) gamma=$H:$H:$H ;;
     dark      ) gamma=$L:$L:$L ;;

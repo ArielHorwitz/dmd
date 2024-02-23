@@ -1,7 +1,7 @@
 local style = require "core.style"
 local common = require "core.common"
 
-style.background = { common.color "#1a1b26" }
+style.background = { common.color "#16171f" }
 style.background2 = { common.color "#16161e" }
 style.background3 = { common.color "#24283b" }
 style.text = { common.color "#a9b1d6" }
@@ -9,10 +9,10 @@ style.caret = { common.color "#a9b1d6" }
 style.accent = { common.color "#7aa2f7" }
 style.dim = { common.color "#565f89" }
 style.divider = { common.color "#101014" }
-style.selection = { common.color "#282B3C" }
-style.line_number = { common.color "#363B54" }
-style.line_number2 = { common.color "#737AA2" }
-style.line_highlight = { common.color "#1E202E"}
+style.selection = { common.color "#282b3c" }
+style.line_number = { common.color "#363b54" }
+style.line_number2 = { common.color "#737aa2" }
+style.line_highlight = { common.color "#1e202e"}
 style.scrollbar = { common.color "#24283b" }
 style.scrollbar2 = { common.color "#414868" }
 
@@ -27,9 +27,8 @@ style.syntax["string"] = { common.color "#008b2e" }
 style.syntax["operator"] = { common.color "#2ac3de"}
 style.syntax["function"] = { common.color "#7aa2f7" }
 
--- PLUGINS
+-- plugins
 style.lint_warning = { common.color "#e80000" }
 style.bracketmatch_color = { common.color "#bb77ff" }
-style.guide = { common.color "#1E202E" }
-style.guide_highlight = { common.color "#363B54" }
-style.guide_width = 1
+style.guide = { common.color "#301a1e" }
+style.guide_highlight = { common.color "#363b54" }
