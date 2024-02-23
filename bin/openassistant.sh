@@ -2,7 +2,8 @@
 set -e
 
 API_URL="https://api.openai.com/v1/chat/completions"
-DEFAULT_CONFIG_DIR="$HOME/.config/openassistant"
+CONFIG_DIR="$HOME/.config/openassistant"
+HISTORY_DIR="$HOME/.local/share/openassistant/history"
 DEFAULT_MODEL="gpt-4-turbo-preview"
 DEFAULT_MAX_TOKENS=2048
 DEFAULT_TEMPERATURE="1"
@@ -35,16 +36,19 @@ CLI=(
     -O "top-p;Model top-p sampling;$DEFAULT_TOP_P;O"
     -O "frequency-penalty;Model frequency penalty;$DEFAULT_FREQUENCY_PENALTY;F"
     -O "presence-penalty;Model presence penalty;$DEFAULT_PRESENCE_PENALTY;P"
-    -O "config-dir;Location for default files;$DEFAULT_CONFIG_DIR;c"
+    -O "use-history;Use previous conversation from history;;H"
+    -f "list-history;List previous conversations from history and exit;;l"
+    -f "no-history;Don't save the conversation in history"
+    -f "no-name;Don't add a name to the conversation in history"
     -f "quiet;Be quiet (overrides --verbose);;q"
     -f "verbose;Be verbose;;v"
-    -f "redo-cached;Use cached query and response;;r"
     -f "read-stdin;Read from stdin instead of open an editor;;R"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
 [[ -z $args_quiet ]] || args_verbose=
+[[ -z $args_use_history ]] || args_no_history=1
 
 get_query() {
     if [[ -n $args_read_stdin ]]; then
@@ -52,7 +56,7 @@ get_query() {
         read query_content
     else
         [[ -n $EDITOR ]] || exit_error "No editor configured (use EDITOR environment variable)"
-        if [[ -z $args_redo_cached ]]; then
+        if [[ -z $args_use_history ]]; then
             if [[ -n $args_verbose ]]; then
                 tcprint "notice]Reading query from editor: \"$EDITOR\""
             fi
@@ -100,6 +104,7 @@ call_api() {
         "$API_URL"
         --silent --show-error
         -o "$response_file"
+        -D "$response_headers_file"
         -H "Content-Type: application/json"
         -H "Authorization: Bearer $openai_api_key"
         -d "$api_call_data"
@@ -121,6 +126,26 @@ read_response() {
     fi
 }
 
+save_history() {
+    local current_date=`date +%y-%m-%d-%H-%M-%S`
+    local convo_name=$current_date
+    if [[ -z $args_no_name ]]; then
+        tcprint "notice n]Name conversation: "
+        read user_given_convo_name
+        user_given_convo_name=$(echo $user_given_convo_name | sed 's/ /-/g')
+        [[ -z $user_given_convo_name ]] || convo_name="${current_date}__${user_given_convo_name}"
+    fi
+    local convo_dir="$HISTORY_DIR/$convo_name"
+    local history_files=(
+        "$CONFIG_DIR/system_instructions"
+        "$data_dir/query"
+        "$data_dir/response"
+        "$data_dir/headers_response"
+    )
+    mkdir --parents $convo_dir
+    cp -t $convo_dir ${history_files[@]}
+}
+
 print_sys_instructions() {
     tcprint "info bu]System instructions:"
     tcset "yellow d"
@@ -138,22 +163,47 @@ print_debug() {
     tcprint "debug]${openai_api_key:0:8}..."
     tcprint "info bu]Request data:"
     echo "$api_call_data" | jq
+    tcprint "info bu]Response headers:"
+    bat "$response_headers_file"
 }
 
-# Config files
-sys_instruct_file="$args_config_dir/system_instructions"
-key_file="$args_config_dir/apikey"
-query_file="$args_config_dir/query"
-response_file="$args_config_dir/response"
+list_history() {
+    if [[ -d "$HISTORY_DIR" ]]; then
+        find "$HISTORY_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%P\n'
+    fi
+}
 
-[[ -d $args_config_dir ]] || mkdir --parents $args_config_dir
-[[ -f $sys_instruct_file ]] || echo 'You are a helpful assistant.' > $sys_instruct_file
-[[ -f $key_file ]] || exit_error "Missing OpenAI API key file: $key_file"
+# List history
+if [[ -n $args_list_history ]]; then
+    list_history
+    exit 0
+fi
+
+# Config files
+key_file="$CONFIG_DIR/apikey"
+sys_instruct_file="$CONFIG_DIR/system_instructions"
+data_dir="$HISTORY_DIR/.last"
+
+if [[ -n $args_use_history ]]; then
+    convo_name=$(list_history | grep "$args_use_history" -m 1)
+    [[ -n $args_quiet ]] || tcprint "notice]Using historical conversation: $convo_name"
+    data_dir="$HISTORY_DIR/$convo_name"
+    sys_instruct_file="$data_dir/system_instructions"
+fi
+
+query_file="$data_dir/query"
+response_file="$data_dir/response"
+response_headers_file="$data_dir/headers_response"
+
+[[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
+[[ -d $data_dir ]] || mkdir --parents $data_dir
 
 # API key
+[[ -f $key_file ]] || exit_error "Missing OpenAI API key file: $key_file"
 openai_api_key="$(cat $key_file)"
 [[ -n $openai_api_key ]] || exit_error "Empty OpenAI API key"
 # System instructions
+[[ -f $sys_instruct_file ]] || echo 'You are a helpful assistant.' > $sys_instruct_file
 system_instructions="$(cat $sys_instruct_file)"
 [[ -z $args_verbose ]] || print_sys_instructions
 # Query
@@ -163,8 +213,9 @@ generate_call_data
 [[ -n $args_quiet ]] || print_query
 
 # Call
-[[ -n $args_redo_cached ]] || call_api
+[[ -n $args_use_history ]] || call_api
 read_response
+[[ -n $args_no_history ]] || save_history
 
 # Debugging
 [[ -z $args_verbose ]] || print_debug
