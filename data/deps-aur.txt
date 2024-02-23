@@ -20,3 +20,4 @@ tree
 neofetch
 words
 jq
+bc
