@@ -2,6 +2,7 @@
 set -e
 
 CONFIG_DIR="$HOME/.config/openassistant"
+MODEL_SETTINGS_FILE="$CONFIG_DIR/model_settings"
 HISTORY_DIR="$HOME/.local/share/openassistant/history"
 KEY_FILE="$CONFIG_DIR/apikey"
 SYSTEM_INSTRUCTIONS_FILE="$CONFIG_DIR/system_instructions"
@@ -12,40 +13,40 @@ API_URL="https://api.openai.com/v1/chat/completions"
 TOKEN_COST_PROMPT=0.00001
 TOKEN_COST_RESPONSE=0.00003
 
-DEFAULT_MODEL="gpt-4-turbo-preview"
-DEFAULT_MAX_TOKENS=2048
-DEFAULT_TEMPERATURE=1
-DEFAULT_TOP_P=1
-DEFAULT_FREQUENCY_PENALTY=0.2
-DEFAULT_PRESENCE_PENALTY=0.1
+DEFAULT_MODEL_SETTINGS='
+model: "gpt-4-turbo-preview"
+max_tokens: 4096
+temperature: 1.0
+top_p: 1.0
+frequency_penalty: .05
+presence_penalty: .01
+'
 
 APP_NAME=$(basename "$0")
 ABOUT='Query your personal OpenAI assistant.
 
-See the model endpoint compatibility table (https://platform.openai.com/docs/models/model-endpoint-compatibility) for details on which models work with the Chat API at "/v1/chat/completions". For more details about model settings, see (https://platform.openai.com/docs/api-reference/chat).
-'
+See configuration folder (--config-dir) for options. For more details see: https://platform.openai.com/docs/api-reference/chat.'
 CLI=(
     --prefix "args_"
-    -O "model;ID of the model to use;$DEFAULT_MODEL;m"
-    -O "max-tokens;Maximum tokens including system instructions, prompt, and response;$DEFAULT_MAX_TOKENS;M"
-    -O "temperature;0 to 2 (more random);$DEFAULT_TEMPERATURE"
-    -O "top-p;0 to 1 (nucleus sampling);$DEFAULT_TOP_P"
-    -O "frequency-penalty;-2.0 to 2.0 (less repetition);$DEFAULT_FREQUENCY_PENALTY"
-    -O "presence-penalty;-2.0 to 2.0 (more new topics);$DEFAULT_PRESENCE_PENALTY"
-    -O "use-history;Use previous conversation from history;;H"
-    -f "list-history;List previous conversations from history and exit;;l"
-    -f "show-usage;Show usage stats and exit"
-    -f "no-history;Don't save the conversation in history"
-    -f "no-name;Don't add a name to the conversation in history"
-    -f "quiet;Be quiet (overrides --verbose);;q"
-    -f "verbose;Be verbose;;v"
+    -O "historical;Show conversation from history;;H"
+    -O "history;History mode: (d)isable, (a)uto, (n)ame ;a;y"
+    -f "list;List conversations from history and exit;;l"
+    -f "show-usage;Show usage stats and exit;;u"
+    -f "config-dir;Show configuration directory path and exit;;c"
+    -f "quiet;Only print the response (overrides --verbose);;q"
+    -f "verbose;Show debugging details;;v"
     -f "read-stdin;Read from stdin instead of open an editor;;R"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
 [[ -z $args_quiet ]] || args_verbose=
-[[ -z $args_use_history ]] || args_no_history=1
+
+case $args_history in
+    d | disable  ) history_enabled= ;;
+    a | auto     ) history_enabled=1 ;;
+    n | name     ) history_enabled="name" ;;
+esac
 
 get_query() {
     if [[ -n $args_read_stdin ]]; then
@@ -53,45 +54,49 @@ get_query() {
         read query_content
     else
         [[ -n $EDITOR ]] || exit_error "No editor configured (use EDITOR environment variable)"
-        if [[ -z $args_use_history ]]; then
-            if [[ -n $args_verbose ]]; then
-                tcprint "notice]Reading query from editor: \"$EDITOR\""
-            fi
-            touch $query_file
-            `$EDITOR $query_file`
+        if [[ -z $args_historical ]]; then
+            [[ -z $args_verbose ]] || tcprint "notice]Reading query from editor: \"$EDITOR\""
+            [[ -f $query_file ]] || echo 'Enter your prompt here and then close your editor' > $query_file
+            `$EDITOR $query_file` &>/dev/null
         fi
         query_content="$(cat $query_file)"
     fi
 }
 
+get_model_setting() {
+    local stat_name="$1"
+    local line=$(grep -E "^${stat_name}: " $MODEL_SETTINGS_FILE) || exit_error "Missing model setting: $stat_name. Delete $MODEL_SETTINGS_FILE to regenerate defaults."
+    printf "%s" "${line#${stat_name}: }"
+}
+
 generate_call_data() {
-    json_template='{
-    model: $model,
+    local json_template='{
     messages: [
         {
-        role: "system",
-        content: $system_instructions
+            role: "system",
+            content: $system_instructions
         },
         {
-        role: "user",
-        content: $query_content
+            role: "user",
+            content: $query_content
         }
     ],
+    model: $model,
     top_p: $top_p,
     max_tokens: $max_tokens,
     temperature: $temperature,
     frequency_penalty: $frequency_penalty,
     presence_penalty: $presence_penalty
-    }'
-    jq_args=(
-        --arg model "$args_model"
+}'
+    local jq_args=(
         --arg system_instructions "$system_instructions"
         --arg query_content "$query_content"
-        --argjson max_tokens "$args_max_tokens"
-        --argjson temperature "$args_temperature"
-        --argjson top_p "$args_top_p"
-        --argjson frequency_penalty "$args_frequency_penalty"
-        --argjson presence_penalty "$args_presence_penalty"
+        --argjson model $(get_model_setting model)
+        --argjson max_tokens $(get_model_setting max_tokens)
+        --argjson temperature $(get_model_setting temperature)
+        --argjson top_p $(get_model_setting top_p)
+        --argjson frequency_penalty $(get_model_setting frequency_penalty)
+        --argjson presence_penalty $(get_model_setting presence_penalty)
     )
     api_call_data=$(jq -n "${jq_args[@]}" "$json_template")
 }
@@ -114,18 +119,21 @@ call_api() {
 read_response() {
     if jq -e 'has("error")' "$response_file" >/dev/null; then
         tcprint "yellow bu]Error:"
+        jq < "$response_file"
         exit_error "$(jq -r '.error.message' "$response_file")"
     elif jq -e 'has("choices")' "$response_file" >/dev/null; then
         [[ -n $args_quiet ]] || tcprint "info bu]OpenAssistant says:"
         jq -r '.choices.[0].message.content' "$response_file" | bat -pp --language markdown
-        local cost=$(get_usage_stat $usage_file cost)
-        local tokens=$(get_usage_stat $usage_file tokens)
-        local tokens_prompt=$(get_usage_stat $usage_file tokens_prompt)
-        local tokens_response=$(get_usage_stat $usage_file tokens_response)
-        local cost_prompt=$(get_usage_stat $usage_file cost_prompt)
-        local cost_response=$(get_usage_stat $usage_file cost_response)
-        tcprint "info n]$tokens tokens (~\$$cost)"
-        tcprint "debug] [prompt: $tokens_prompt (~\$$cost_prompt)] [response: $tokens_response (~\$$cost_response)]"
+        if [[ -z $args_quiet ]]; then
+            local cost=$(get_usage_stat $usage_file cost)
+            local tokens=$(get_usage_stat $usage_file tokens)
+            local tokens_prompt=$(get_usage_stat $usage_file tokens_prompt)
+            local tokens_response=$(get_usage_stat $usage_file tokens_response)
+            local cost_prompt=$(get_usage_stat $usage_file cost_prompt)
+            local cost_response=$(get_usage_stat $usage_file cost_response)
+            tcprint "info n]$tokens tokens (~\$$cost)"
+            tcprint "debug] [prompt: $tokens_prompt (~\$$cost_prompt)] [response: $tokens_response (~\$$cost_response)]"
+        fi
     else
         jq < "$response_file"
     fi
@@ -158,7 +166,7 @@ tokens_response: $tokens_response
 cost_prompt: $cost_prompt
 cost_response: $cost_response
 " > $usage_file
-    if [[ -z $args_use_history ]]; then
+    if [[ -z $args_historical ]]; then
         echo "TOTALS
 start: $(get_usage_stat $TOTAL_USAGE_FILE start `date +%y-%m-%d-%H-%M-%S`)
 cost: $(echo $cost + `get_usage_stat $TOTAL_USAGE_FILE cost` | bc)
@@ -174,11 +182,17 @@ cost_response: $(echo $cost_response + `get_usage_stat $TOTAL_USAGE_FILE cost_re
 save_history() {
     local current_date=`date +%y-%m-%d-%H-%M-%S`
     local convo_name=$current_date
-    if [[ -z $args_no_name ]]; then
-        tcprint "notice n]Name conversation: "
+    local user_given_convo_name
+    if [[ $history_enabled = "name" ]]; then
+        tcprint "debug] [Leave blank for auto naming or use '.' to skip saving]"
+        tcprint "notice n]Conversation name: "
         read user_given_convo_name
-        user_given_convo_name=$(echo $user_given_convo_name | sed 's/ /-/g')
-        [[ -z $user_given_convo_name ]] || convo_name="${current_date}__${user_given_convo_name}"
+        if [[ user_given_convo_name = "." ]]; then
+            return 0
+        elif [[ -z $user_given_convo_name ]]; then
+            local user_given_convo_name=$(echo $user_given_convo_name | sed 's/ /-/g')
+            local convo_name="${current_date}__${user_given_convo_name}"
+        fi
     fi
     local convo_dir="$HISTORY_DIR/$convo_name"
     local history_files=(
@@ -192,11 +206,20 @@ save_history() {
     cp -t $convo_dir ${history_files[@]}
 }
 
-print_sys_instructions() {
+print_debug_prequery() {
+    tcprint "info bu]Environment:"
+    tcprint "debug n]    API key: "; echo "${openai_api_key:0:8}..."
+    tcprint "debug n] Config dir: "; echo $CONFIG_DIR
+    tcprint "debug n]   Data dir: "; echo $data_dir
     tcprint "info bu]System instructions:"
     tcset "yellow d"
     printf "%s\n" "$system_instructions"
     tcreset
+}
+
+print_debug_precall() {
+    tcprint "info bu]Request data:"
+    echo "$api_call_data" | jq
 }
 
 print_query() {
@@ -205,31 +228,36 @@ print_query() {
 }
 
 print_debug() {
-    tcprint "info bun]API key: "
-    tcprint "debug]${openai_api_key:0:8}..."
-    tcprint "info bu]Request data:"
-    echo "$api_call_data" | jq
     tcprint "info bu]Response headers:"
     bat "$response_headers_file"
 }
 
 list_history() {
     if [[ -d "$HISTORY_DIR" ]]; then
-        find "$HISTORY_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%P\n'
+        find "$HISTORY_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort -r
     fi
 }
 
-# List history
-if [[ -n $args_list_history ]]; then
+# List history (--list)
+if [[ -n $args_list ]]; then
     list_history
+    exit 0
+elif [[ -n $args_config_dir ]]; then
+    echo $CONFIG_DIR
+    exit 0
+elif [[ -n $args_history_dir ]]; then
+    echo $HISTORY_DIR
+    exit 0
+elif [[ -n $args_show_usage ]]; then
+    cat $TOTAL_USAGE_FILE
     exit 0
 fi
 
 # Resolve data directory and system instructions file locations
 data_dir="$HISTORY_DIR/.last"
 system_instructions_file=$SYSTEM_INSTRUCTIONS_FILE
-if [[ -n $args_use_history ]]; then
-    convo_name=$(list_history | grep "$args_use_history" -m 1)
+if [[ -n $args_historical ]]; then
+    convo_name=$(list_history | grep "$args_historical" -m 1)
     [[ -n $args_quiet ]] || tcprint "notice]Using historical conversation: $convo_name"
     data_dir="$HISTORY_DIR/$convo_name"
 fi
@@ -240,28 +268,34 @@ response_file="$data_dir/response"
 response_headers_file="$data_dir/headers_response"
 usage_file="$data_dir/usage"
 
+# Create defaults
 [[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
 [[ -d $data_dir ]] || mkdir --parents $data_dir
+[[ -f $MODEL_SETTINGS_FILE ]] || echo "$DEFAULT_MODEL_SETTINGS" > $MODEL_SETTINGS_FILE
+[[ -f $TOTAL_USAGE_FILE ]] || touch $TOTAL_USAGE_FILE
+
+# System instructions
+[[ -f $system_instructions_file ]] || echo 'You are a helpful assistant.' > $system_instructions_file
+system_instructions="$(cat $system_instructions_file)"
 
 # API key
 [[ -f $KEY_FILE ]] || exit_error "Missing OpenAI API key file: $KEY_FILE"
 openai_api_key="$(cat $KEY_FILE)"
 [[ -n $openai_api_key ]] || exit_error "Empty OpenAI API key"
-# System instructions
-[[ -f $system_instructions_file ]] || echo 'You are a helpful assistant.' > $system_instructions_file
-system_instructions="$(cat $system_instructions_file)"
-[[ -z $args_verbose ]] || print_sys_instructions
-# Query
+
+# Get query
+[[ -z $args_verbose ]] || print_debug_prequery
 get_query
 [[ -n $query_content ]] || exit_error "Query content is empty"
 generate_call_data
 [[ -n $args_quiet ]] || print_query
 
-# Call
-[[ -n $args_use_history ]] || call_api
+# Call API
+[[ -z $args_verbose ]] || print_debug_precall
+[[ -n $args_historical ]] || call_api
 count_usage
 read_response
-[[ -n $args_no_history ]] || save_history
+[[ -z $history_enabled ]] || save_history
 
 # Debugging
 [[ -z $args_verbose ]] || print_debug
