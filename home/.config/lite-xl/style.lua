@@ -6,7 +6,7 @@ local style = require "core.style"
 
 -------------------------------- Theme ----------------------------------------
 
-core.reload_module("colors.synthwave")
+core.reload_module("colors.ninja")
 
 
 -------------------------------- Fonts ----------------------------------------
