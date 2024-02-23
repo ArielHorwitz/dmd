@@ -1,49 +1,37 @@
 #! /bin/bash
 set -e
 
-API_URL="https://api.openai.com/v1/chat/completions"
-# Token costs are denominated in USD per token
-TOKEN_COST_PROMPT=0.00001
-TOKEN_COST_RESPONSE=0.00003
-
 CONFIG_DIR="$HOME/.config/openassistant"
 HISTORY_DIR="$HOME/.local/share/openassistant/history"
 KEY_FILE="$CONFIG_DIR/apikey"
 SYSTEM_INSTRUCTIONS_FILE="$CONFIG_DIR/system_instructions"
 TOTAL_USAGE_FILE="$CONFIG_DIR/usage"
 
+API_URL="https://api.openai.com/v1/chat/completions"
+# Token costs are denominated in USD per token
+TOKEN_COST_PROMPT=0.00001
+TOKEN_COST_RESPONSE=0.00003
+
 DEFAULT_MODEL="gpt-4-turbo-preview"
 DEFAULT_MAX_TOKENS=2048
-DEFAULT_TEMPERATURE="1"
-DEFAULT_TOP_P="1"
-DEFAULT_FREQUENCY_PENALTY="0.2"
-DEFAULT_PRESENCE_PENALTY="0.1"
+DEFAULT_TEMPERATURE=1
+DEFAULT_TOP_P=1
+DEFAULT_FREQUENCY_PENALTY=0.2
+DEFAULT_PRESENCE_PENALTY=0.1
 
 APP_NAME=$(basename "$0")
-ABOUT="Query your personal OpenAI assistant.
+ABOUT='Query your personal OpenAI assistant.
 
-MODEL: ID of the model to use. See the model endpoint compatibility table (https://platform.openai.com/docs/models/model-endpoint-compatibility) for details on which models work with the Chat API at '/v1/chat/completions'.
-
-MAX TOKENS: The maximum number of tokens that can be generated in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
-
-TEMPERATURE: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. It is generally recommended to alter this or top_p but not both.
-
-TOP-P: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. It is generally recommended to alter this or temperature but not both.
-
-FREQUENCY PENALTY: Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
-
-PRESENCE PENALTY: Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-
-See details: https://platform.openai.com/docs/api-reference/chat
-"
+See the model endpoint compatibility table (https://platform.openai.com/docs/models/model-endpoint-compatibility) for details on which models work with the Chat API at "/v1/chat/completions". For more details about model settings, see (https://platform.openai.com/docs/api-reference/chat).
+'
 CLI=(
     --prefix "args_"
-    -O "model;Open AI gpt model;$DEFAULT_MODEL;m"
-    -O "max-tokens;Maximum tokens including prompt and response;$DEFAULT_MAX_TOKENS;M"
-    -O "temperature;Model temperature sampling;$DEFAULT_TEMPERATURE"
-    -O "top-p;Model top-p sampling;$DEFAULT_TOP_P"
-    -O "frequency-penalty;Model frequency penalty;$DEFAULT_FREQUENCY_PENALTY"
-    -O "presence-penalty;Model presence penalty;$DEFAULT_PRESENCE_PENALTY"
+    -O "model;ID of the model to use;$DEFAULT_MODEL;m"
+    -O "max-tokens;Maximum tokens including system instructions, prompt, and response;$DEFAULT_MAX_TOKENS;M"
+    -O "temperature;0 to 2 (more random);$DEFAULT_TEMPERATURE"
+    -O "top-p;0 to 1 (nucleus sampling);$DEFAULT_TOP_P"
+    -O "frequency-penalty;-2.0 to 2.0 (less repetition);$DEFAULT_FREQUENCY_PENALTY"
+    -O "presence-penalty;-2.0 to 2.0 (more new topics);$DEFAULT_PRESENCE_PENALTY"
     -O "use-history;Use previous conversation from history;;H"
     -f "list-history;List previous conversations from history and exit;;l"
     -f "show-usage;Show usage stats and exit"
