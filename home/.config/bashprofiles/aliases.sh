@@ -12,6 +12,7 @@ alias taru="tar -vkxf"
 alias tarl="tar -tf"
 alias rp="rhinopuffin"
 alias gp="geckopanda"
+alias oa="openassistant"
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
 alias ls='ls --color=auto'

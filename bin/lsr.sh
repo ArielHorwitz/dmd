@@ -1,4 +1,2 @@
 #!/bin/bash
-
-lsl -rg $@
-
+lsl -r $@
