@@ -1,40 +1,41 @@
 # See also: https://wiki.archlinux.org/title/Bash/Prompt_customization
-#           
 
-style = "Double"
+# Available styles are: double, extended, full, normal, micro, nano
+style = "micro"
+show_error_icon = true
 
 [text]
+icon_err = " $?"
+icon_ok = ""
+at = "@"
+delim = " "
+prompt = " "
 user = "\\u"
 host = "\\H"
 loc = "\\w"
-prompt = " "
-icon_ok = ""
-icon_err = " $?"
-at = "@"
-sleft = "❰"
-sright = "❱"
 
 [fg]
-user = "AA77FF"
-host = "CC55FF"
-loc = "FFCC00"
-prompt = "00FF00"
-icon_ok = "8899FF"
-icon_err = "FF7777"
-at = "777777"
-sleft = "FF33CC"
-sright = "FF33CC"
+icon_err = "FF5533"
+icon_ok = "00416A"
+at = "00416A"
+delim = "00416A"
+prompt = "89A1D4"
+user = "1162EB"
+host = "1162EB"
+loc = "19A1D4"
 
 [command]
-fg = "339933"
+fg = "89A1D4"
 
 [ps0] # After each command, before any output
 text = ""
 color = "FFFFFF"
 [ps2] # Multiline prompt
 text = " "
-color = "FF8800"
-[ps4] # Levels of indirection (bash debugging)
-text = "↳"
-color = "55FFCC"
-
+color = "0088FF"
+[ps3] # Selection prompt
+text = "● "
+color = "0088FF"
+[ps4] # Bash debugging
+text = " "
+color = "0088FF"
