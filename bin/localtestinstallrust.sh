@@ -4,7 +4,7 @@ set -e
 
 
 APP_NAME=$(basename "$0")
-ABOUT="Build in release mode and install using `localtestinstall`."
+ABOUT="Build in release mode and install using 'localtestinstall'."
 CLI=(
     -o "bin;Executable to install"
     -f "clear;Clear the local testing bin directory;;c"
