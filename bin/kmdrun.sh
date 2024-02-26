@@ -3,10 +3,11 @@
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." >&2 && exit 1
 
 # Find displays
-mapfile -t displays < ~/.config/iuk/displays
+DISPLAYS_FILE=$HOME/.config/hardware/displays
+mapfile -t displays < $DISPLAYS_FILE
 
 # Find a keyboard device path
-device_file=$HOME/.config/iuk/input
+device_file=$HOME/.config/hardware/input
 all_device_files=`find /dev/input/by-path/ /dev/input/by-id/ -type l`
 while read my_device; do
     echo "Searching for device: $my_device"

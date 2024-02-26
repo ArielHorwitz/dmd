@@ -1,5 +1,7 @@
 #! /bin/bash
 
+DISPLAYS_FILE=$HOME/.config/hardware/displays
+
 # Command line interface (based on `spongecrab --generate`)
 APP_NAME=$(basename "$0")
 ABOUT="Configure displays"
@@ -18,7 +20,7 @@ eval "$CLI" || exit 1
 
 xrandr --auto
 
-[[ -n $displays ]] || mapfile -t displays < ~/.config/iuk/displays
+[[ -n $displays ]] || mapfile -t displays < $DISPLAYS_FILE
 
 left=${displays[0]}
 echo -n "$left"

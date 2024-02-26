@@ -1,5 +1,6 @@
 #! /bin/bash
 
+DISPLAYS_FILE=$HOME/.config/hardware/displays
 LOGDIR=/tmp/logs-$USER
 [[ ! -d $LOGDIR ]] || rm -rf $LOGDIR
 mkdir $LOGDIR
@@ -16,7 +17,7 @@ log "iuk startup"
 localtestinstall -c
 
 log "configuring displays"
-displaygeometry --file $HOME/.config/iuk/displays
+displaygeometry --file $DISPLAYS_FILE
 xset -dpms s 7200
 xsetroot -solid "#000000"
 

@@ -24,7 +24,7 @@
     kmdr (cmd-button "kmdrun")
     i3re (cmd-button "i3-msg restart")
     wmlk (cmd-button "loginctl lock-session")
-    wmds (cmd-button "displaygeometry --file ~/.config/iuk/displays")
+    wmds (cmd-button "displaygeometry --file ~/.config/hardware/displays")
     wmlo (cmd-button "i3-msg exit")
     wmss (cmd-button "loginctl lock-session && systemctl suspend")
     wmhb (cmd-button "systemctl hibernate")
