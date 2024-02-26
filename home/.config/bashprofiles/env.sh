@@ -7,14 +7,13 @@ export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
 # ~>>>
-
+# ~>>> lembay
 # Pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 # we rewrite the paths later, but these 2 lines provide environment variables
 # and functions so we can't skip
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-# ~>>> lemnos
 # ~<<<
 
 # Path

@@ -1,6 +1,7 @@
 [colors]
 draw_bold_text_with_bright_colors = false
 
+~>>>
 [colors.bright]
 black = "0x7f7f7f"
 blue = "0x6c6cff"
@@ -20,6 +21,27 @@ magenta = "0xcd00cd"
 red = "0xcd0000"
 white = "0xe5e5e5"
 yellow = "0xcdcd00"
+~>>> test
+[colors.bright]
+black = "0x454545"
+blue = "0xCCACED"
+cyan = "0x74C3E4"
+green = "0x5ACCAF"
+magenta = "0xF2A1C2"
+red = "0xE0AF85"
+white = "0xC0C0C0"
+yellow = "0xC8C874"
+
+[colors.normal]
+black = "0x000000"
+blue = "0xA3B8EF"
+cyan = "0x50CACD"
+green = "0x80C990"
+magenta = "0xE6A3DC"
+red = "0xEFA6A2"
+white = "0xffffff"
+yellow = "0xA69460"
+~<<<
 
 [colors.primary]
 background = "0x111111"
