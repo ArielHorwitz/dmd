@@ -5,7 +5,7 @@ set -e
 CONFIG_DIR="$HOME/.config/openassistant"
 KEY_FILE="$CONFIG_DIR/apikey"
 MODEL_SETTINGS_FILE="$CONFIG_DIR/model_settings"
-BASE_SYS_INSTR_FILE="$CONFIG_DIR/system_instructions"
+SYS_INSTR_DIR="$CONFIG_DIR/system_instructions"
 LOCAL_DIR="$HOME/.local/share/openassistant"
 HISTORY_DIR="$LOCAL_DIR/history"
 STATS_FILE_TOTALS="$LOCAL_DIR/stats"
@@ -35,12 +35,13 @@ TOKEN_COST_RESPONSE=0.00003
 
 # Generate tree structure
 [[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
+[[ -d $SYS_INSTR_DIR ]] || mkdir --parents $SYS_INSTR_DIR
 [[ -d $HISTORY_DIR ]] || mkdir --parents $HISTORY_DIR
 [[ -d $CONVO_DIR ]] || mkdir --parents $CONVO_DIR
 # Create defaults
 [[ -f $KEY_FILE ]] || echo "sk-YOUR_OPENAI_API_KEY" > $KEY_FILE
 [[ -f $MODEL_SETTINGS_FILE ]] || echo "$DEFAULT_MODEL_SETTINGS" > $MODEL_SETTINGS_FILE
-[[ -f $BASE_SYS_INSTR_FILE ]] || echo $DEFAULT_SYSTEM_INSTRUCTIONS > $BASE_SYS_INSTR_FILE
+[[ -f $SYS_INSTR_DIR/default ]] || echo $DEFAULT_SYSTEM_INSTRUCTIONS > $SYS_INSTR_DIR/default
 [[ -f $STATS_FILE_TOTALS ]] || echo "No recorded stats." > $STATS_FILE_TOTALS
 
 # Wrapper for error handling
@@ -56,6 +57,7 @@ ABOUT='Query your personal OpenAI assistant.
 Write your OpenAI API key in the configuration folder (--config-dir).'
 CLI=(
     --prefix "args_"
+    -O "preset;Instructions preset;default;p"
     -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;ask-yes;y"
     -O "load;Load a conversation index (see --list);;L"
     -f "list;List conversations from history;;l"
@@ -86,7 +88,11 @@ get_model_setting() {
 }
 
 get_system_instructions() {
-    [[ -f $SYS_INSTR_FILE ]] || cp $BASE_SYS_INSTR_FILE $SYS_INSTR_FILE
+    if [[ ! -f $SYS_INSTR_FILE ]]; then
+        local file="$SYS_INSTR_DIR/$args_preset"
+        [[ -f $file ]] || exit_error "No such preset: $preset"
+        cp "$file" $SYS_INSTR_FILE
+    fi
     system_instructions="$(cat $SYS_INSTR_FILE)"
 }
 
