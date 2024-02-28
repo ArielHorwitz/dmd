@@ -2,7 +2,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     esc   @wnav @edit XX    @txtm @scrU home  up    end   pgup  XX    XX    @text  XX    XX    XX     XX    XX    XX    XX
-  @text @audi @muxr XX    @mous @mswn @scrD left  down  right pgdn  XX    _                               XX    XX    XX
+  @text @audi @muxr @mous @mswn XX    @scrD left  down  right pgdn  XX    _                               XX    XX    XX
   _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -17,7 +17,7 @@
     wnav (layer-toggle window_navigation)
     muxr (layer-toggle multiplexer)
     edit (layer-toggle editing)
-    mous (around (layer-toggle mouse) (layer-toggle mouse4))
+    mous (around (layer-toggle mouse) (layer-toggle mouse3))
     audi (layer-toggle audio)
     term (layer-toggle terminal)
     txtm (layer-toggle text_macros)

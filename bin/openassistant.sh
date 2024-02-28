@@ -90,7 +90,7 @@ get_model_setting() {
 get_system_instructions() {
     if [[ ! -f $SYS_INSTR_FILE ]]; then
         local file="$SYS_INSTR_DIR/$args_preset"
-        [[ -f $file ]] || exit_error "No such preset: $preset"
+        [[ -f $file ]] || exit_error "No such preset: $args_preset"
         cp "$file" $SYS_INSTR_FILE
     fi
     system_instructions="$(cat $SYS_INSTR_FILE)"
@@ -175,7 +175,7 @@ read_response() {
 
 print_response() {
     [[ -n $QUIET ]] || tcprint "green bu]OpenAssistant says:"
-    bat -pp --color always --language markdown $RESPONSE_CONTENT_FILE
+    markdown $RESPONSE_CONTENT_FILE
     if [[ -z $QUIET ]]; then
         local cost=$(get_stat_current cost)
         local tokens=$(get_stat_current tokens)
@@ -297,7 +297,7 @@ print_debug_precall() {
 
 print_query() {
     tcprint "green bu]Query:"
-    printf "%s\n" "$query_content" | bat -pp --color always --language markdown
+    printf "%s\n" "$query_content" | markdown
 }
 
 print_debug() {

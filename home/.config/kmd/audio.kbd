@@ -16,8 +16,8 @@
 )
 (defalias
     aud2 (layer-toggle audio_alt)
-    sksp (cmd-button "audio_speakers")
-    skhd (cmd-button "audio_headphones")
+    sksp (cmd-button "adevice speakers")
+    skhd (cmd-button "adevice headphones")
     volu (cmd-button "avolume --increase 2")
     vold (cmd-button "avolume --decrease 2")
     volU (cmd-button "avolume --increase 10")

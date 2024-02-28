@@ -19,25 +19,25 @@ C+=":ln=3;38;5;43"
 
 # Permissions
 #     ur User +r bit
-C+=":ur=4;38;5;142"
-#     uw User +w bit
-C+=":uw=4;38;5;124"
-#     ux User +x bit (files)
-C+=":ux=4;38;5;34"
-#     ue User +x bit (file types)
-C+=":ue=4;38;5;34"
+C+=":ur=38;5;142;4;1"
 #     gr Group +r bit
 C+=":gr=38;5;100"
+#     tr Others +r bit
+C+=":tr=38;5;142;1"
+#     uw User +w bit
+C+=":uw=38;5;124;4;1"
 #     gw Group +w bit
 C+=":gw=38;5;88"
+#     tw Others +w bit
+C+=":tw=38;5;124;1"
+#     ux User +x bit (files)
+C+=":ux=38;5;34;4;1"
+#     ue User +x bit (file types)
+C+=":ue=38;5;34;4;1"
 #     gx Group +x bit
 C+=":gx=38;5;28"
-#     tr Others +r bit
-C+=":tr=38;5;100"
-#     tw Others +w bit
-C+=":tw=38;5;88"
 #     tx Others +x bit
-C+=":tx=38;5;28"
+C+=":tx=38;5;34;1"
 #     su Higher bits (files)
 #     sf Higher bits (other types)
 #     xa Extended attribute marker
@@ -73,7 +73,7 @@ C+=":un=38;5;124"
 #     xx Punctuation
 C+=":xx=38;5;240"
 #     da Timestamp
-C+=":da=38;5;127"
+C+=":da=38;5;53"
 #     in File inode
 #     bl Number of blocks
 #     hd Table header row

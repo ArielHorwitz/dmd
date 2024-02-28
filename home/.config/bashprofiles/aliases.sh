@@ -13,13 +13,13 @@ alias tarl="tar -tf"
 alias rp="rhinopuffin"
 alias gp="geckopanda"
 alias oa="openassistant"
-alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
+alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 alias watcha="watch "
 
 # Python
@@ -30,8 +30,9 @@ alias py="python main.py"
 alias pyflint="black --fast .; isort --profile black -l 88 .; flake8 --max-line-length 88 ."
 
 # Rust
+alias cr="cargo run --"
 alias crq="cargo run -q --"
-alias crqf="cargo fmt; cargo run -q --"
+alias crf="cargo fmt; cargo run -q --"
 alias rustbt_on="export RUST_BACKTRACE=1"
 alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
