@@ -61,6 +61,8 @@ CLI=(
     -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;ask-yes;y"
     -O "load;Load a conversation index (see --list);;L"
     -O "delete;Delete a conversation index (see --list);;D"
+    -O "list-offset;Index offset of conversations to show (see --list);0;O"
+    -O "list-limit;Limit number of conversations to show (see --list);10;T"
     -f "list;List conversations from history;;l"
     -f "stats;Print recorded stats;;s"
     -f "config-dir;Print configuration directory path;;c"
@@ -312,21 +314,24 @@ list_conversations() {
 
 list_history() {
     local dirs
-    local query_cols=$((`tput cols` - 19))
+    local query_cols=$((`tput cols` - 29))
     local query_cap=$((query_cols - 5))
     mapfile dirs <<< `list_conversations`
     [[ ${#dirs[@]} -gt 0 ]] || return 0
-    for index in ${!dirs[@]}; do
+    local start=$args_list_offset
+    local end=$((args_list_limit + start))
+    local max=${#dirs}
+    for ((index=start; index<=end && index<=max; index++)); do
         tcprint "purple dn]`printf %-2s $index` "
         local dir=`echo "$HISTORY_DIR/${dirs[index]}" | xargs`
         local fulldate=`basename $dir`
         tcprint "blue dn]`printf '%-9s' ${fulldate:0:8}`"
         local dtime=`cut -d- -f4- <<< $fulldate | sed 's/-/:/g'`
         tcprint "blue dn]`printf '%-9s' ${dtime:0:8}` "
-        # local ptokens=$(printf '%3s' $(wc -w "$dir/query" 2>&- | awk '{print $1}' || printf "??"))
-        # local rtokens=$(printf '%3s' $(wc -w "$dir/response_content" 2>&- | awk '{print $1}' || printf "??"))
-        # tcprint "red dn]$ptokens "
-        # tcprint "green dn]$rtokens "
+        local ptokens=$(printf '%3s' $(wc -w "$dir/query" 2>&- | awk '{print $1}' || printf "??"))
+        local rtokens=$(printf '%3s' $(wc -w "$dir/response_content" 2>&- | awk '{print $1}' || printf "??"))
+        tcprint "red dn]$ptokens "
+        tcprint "green dn]$rtokens "
         local query_line=$(tr '\n' ' ' < "$dir/query" || echo "??")
         [[ ${#query_line} -le $query_cols ]] || local query_line="${query_line:0:query_cap}.."
         tcprint "cyan dn]$query_line"
@@ -339,19 +344,21 @@ get_conversation() {
     local dirs
     mapfile dirs <<< `list_conversations`
     local dirname=`echo "${dirs[index]}" | xargs`
-    echo "$HISTORY_DIR/$dirname"
+    [[ -n $dirname ]] || return 1
+    local dir="$HISTORY_DIR/$dirname"
+    [[ -d $dir ]] || return 1
+    echo $dir
 }
 
 load_from_history() {
-    local dir=`get_conversation $args_load`
-    [[ -n $dirname && -d $dir ]] || exit_error "Unknown conversation index: $args_load"
-    [[ -n $QUIET ]] || tcprint "notice]Loading conversation from: $dirname"
+    local dir=`get_conversation $args_load || exit_error "Unknown conversation index: $args_load"`
+    [[ -n $QUIET ]] || tcprint "notice]Loading conversation from: $dir"
     cp -t $CONVO_DIR "$dir"/*
 }
 
 delete_from_history() {
-    local dir=`get_conversation $args_delete`
-    echo "Deleting $dir" >&2
+    local dir=$(get_conversation $args_delete || return 1) || exit_error "Unknown conversation index: $args_delete"
+    [[ -n $QUIET ]] || tcprint "notice]Deleting conversation from: $dir"
     rm -r $dir
 }
 
