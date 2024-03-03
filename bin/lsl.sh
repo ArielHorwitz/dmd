@@ -10,7 +10,7 @@ Valid sort fields:
     inode, and none.
 "
 CLI=(
-    -o "dir;Target directory"
+    -c "file;Display information about the files"
     -O "depth;Recursion depth;;d"
     -f "recursive;Recursively list directories;;r"
     -O "sort;Sorting;;s"
@@ -42,7 +42,7 @@ if [[ -n $nographics ]]; then
     [[ $RECURSE != "--tree" ]] || RECURSE="--recurse"
 fi
 
-exa_command="exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER $dir"
+exa_command="exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER ${file[@]}"
 
 if [[ -n $nopaging ]]; then
     eval "$exa_command"

@@ -178,7 +178,7 @@ read_response() {
 
 print_response() {
     [[ -n $QUIET ]] || tcprint "green bu]OpenAssistant says:"
-    bat -pp $RESPONSE_CONTENT_FILE
+    bat -pp --language markdown $RESPONSE_CONTENT_FILE
     if [[ -z $QUIET ]]; then
         local cost=$(get_stat_current cost)
         local tokens=$(get_stat_current tokens)
@@ -300,12 +300,12 @@ print_debug_precall() {
 
 print_query() {
     tcprint "green bu]Query:"
-    printf "%s\n" "$query_content" | bat --style plain --language markdown
+    printf "%s\n" "$query_content" | bat -pp --language markdown
 }
 
 print_debug() {
     tcprint "green bu]Response headers:"
-    bat -pp --color always "$RESPONSE_HEADERS_FILE"
+    bat -pp "$RESPONSE_HEADERS_FILE"
 }
 
 list_conversations() {

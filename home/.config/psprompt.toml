@@ -5,7 +5,7 @@ style = "micro"
 show_error_icon = true
 
 [text]
-icon_err = " $?"
+icon_err = "$?"
 icon_ok = ""
 at = "@"
 delim = " "

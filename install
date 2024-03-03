@@ -142,10 +142,13 @@ configure_group_iuk() {
     local drop_in_timeout="$wd/10-password-timeout"
     echo '# Set password timeout' > $drop_in_timeout
     echo 'Defaults timestamp_timeout=20' > $drop_in_timeout
+    local drop_in_pwfeedback="$wd/10-password-feedback"
+    echo '# Set password typing feedback' > $drop_in_pwfeedback
+    echo 'Defaults pwfeedback' > $drop_in_pwfeedback
     local drop_in_iuk="$wd/90-iukbtw"
     echo '# Allow "iukbtw" group to run some commands as root without password' > $drop_in_iuk
     echo "%iukbtw ALL=(root:root) NOPASSWD: $BINDIR/setmonbrightness" >> $drop_in_iuk
-    sudo checksudo --quiet --force --apply --noconfirm $drop_in_timeout $drop_in_iuk
+    sudo checksudo --quiet --force --apply --noconfirm $drop_in_timeout $drop_in_pwfeedback $drop_in_iuk
     sudo groupadd -f iukbtw
     sudo usermod -aG iukbtw $USER
 }

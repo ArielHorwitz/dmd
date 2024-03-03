@@ -1,5 +1,5 @@
 model: "gpt-4-turbo-preview"
-max_tokens: 2048
+max_tokens: 4096
 temperature: 1
 top_p: 1
 frequency_penalty: .2
