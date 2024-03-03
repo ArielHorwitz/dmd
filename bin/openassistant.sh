@@ -60,6 +60,7 @@ CLI=(
     -O "preset;Instructions preset;default;p"
     -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;ask-yes;y"
     -O "load;Load a conversation index (see --list);;L"
+    -O "delete;Delete a conversation index (see --list);;D"
     -f "list;List conversations from history;;l"
     -f "stats;Print recorded stats;;s"
     -f "config-dir;Print configuration directory path;;c"
@@ -175,7 +176,7 @@ read_response() {
 
 print_response() {
     [[ -n $QUIET ]] || tcprint "green bu]OpenAssistant says:"
-    markdown $RESPONSE_CONTENT_FILE
+    bat -pp $RESPONSE_CONTENT_FILE
     if [[ -z $QUIET ]]; then
         local cost=$(get_stat_current cost)
         local tokens=$(get_stat_current tokens)
@@ -297,22 +298,12 @@ print_debug_precall() {
 
 print_query() {
     tcprint "green bu]Query:"
-    printf "%s\n" "$query_content" | markdown
+    printf "%s\n" "$query_content" | bat --style plain --language markdown
 }
 
 print_debug() {
     tcprint "green bu]Response headers:"
     bat -pp --color always "$RESPONSE_HEADERS_FILE"
-}
-
-load_from_history() {
-    local dirs
-    mapfile dirs <<< `list_conversations`
-    local dirname=`echo "${dirs[args_load]}" | xargs`
-    local dir="$HISTORY_DIR/$dirname"
-    [[ -n $dirname && -d $dir ]] || exit_error "Unknown conversation index: $args_load"
-    [[ -n $QUIET ]] || tcprint "notice]Loading conversation from: $dirname"
-    cp -t $CONVO_DIR "$dir"/*
 }
 
 list_conversations() {
@@ -341,6 +332,27 @@ list_history() {
         tcprint "cyan dn]$query_line"
         echo
     done
+}
+
+get_conversation() {
+    local index=$1
+    local dirs
+    mapfile dirs <<< `list_conversations`
+    local dirname=`echo "${dirs[index]}" | xargs`
+    echo "$HISTORY_DIR/$dirname"
+}
+
+load_from_history() {
+    local dir=`get_conversation $args_load`
+    [[ -n $dirname && -d $dir ]] || exit_error "Unknown conversation index: $args_load"
+    [[ -n $QUIET ]] || tcprint "notice]Loading conversation from: $dirname"
+    cp -t $CONVO_DIR "$dir"/*
+}
+
+delete_from_history() {
+    local dir=`get_conversation $args_delete`
+    echo "Deleting $dir" >&2
+    rm -r $dir
 }
 
 flow_query_normal() {
@@ -397,6 +409,7 @@ if [[ -n $args_list ]];            then list_history
 elif [[ -n $args_config_dir ]];    then echo $CONFIG_DIR
 elif [[ -n $args_history_dir ]];   then echo $HISTORY_DIR
 elif [[ -n $args_stats ]];         then cat $STATS_FILE_TOTALS
+elif [[ -n $args_delete ]];        then delete_from_history
 elif [[ -n $args_clear_data ]];    then clear_data
 elif [[ -n $args_clear_config ]];  then clear_config
 elif [[ -n $args_load ]];    then flow_query_from_history
