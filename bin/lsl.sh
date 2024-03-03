@@ -19,6 +19,7 @@ CLI=(
     -f "git;Show git status and hide gitignored files;;g"
     -f "header;Show header"
     -f "nographics;Do not use color and graphics;;n"
+    -f "nopaging;Do not use paging;;p"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -41,5 +42,11 @@ if [[ -n $nographics ]]; then
     [[ $RECURSE != "--tree" ]] || RECURSE="--recurse"
 fi
 
-exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER $dir
+exa_command="exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER $dir"
+
+if [[ -n $nopaging ]]; then
+    eval "$exa_command"
+else
+    eval "$exa_command" | bat -p
+fi
 
