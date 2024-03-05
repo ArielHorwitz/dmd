@@ -19,3 +19,16 @@ config.plugins.lsp.more_yielding = true
 config.plugins.nerdicons.draw_tab_icons = true
 config.plugins.nerdicons.draw_treeview_icons = true
 
+config.plugins.snippets.autoexit = true
+local snippets = require 'plugins.snippets'
+snippets.add {
+    trigger  = 'cb',
+    info     = 'codeblock',
+    desc     = 'Markdown codeblock',
+    format   = 'lsp',
+    template = [[
+```${0:markdown}
+```
+]]
+}
+

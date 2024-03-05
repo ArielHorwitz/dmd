@@ -3,7 +3,7 @@
   @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     esc   @wnav @edit XX    @txtm @scrU home  up    end   pgup  XX    XX    @text  XX    XX    XX     XX    XX    XX    XX
   @text @audi @muxr @mous @mswn XX    @scrD left  down  right pgdn  XX    _                               XX    XX    XX
-  _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    @txtt                    XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -13,6 +13,7 @@
         250 (around (layer-switch text) (cmd-button "setlayer text il"))
         (layer-toggle normal_keyboard)
     )
+    txtt (layer-toggle normal_keyboard)
     sys  (layer-toggle system)
     wnav (layer-toggle window_navigation)
     muxr (layer-toggle multiplexer)

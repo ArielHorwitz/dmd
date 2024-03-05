@@ -12,7 +12,8 @@ alias taru="tar -vkxf"
 alias tarl="tar -tf"
 alias rp="rhinopuffin"
 alias gp="geckopanda"
-alias oa="openassistant"
+alias oa="openassistant -q"
+alias oam="openassistant 0 | markdown"
 
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'

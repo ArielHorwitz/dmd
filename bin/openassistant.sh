@@ -242,7 +242,7 @@ cost_response: $(echo $cost_response + `get_stat_global cost_response` | bc)" \
 save_history() {
     case $save_history_enabled in
         1   ) : ;;
-        ay  ) promptconfirm "Save history?" || return 0 ;;
+        ay  ) promptconfirm -t 30 "Save history?" || return 0 ;;
         an  ) promptconfirm -d "Save history?" || return 0 ;;
         *   ) return 0 ;;
     esac
