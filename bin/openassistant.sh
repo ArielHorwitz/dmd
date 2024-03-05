@@ -177,6 +177,10 @@ read_response() {
 }
 
 print_response() {
+    if [[ -n $VERBOSE ]]; then
+        tcprint "green bu]Response headers:"
+        bat -pp "$RESPONSE_HEADERS_FILE"
+    fi
     [[ -n $QUIET ]] || tcprint "green bu]OpenAssistant says:"
     bat -pp --language markdown $RESPONSE_CONTENT_FILE
     if [[ -z $QUIET ]]; then
@@ -303,11 +307,6 @@ print_query() {
     printf "%s\n" "$query_content" | bat -pp --language markdown
 }
 
-print_debug() {
-    tcprint "green bu]Response headers:"
-    bat -pp "$RESPONSE_HEADERS_FILE"
-}
-
 list_conversations() {
     ls -1 $HISTORY_DIR | sort -r
 }
@@ -377,10 +376,8 @@ flow_query_normal() {
     read_response
     tally_stats
 
-    [[ -z $VERBOSE ]] || print_debug
     print_response
     save_history
-    cleanup
 }
 
 flow_query_from_history() {
@@ -390,9 +387,7 @@ flow_query_from_history() {
     get_query
     [[ -n $QUIET ]] || print_query
     [[ -z $VERBOSE ]] || print_debug_precall
-    [[ -z $VERBOSE ]] || print_debug
     print_response
-    cleanup
 }
 
 # Start
@@ -412,6 +407,7 @@ case ${args_history} in
     *              ) exit_error "Invalid history option: $args_history" ;;
 esac
 
+cleanup
 if [[ -n $args_list ]];            then list_history
 elif [[ -n $args_config_dir ]];    then echo $CONFIG_DIR
 elif [[ -n $args_history_dir ]];   then echo $HISTORY_DIR
@@ -422,3 +418,4 @@ elif [[ -n $args_clear_config ]];  then clear_config
 elif [[ -n $args_load ]];    then flow_query_from_history
 else flow_query_normal
 fi
+cleanup
