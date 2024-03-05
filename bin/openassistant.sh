@@ -57,6 +57,7 @@ ABOUT='Query your personal OpenAI assistant.
 Write your OpenAI API key in the configuration folder (--config-dir).'
 CLI=(
     --prefix "args_"
+    -o "quick-load;Quietly load a conversation index (see --load --quiet);;."
     -O "preset;Instructions preset;default;p"
     -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;ask-yes;y"
     -O "load;Load a conversation index (see --list);;L"
@@ -392,6 +393,10 @@ flow_query_from_history() {
 
 # Start
 [[ -z $args_debug ]] || set -x
+if [[ -n $args_quick_load ]]; then
+    args_quiet=1
+    args_load=$args_quick_load
+fi
 if [[ -n $args_quiet ]]; then
     QUIET=1
     VERBOSE=
