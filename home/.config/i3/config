@@ -10,8 +10,8 @@ for_window [all] title_window_icon yes
 for_window [class="Alacritty" instance="Alacritty"] border pixel 2
 
 # GAPS
-gaps inner 15
-# gaps outer 10
+gaps inner 10
+gaps outer 0
 # smart_gaps on
 # hide_edge_borders none # none|vertical|horizontal|both|smart|smart_no_gaps
 
