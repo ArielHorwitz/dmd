@@ -2,7 +2,7 @@
 
 set -e
 
-SRCDIR=$PWD/`dirname "$0"`
+SRCDIR=$(dirname `realpath "$0"`)
 DATADIR=$SRCDIR/data
 TMPDIR=/tmp/iukinstall
 BINDIR=/usr/bin/iukbtw
