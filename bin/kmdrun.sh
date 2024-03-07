@@ -29,14 +29,8 @@ mkdir --parents $LOCAL_CONFIG
 kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
 cat $HOME/.config/kmd/* > $kbd_file
 
-# Insert substitutions into kbd config file
-sedcmd=("
-s|<KMD_DEVICE_PATH>|$device|;
-s|<KMD_MONITOR_LEFT>|${displays[0]}|;
-s|<KMD_MONITOR_CENTER>|${displays[1]}|;
-s|<KMD_MONITOR_RIGHT>|${displays[2]}|;
-")
-sed -i "${sedcmd[@]}" $kbd_file
+# Insert device path into kbd config file
+sed -i "s|<KMD_DEVICE_PATH>|$device|" $kbd_file
 
 # Kill KMonad
 sleep 0.1

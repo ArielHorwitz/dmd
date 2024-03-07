@@ -15,8 +15,8 @@ CLI=(
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
-[[ -z $list_all ]] || { xrandr -q | grep "connected" | cut -d' ' -f1 ; exit 0 ; }
-[[ -z $list ]] || { xrandr -q | grep " connected" | cut -d' ' -f1 ; exit 0 ; }
+[[ -z $list_all ]] || { xrandr -q | grep "connected" | awk '{print $1}' | sort ; exit 0 ; }
+[[ -z $list ]] || { xrandr -q | grep " connected" | sort ; exit 0 ; }
 
 xrandr --auto
 
@@ -32,4 +32,3 @@ done
 echo
 
 [[ -z $primary ]] || xrandr --output $primary --primary
-

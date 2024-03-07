@@ -1,50 +1,43 @@
 (deflayer multiplexer
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @mx11 @mx12 @mx13 @mx14 @mx15 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @mx21 @mx22 @mx23 @mx24 @mx25 XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    @mx31 @mx32 @mx33 @mx34 @mx35 _                        XX           XX    XX    XX    XX
-  _     _     @muxa             _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Xx11 @Xx12 @Xx13 @Xx14 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Xx21 @Xx22 @Xx23 @Xx24 XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Xx31 @Xx32 @Xx33 @Xx34 _                        XX           XX    XX    XX    XX
+  _     _     @Xalt             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer multiplexer_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @mm11 @mm12 @mm13 @mm14 @mm15 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @mm21 @mm22 @mm23 @mm24 @mm25 XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    @mm31 @mm32 @mm33 @mm34 @mm35 _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Xm11 @Xm12 @Xm13 @Xm14 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Xm21 @Xm22 @Xm23 @Xm24 XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Xm31 @Xm32 @Xm33 @Xm34 _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    muxa (layer-toggle multiplexer_alt)
-    mx11 (cmd-button "i3-msg 'workspace 11; move workspace to output <KMD_MONITOR_LEFT>'")
-    mx12 (cmd-button "i3-msg 'workspace 12; move workspace to output <KMD_MONITOR_LEFT>'")
-    mx13 (cmd-button "i3-msg 'workspace 13; move workspace to output <KMD_MONITOR_CENTER>'")
-    mx14 (cmd-button "i3-msg 'workspace 14; move workspace to output <KMD_MONITOR_RIGHT>'")
-    mx15 (cmd-button "i3-msg 'workspace 15; move workspace to output <KMD_MONITOR_RIGHT>'")
-    mx21 (cmd-button "i3-msg 'workspace 21; move workspace to output <KMD_MONITOR_LEFT>'")
-    mx22 (cmd-button "i3-msg 'workspace 22; move workspace to output <KMD_MONITOR_LEFT>'")
-    mx23 (cmd-button "i3-msg 'workspace 23; move workspace to output <KMD_MONITOR_CENTER>'")
-    mx24 (cmd-button "i3-msg 'workspace 24; move workspace to output <KMD_MONITOR_RIGHT>'")
-    mx25 (cmd-button "i3-msg 'workspace 25; move workspace to output <KMD_MONITOR_RIGHT>'")
-    mx31 (cmd-button "i3-msg 'workspace 31; move workspace to output <KMD_MONITOR_LEFT>'")
-    mx32 (cmd-button "i3-msg 'workspace 32; move workspace to output <KMD_MONITOR_LEFT>'")
-    mx33 (cmd-button "i3-msg 'workspace 33; move workspace to output <KMD_MONITOR_CENTER>'")
-    mx34 (cmd-button "i3-msg 'workspace 34; move workspace to output <KMD_MONITOR_RIGHT>'")
-    mx35 (cmd-button "i3-msg 'workspace 35; move workspace to output <KMD_MONITOR_RIGHT>'")
-    mm11 (cmd-button "i3-msg move to workspace 11")
-    mm12 (cmd-button "i3-msg move to workspace 12")
-    mm13 (cmd-button "i3-msg move to workspace 13")
-    mm14 (cmd-button "i3-msg move to workspace 14")
-    mm15 (cmd-button "i3-msg move to workspace 15")
-    mm21 (cmd-button "i3-msg move to workspace 21")
-    mm22 (cmd-button "i3-msg move to workspace 22")
-    mm23 (cmd-button "i3-msg move to workspace 23")
-    mm24 (cmd-button "i3-msg move to workspace 24")
-    mm25 (cmd-button "i3-msg move to workspace 25")
-    mm31 (cmd-button "i3-msg move to workspace 31")
-    mm32 (cmd-button "i3-msg move to workspace 32")
-    mm33 (cmd-button "i3-msg move to workspace 33")
-    mm34 (cmd-button "i3-msg move to workspace 34")
-    mm35 (cmd-button "i3-msg move to workspace 35")
+    Xalt (layer-toggle multiplexer_alt)
+    Xx11 (cmd-button "workspace-switcher-i3 11")
+    Xx12 (cmd-button "workspace-switcher-i3 12")
+    Xx13 (cmd-button "workspace-switcher-i3 13")
+    Xx14 (cmd-button "workspace-switcher-i3 14")
+    Xx21 (cmd-button "workspace-switcher-i3 21")
+    Xx22 (cmd-button "workspace-switcher-i3 22")
+    Xx23 (cmd-button "workspace-switcher-i3 23")
+    Xx24 (cmd-button "workspace-switcher-i3 24")
+    Xx31 (cmd-button "workspace-switcher-i3 31")
+    Xx32 (cmd-button "workspace-switcher-i3 32")
+    Xx33 (cmd-button "workspace-switcher-i3 33")
+    Xx34 (cmd-button "workspace-switcher-i3 34")
+    Xm11 (cmd-button "workspace-switcher-i3 -m 11")
+    Xm12 (cmd-button "workspace-switcher-i3 -m 12")
+    Xm13 (cmd-button "workspace-switcher-i3 -m 13")
+    Xm14 (cmd-button "workspace-switcher-i3 -m 14")
+    Xm21 (cmd-button "workspace-switcher-i3 -m 21")
+    Xm22 (cmd-button "workspace-switcher-i3 -m 22")
+    Xm23 (cmd-button "workspace-switcher-i3 -m 23")
+    Xm24 (cmd-button "workspace-switcher-i3 -m 24")
+    Xm31 (cmd-button "workspace-switcher-i3 -m 31")
+    Xm32 (cmd-button "workspace-switcher-i3 -m 32")
+    Xm33 (cmd-button "workspace-switcher-i3 -m 33")
+    Xm34 (cmd-button "workspace-switcher-i3 -m 34")
 )
-
