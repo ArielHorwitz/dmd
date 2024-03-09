@@ -22,10 +22,9 @@ else
     DEVICE="@DEFAULT_SINK@"
     COMMAND_DEVICE="sink"
 fi
-NEWLINE='
-'
+
 get_volume() {
-    volumes=$(pactl "get-$COMMAND_DEVICE-volume" $DEVICE | cut -d"$NEWLINE" -f1)
+    volumes=$(pactl "get-$COMMAND_DEVICE-volume" $DEVICE | xargs)
     left=$(echo $volumes | awk '{print $5}')
     left="${left%?}"
     right=$(echo $volumes | awk '{print $12}')
