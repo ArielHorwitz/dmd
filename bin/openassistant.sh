@@ -314,8 +314,8 @@ list_conversations() {
 
 list_history() {
     local dirs
-    local query_cols=$((`tput cols` - 29))
-    local query_cap=$((query_cols - 5))
+    local query_cols=$((`tput cols` - 30))
+    local query_cap=$((query_cols - 2))
     mapfile dirs <<< `list_conversations`
     [[ ${#dirs[@]} -gt 0 ]] || return 0
     local start=$args_list_offset
