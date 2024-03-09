@@ -8,9 +8,10 @@ CLI=(
     -O "increase;Increase volume percentage;;i"
     -O "decrease;Decrease volume percentage;;d"
     -f "mic;Use source instead of sink"
-    -f "mute;Mute volume;;m"
-    -f "unmute;Unmute volume;;u"
+    -f "mute;Mute device;;m"
+    -f "unmute;Unmute device;;u"
     -f "is-mute;Print mute status instead of volume;;M"
+    -f "no-notification;Disable notifications;;N"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -55,9 +56,15 @@ set_mute() {
 [[ -z $mute ]] || set_mute 1
 [[ -z $unmute ]] || set_mute 0
 
-if [[ -n $is_mute ]]; then
-    get_mute
-else
-    get_volume
-fi
+mute=$(get_mute)
 
+if [[ -n $is_mute ]]; then
+    echo $mute
+else
+    vol=$(get_volume)
+    echo $vol
+    if [[ -z $no_notification ]]; then
+        [[ $mute -eq 0 ]] && text="${vol}%" || text="<s>${vol}%</s> <i>(muted)</i>"
+        notify-send -t 1500 "Volume: $COMMAND_DEVICE" "$text" -h int:value:"$vol" -h string:synchronous:"volume"
+    fi
+fi

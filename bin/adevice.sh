@@ -14,19 +14,10 @@ CLI=(
     -f "mic;Use source instead of sink;;m"
     -f "list;List devices or classes;;l"
     -f "path;List device directory path;;p"
-    -f "quiet;Be quiet (overrides --verbose);;q"
-    -f "verbose;Display more info;;v"
+    -f "no-notification;Disable notifications;;N"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
-
-QUIET=
-VERBOSE=
-if [[ -n $args_quiet ]]; then
-    QUIET=1
-elif [[ -n $args_verbose ]]; then
-    VERBOSE=1
-fi
 
 device_class=$args_class
 if [[ -n $args_mic ]]; then
@@ -46,10 +37,6 @@ find_device() {
     local device
     local device_exists
     for device in `decomment $file`; do
-        if [[ -n $VERBOSE ]]; then
-            tcprint "debug n]Looking for device:" >&2
-            echo " $device" >&2
-        fi
         device_exists=$(printf "$ALL_DEVICES" | grep -m 1 $device || echo '')
         if [[ -n $device_exists ]]; then
             echo $device
@@ -88,8 +75,8 @@ fi
 
 # Set default device
 selected_device=$(find_device $device_class) || exit_error "No device found"
-if [[ -z $QUIET ]]; then
-    tcprint "info n]Selected device:" >&2
-    echo " $selected_device" >&2
-fi
 set_device $selected_device
+
+if [[ -z $no_notification ]]; then
+    notify-send -t 1500 "Audio ${device_type}" "${device_class}" -h string:synchronous:"audio-${device_type}-device"
+fi
