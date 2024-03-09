@@ -2,15 +2,14 @@
 
 [global]
     ### Display ###
-    monitor = 1
-    follow = none  # mouse | keyboard | none
+    # monitor = 2
+    follow = keyboard  # mouse | keyboard | none
 
     ### Geometry ###
+    origin = bottom-right  # center | top-left
+    offset = 50x50
     width = (250, 1000)
     height = 500
-    origin = center
-    # origin = bottom-left
-    # offset = 50x50
     scale = 0
     notification_limit = 10
 
@@ -26,12 +25,12 @@
     icon_corner_radius = 0
     indicate_hidden = yes
     transparency = 0
-    separator_height = 2
+    separator_height = 5
     padding = 8
     horizontal_padding = 8
     text_icon_padding = 10
-    frame_width = 3
-    frame_color = "#cc2222"
+    frame_width = 5
+    # frame_color = "#001242"
     gap_size = 0
     separator_color = frame  # auto | foreground | frame | X color
     sort = yes
@@ -92,8 +91,8 @@
     icon_theme = Adwaita
     # icon_theme = "Adwaita, breeze"
     icon_position = left  # left/right/top/off
-    min_icon_size = 32
-    max_icon_size = 64
+    min_icon_size = 12
+    max_icon_size = 24
 
     ### History ###
 
@@ -191,6 +190,7 @@
     # Otherwise the "#" and following would be interpreted as a comment.
     background = "#001010"
     foreground = "#446666"
+    frame_color = "#0011bb"
     timeout = 10
     # Icon for notifications with low urgency, uncomment to enable
     #default_icon = /path/to/icon
@@ -198,6 +198,7 @@
 [urgency_normal]
     background = "#101a1a"
     foreground = "#88bbbb"
+    frame_color = "#2233ff"
     timeout = 10
     # Icon for notifications with normal urgency, uncomment to enable
     #default_icon = /path/to/icon
@@ -205,7 +206,7 @@
 [urgency_critical]
     background = "#900000"
     foreground = "#ffffff"
-    frame_color = "#ff0000"
+    frame_color = "#bbff00"
     timeout = 0
     # Icon for notifications with critical urgency, uncomment to enable
     #default_icon = /path/to/icon
