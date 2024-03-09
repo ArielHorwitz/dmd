@@ -64,7 +64,7 @@ setup_installation_dirs() {
     echo "Source directory: $SRCDIR"
 }
 
-cleanup_installation() {
+cleanup_installation_dirs() {
     progress "Cleaning up temporary installation files"
     sudo rm -rf $TMPDIR
 }
@@ -180,6 +180,10 @@ copy_home_dir() {
     cp -rf --parents . $HOME
 }
 
+restart_services() {
+    pkill dunst
+}
+
 # Checks
 [[ $EUID -eq 0 ]] && exit_with_error "Do not run $0 as root."
 [[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
@@ -199,6 +203,8 @@ setup_installation_dirs
 [[ -z $args_config ]] || configure_group_iuk
 [[ -z $args_config ]] || configure_kmonad
 [[ -z $args_user_files ]] || copy_home_dir
-cleanup_installation
+cleanup_installation_dirs
+restart_services
 progress "Done."
+notify-send -ei ~/tux.png "iuk installed"
 [[ -z $NOTIFY_RELOGIN ]] || notice "You may need to login again for configs to apply."
