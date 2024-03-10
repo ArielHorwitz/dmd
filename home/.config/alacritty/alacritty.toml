@@ -8,7 +8,7 @@ white =   "0x999999"
 red =     "0x9D0000"
 yellow =  "0x767600"
 green =   "0x178900"
-blue =    "0x0000EB"
+blue =    "0x2E2EFF"
 magenta = "0x9D009D"
 cyan =    "0x008989"
 [colors.bright]
