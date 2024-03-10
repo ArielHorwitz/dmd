@@ -15,35 +15,18 @@ CLI=(
     -O "hostname;Use custom hostname;$(hostnamectl hostname);n"
     -f "user-files;Copy user files to home directory;;u"
     -f "binaries;Install binaries;;b"
-    -f "config;Apply configurations;;c"
-    -f "dependencies;Install dependencies (implies -b -w);;d"
+    -f "dependencies;Install dependencies (implies -b);;d"
     -f "web-dependencies;Install web dependencies (implies -b);;w"
     -f "skip-unknown-dependencies;Skip updating dependencies that don't report their version;;W"
     -f "system;Update system packages;;s"
-    -f "all;All normal targets (no remote updates);;a"
-    -f "all-really;All targets (including remote updates);;A"
 )
 CLI=$($DATADIR/spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 # Post process args
-if [[ -n $args_all_really ]]; then
-    args_system=1
-    args_dependencies=1
-    args_all=1
-fi
-if [[ -n $args_all ]]; then
-    args_config=1
-    args_binaries=1
-    args_user_files=1
-fi
-if [[ -n $args_dependencies ]]; then
-    args_web_dependencies=1
-fi
-if [[ -n $args_dependencies ]] || [[ -n $args_web_dependencies ]]; then
+if [[ -n $args_dependencies || -n $args_web_dependencies ]]; then
     args_binaries=1
 fi
 HOSTNAME=$args_hostname
-NOTIFY_RELOGIN=$args_config
 
 exit_with_error () {
     printf "\e[1;31m$1\e[0m\n" >&2
@@ -135,19 +118,6 @@ install_binaries() {
     sudo chmod +x --recursive $BINDIR
 }
 
-configure_kmonad() {
-    progress "Configuring KMonad"
-    # Add udev rules for KMonad
-    # (https://github.com/kmonad/kmonad/blob/master/doc/faq.md#q-how-do-i-get-uinput-permissions)
-    # (https://github.com/kmonad/kmonad/issues/160#issuecomment-766121884)
-    sudo groupadd -f uinput
-    sudo usermod -aG input,uinput $USER
-    local tee_args='--output-error=exit-nopipe'
-    local rules='KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"'
-    echo $rules | sudo tee $tee_args /etc/udev/rules.d/90-uinput.rules >/dev/null
-    echo 'uinput' | sudo tee $tee_args /etc/modules-load.d/uinput.conf >/dev/null
-}
-
 copy_home_dir() {
     progress "Copying user files to $HOME"
     cd $SRCDIR/home
@@ -172,7 +142,7 @@ restart_services() {
 [[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
 
 # Shortcut if noop
-operations=$((args_system + args_dependencies + args_web_dependencies + args_config + args_binaries + args_user_files))
+operations=$((args_system + args_dependencies + args_web_dependencies + args_binaries + args_user_files))
 [[ $operations -gt 0 ]] || { notice "No operations selected."; exit 0; }
 
 # Installation
@@ -182,10 +152,8 @@ setup_installation_dirs
 [[ -z $args_dependencies ]] || update_dependencies
 [[ -z $args_web_dependencies ]] || update_dependencies_web
 [[ -z $args_binaries ]] || install_binaries
-[[ -z $args_config ]] || configure_kmonad
 [[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation_dirs
 restart_services
 progress "Done."
 notify-send -ei ~/tux.png "iuk installed"
-[[ -z $NOTIFY_RELOGIN ]] || notice "You may need to login again for configs to apply."
