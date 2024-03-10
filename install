@@ -163,7 +163,7 @@ copy_home_dir() {
 }
 
 restart_services() {
-    pkill dunst
+    pkill dunst 2>/dev/null || :
 }
 
 # Checks
