@@ -20,13 +20,13 @@ and is then modified to be relative instead of absolute.
 No options (including but not limited to --apply, --force, --noconfirm) will do
 any modifications to the system if the visudo check failed."
 CLI=(
-    -f "apply;Copy checked files (if pass) to /etc/sudoers.d;;a"
-    -f "noconfirm;Bypass prompts for confirmation"
-    -f "force;Overwrite files in case of conflict;;f"
+    -c "files;Drop-in sudoer files"
     -O "exclude;Comma-separated files to remove;;e"
+    -f "apply;Copy checked files (if pass) to /etc/sudoers.d;;a"
+    -f "noconfirm;Do not ask for confirmation"
+    -f "force;Overwrite files in case of conflict;;f"
     -f "quiet;Be silent;;q"
     -f "show;Show all existing file contents and exit;;s"
-    -c "files;Drop-in sudoer files"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -49,14 +49,16 @@ fi
 
 
 # Set up temporary working directory
-WORKING_DIR=/tmp/checksudo-$RANDOM
-[[ ! -e $WORKING_DIR ]] || rm -rf $WORKING_DIR
+while :; do
+    WORKING_DIR=/tmp/checksudo-$RANDOM
+    [[ -e $WORKING_DIR ]] || break
+done
 mkdir --parents $WORKING_DIR
 # Copy existing sudoers files
 cp /etc/sudoers $WORKING_DIR
 cp --recursive /etc/sudoers.d $WORKING_DIR
 # Copy Include files
-if [[ -n "${files[@]}" ]]; then
+if [[ -n $files ]]; then
     cp $clobber --target-directory $WORKING_DIR/sudoers.d ${files[@]} || exit_error "Failed to copy files. Use '--force' to overwrite."
 fi
 # Remove exclude files
@@ -75,17 +77,18 @@ grep -r '^@includedir sudoers.d$' $WORKING_DIR/sudoers >/dev/null || exit_error 
 visudo $quiet --check --strict --file $WORKING_DIR/sudoers >&2 || exit_error "visudo check failed."
 [[ -n $quiet ]] || echo -e "\e[32mvisudo check passed.\e[0m"
 
+dropin_files="$(find $WORKING_DIR/sudoers.d -type f)"
 
 # Apply
 [[ -n $apply ]] || exit 0
 # Confirm
 if [[ -z $noconfirm ]]; then
-    bat --paging=never $WORKING_DIR/sudoers.d/*
+    bat --paging=never $WORKING_DIR/sudoers $dropin_files
     promptconfirm -d "Apply these to system?" || exit_error "User cancelled the operation."
 fi
 # Copy to system
 rm --force /etc/sudoers.d/*
-cp $WORKING_DIR/sudoers.d/* /etc/sudoers.d/
+[[ -z $dropin_files ]] || cp -t /etc/sudoers.d/ $dropin_files
 # Set owner and permissions
 chown --recursive root:root /etc/sudoers.d
 chmod --recursive 0440 /etc/sudoers.d
@@ -94,5 +97,5 @@ chmod --recursive 0440 /etc/sudoers.d
 # Done
 if [[ -z $quiet ]]; then
     printf "\e[32mInstalled sudoer drop-in files:\e[0m\n"
-    for f in /etc/sudoers.d/*; do echo $f; done
+    for f in $(find /etc/sudoers.d -type f); do echo $f; done
 fi
