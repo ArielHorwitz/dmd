@@ -38,6 +38,6 @@ pkill -x kmonad
 setlayer base
 
 # Start KMonad
-notify-send -t 3000 -i ~/tux.png "Starting KMonad" "$(echo $device | cut -d'/' -f5)"
+notify-send -i ~/tux.png "Starting KMonad" "$(echo $device | cut -d'/' -f5)"
 echo "Starting KMonad with $kbd_file"
 kmonad $kbd_file $@

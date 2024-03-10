@@ -1,5 +1,4 @@
 #! /bin/bash
-
 set -e
 
 SRCDIR=$(dirname `realpath "$0"`)
@@ -156,4 +155,4 @@ setup_installation_dirs
 cleanup_installation_dirs
 restart_services
 progress "Done."
-notify-send -ei ~/tux.png "iuk installed"
+notify-send -u low -i ~/tux.png "iuk installed"
