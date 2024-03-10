@@ -21,11 +21,13 @@ eval "$CLI" || exit 1
 SOURCE_DIR=`realpath $args_source`
 HOSTNAME=$args_hostname
 
-setup_staging() {
-    rm -rf $STAGING_DIR
-    mkdir --parents $STAGING_DIR
-    tcprint "ok n]Temporary directory:"
-    echo " $STAGING_DIR"
+check_suspicious() {
+    if [[ -z $(ls -a "$args_source" | grep -E "(.config|.local)") ]]; then
+        tcprint "warn n]Suspicious directory:"
+        echo " $SOURCE_DIR"
+        lsl "$SOURCE_DIR"
+        promptconfirm -d "warn]This folder does not look like a home directory. Continue?" || exit_error "User cancelled the operation."
+    fi
 }
 
 cleanup_staging() {
@@ -34,19 +36,14 @@ cleanup_staging() {
     rm -rf $STAGING_DIR
 }
 
-check_suspicious() {
-    if [[ -z $(ls -a "$args_source" | grep -E "(.config|.local)") ]]; then
-        tcprint "warn n]Suspicious directory:"
-        echo " $args_source"
-        lsl "$args_source"
-        promptconfirm -d "warn]This folder does not look like a home directory. Continue?" || exit_error "User cancelled the operation."
-    fi
-}
-
 prepare_staging() {
+    rm -rf $STAGING_DIR
+    mkdir --parents $STAGING_DIR
+    tcprint "ok n]Temporary directory:"
+    echo " $STAGING_DIR"
     tcprint "ok n]Source directory:"
-    echo " $args_source"
-    cd $args_source
+    echo " $SOURCE_DIR"
+    cd $SOURCE_DIR
     tcprint "ok]Preparing staging..."
     cp -rf --parents . $STAGING_DIR
     local mp_pattern=$(matchpick --print-start)
@@ -60,11 +57,9 @@ prepare_staging() {
 }
 
 review_staging() {
-    promptconfirm "yellow d]Review all files"
-    lsr $STAGING_DIR
-    promptconfirm "Review matchpicked files"
-    bat --paging=never "${matchpicked_files[@]}"
-    [[ -n $args_dry_run ]] && promptconfirm "green]Done." || promptconfirm "yellow]Continue?"
+    promptconfirm "Review matchpicked files?" && bat ${matchpicked_files[@]}
+    promptconfirm "List all files?" && lsr --nopaging $STAGING_DIR
+    [[ -n $args_dry_run ]] || promptconfirm "yellow]Continue?"
 }
 
 apply_staging() {
@@ -74,12 +69,10 @@ apply_staging() {
     cp -rf --parents . $HOME
 }
 
-[[ -d $args_source ]] || exit_error "Invalid source directory: $args_source"
+[[ -d $SOURCE_DIR ]] || exit_error "Invalid source directory: $args_source"
 
-setup_staging
 check_suspicious
 prepare_staging
 [[ -z $args_review ]] || review_staging
 [[ -n $args_dry_run ]] || apply_staging
 cleanup_staging
-
