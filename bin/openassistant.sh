@@ -314,15 +314,15 @@ list_conversations() {
 
 list_history() {
     local dirs
-    local query_cols=$((`tput cols` - 30))
+    local query_cols=$((`tput cols` - 31))
     local query_cap=$((query_cols - 2))
     mapfile dirs <<< `list_conversations`
     [[ ${#dirs[@]} -gt 0 ]] || return 0
     local start=$args_list_offset
     local end=$((args_list_limit + start))
-    local max=${#dirs}
+    local max=${#dirs[@]}
     for ((index=start; index<=end && index<=max; index++)); do
-        tcprint "purple dn]`printf %-2s $index` "
+        tcprint "purple dn]`printf %-3s $index` "
         local dir=`echo "$HISTORY_DIR/${dirs[index]}" | xargs`
         local fulldate=`basename $dir`
         tcprint "blue dn]`printf '%-9s' ${fulldate:0:8}`"
