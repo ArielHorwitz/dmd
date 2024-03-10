@@ -32,7 +32,7 @@ else
         focus output ${displays[0]}\; workspace ${workspaces[0]}\;
         focus output ${displays[1]}\; workspace ${workspaces[1]}\;
         focus output ${displays[2]}\; workspace ${workspaces[2]}\;
-        focus output ${displays[1]}\;
+        focus output ${displays[1]}\; workspace ${workspaces[1]}\;
     )
     i3-msg "${switch_command[@]}"
 fi
