@@ -135,24 +135,6 @@ install_binaries() {
     sudo chmod +x --recursive $BINDIR
 }
 
-configure_group_iuk() {
-    progress "Configuring iuk"
-    local wd=$TMPDIR/sudoers
-    mkdir $wd
-    local drop_in_timeout="$wd/10-password-timeout"
-    echo '# Set password timeout' > $drop_in_timeout
-    echo 'Defaults timestamp_timeout=20' > $drop_in_timeout
-    local drop_in_pwfeedback="$wd/10-password-feedback"
-    echo '# Set password typing feedback' > $drop_in_pwfeedback
-    echo 'Defaults pwfeedback' > $drop_in_pwfeedback
-    local drop_in_iuk="$wd/90-iukbtw"
-    echo '# Allow "iukbtw" group to run some commands as root without password' > $drop_in_iuk
-    echo "%iukbtw ALL=(root:root) NOPASSWD: $BINDIR/setmonbrightness" >> $drop_in_iuk
-    sudo checksudo --quiet --force --apply --noconfirm $drop_in_timeout $drop_in_pwfeedback $drop_in_iuk
-    sudo groupadd -f iukbtw
-    sudo usermod -aG iukbtw $USER
-}
-
 configure_kmonad() {
     progress "Configuring KMonad"
     # Add udev rules for KMonad
@@ -200,7 +182,6 @@ setup_installation_dirs
 [[ -z $args_dependencies ]] || update_dependencies
 [[ -z $args_web_dependencies ]] || update_dependencies_web
 [[ -z $args_binaries ]] || install_binaries
-[[ -z $args_config ]] || configure_group_iuk
 [[ -z $args_config ]] || configure_kmonad
 [[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation_dirs
