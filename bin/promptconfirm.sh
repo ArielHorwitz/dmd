@@ -27,20 +27,18 @@ else
     tcprint "n]$text"
 fi
 printf " \e[35m%s\e[2;37m%b\e[0m " "$yesno" "$timeout_indicator"
-read $timeout -n 1 answer || answer_timeout=1
 
-# Print newline
-# A known bug is when non-newline whitespace is entered then a newline is not printed
-# Missing a way to differentiate between newline and other whitespace
-if [[ $answer_timeout -eq 0 && -n $answer || $answer_timeout -eq 1 ]]; then
-    echo
-fi
+# Read
+read -sn 1 $timeout answer || :
 
+# Parse
 if [[ -n $deny ]]; then
     # Deny by default (--deny)
-    [[ -n $answer && "yY" == *$answer* ]] && exit 0 || exit 1
+    [[ -n $answer && "yY" == *$answer* ]] && fixed_answer='+' || fixed_answer='-'
+else
+    # Accept by default
+    [[ -n $answer && "nN" == *$answer* ]] && fixed_answer='-' || fixed_answer='+'
 fi
 
-# Accept by default
-[[ -n $answer && "nN" == *$answer* ]] && exit 1 || exit 0
-
+echo $fixed_answer
+[[ $fixed_answer = '+' ]] && exit 0 || exit 1
