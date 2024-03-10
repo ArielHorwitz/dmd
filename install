@@ -9,7 +9,7 @@ BINDIR=/usr/bin/iukbtw
 CACHEDIR=/var/iukbtw/cache
 
 APP_NAME=$(basename "$0")
-ABOUT="Installer for iuk."
+ABOUT="Idempotent installer for iuk."
 CLI=(
     --prefix "args_"
     -O "hostname;Use custom hostname;$(hostnamectl hostname);n"
@@ -61,7 +61,7 @@ setup_installation_dirs() {
     recreatedir $TMPDIR
     [[ -d $CACHEDIR/bin ]] || sudo mkdir -p $CACHEDIR/bin
     cd $TMPDIR
-    echo "Source directory: $SRCDIR"
+    notice "Source directory: $SRCDIR"
 }
 
 cleanup_installation_dirs() {
