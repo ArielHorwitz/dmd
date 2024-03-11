@@ -2,12 +2,11 @@
 
 [global]
     ### Display ###
-    # monitor = 0
+    monitor = 1
     # follow = keyboard  # mouse | keyboard | none
-    follow = keyboard
 
     ### Geometry ###
-    origin = top-left  # center | top-left | bottom-right
+    origin = bottom-left  # center | top-left | bottom-right
     offset = 50x50
     width = (250, 1000)
     height = 500
