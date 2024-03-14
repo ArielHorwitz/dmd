@@ -6,15 +6,6 @@ export EDITOR=lite-xl
 export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
-# ~>>>
-# ~>>> lembay
-# Pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-# we rewrite the paths later, but these 2 lines provide environment variables
-# and functions so we can't skip
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-# ~<<<
 
 # Path
 PATH=""
@@ -25,12 +16,6 @@ paths_desc_priority=(
     "/usr/bin/iukbtw"
     # Environments
     "$HOME/.cargo/bin"
-    # ~>>>
-    "$HOME/.pyenv/plugins/pyenv-virtualenv/shims"
-    "$HOME/.pyenv/shims"
-    "$HOME/.pyenv/bin"
-    # ~>>> lemnos
-    # ~<<<
     # System
     "/usr/local/sbin"
     "/usr/local/bin"
