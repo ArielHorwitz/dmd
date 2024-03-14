@@ -27,7 +27,7 @@ CLI=(
     --prefix "args_"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
-# printf $CLI
+# echo "$CLI"
 eval "$CLI" || exit 1
 ' > $filename
 
