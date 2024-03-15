@@ -36,7 +36,9 @@ if __name__ == "__main__":
     # Prompt user
     with NamedTemporaryFile() as tempfile:
         prompt_command = "; ".join([
-            "setpopupwindow 500 25",
+            "i3-msg 'floating enable'",
+            "xdotool getactivewindow windowsize 500 25",
+            "windowcenter",
             "i3-msg border pixel 20",
             f"printf {shlex.quote(args.prompt)}",
             "read line",
