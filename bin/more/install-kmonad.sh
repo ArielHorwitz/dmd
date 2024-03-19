@@ -44,6 +44,8 @@ configure() {
     local rules='KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"'
     echo $rules | sudo tee /etc/udev/rules.d/90-uinput.rules >/dev/null
     echo 'uinput' | sudo tee /etc/modules-load.d/uinput.conf >/dev/null
+    newgrp uinput
+    newgrp input
 }
 
 setup_installation

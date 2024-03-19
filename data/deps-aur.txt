@@ -1,4 +1,7 @@
 lemurs
+openssh
+libpulse
+pulseaudio
 python
 python-pip
 npm
@@ -10,6 +13,7 @@ polybar
 alacritty
 firefox
 lazygit
+xdg-utils
 xdotool
 mons
 libnotify
@@ -21,3 +25,5 @@ neofetch
 words
 jq
 bc
+wget
+rofi

@@ -1,25 +1,28 @@
 #!/usr/bin/bash
+set -e
 
 FONTDIR="$HOME/.local/share/fonts/"
 NERDFONTS="https://github.com/ryanoasis/nerd-fonts.git"
+TMPDIR="/tmp/install_fonts"
+
+install_font() {
+    local name=$1
+    local target=$2
+    tcprint "debug]Installing font: $name -> $target"
+    clonedir $NERDFONTS patched-fonts/$name $TMPDIR/$target --delete
+    flattendir --force $TMPDIR/$target $FONTDIR/$target
+    tcprint "ok]Installed: $target"
+}
 
 # FiraCode
-clonedir $NERDFONTS patched-fonts/FiraCode $FONTDIR/firacode/ --delete
-flattendir $FONTDIR/firacode/ --clean
-
+install_font FiraCode firacode
 # RobotoMono
-clonedir $NERDFONTS patched-fonts/RobotoMono $FONTDIR/roboto/ --delete
-flattendir $FONTDIR/roboto/ --clean
-
+install_font RobotoMono roboto
 # DejaVuSansMono
-clonedir $NERDFONTS patched-fonts/DejaVuSansMono $FONTDIR/dejavu/ --delete
-flattendir $FONTDIR/dejavu/ --clean
-
+install_font DejaVuSansMono dejavu
 # DroidSansMono
-clonedir $NERDFONTS patched-fonts/DroidSansMono $FONTDIR/droid/ --delete
-flattendir $FONTDIR/droid/ --clean
+install_font DroidSansMono droid
 
-
+tcprint "notice]Installed fonts:"
 fc-cache
 fc-list | grep -E "\.local/.*(firacode|roboto|dejavu|droid)" | sort
-

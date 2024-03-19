@@ -19,7 +19,7 @@ mkdir -p $TMPDIR
 echo "Cloning: $1"
 git clone --quiet --no-checkout --depth=1 --filter=tree:0 $1 $TMPDIR
 cd $TMPDIR
-git sparse-checkout set --quiet --no-cone $2
+git sparse-checkout set --no-cone $2
 echo "Sparse checkout: $2"
 git checkout
 
