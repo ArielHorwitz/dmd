@@ -1,21 +1,31 @@
 #!/bin/bash
+set -e
 
-# Collect info on touchpad
+APP_NAME=$(basename "$0")
+ABOUT="Toggle enable/disable touchpad."
+CLI=(
+    --prefix "args_"
+    -f "on;Enable touchpad"
+    -f "off;Disable touchpad"
+)
+CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
+eval "$CLI" || exit 1
+
+# Get touchpad device id
 DEVICE=$(xinput --list | grep -i 'touchpad' | cut -d= -f2 | cut -f1 | head -1)
-ENABLED=$(xinput --list-props $DEVICE | grep -i 'Device Enabled' | cut -d: -f2 | xargs)
 
 # Determine toggle behavior
-if [[ $ENABLED == "1" ]]; then
-    TOGGLE="off"
+if [[ -n $args_on ]]; then
+    SETAS="on"
+elif [[ -n $args_off ]]; then
+    SETAS="off"
 else
-    TOGGLE="on"
-fi
-
-# Determine if toggling or using argument
-if [[ -z $1 ]]; then
-    SETAS=$TOGGLE
-else
-    SETAS=$1
+    ENABLED=$(xinput --list-props $DEVICE | grep -i 'Device Enabled' | cut -d: -f2 | xargs)
+    if [[ $ENABLED == "1" ]]; then
+        SETAS="off"
+    else
+        SETAS="on"
+    fi
 fi
 
 # Set property
@@ -24,5 +34,5 @@ if [[ $SETAS == "on" ]]; then
 elif [[ $SETAS == "off" ]]; then
     xinput --set-prop $DEVICE "Device Enabled" 0
 else
-    echo Unknown param: $1
+    exit_error "Unknown property value: $SETAS"
 fi
