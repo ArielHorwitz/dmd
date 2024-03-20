@@ -6,7 +6,7 @@
     # follow = keyboard  # mouse | keyboard | none
 
     ### Geometry ###
-    origin = bottom-left  # center | top-left | bottom-right
+    origin = bottom-right  # center | top-left | bottom-right
     offset = 50x50
     width = (250, 1000)
     height = 500

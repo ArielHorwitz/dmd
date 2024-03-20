@@ -17,15 +17,25 @@ style.code_font = renderer.font.load(
   14
 -- ~>>> lemnos
   15
+-- ~>>> zen
+  20
 -- ~<<<
 )
 style.font = renderer.font.load(
   "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
+-- ~>>>
   12
+-- ~>>> zen
+  18
+-- ~<<<
 )
 style.big_font = renderer.font.load(
   "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
+-- ~>>>
   12
+-- ~>>> zen
+  18
+-- ~<<<
 )
 -- style.icon_font
 -- style.icon_big_font

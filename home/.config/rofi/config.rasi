@@ -1,6 +1,6 @@
 configuration {
     modes: "keys,window,drun,run,ssh";
-//    font: "FiraCode 12";
+    font: "FiraCodeNerdFontMono 12";
     location: 0;
 //    yoffset: 0;
 //    xoffset: 0;
@@ -37,7 +37,12 @@ configuration {
 //    tokenize: true;
     m: "-1";
 //    filter: ;
-//    dpi: -1;
+
+~>>>
+    dpi: 96;
+~>>> zen
+    dpi: 144;
+~<<<
 //    threads: 0;
     scroll-method: 1;
     window-format: "{w:15} | {c:15} | {t}";
