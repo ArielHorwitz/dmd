@@ -13,9 +13,7 @@ WORKSPACE_DEBUG_KEYS = ("name", "output", "visible", "focused")
 
 ROWS = 3
 COLUMNS = 4
-OUTPUTS = 3
-MAIN_OUTPUTS = (1,)
-FOCUS_OUTPUT = 1
+FOCUS_OUTPUT = 0  # TODO: make this dynamic
 
 NOTIFY_TIMEOUT = 1000
 NOTIFY_SEND = ("notify-send", "-t", str(NOTIFY_TIMEOUT), "-h", 'string:synchronous:"muxidesktops"')
@@ -43,8 +41,6 @@ class Workspace:
             raise ParseError(f"Invalid index {self.row=} {ROWS=}")
         if not 0 <= self.col < COLUMNS:
             raise ParseError(f"Invalid index {self.col=} {COLUMNS=}")
-        if not 0 <= self.out < OUTPUTS:
-            raise ParseError(f"Invalid index {self.out=} {OUTPUTS=}")
 
     def from_json(json_data: str, /, **kwargs) -> "Self":
         try:
@@ -89,7 +85,6 @@ class State:
             if d["name"] != "xroot-0"
         )
         eprint(f"{displays=}")
-        assert len(displays) == OUTPUTS
 
         json_workspaces = json.loads(
             subprocess.run(
@@ -145,7 +140,7 @@ def print_layout(state: State, notification: bool):
         row_reprs = []
         for col in range(COLUMNS):
             col_reprs = []
-            for output in range(OUTPUTS):
+            for output in range(len(state.displays)):
                 name = f"{row}{col}{output}"
                 output_repr = OUTPUT_EMPTY
                 if (ws := state.workspaces.get(name)) is not None:
