@@ -1,19 +1,23 @@
 #!/bin/bash
 
-[[ $# -lt 2 ]] && echo "Usage: $0 SLEEP [-c | --clear] COMMAND" >&2 && exit 1
-ARGV=( "$@" )
+APP_NAME=$(basename "$0")
+ABOUT="program description"
+CLI=(
+    --prefix "args_"
+    -O "interval;Interval time in seconds;2;i"
+    -f "clear;Clear terminal on each interval;;c"
+    -f "persistent;Continue even if the command fails;;p"
+    -f "time;Print the time on each interval;;t"
+    -e "command;Command to run"
+)
+CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
+eval "$CLI" || exit 1
 
-SLEEP_TIME=$1
-if [[ $2 = "-c" || $2 = "--clear" ]] ; then
-    DO_CLEAR=true
-    COMMAND="${ARGV[@]:2}"
-else
-    DO_CLEAR=false
-    COMMAND="${ARGV[@]:1}"
-fi
+[[ -n $args_persistent ]] || set -e
 
 while :; do
-    $DO_CLEAR && clear
-    eval $COMMAND
-    sleep $SLEEP_TIME
+    [[ -z $args_clear ]] || clear
+    [[ -z $args_time ]] || date
+    eval ${args_command[@]}
+    sleep $args_interval
 done
