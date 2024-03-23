@@ -64,7 +64,7 @@ def main():
     else:
         value = max_brightness
     new_brightness = round(max(0, min(value, max_brightness)))
-    print(f"Setting brightness: {new_brightness}")
+    print(f"Setting brightness: {new_brightness} / {max_brightness}")
     set_brightness(device, new_brightness)
 
 

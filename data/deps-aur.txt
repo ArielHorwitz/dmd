@@ -27,3 +27,4 @@ jq
 bc
 wget
 rofi
+feh

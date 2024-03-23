@@ -50,4 +50,7 @@ polybar-msg cmd quit
 mapfile -t displays < $DISPLAYS_FILE
 run_polybar ${displays[1]} main
 
+log "toggling touchpad"
+touchpadtoggle --off
+
 log "iuk startup complete"

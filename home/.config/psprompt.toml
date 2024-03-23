@@ -1,7 +1,7 @@
 # See also: https://wiki.archlinux.org/title/Bash/Prompt_customization
 
 # Available styles are: double, extended, full, normal, micro, nano
-style = "micro"
+style = "double"
 show_error_icon = true
 
 [text]

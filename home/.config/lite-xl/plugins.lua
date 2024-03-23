@@ -21,6 +21,7 @@ config.plugins.nerdicons.draw_treeview_icons = true
 
 config.plugins.snippets.autoexit = true
 local snippets = require 'plugins.snippets'
+
 snippets.add {
     trigger  = 'cb',
     info     = 'codeblock',
@@ -32,3 +33,14 @@ snippets.add {
 ]]
 }
 
+snippets.add {
+    trigger  = 'sf',
+    info     = 'shellfunction',
+    desc     = 'A function for bash',
+    format   = 'lsp',
+    template = [[
+${0:shell_function}() {
+    set -e
+}
+]]
+}

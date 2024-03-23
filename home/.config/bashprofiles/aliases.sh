@@ -15,11 +15,13 @@ alias rp="rhinopuffin"
 alias gp="geckopanda"
 alias oa="openassistant -q"
 alias oam="openassistant 0 | markdown"
+alias or="openartist"
 
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
+alias printenv='printenv | sort'
 
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 alias watcha="watch "
@@ -47,8 +49,7 @@ alias baconm="bacon clippy -- --"\
 #" --warn clippy::indexing_slicing"\
 
 # SSH
-alias keygen="ssh-keygen -t ed25519 -C 'ariel.ninja' && cat ~/.ssh/id_ed25519.pub"
-alias sshadd="eval '$(ssh-agent -s)' && ssh-add ~/.ssh/id_ed25519.pub"
+alias "ssh-keygen"="ssh-keygen -t ed25519"
 
 # Docker
 alias dkdaemon="sudo systemctl start docker"
@@ -88,7 +89,6 @@ cdl() {
 }
 
 starttest() {
-    rm -rf /tmp/terminaltest
-    mkcd /tmp/terminaltest
-    tcprint "debug]Empty test directory."
+    mkcd /tmp/terminaltest-$RANDOM
+    tcprint "debug]New test directory."
 }
