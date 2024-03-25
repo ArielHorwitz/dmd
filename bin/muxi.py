@@ -82,7 +82,7 @@ class State:
         displays = tuple(
             d["name"]
             for d in sorted(raw_displays, key=lambda d: d["rect"]["x"])
-            if d["name"] != "xroot-0"
+            if d.get("name") != "xroot-0" and d.get("active") == True
         )
         eprint(f"{displays=}")
 
@@ -170,7 +170,7 @@ def move_to_desktop(state: State, row: int, col: int):
     ws = Workspace(row=row, col=col)
     for ws_ in state.workspaces.values():
         if ws_.focused:
-            ws = Workspace(row, col, ws_.out)
+            ws = Workspace(row, col, min(ws_.out, len(state.displays) - 1))
             break
     i3_command = f"move to workspace {ws.name}"
     eprint(i3_command)
