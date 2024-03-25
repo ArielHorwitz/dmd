@@ -4,6 +4,8 @@ import subprocess
 import argparse
 
 
+MAX_STEPS = 10
+
 def run(*command, **kwargs):
     kwargs = dict(capture_output=True, check=True) | kwargs
     result = subprocess.run(command, **kwargs)
@@ -55,10 +57,10 @@ def main():
     max_brightness = get_max_brightness(device)
     # Find new brightness value
     if args.set:
-        steps = max(0, min(int(args.set), 10))
-        value = max_brightness * (2 ** (-10 + steps))
+        steps = max(0, min(int(args.set), MAX_STEPS))
+        value = max_brightness * (2 ** (-MAX_STEPS + steps))
     elif args.increase:
-        value = brightness * 2
+        value = max(1, brightness) * 2
     elif args.decrease:
         value = brightness / 2
     else:
