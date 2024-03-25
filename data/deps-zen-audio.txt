@@ -1,0 +1,10 @@
+pipewire
+pipewire-audio
+pipewire-alsa
+pipewire-pulse
+wireplumber
+pipewire-session-manager
+jack2
+
+alsa-firmware
+sof-firmware
