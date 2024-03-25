@@ -1,9 +1,9 @@
 (deflayer audio
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    @volu @volU XX    XX    XX    @aimt @volu @aium @sksp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @volu @volU XX    XX    XX    @aomt @volu @aoum @sksp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @vold @volD XX    XX    XX    @prev @vold @next @skhd XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @aomt @vol0 @aoum XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @aimt @vol0 @aium XX    _                        XX           XX    XX    XX    XX
   _     _     @aud2             @pp               _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer audio_alt

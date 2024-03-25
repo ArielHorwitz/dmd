@@ -53,4 +53,7 @@ run_polybar ${displays[1]} main
 log "toggling touchpad"
 touchpadtoggle --off
 
+log "switching workspace"
+muxi 0 0
+
 log "iuk startup complete"

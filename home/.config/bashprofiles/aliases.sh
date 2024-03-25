@@ -34,6 +34,7 @@ alias pyflint="black --fast .; isort --profile black -l 88 .; flake8 --max-line-
 
 # Rust
 alias cr="cargo run --"
+alias crb="cargo run --bin"
 alias crq="cargo run -q --"
 alias crf="cargo fmt; cargo run -q --"
 alias rustbt_on="export RUST_BACKTRACE=1"
