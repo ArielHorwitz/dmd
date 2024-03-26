@@ -56,4 +56,7 @@ touchpadtoggle --off
 log "switching workspace"
 muxi 0 0
 
+log "setting wallpaper"
+$HOME/.fehbg
+
 log "iuk startup complete"
