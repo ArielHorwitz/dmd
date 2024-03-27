@@ -1,7 +1,6 @@
 lemurs
 openssh
 libpulse
-pulseaudio
 python
 python-pip
 npm
