@@ -160,9 +160,13 @@ def print_layout(state: State, notification: bool):
 def switch_desktop(state: State, row: int, col: int):
     workspaces = [Workspace(row, col, i, display=d) for i, d in enumerate(state.displays)]
     i3_command = ""
+    focused = 0
+    for ws in state.workspaces.values():
+        if ws.focused:
+            focused = ws.out
     for ws in workspaces:
         i3_command += f"focus output {ws.display}; workspace {ws.name}; move to output {ws.display}; focus output {ws.display}; "
-    i3_command += f"focus output {state.displays[FOCUS_OUTPUT]}; "
+    i3_command += f"focus output {state.displays[focused]}; "
     eprint("\n".join(i3_command.split("; ")))
     eprint(subprocess.run(("i3-msg", i3_command), check=True, capture_output=True).stdout.decode())
 
