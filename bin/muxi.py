@@ -94,6 +94,7 @@ class State:
             ).stdout.decode()
         )
         workspaces: dict[str, Workspace] = dict()
+        eprint(f">> Parsing workspaces: " + " ".join(f"{k:<8}" for k in WORKSPACE_DEBUG_KEYS))
         for json_ws in json_workspaces:
             parsed_ws = None
             try:
