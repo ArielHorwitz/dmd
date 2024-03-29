@@ -93,7 +93,7 @@ display_summary() {
     [[ -n $nounits ]] || printf "${faded}%%${reset}"
     # visibility
     printf " "
-    [[ -n $noicons ]] || printf "${color}${reset}"
+    [[ -n $noicons ]] || printf "${color} ${reset}"
     vis=$(jq '.current.visibility' "$response_cache")
     printf "%.1f" "$((vis / 1000))"
     [[ -n $nounits ]] || printf " ${faded}km${reset}"
