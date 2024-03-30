@@ -58,7 +58,7 @@ update_system() {
 update_dependencies() {
     progress "Installing dependencies"
     # AUR (paru)
-    if [[ -z $(paru --version 2>/dev/null) ]] then
+    if [[ -z $(paru --version 2>/dev/null) ]]; then
         sudo pacman -S --quiet --needed --noconfirm base-devel git
         git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMPDIR/paru
         cd $TMPDIR/paru
