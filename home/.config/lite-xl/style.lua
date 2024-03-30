@@ -11,8 +11,12 @@ core.reload_module("colors.ninja")
 
 -------------------------------- Fonts ----------------------------------------
 
+local home_dir = os.getenv("HOME")
+local fira_font = string.format("%s/.local/share/fonts/firacode/FiraCodeNerdFont-Regular.ttf", home_dir)
+local droid_font = string.format("%s/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf", home_dir)
+
 style.code_font = renderer.font.load(
-  "/home/wiw/.local/share/fonts/firacode/FiraCodeNerdFont-Regular.ttf",
+  fira_font,
 -- ~>>>
   14
 -- ~>>> lemnos
@@ -22,7 +26,7 @@ style.code_font = renderer.font.load(
 -- ~<<<
 )
 style.font = renderer.font.load(
-  "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
+  droid_font,
 -- ~>>>
   12
 -- ~>>> zen
@@ -30,7 +34,7 @@ style.font = renderer.font.load(
 -- ~<<<
 )
 style.big_font = renderer.font.load(
-  "/home/wiw/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf",
+  droid_font,
 -- ~>>>
   12
 -- ~>>> zen
