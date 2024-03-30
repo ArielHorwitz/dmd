@@ -41,6 +41,7 @@ recreatedir () {
 setup_installation_dirs() {
     recreatedir $TMPDIR
     [[ -d $CACHEDIR/bin ]] || sudo mkdir -p $CACHEDIR/bin
+    sudo chown --recursive $USER $CACHEDIR
     cd $TMPDIR
     notice "Source directory: $SRCDIR"
 }
@@ -78,7 +79,7 @@ update_dependencies_web() {
         local required_version=$(echo $dep | cut -d' ' -f2)
         local url=$(echo $dep | cut -d' ' -f3-)
         local cached_bin="$CACHEDIR/bin/$name"
-        if [[ -x $cached_bin ]]; then
+        if sudo test -x $cached_bin; then
             eval "cached_version=\"$($cached_bin --version 2>/dev/null || echo UNKNOWNVERSION)\""
             if [[ $cached_version = 'UNKNOWNVERSION' ]]; then
                 echo -n "cached: $name unknown"
@@ -94,7 +95,7 @@ update_dependencies_web() {
         fi
         echo "Installing $name v$required_version"
         wget --quiet --https-only --show-progress --output-document $cached_bin $url
-        chmod +x $cached_bin
+        sudo chmod +x $cached_bin
     done < $dependencies_file
 }
 
