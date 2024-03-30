@@ -13,7 +13,6 @@ WORKSPACE_DEBUG_KEYS = ("name", "output", "visible", "focused")
 
 ROWS = 3
 COLUMNS = 4
-FOCUS_OUTPUT = 0  # TODO: make this dynamic
 
 NOTIFY_TIMEOUT = 1000
 NOTIFY_SEND = ("notify-send", "-t", str(NOTIFY_TIMEOUT), "-h", 'string:synchronous:"muxidesktops"')
@@ -31,7 +30,7 @@ class ParseError(BaseException):
 class Workspace:
     row: int
     col: int
-    out: int = field(default=FOCUS_OUTPUT)
+    out: int = field(default=0)
     display: str = field(default="")
     visible: bool = field(default=False)
     focused: bool = field(default=False)
@@ -68,6 +67,9 @@ class Workspace:
 class State:
     displays: tuple[str, ...]
     workspaces: dict[str, Workspace]
+    focused_workspace: str
+    focused_display: int
+    invalid_workspaces: tuple[str, ...]
 
     @classmethod
     def get(cls) -> "Self":
@@ -94,39 +96,53 @@ class State:
             ).stdout.decode()
         )
         workspaces: dict[str, Workspace] = dict()
-        eprint(f">> Parsing workspaces: " + " ".join(f"{k:<8}" for k in WORKSPACE_DEBUG_KEYS))
+        invalid_workspaces: list[str] = list()
+        focused_workspace = Workspace(0, 0)
+        focused_display = 0
+        eprint(f">> Parsing workspaces: " + " ".join(f"{k.upper():<8}" for k in WORKSPACE_DEBUG_KEYS))
         for json_ws in json_workspaces:
             parsed_ws = None
             try:
                 eprint(f">> Parsing workspace:  " + " ".join(f"{str(json_ws[k]):<8}" for k in WORKSPACE_DEBUG_KEYS))
                 parsed_ws = Workspace.from_json(json_ws)
+                if parsed_ws.focused:
+                    focused_workspace = parsed_ws.name
+                    focused_display = displays[parsed_ws.out]
                 assert parsed_ws.name not in workspaces
             except BaseException as e:
-                eprint(f"Invalid workspace: {repr(e)} [ {json_ws=} ]")
+                eprint(f"Invalid workspace '{json_ws['name']}': {repr(e)} [ {json_ws=} ]")
+                if (name := json_ws.get("name")) is not None:
+                    invalid_workspaces.append(name)
                 continue
             workspaces[parsed_ws.name] = parsed_ws
-        return cls(displays, workspaces)
+        eprint(f'Focused workspace: [{focused_workspace}] output: [{focused_display}]')
+        return cls(displays, workspaces, focused_workspace, focused_display, tuple(invalid_workspaces))
 
 def main():
     parser = argparse.ArgumentParser("muxi", description="Manage desktop of workspaces.")
     parser.add_argument("row", type=int, nargs="?", help="Desktop row")
     parser.add_argument("col", type=int, nargs="?", help="Desktop column")
     parser.add_argument("-m", "--move", action="store_true", required=False, help="move focused container to the desktop")
+    parser.add_argument("-c", "--collect", action="store_true", help="collect windows from unknown workspaces")
     parser.add_argument("-n", "--nonotification", action="store_true", help="disable notification showing layout")
     args = parser.parse_args()
     eprint("\n====================")
     eprint(f"{args=}")
-    if (args.row == None) != (args.col == None):
+    row = args.row
+    col = args.col
+    if (row is None) != (col is None):
         eprint(parser.format_usage())
         eprint("Must specify column with row.")
         exit(1)
-
-    if (row := args.row) is not None and (col := args.col) is not None:
+    if (row is not None) and (col is not None):
         state = State.get()
         if args.move:
             move_to_desktop(state, row, col)
         else:
             switch_desktop(state, row, col)
+    if args.collect:
+        state = State.get()
+        collect_lost_windows(state)
     state = State.get()
     print_layout(state, not args.nonotification)
 
@@ -151,6 +167,9 @@ def print_layout(state: State, notification: bool):
                 col_reprs.append(output_repr)
             row_reprs.append("".join(col_reprs))
         layout_reprs.append(OUTPUT_SPLIT.join(row_reprs))
+    if len(state.invalid_workspaces) > 0:
+        layout_reprs.append("\nOther workspaces:")
+        layout_reprs.append(", ".join(state.invalid_workspaces))
     layout_repr = "\n".join(layout_reprs)
 
     eprint(displays_repr)
@@ -161,15 +180,11 @@ def print_layout(state: State, notification: bool):
 def switch_desktop(state: State, row: int, col: int):
     workspaces = [Workspace(row, col, i, display=d) for i, d in enumerate(state.displays)]
     i3_command = ""
-    focused = 0
-    for ws in state.workspaces.values():
-        if ws.focused:
-            focused = ws.out
     for ws in workspaces:
-        i3_command += f"focus output {ws.display}; workspace {ws.name}; move to output {ws.display}; focus output {ws.display}; "
-    i3_command += f"focus output {state.displays[focused]}; "
-    eprint("\n".join(i3_command.split("; ")))
-    eprint(subprocess.run(("i3-msg", i3_command), check=True, capture_output=True).stdout.decode())
+        i3_command += f"focus output {ws.display};workspace {ws.name};move to output {ws.display};focus output {ws.display};"
+    i3_command += f"focus output {state.focused_display};"
+    eprint(i3_command)
+    run_i3_command(i3_command)
 
 def move_to_desktop(state: State, row: int, col: int):
     ws = Workspace(row=row, col=col)
@@ -177,9 +192,49 @@ def move_to_desktop(state: State, row: int, col: int):
         if ws_.focused:
             ws = Workspace(row, col, min(ws_.out, len(state.displays) - 1))
             break
-    i3_command = f"move to workspace {ws.name}"
-    eprint(i3_command)
-    eprint(subprocess.run(("i3-msg", i3_command), check=True, capture_output=True).stdout.decode())
+    run_i3_command(f"move to workspace {ws.name}")
+
+def collect_lost_windows(state: State):
+    container_ids = get_root_container_ids(state)
+    if len(container_ids) == 0:
+        return
+    i3_command = ""
+    for container_id in container_ids:
+        i3_command += f'[con_id={container_id}] move container to workspace {state.focused_workspace};'
+    run_i3_command(i3_command)
+
+def get_root_container_ids(state: State):
+    root_node = json.loads(
+        subprocess.run(
+            ("i3-msg", "-t", "get_tree"),
+            capture_output=True,
+            check=True,
+        ).stdout.decode()
+    )
+    container_ids = []
+    for output in root_node['nodes']:
+        assert output['type'] == 'output'
+        if output['name'] == '__i3':
+            continue
+        for con in output['nodes']:
+            if con['type'] != 'con':
+                continue
+            for workspace in con['nodes']:
+                assert workspace['type'] == 'workspace'
+                if workspace['name'] not in state.invalid_workspaces:
+                    continue
+                for node in workspace['nodes']:
+                    assert node['type'] == 'con'
+                    container_ids.append(node['id'])
+    return container_ids
+
+def run_i3_command(command: str):
+    eprint("\n".join(command.split(";")))
+    result = subprocess.run(("i3-msg", command), capture_output=True)
+    eprint(f'{result.returncode=}')
+    eprint(f'stdout: {result.stdout.decode()}')
+    eprint(f'stderr: {result.stderr.decode()}')
+    result.check_returncode()
 
 def eprint(message: str):
     user = os.getenv('USER')

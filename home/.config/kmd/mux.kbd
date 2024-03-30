@@ -3,7 +3,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @Xx11 @Xx12 @Xx13 @Xx14 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    @Xsum XX    XX    XX    @Xx21 @Xx22 @Xx23 @Xx24 XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Xx31 @Xx32 @Xx33 @Xx34 _                        XX           XX    XX    XX    XX
+  _     XX    XX    @Xcol XX    XX    XX    @Xx31 @Xx32 @Xx33 @Xx34 _                        XX           XX    XX    XX    XX
   _     _     @Xalt             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer multiplexer_alt
@@ -17,6 +17,7 @@
 (defalias
     Xalt (layer-toggle multiplexer_alt)
     Xsum (cmd-button "muxi")
+    Xcol (cmd-button "muxi -c")
     Xx11 (cmd-button "muxi 0 0")
     Xx12 (cmd-button "muxi 0 1")
     Xx13 (cmd-button "muxi 0 2")
