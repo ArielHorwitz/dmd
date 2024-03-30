@@ -16,7 +16,7 @@ eval "$CLI" || exit 1
 [[ -d $target ]] && [[ -z $force ]] && exit_error "'$target' already exists (override using --force)"
 [[ -d $target ]] && rm -rf $target || true
 [[ -n $verbose ]] && verbose="--verbose" || true
-mkdir $target
+mkdir -p $target
 
 # Flatten
 [[ -n $verbose ]] && printcolor -s debug "Flattening: '$nested' => '$target'" || true
