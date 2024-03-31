@@ -167,7 +167,7 @@ call_api() {
 }
 
 read_response() {
-    local raw_response=$(jq -r '.choices.[0].message.content' "$RESPONSE_DATA_FILE" || echo '')
+    local raw_response=$(jq -r '.choices[0].message.content' "$RESPONSE_DATA_FILE" || echo '')
     if [[ -n $raw_response ]]; then
         echo "$raw_response" > $RESPONSE_CONTENT_FILE
         return 0
