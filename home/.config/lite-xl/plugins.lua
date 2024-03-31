@@ -44,3 +44,11 @@ ${0:shell_function}() {
 }
 ]]
 }
+
+snippets.add {
+    trigger  = 'ppf',
+    info     = 'Python f-string',
+    desc     = 'Python print f-string',
+    format   = 'lsp',
+    template = [[print(f'{${0:expression}=}')]]
+}
