@@ -15,8 +15,13 @@ ROWS = 3
 COLUMNS = 4
 
 NOTIFY_TIMEOUT = 1000
-NOTIFY_SEND = ("notify-send", "-t", str(NOTIFY_TIMEOUT), "-h", 'string:synchronous:"muxidesktops"')
-
+NOTIFY_SEND = (
+    "notify-send",
+    "-u", "low",
+    "-e", "-t", str(NOTIFY_TIMEOUT),
+    "-h",
+    'string:synchronous:"muxidesktops"',
+)
 OUTPUT_SPLIT = " "
 OUTPUT_EMPTY = "▁"
 OUTPUT_OCCUPIED = "◇"
