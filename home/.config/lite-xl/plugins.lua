@@ -25,7 +25,7 @@ local snippets = require 'plugins.snippets'
 snippets.add {
     trigger  = 'cb',
     info     = 'codeblock',
-    desc     = 'Markdown codeblock',
+    desc     = 'Codeblock for markdown',
     format   = 'lsp',
     template = [[
 ```${0:markdown}
@@ -37,6 +37,7 @@ snippets.add {
     trigger  = 'sf',
     info     = 'shellfunction',
     desc     = 'A function for bash',
+    scope    = 'source.bash',
     format   = 'lsp',
     template = [[
 ${0:shell_function}() {
@@ -49,6 +50,7 @@ snippets.add {
     trigger  = 'ppf',
     info     = 'Python f-string',
     desc     = 'Python print f-string',
+    scope    = 'source.python',
     format   = 'lsp',
     template = [[print(f'{${0:expression}=}')]]
 }
