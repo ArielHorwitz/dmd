@@ -35,7 +35,7 @@ snippets.add {
 
 snippets.add {
     trigger  = 'sf',
-    info     = 'shellfunction',
+    info     = 'Shell function',
     desc     = 'A function for bash',
     scope    = 'source.bash',
     format   = 'lsp',
@@ -44,6 +44,18 @@ ${0:shell_function}() {
     set -e
 }
 ]]
+}
+
+snippets.add {
+    trigger  = 'sif',
+    info     = 'Shell if statement',
+    desc     = 'If statement for bash',
+    scope    = 'source.bash',
+    format   = 'lsp',
+    template = [=[
+if [[ -n \$${0:arg} ]]; then
+fi
+]=]
 }
 
 snippets.add {
