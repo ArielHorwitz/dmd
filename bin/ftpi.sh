@@ -67,7 +67,7 @@ get_userpass() {
             userpass+=":$args_password"
         else
             prompttext -H "Password: "
-            userpass+=":$(prompttext --read)"
+            userpass+=":$(prompttext --read --clear)"
         fi
     fi
     USERPASS_SET=1

@@ -15,6 +15,7 @@ CLI=(
     -f "multiline;Enable multiline input (ctrl+d to end);;m"
     -f "hide;Hide input text;;H"
     -f "read;Print the last input text;;R"
+    -f "clear;Clear last input text after reading;;C"
     -f "no-prompt;Disable printing prompt;;P"
     -f "no-newline;Disable printing newline after reading;;N"
     -e "prompt_args;Arguments for printcolor prompt"
@@ -26,6 +27,7 @@ eval "$CLI" || exit 1
 # Read file - don't prompt
 if [[ -n $args_read ]]; then
     cat $USER_INPUT_FILE
+    [[ -z $args_clear ]] || printf "" > $USER_INPUT_FILE
     exit 0
 fi
 
