@@ -23,7 +23,7 @@
     progress_bar_frame_width = 1
     progress_bar_min_width = 150
     progress_bar_max_width = 300
-    progress_bar_corner_radius = 0
+    progress_bar_corner_radius = 3
 
     ### Style ###
     icon_corner_radius = 0
@@ -38,7 +38,7 @@
     gap_size = 5
     separator_color = frame  # auto | foreground | frame | X color
     sort = yes
-    idle_threshold = 120
+    idle_threshold = 60
 
     ### Text ###
     ~>>>
@@ -133,7 +133,7 @@
     # corners.
     # The radius will be automatically lowered if it exceeds half of the
     # notification height to avoid clipping text and/or icons.
-    corner_radius = 15
+    corner_radius = 8
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
@@ -196,7 +196,7 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#000033"
+    background = "#000022"
     foreground = "#5555ff"
     frame_color = "#0000ff"
     timeout = 20
@@ -204,15 +204,15 @@
     #default_icon = /path/to/icon
 
 [urgency_normal]
-    background = "#003300"
+    background = "#002200"
     foreground = "#55ff55"
     frame_color = "#00ff00"
-    timeout = 20
+    timeout = 120
     # Icon for notifications with normal urgency, uncomment to enable
     #default_icon = /path/to/icon
 
 [urgency_critical]
-    background = "#330000"
+    background = "#220000"
     foreground = "#ff5555"
     frame_color = "#ff0000"
     timeout = 0
