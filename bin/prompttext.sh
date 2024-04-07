@@ -12,6 +12,7 @@ $APP_NAME; user_input=\$($APP_NAME --read)"
 CLI=(
     --prefix "args_"
     -o "prompt;Print prompt before reading input;> "
+    -f "multiline;Enable multiline input (ctrl+d to end);;m"
     -f "hide;Hide input text;;H"
     -f "read;Print the last input text;;R"
     -f "no-prompt;Disable printing prompt;;P"
@@ -32,8 +33,10 @@ fi
 if [[ -z $args_no_prompt ]]; then
     if [[ -n $args_prompt_args ]]; then
         prompt_args=${args_prompt_args[@]}
+    elif [[ -n $args_multiline ]]; then
+        prompt_args=(--foreground magenta)
     else
-        prompt_args=${DEFAULT_PROMPT_ARGS[@]}
+        prompt_args=(--foreground magenta --no-newline)
     fi
     printcolor ${prompt_args[@]} "$args_prompt"
 fi
@@ -42,17 +45,24 @@ fi
 printf "" > $USER_INPUT_FILE
 
 # Read input from user
-IFS=''
-user_input=''
+IFS=
+user_input=
 while :; do
-    read -sn1 user_input_char
+    read -rsn1 -d '' user_input_char
     if [[ $user_input_char == $'\x7f' ]]; then
         if [[ -n $user_input ]]; then
             user_input="${user_input%?}"
             echo -en "\b \b"
         fi
-    elif [[ -z $user_input_char ]]; then
+    elif [[ $user_input_char == $'\x04' ]]; then
         break
+    elif [[ $user_input_char == $'\x0a' ]]; then
+        if [[ -n $args_multiline ]]; then
+            user_input+=$'\n'
+            [[ -n $args_hide ]] && printf '*' || printf "\n"
+        else
+            break
+        fi
     else
         user_input+="$user_input_char"
         [[ -n $args_hide ]] && printf '*' || printf "%s" "$user_input_char"
@@ -63,4 +73,4 @@ if [[ -z $args_no_newline ]]; then
 fi
 
 # Write to file
-printf "%s" $user_input > $USER_INPUT_FILE
+printf "%s" "$user_input" > $USER_INPUT_FILE
