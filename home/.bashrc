@@ -15,5 +15,5 @@ eval $(psprompt)
 # Environment
 source ~/.config/bashprofiles/env.sh
 source ~/.config/bashprofiles/aliases.sh
-[[ -f ~/.config/bashprofiles/devenv.sh ]] && source ~/.config/bashprofiles/devenv.sh
+[[ -f ~/.config/bashprofiles/devenv.sh ]] && source ~/.config/bashprofiles/devenv.sh || :
 
