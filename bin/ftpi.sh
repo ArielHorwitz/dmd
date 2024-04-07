@@ -49,29 +49,27 @@ fi
 
 printcolor -nf cyan -od "FTP Server:  "; echo ${ftp_server}
 
-USERPASS_SET=
-get_userpass() {
+USERPASS=
+resolve_userpass() {
     set -e
-    if [[ -z $USERPASS_SET ]]; then
+    if [[ -z $USERPASS ]]; then
         # Resolve username
         if [[ -n $args_username ]]; then
-            userpass="$args_username"
+            USERPASS="$args_username"
         else
             prompttext "Username: "
-            userpass="$(prompttext --read)"
+            USERPASS="$(prompttext --read)"
         fi
         # Resolve password
-        if [[ -n $PASSWORD ]]; then
-            userpass+=":$PASSWORD"
-        elif [[ -n $args_password ]]; then
-            userpass+=":$args_password"
+        if [[ -n $args_password ]]; then
+            USERPASS+=":$args_password"
+        elif [[ -n $PASSWORD ]]; then
+            USERPASS+=":$PASSWORD"
         else
             prompttext -H "Password: "
-            userpass+=":$(prompttext --read --clear)"
+            USERPASS+=":$(prompttext --read --clear)"
         fi
     fi
-    USERPASS_SET=1
-    echo --user ${userpass}
 }
 
 assert_file_arg() {
@@ -84,25 +82,29 @@ assert_file_arg() {
 
 list() {
     set -e
-    curl $(get_userpass) "${ftp_server}/${file_path}"
+    resolve_userpass
+    curl --user "${USERPASS}" "${ftp_server}/${file_path}"
 }
 
 download() {
     set -e
     assert_file_arg "Download"
-    curl $(get_userpass) -o "${target_path}" "${ftp_server}/${file_path}"
+    resolve_userpass
+    curl --user "${USERPASS}" -o "${target_path}" "${ftp_server}/${file_path}"
 }
 
 upload() {
     set -e
     assert_file_arg "Upload"
-    curl $(get_userpass) -T "${file_path}" "${ftp_server}/${target_path}"
+    resolve_userpass
+    curl --user "${USERPASS}" -T "${file_path}" "${ftp_server}/${target_path}"
 }
 
 delete() {
     set -e
     assert_file_arg "Delete"
-    curl $(get_userpass) -Q "DELE ${file_path}" "${ftp_server}"
+    resolve_userpass
+    curl --user "${USERPASS}" -Q "DELE ${file_path}" "${ftp_server}"
 }
 
 # Choose operation
