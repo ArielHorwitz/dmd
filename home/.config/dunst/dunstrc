@@ -10,7 +10,11 @@
     offset = 50x50
     width = (250, 1000)
     height = 500
+    ~>>>
     scale = 0
+    ~>>> zen
+    scale = 2
+    ~<<<
     notification_limit = 10
 
     ### Progress bar ###
@@ -31,13 +35,17 @@
     text_icon_padding = 10
     frame_width = 5
     # frame_color = "#001242"
-    gap_size = 0
+    gap_size = 5
     separator_color = frame  # auto | foreground | frame | X color
     sort = yes
     idle_threshold = 120
 
     ### Text ###
+    ~>>>
     font = FiraCodeNerdFont 12
+    ~>>> zen
+    font = FiraCodeNerdFont 18
+    ~<<<
     line_height = 0
     alignment = left
     vertical_alignment = center
