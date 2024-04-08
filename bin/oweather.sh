@@ -99,7 +99,7 @@ display_summary() {
     [[ -n $nounits ]] || printf " ${faded}km${reset}"
     # desc
     printf " "
-    desc=$(jq '.current.weather.[0].description' "$response_cache" | xargs)
+    desc=$(jq '.current.weather[0].description' "$response_cache" | xargs)
     printf "[${color}$desc${reset}]\n"
 }
 
@@ -107,8 +107,8 @@ case $display in
     summary) display_summary ;;
     json)    cat "$response_cache" ;;
     current)    jq '.current' "$response_cache" ;;
-    hourly)    jq ".hourly.[0]" "$response_cache" ;;
-    daily)    jq '.daily.[0]' "$response_cache" ;;
+    hourly)    jq ".hourly[0]" "$response_cache" ;;
+    daily)    jq '.daily[0]' "$response_cache" ;;
     none)    ;;
     *)       echo "unknown display mode: '$display'" ;;
 esac
