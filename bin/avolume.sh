@@ -65,6 +65,6 @@ else
     echo $vol
     if [[ -z $no_notification ]]; then
         [[ $mute -eq 0 ]] && text="${vol}%" || text="<s>${vol}%</s> <i>(muted)</i>"
-        notify-send -u low -e -t 1500 "Volume: $COMMAND_DEVICE" "$text" -h int:value:"$vol" -h string:synchronous:"volume"
+        notify-send -u low -t 1500 "Volume: $COMMAND_DEVICE" "$text" -h int:value:"$vol" -h string:synchronous:"volume"
     fi
 fi

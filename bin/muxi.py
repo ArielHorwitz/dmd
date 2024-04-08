@@ -18,7 +18,7 @@ NOTIFY_TIMEOUT = 1000
 NOTIFY_SEND = (
     "notify-send",
     "-u", "low",
-    "-e", "-t", str(NOTIFY_TIMEOUT),
+    "-t", str(NOTIFY_TIMEOUT),
     "-h",
     'string:synchronous:"muxidesktops"',
 )
