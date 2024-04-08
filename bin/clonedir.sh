@@ -1,33 +1,40 @@
-#!/usr/bin/bash
-
-# Git clone a single directory from a repo
-
+#! /bin/bash
 set -e
 
-if [[ $# -lt 3 ]]; then
-  echo "Usage: $0 <clone-url> <repo-dir> <download-dir> [--delete]" >&2
-  exit 1
-fi
+APP_NAME=$(basename "$0")
+ABOUT="Git clone a single directory from a repo."
+CLI=(
+    --prefix "args_"
+    -p "clone_url;Repo url"
+    -p "repo_dir;Directory in repo to clone"
+    -o "target_dir;Directory to clone into;."
+    -f "delete;Clear target directory before cloning;;d"
+)
+CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
+# echo "$CLI" >&2
+eval "$CLI" || exit 1
+
+args_target_dir=$(realpath $args_target_dir)
 
 # Create temporary working directory
-TMPDIR=/tmp/clonedir/
+TMPDIR=/tmp/clonedir-$RANDOM/
 echo "Creating temporary directory: $TMPDIR"
 rm -rf $TMPDIR
 mkdir -p $TMPDIR
 
 # Clone
-echo "Cloning: $1"
-git clone --quiet --no-checkout --depth=1 --filter=tree:0 $1 $TMPDIR
+echo "Cloning: $args_clone_url"
+git clone --quiet --no-checkout --depth=1 --filter=tree:0 $args_clone_url $TMPDIR
 cd $TMPDIR
-git sparse-checkout set --no-cone $2
-echo "Sparse checkout: $2"
+git sparse-checkout set --no-cone $args_repo_dir
+echo "Sparse checkout: $args_repo_dir"
 git checkout
 
 # Move files to download directory
-[[ $4 = "--delete" ]] && echo "Deleting: $3" && rm -rf $3
-mkdir -p $3
-echo "Moving files to: $3"
-mv $2 $3
+[[ -z $args_delete ]] || echo "Deleting: $args_target_dir" && rm -rf $args_target_dir/$args_repo_dir
+mkdir -p $args_target_dir/$args_repo_dir
+echo "Moving files to: $args_target_dir/$args_repo_dir"
+mv $args_repo_dir $args_target_dir
 
 # Clean up temporary files
 echo "Cleaning up..."
