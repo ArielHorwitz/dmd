@@ -30,7 +30,6 @@ alias watcha="watch "
 alias pyactivate="source venv/bin/activate"
 alias pipr="pip install -r requirements.txt"
 alias py="python main.py"
-alias pyflint="black --fast .; isort --profile black -l 88 .; flake8 --max-line-length 88 --extend-exclude 'venv/' ."
 
 # Rust
 alias cr="cargo run --"
