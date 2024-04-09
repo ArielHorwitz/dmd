@@ -65,3 +65,27 @@ snippets.add {
     format   = 'lsp',
     template = [[print(f'{${0:expression}=}')]]
 }
+
+snippets.add {
+    trigger  = 'doc',
+    info     = 'Python docstring',
+    desc     = 'Python docstring',
+    scope    = 'source.python',
+    format   = 'lsp',
+    template = [["""${0:DOCSTRING_PLACEHOLDER}"""]]
+}
+
+snippets.add {
+    trigger  = 'ifname',
+    info     = 'if name main',
+    desc     = 'Boilerplate for python main script file',
+    scope    = 'source.python',
+    format   = 'lsp',
+    template = [[
+
+def main():
+    ${0:pass}
+
+if __name__ == "__main__":
+    main()]]
+}
