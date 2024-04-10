@@ -1,21 +1,12 @@
 (deflayer audio
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    @volu @volU XX    XX    XX    @aomt @volu @aoum @sksp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @vold @volD XX    XX    XX    @prev @vold @next @skhd XX    _                               XX    XX    XX
+  _     XX    @volu @volU XX    XX    @sksp @aomt @volu @aoum @volU XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @vold @volD XX    XX    @skhd @prev @vold @next @volD XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @aimt @vol0 @aium XX    _                        XX           XX    XX    XX    XX
-  _     _     @aud2             @pp               _     _     _     _                  XX    XX    XX     XX    XX
-)
-(deflayer audio_alt
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @volU _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @volD _     _     _     _                               XX    XX    XX
-  _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     _                @pp               _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    aud2 (layer-toggle audio_alt)
     sksp (cmd-button "adevice speakers")
     skhd (cmd-button "adevice headphones")
     volu (cmd-button "avolume --increase 2")
@@ -31,4 +22,3 @@
     next NextSong
     pp   PlayPause
 )
-
