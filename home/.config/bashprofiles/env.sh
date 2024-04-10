@@ -17,7 +17,7 @@ paths_descending_priority=(
     "$HOME/.cargo/bin"
     # System
 ~>>>
-~>>> ubuntu
+~>>> think
     "/snap/bin"
 ~<<<
     "/usr/local/sbin"
