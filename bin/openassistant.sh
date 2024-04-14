@@ -57,14 +57,15 @@ ABOUT='Query your personal OpenAI assistant.
 Write your OpenAI API key in the configuration folder (--config-dir).'
 CLI=(
     --prefix "args_"
-    -o "quick-load;Quietly load a conversation index (see --load --quiet);;."
-    -O "preset;Instructions preset;default;p"
+    -o "preset;Instructions preset;default;p"
     -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;ask-yes;y"
     -O "load;Load a conversation index (see --list);;L"
     -O "delete;Delete a conversation index (see --list);;D"
     -O "list-offset;Index offset of conversations to show (see --list);0;O"
     -O "list-limit;Limit number of conversations to show (see --list);10;T"
     -f "list;List conversations from history;;l"
+    -f "list-instructions;List instruction presets;;i"
+    -f "edit-instructions;Edit instruction preset;;e"
     -f "stats;Print recorded stats;;s"
     -f "config-dir;Print configuration directory path;;c"
     -f "history-dir;Print history directory path;;H"
@@ -98,6 +99,18 @@ get_system_instructions() {
         cp "$file" $SYS_INSTR_FILE
     fi
     system_instructions="$(cat $SYS_INSTR_FILE)"
+}
+
+list_system_instructions() {
+    ls -1 $SYS_INSTR_DIR
+}
+
+edit_system_instructions() {
+    local file="$SYS_INSTR_DIR/$args_preset"
+    [[ -n $EDITOR ]] || exit_error "No editor configured (use EDITOR environment variable)"
+    [[ -f $file && -n $(< $file) ]] || echo $DEFAULT_SYSTEM_INSTRUCTIONS > $file
+    [[ -z $VERBOSE ]] || printcolor -s notice "Editing system instructions with editor: \"$EDITOR\"" >&2
+    `$EDITOR $file` &>/dev/null
 }
 
 get_query() {
@@ -391,10 +404,6 @@ flow_query_from_history() {
 
 # Start
 [[ -z $args_debug ]] || set -x
-if [[ -n $args_quick_load ]]; then
-    args_quiet=1
-    args_load=$args_quick_load
-fi
 if [[ -n $args_quiet ]]; then
     QUIET=1
     VERBOSE=
@@ -411,14 +420,16 @@ case ${args_history} in
 esac
 
 cleanup
-if [[ -n $args_list ]];            then list_history
-elif [[ -n $args_config_dir ]];    then echo $CONFIG_DIR
-elif [[ -n $args_history_dir ]];   then echo $HISTORY_DIR
-elif [[ -n $args_stats ]];         then cat $STATS_FILE_TOTALS
-elif [[ -n $args_delete ]];        then delete_from_history
-elif [[ -n $args_clear_data ]];    then clear_data
-elif [[ -n $args_clear_config ]];  then clear_config
-elif [[ -n $args_load ]];    then flow_query_from_history
+if [[ -n $args_list ]];                                   then list_history
+elif [[ -n $args_config_dir ]];                           then echo $CONFIG_DIR
+elif [[ -n $args_history_dir ]];                          then echo $HISTORY_DIR
+elif [[ -n $args_stats ]];                                then cat $STATS_FILE_TOTALS
+elif [[ -n $args_list_instructions ]];                    then list_system_instructions
+elif [[ -n $args_edit_instructions ]];                    then edit_system_instructions
+elif [[ -n $args_delete ]];                               then delete_from_history
+elif [[ -n $args_clear_data ]];                           then clear_data
+elif [[ -n $args_clear_config ]];                         then clear_config
+elif [[ -n $args_load ]];                                 then flow_query_from_history
 else flow_query_normal
 fi
 cleanup

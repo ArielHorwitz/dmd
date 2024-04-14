@@ -13,8 +13,8 @@ alias taru="tar -vkxf"
 alias tarl="tar -tf"
 alias rp="rhinopuffin"
 alias gp="geckopanda"
-alias oa="openassistant -q"
-alias oam="openassistant 0 | markdown"
+alias oa="openassistant"
+alias oam="openassistant -L0 | markdown"
 alias or="openartist"
 
 alias ls='ls --color=auto'
