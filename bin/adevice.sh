@@ -79,4 +79,5 @@ set_device $selected_device
 
 if [[ -z $no_notification ]]; then
     notify-send -t 1500 "Audio ${device_type}" "${device_class}" -h string:synchronous:"audio-${device_type}-device"
+    avolume
 fi
