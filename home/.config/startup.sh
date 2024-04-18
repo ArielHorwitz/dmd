@@ -26,8 +26,7 @@ run_polybar() {
 log "iuk startup"
 localtestinstall -c
 
-log "configuring displays"
-xgeometry --file $DISPLAYS_FILE
+log "configuring display"
 xset -dpms s 7200
 xsetroot -solid "#000000"
 
