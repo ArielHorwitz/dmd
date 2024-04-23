@@ -15,13 +15,12 @@ CLI=(
     -f "user-files;Copy user files to home directory;;u"
     -f "binaries;Install binaries;;b"
     -f "dependencies;Install dependencies (implies -b);;d"
-    -f "web-dependencies;Install web dependencies (implies -b);;w"
     -f "system;Update system packages;;s"
 )
 CLI=$($DATADIR/spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 # Post process args
-if [[ -n $args_dependencies || -n $args_web_dependencies ]]; then
+if [[ -n $args_dependencies ]]; then
     args_binaries=1
 fi
 HOSTNAME=$args_hostname
@@ -57,21 +56,22 @@ update_system() {
 }
 
 update_dependencies() {
-    progress "Installing dependencies"
-    # AUR (paru)
     if [[ -z $(paru --version 2>/dev/null) ]]; then
+        progress "Installing paru"
         sudo pacman -S --quiet --needed --noconfirm base-devel git
         git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMPDIR/paru
         cd $TMPDIR/paru
         makepkg -si --needed --noconfirm
     fi
-    paru -S --quiet --needed --noconfirm $(cat $DATADIR/deps-aur.txt)
-    # Cargo install
-    cargo install $(cat $DATADIR/deps-rust.txt)
-}
 
-update_dependencies_web() {
+    progress "Installing AUR dependencies"
+    paru -S --quiet --needed --noconfirm $(cat $DATADIR/deps-aur.txt)
+
+    progress "Installing cargo dependencies"
+    cargo install $(cat $DATADIR/deps-rust.txt)
+
     progress "Installing web dependencies"
+    echo -n "Cache dir: "; printcolor -s info "$CACHEDIR"
     local dependencies_file=$DATADIR/deps-web.txt
     while read dep; do
         [[ -n $dep ]] || continue
@@ -80,21 +80,16 @@ update_dependencies_web() {
         local url=$(echo $dep | cut -d' ' -f3-)
         local cached_bin="$CACHEDIR/bin/$name"
         if sudo test -x $cached_bin; then
-            eval "cached_version=\"$($cached_bin --version 2>/dev/null || echo UNKNOWNVERSION)\""
-            if [[ $cached_version = 'UNKNOWNVERSION' ]]; then
-                echo -n "cached: $name unknown"
-                echo " - updating to latest [v$required_version]"
-            else
-                echo -n "cached: $cached_version"
-                if [[ $cached_version = *${required_version}* ]]; then
-                    echo " - up to date [v$required_version]"
-                    continue
-                fi
-                echo " - version mismatch [$cached_version != *$required_version*]"
+            eval "cached_version=\"$($cached_bin --version 2>/dev/null || echo MISSING)\""
+            printf "%.40s" "cached: $cached_version ........................................"
+            if [[ $cached_version = *${required_version}* ]]; then
+                echo " up to date [v$required_version]"
+                continue
             fi
+            echo " version mismatch [$cached_version != *$required_version*]"
         fi
         echo "Installing $name v$required_version"
-        wget --quiet --https-only --show-progress --output-document $cached_bin $url
+        curl -sSLfo $cached_bin $url
         sudo chmod +x $cached_bin
     done < $dependencies_file
 }
@@ -136,7 +131,7 @@ restart_services() {
 [[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
 
 # Shortcut if noop
-operations=$((args_system + args_dependencies + args_web_dependencies + args_binaries + args_user_files))
+operations=$((args_system + args_dependencies + args_binaries + args_user_files))
 [[ $operations -gt 0 ]] || { notice "No operations selected."; exit 0; }
 
 # Installation
@@ -144,7 +139,6 @@ progress "Installing iuk"
 setup_installation_dirs
 [[ -z $args_system ]] || update_system
 [[ -z $args_dependencies ]] || update_dependencies
-[[ -z $args_web_dependencies ]] || update_dependencies_web
 [[ -z $args_binaries ]] || install_binaries
 [[ -z $args_user_files ]] || copy_home_dir
 cleanup_installation_dirs
