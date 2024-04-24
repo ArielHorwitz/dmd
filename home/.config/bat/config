@@ -6,5 +6,4 @@
 
 --theme="Dracula"
 
---style="changes,rule,snip"
-
+--style="rule,snip"
