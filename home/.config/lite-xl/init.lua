@@ -19,14 +19,15 @@ config.always_show_tabs = true
 config.tab_close_button = false
 
 config.ignore_files = {
-  -- folders
-  "^%.svn/",        "^%.git/",   "^%.hg/",        "^CVS/", "^%.Trash/", "^%.Trash%-.*/",
-  "^node_modules/", "^%.cache/", "^__pycache__/", "^venv/", "^.venv/", "^target/",
-  -- files
-  "%.pyc$",         "%.pyo$",       "%.exe$",        "%.dll$",   "%.obj$", "%.o$",
-  "%.a$",           "%.lib$",       "%.so$",         "%.dylib$", "%.ncb$", "%.sdf$",
-  "%.suo$",         "%.pdb$",       "%.idb$",        "%.class$", "%.psd$", "%.db$",
-  "^desktop%.ini$", "^%.DS_Store$", "^%.directory$",
+  -- FOLDERS
+  "^%..-cache.-/", "^__pycache__/",
+  "^venv/", "^.venv/", "^target/",
+  "^%.svn/", "^%.git/", "^%.hg/", "^CVS/",
+  "^node_modules/",
+  -- FILES
+  "%.pyc$", "%.pyo$",
+  "%.o$", "%.a$", "%.so$", "%.obj$", "%.lib$", "%.dylib$",
+  "%.exe$", "%.dll$", "^%.DS_Store$",
 }
 
 
@@ -42,4 +43,3 @@ require "lsp"
 
 -- DATADIR - installed Lite XL Lua code, default color schemes and fonts.
 -- USERDIR - configuration directory.
-
