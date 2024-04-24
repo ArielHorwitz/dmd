@@ -41,8 +41,7 @@ snippets.add {
     template = [[
 ${0:shell_function}() {
     set -e
-}
-]]
+}]]
 }
 
 snippets.add {
