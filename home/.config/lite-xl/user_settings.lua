@@ -2,7 +2,7 @@ return {
   ["config"] = {
     ["plugins"] = {
       ["treeview"] = {
-        ["visible"] = true
+        ["visible"] = true -- for whatever reason, true is false and false is true
       }
     }
   }
