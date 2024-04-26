@@ -51,7 +51,8 @@ snippets.add {
     scope    = 'source.bash',
     format   = 'lsp',
     template = [=[
-if [[ -n \$${0:arg} ]]; then
+if [[ -n \$${1:arg} ]]; then
+    $0
 fi
 ]=]
 }
