@@ -25,6 +25,7 @@ mouse_warping none # none|output
 
 # BASIC KEYBINDS
 bindsym Mod4+Return exec --no-startup-id alacritty
+bindsym Mod4+Mod1+Return exec --no-startup-id kmdrun
 bindsym Mod4+Mod1+Left exec --no-startup-id i3-msg workspace prev
 bindsym Mod4+Mod1+Right exec --no-startup-id i3-msg workspace next
 bindsym Mod4+Left exec --no-startup-id i3-msg focus left
