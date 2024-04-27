@@ -4,3 +4,10 @@ ripgrep
 fd-find
 du-dust
 cargo-release
+
+spongecrab
+rhinopuffin
+psprompt
+matchpick
+termcolors
+homux

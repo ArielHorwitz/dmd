@@ -1,155 +1,106 @@
 #! /bin/bash
 set -e
 
-SRCDIR=$(dirname `realpath "$0"`)
-DATADIR=$SRCDIR/data
-TMPDIR=/tmp/iukinstall
-BINDIR=/usr/bin/iukbtw
-CACHEDIR=/var/iukbtw/cache
+SOURCE_DIR=$(realpath $(dirname $0))
+SCRIPTS_DIR=$SOURCE_DIR/bin/
+AUR_FILE=$SOURCE_DIR/data/deps-aur.txt
+CRATES_FILE=$SOURCE_DIR/data/deps-rust.txt
 
-APP_NAME=$(basename "$0")
-ABOUT="Idempotent installer for iuk."
-CLI=(
-    --prefix "args_"
-    -O "hostname;Use custom hostname;$(hostnamectl hostname);n"
-    -f "user-files;Copy user files to home directory;;u"
-    -f "binaries;Install binaries;;b"
-    -f "dependencies;Install dependencies (implies -b);;d"
-    -f "system;Update system packages;;s"
-)
-CLI=$($DATADIR/spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
-eval "$CLI" || exit 1
-# Post process args
-if [[ -n $args_dependencies ]]; then
-    args_binaries=1
-fi
-HOSTNAME=$args_hostname
+CACHE_DIR=/var/iukbtw/cache
+CACHE_DIR_CARGO=${CACHE_DIR}/cargo
+CACHE_DIR_PARU=${CACHE_DIR}/paru
 
-exit_with_error () {
-    printf "\e[1;31m$1\e[0m\n" >&2
-    exit 1
-}
+STAGING_DIR=/tmp/iukbtw_install_staging/
+INSTALL_DIR=/bin/iukbtw/
+
+
+title () { printf "\e[92;1;4m$1\e[0m\n" ; }
 progress () { printf "\e[32m$1\e[0m\n" ; }
-notice () { printf "\e[36m$1\e[0m\n" ; }
-recreatedir () {
-    set -e
-    [[ -d $1 ]] && sudo rm -rf $1
-    sudo mkdir --parents $1
-    sudo chown $EUID $1
-}
-
-setup_installation_dirs() {
-    set -e
-    recreatedir $TMPDIR
-    [[ -d $CACHEDIR/bin ]] || sudo mkdir -p $CACHEDIR/bin
-    sudo chown --recursive $USER $CACHEDIR
-    cd $TMPDIR
-    notice "Source directory: $SRCDIR"
-}
-
-cleanup_installation_dirs() {
-    set -e
-    progress "Cleaning up temporary installation files"
-    sudo rm -rf $TMPDIR
-}
-
-update_system() {
-    set -e
-    progress "Updating System"
-    sudo pacman -Syuu --noconfirm
-}
-
-update_dependencies() {
-    set -e
-    if [[ -z $(paru --version 2>/dev/null) ]]; then
-        progress "Installing paru"
-        sudo pacman -S --quiet --needed --noconfirm base-devel git
-        git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMPDIR/paru
-        cd $TMPDIR/paru
-        makepkg -si --needed --noconfirm
+info () { printf "\e[36m$1\e[0m\n" ; }
+notice () { printf "\e[35m$1\e[0m\n" ; }
+warn () { printf "\e[93;1m$1\e[0m\n" ; }
+error () { printf "\e[31m$1\e[0m\n" ; }
+checkroot() {
+    if [[ ! $EUID -eq 0 ]]; then
+        error "Must be run as root."
+        exit 1
     fi
-
-    progress "Installing AUR dependencies"
-    paru -S --quiet --needed --noconfirm $(cat $DATADIR/deps-aur.txt)
-
-    progress "Installing cargo dependencies"
-    cargo install $(cat $DATADIR/deps-rust.txt)
-
-    progress "Installing web dependencies"
-    echo -n "Cache dir: "; printcolor -s info "$CACHEDIR"
-    local dependencies_file=$DATADIR/deps-web.txt
-    while read dep; do
-        [[ -n $dep ]] || continue
-        local name=$(echo $dep | cut -d' ' -f1)
-        local required_version=$(echo $dep | cut -d' ' -f2)
-        local url=$(echo $dep | cut -d' ' -f3-)
-        local cached_bin="$CACHEDIR/bin/$name"
-        if sudo test -x $cached_bin; then
-            eval "cached_version=\"$($cached_bin --version 2>/dev/null || echo MISSING)\""
-            printf "%.40s" "cached: $cached_version ........................................"
-            if [[ $cached_version = *${required_version}* ]]; then
-                echo " up to date [v$required_version]"
-                continue
-            fi
-            echo " version mismatch [$cached_version != *$required_version*]"
-        fi
-        echo "Installing $name v$required_version"
-        curl -sSLfo $cached_bin $url
-        sudo chmod +x $cached_bin
-    done < $dependencies_file
 }
 
-install_binaries() {
+title "Installation script for iukbtw"
+echo "Install packages, binaries, and scripts required for iukbtw.
+Packages are installed from the AUR. Cargo binary crates are downloaded and
+installed along with scripts."
+echo
+progress "Installation details:"
+printf "AUR packages file: "; info "$AUR_FILE"
+printf "Cargo crates file: "; info "$CRATES_FILE"
+printf "Scripts directory: "; info "$SCRIPTS_DIR"
+printf "Installation directory: "; info "$INSTALL_DIR"
+echo
+warn "Installation directory will be cleared!"
+checkroot
+notice "Start installation? (y/N)"
+read -sn 1 $timeout prompt_start || :
+echo
+[[ -n $prompt_start && "yY" == *$prompt_start* ]] || exit 1
+
+
+ensure_dir() {
     set -e
-    TMPBIN=$TMPDIR/bin
-    progress "Installing binaries"
-    recreatedir $TMPBIN
-    cp -r $SRCDIR/bin/* $TMPBIN
-    cp -r $CACHEDIR/bin/* $TMPBIN
-    # remove suffixes
-    find $TMPBIN -maxdepth 1 -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
-    recreatedir $BINDIR
-    sudo cp -r $TMPBIN/* $BINDIR
-    sudo chmod +x --recursive $BINDIR
+    [[ -d $1 ]] || mkdir --parents $1
+    chown 0 $1
 }
-
-copy_home_dir() {
+recreate_dir () {
     set -e
-    progress "Copying user files to $HOME"
-    cd $SRCDIR/home
-    recreatedir $TMPDIR/home
-    cp -rf --parents . $TMPDIR/home
-    local mp_pattern=$(matchpick --print-start)
-    local mp_files=$(grep --files-with-match --recursive $mp_pattern $TMPDIR/home)
-    for file in $mp_files; do
-        matchpick $file -o $file -m $HOSTNAME
-    done
-    cd $TMPDIR/home
-    cp -rf --parents . $HOME
+    [[ ! -e $1 ]] || rm -rf $1
+    ensure_dir $1
 }
 
-restart_services() {
-    set -e
-    pkill dunst 2>/dev/null || :
-}
 
-# Checks
-[[ $EUID -eq 0 ]] && exit_with_error "Do not run $APP_NAME as root."
-[[ ! -d $SRCDIR ]] && exit_with_error "Failed to resolve source directory: $SRCDIR"
-[[ ! -d $DATADIR ]] && exit_with_error "Missing data directory: $DATADIR"
+ensure_dir $CACHE_DIR
+recreate_dir $STAGING_DIR
 
-# Shortcut if noop
-operations=$((args_system + args_dependencies + args_binaries + args_user_files))
-[[ $operations -gt 0 ]] || { notice "No operations selected."; exit 0; }
 
-# Installation
-progress "Installing iuk"
-setup_installation_dirs
-[[ -z $args_system ]] || update_system
-[[ -z $args_dependencies ]] || update_dependencies
-[[ -z $args_binaries ]] || install_binaries
-[[ -z $args_user_files ]] || copy_home_dir
-cleanup_installation_dirs
-restart_services
-progress "Done."
-notify-send -u low -i ~/tux.png "iuk installed"
+progress "=> Updating System..."
+sudo pacman -Syuu --noconfirm
+
+
+if [[ ! $(command -v paru) ]]; then
+    progress "=> Installing paru..."
+    ensure_dir $CACHE_DIR_PARU
+    sudo pacman -S --quiet --needed --noconfirm base-devel git
+    git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $CACHE_DIR_PARU
+    cd $CACHE_DIR_PARU
+    makepkg -si --needed --noconfirm
+fi
+
+
+progress "=> Installing AUR dependencies..."
+paru -S --quiet --needed --noconfirm $(cat $AUR_FILE)
+
+
+progress "=> Staging binary crates from cargo..."
+cargo install --root $CACHE_DIR_CARGO $(cat $CRATES_FILE)
+echo "The above warning regarding $CACHE_DIR_CARGO is irrelevant, as it is only the cache directory. See installation directory below (at the end of the script)."
+cp -t $STAGING_DIR $CACHE_DIR_CARGO/bin/*
+
+
+progress "=> Staging scripts..."
+cp -rt $STAGING_DIR $SCRIPTS_DIR/*
+find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+
+
+progress "=> Installing binaries..."
+recreate_dir $INSTALL_DIR
+cp -rt $INSTALL_DIR $STAGING_DIR/*
+chmod +x --recursive $INSTALL_DIR
+
+
+progress "=> Cleaning up installation files..."
+rm -rf $STAGING_DIR
+
+
+progress "=> Installed iukbtw."
+echo -n "Scripts and binaries installed to: "; info "$SCRIPTS_DIR"
+notice "Be sure to add the installation directory to your PATH."
