@@ -3,15 +3,15 @@ set -e
 
 SOURCE_DIR=$(realpath $(dirname $0))
 SCRIPTS_DIR=$SOURCE_DIR/bin/
-AUR_FILE=$SOURCE_DIR/data/deps-aur.txt
-CRATES_FILE=$SOURCE_DIR/data/deps-rust.txt
+AUR_FILE=$SOURCE_DIR/dependencies/aur.txt
+CRATES_FILE=$SOURCE_DIR/dependencies/cargo.txt
 
 CACHE_DIR=/var/iukbtw/cache
 CACHE_DIR_CARGO=${CACHE_DIR}/cargo
 CACHE_DIR_PARU=${CACHE_DIR}/paru
 
 STAGING_DIR=/tmp/iukbtw_install_staging/
-INSTALL_DIR=/bin/iukbtw/
+INSTALL_DIR=/usr/bin/iukbtw/
 
 
 title () { printf "\e[92;1;4m$1\e[0m\n" ; }
@@ -102,5 +102,5 @@ rm -rf $STAGING_DIR
 
 
 progress "=> Installed iukbtw."
-echo -n "Scripts and binaries installed to: "; info "$SCRIPTS_DIR"
+echo -n "Scripts and binaries installed to: "; info "$INSTALL_DIR"
 notice "Be sure to add the installation directory to your PATH."
