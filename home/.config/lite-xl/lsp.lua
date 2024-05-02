@@ -13,22 +13,22 @@ lspconfig.rust_analyzer.setup()
 
 -- Python
 lspconfig.pylsp.setup {
-  settings = {
-    pylsp = {
-      plugins = {
-        flake8 = {
-          maxLineLength = 88,
-          enabled = true,
-        },
-        autopep8 = { enabled = false },
-        yapf = { enabled = false },
-        pycodestyle = { enabled = false },
-        pydocstyle = { enabled = false },
-        pyflakes = { enabled = false },
-        pylint = { enabled = false },
-      }
+    settings = {
+        pylsp = {
+            plugins = {
+                flake8 = {
+                    maxLineLength = 88,
+                    enabled = true,
+                },
+                autopep8 = { enabled = false },
+                yapf = { enabled = false },
+                pycodestyle = { enabled = false },
+                pydocstyle = { enabled = false },
+                pyflakes = { enabled = false },
+                pylint = { enabled = false },
+            }
+        }
     }
-  }
 }
 
 -- Lua
