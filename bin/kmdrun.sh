@@ -2,6 +2,8 @@
 
 [[ $EUID -eq 0 ]] && echo "Do not run $0 as root." >&2 && exit 1
 
+LOG_FILE=/tmp/logs-$USER/kmd.log
+
 # Find a keyboard device path
 device_file=$HOME/.config/hardware/input
 all_device_files=`find /dev/input/by-path/ /dev/input/by-id/ -type l`
@@ -36,4 +38,4 @@ setlayer base
 # Start KMonad
 notify-send -i ~/tux.png "Starting KMonad" "$(echo $device | cut -d'/' -f5)"
 echo "Starting KMonad with $kbd_file"
-kmonad $kbd_file $@
+kmonad $kbd_file $@ >$LOG_FILE 2>&1 &
