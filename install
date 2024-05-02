@@ -38,8 +38,8 @@ printf "Cargo crates file: "; info "$CRATES_FILE"
 printf "Scripts directory: "; info "$SCRIPTS_DIR"
 printf "Installation directory: "; info "$INSTALL_DIR"
 echo
-warn "Installation directory will be cleared!"
 checkroot
+warn "System will be updated and installation directory will be cleared."
 notice "Start installation? (y/N)"
 read -sn 1 $timeout prompt_start || :
 echo
