@@ -17,7 +17,11 @@ lspconfig.pylsp.setup {
         pylsp = {
             plugins = {
                 flake8 = {
+                    -- ~>>>
                     maxLineLength = 88,
+                    -- ~>>> think
+                    maxLineLength = 100,
+                    -- ~<<<
                     enabled = true,
                 },
                 autopep8 = { enabled = false },
