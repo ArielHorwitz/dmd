@@ -18,25 +18,25 @@ args_target_dir=$(realpath $args_target_dir)
 
 # Create temporary working directory
 TMPDIR=/tmp/clonedir-$RANDOM/
-echo "Creating temporary directory: $TMPDIR"
+printcolor -s ok "Creating temporary directory: $TMPDIR"
 rm -rf $TMPDIR
 mkdir -p $TMPDIR
 
 # Clone
-echo "Cloning: $args_clone_url"
+printcolor -s ok "Cloning: $args_clone_url"
 git clone --quiet --no-checkout --depth=1 --filter=tree:0 $args_clone_url $TMPDIR
 cd $TMPDIR
 git sparse-checkout set --no-cone $args_repo_dir
-echo "Sparse checkout: $args_repo_dir"
+printcolor -s ok "Sparse checkout: $args_repo_dir"
 git checkout
 
 # Move files to download directory
-[[ -z $args_delete ]] || echo "Deleting: $args_target_dir" && rm -rf $args_target_dir/$args_repo_dir
+[[ -z $args_delete ]] || printcolor -s ok "Deleting: $args_target_dir" && rm -rf $args_target_dir/$args_repo_dir
 mkdir -p $args_target_dir/$args_repo_dir
-echo "Moving files to: $args_target_dir/$args_repo_dir"
+printcolor -s ok "Moving files to: $args_target_dir/$args_repo_dir"
 mv $args_repo_dir $args_target_dir
 
 # Clean up temporary files
-echo "Cleaning up..."
+printcolor -s ok "Cleaning up..."
 rm -rf $TMPDIR
 
