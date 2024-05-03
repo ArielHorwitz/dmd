@@ -29,7 +29,7 @@ install_binary() {
     download_file=$TMPDIR/kmonad
     printcolor -s ok "Downloading..."
     echo "  $BINARY_URL"
-    wget -q --output-document $download_file $BINARY_URL
+    curl -sSL $BINARY_URL -o $download_file
     printcolor -s ok "Installing..."
     chmod +x $download_file
     sudo mv $download_file /bin/kmonad
