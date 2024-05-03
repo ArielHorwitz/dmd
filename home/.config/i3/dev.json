@@ -1,0 +1,113 @@
+{
+    // tabbed split container with 2 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "marks": [],
+    "percent": null,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "pixel",
+            "current_border_width": 3,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 600,
+               "width": 800,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "percent": 0.5,
+            "swallows": [
+               {
+               "class": "^Alacritty$",
+               "title": "- lazygit$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            // splith split container with 2 children
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splith",
+            "marks": [],
+            "percent": 0.5,
+            "type": "con",
+            "nodes": [
+                {
+                    // splitv split container with 2 children
+                    "border": "normal",
+                    "floating": "auto_off",
+                    "layout": "splitv",
+                    "marks": [],
+                    "percent": 0.429824561403508,
+                    "type": "con",
+                    "nodes": [
+                        {
+                            "border": "pixel",
+                            "current_border_width": 3,
+                            "floating": "auto_off",
+                            "geometry": {
+                               "height": 600,
+                               "width": 800,
+                               "x": 0,
+                               "y": 0
+                            },
+                            "marks": [],
+                            "percent": 0.646541617819461,
+                            "swallows": [
+                               {
+                               "class": "^Alacritty$",
+                               "instance": "^Alacritty$"
+                               }
+                            ],
+                            "type": "con"
+                        },
+                        {
+                            "border": "pixel",
+                            "current_border_width": 3,
+                            "floating": "auto_off",
+                            "geometry": {
+                               "height": 600,
+                               "width": 800,
+                               "x": 0,
+                               "y": 0
+                            },
+                            "marks": [],
+                            "percent": 0.353458382180539,
+                            "swallows": [
+                               {
+                               "class": "^Alacritty$",
+                               "instance": "^Alacritty$"
+                               }
+                            ],
+                            "type": "con"
+                        }
+                    ]
+                },
+                {
+                    "border": "normal",
+                    "current_border_width": 3,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 1703,
+                       "width": 2844,
+                       "x": 18,
+                       "y": 39
+                    },
+                    "marks": [],
+                    "percent": 0.570175438596491,
+                    "swallows": [
+                       {
+                       "class": "^lite\\-xl$",
+                       "instance": "^lite\\-xl$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}
