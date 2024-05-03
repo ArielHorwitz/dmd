@@ -19,7 +19,7 @@ eval "$CLI" || exit 1
 
 [[ -n $args_force ]] && args_force="--clobber" || args_force=""
 if [[ -z $args_version ]]; then
-    args_version=$(gh release list --repo $args_repo | grep 'Latest' | head -n 1 | awk '{print $1}')
+    args_version=$(gh-latest)
 fi
 printcolor -ns info "Version:"; echo $args_version
 

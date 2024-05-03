@@ -14,7 +14,7 @@ cd $TMPDIR
 printcolor -s ok "Downloading latest release..."
 asset_pattern="*addons-linux-x86_64-portable.tar.gz"
 downloaded_filename="lite-xl.tar.gz"
-latest_version=$(gh release list --repo 'lite-xl/lite-xl' --exclude-drafts --exclude-pre-releases --json 'isLatest,tagName' --jq '.[] | select(.isLatest == true).tagName')
+latest_version=$(gh-latest)
 printcolor -s info "Latest version: $latest_version"
 gh release download --repo 'lite-xl/lite-xl' $latest_version -p $asset_pattern -O $downloaded_filename
 
