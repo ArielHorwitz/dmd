@@ -15,15 +15,9 @@ log () {
     echo "$timestamp | $1"
 }
 
-run_polybar() {
-    local display=$1
-    local barname=$2
-    log "running polybar '$barname' for: '$display'"
-    sleep 0.5
-    POLYBAR_MONITOR=$display polybar --reload $barname &> $LOGDIR/polybar-$barname-$display.log &
-}
-
 log "iuk startup"
+log "pwd: `pwd`"
+log "clearing localtestinstall dir"
 localtestinstall -c
 
 log "configuring display"
@@ -44,7 +38,14 @@ xss-lock --transfer-sleep-lock -- i3lock ${i3lock_args[@]} &> $LOGDIR/lock.log &
 log "running kmonad"
 kmdrun &> $LOGDIR/kmd.log &
 
-log "closing polybar"
+log "restarting polybar"
+run_polybar() {
+    local display=$1
+    local barname=$2
+    log "running polybar '$barname' for: '$display'"
+    sleep 0.5
+    POLYBAR_MONITOR=$display polybar --reload $barname &> $LOGDIR/polybar-$barname-$display.log &
+}
 polybar-msg cmd quit
 mapfile -t displays < $DISPLAYS_FILE
 run_polybar ${displays[1]} main
