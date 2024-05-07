@@ -2,7 +2,6 @@
 
 unalias -a
 
-alias iukinstall="~/prog/iukbtw/install -bu"
 alias resource="source ~/.bashrc" # Reread .bashrc
 alias c="clear"
 alias xo="xdg-open"
