@@ -20,12 +20,6 @@ info () { printf "\e[36m$1\e[0m\n" ; }
 notice () { printf "\e[35m$1\e[0m\n" ; }
 warn () { printf "\e[93;1m$1\e[0m\n" ; }
 error () { printf "\e[31m$1\e[0m\n" ; }
-checkroot() {
-    if [[ ! $EUID -eq 0 ]]; then
-        error "Must be run as root."
-        exit 1
-    fi
-}
 
 title "Installation script for iukbtw"
 echo "Install packages, binaries, and scripts required for iukbtw.
@@ -38,32 +32,29 @@ printf "Cargo crates file: "; info "$CRATES_FILE"
 printf "Scripts directory: "; info "$SCRIPTS_DIR"
 printf "Installation directory: "; info "$INSTALL_DIR"
 echo
-checkroot
 warn "System will be updated and installation directory will be cleared."
 notice "Start installation? (y/N)"
 read -sn 1 $timeout prompt_start || :
 echo
 [[ -n $prompt_start && "yY" == *$prompt_start* ]] || exit 1
 
+sudo -v
+
 
 ensure_dir() {
     set -e
-    [[ -d $1 ]] || mkdir --parents $1
-    chown 0 $1
+    [[ -d $1 ]] || sudo mkdir --parents $1
+    sudo chown 0 $1
 }
 recreate_dir () {
     set -e
-    [[ ! -e $1 ]] || rm -rf $1
+    [[ ! -e $1 ]] || sudo rm -rf $1
     ensure_dir $1
 }
 
 
 ensure_dir $CACHE_DIR
 recreate_dir $STAGING_DIR
-
-
-progress "=> Updating System..."
-sudo pacman -Syuu --noconfirm
 
 
 if [[ ! $(command -v paru) ]]; then
@@ -81,24 +72,24 @@ paru -S --quiet --needed --noconfirm $(cat $AUR_FILE)
 
 
 progress "=> Staging binary crates from cargo..."
-cargo install --root $CACHE_DIR_CARGO $(cat $CRATES_FILE)
+sudo cargo install --root $CACHE_DIR_CARGO $(cat $CRATES_FILE)
 echo "The above warning regarding $CACHE_DIR_CARGO is irrelevant, as it is only the cache directory. See installation directory below (at the end of the script)."
-cp -t $STAGING_DIR $CACHE_DIR_CARGO/bin/*
+sudo cp -t $STAGING_DIR $CACHE_DIR_CARGO/bin/*
 
 
 progress "=> Staging scripts..."
-cp -rt $STAGING_DIR $SCRIPTS_DIR/*
-find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+sudo cp -rt $STAGING_DIR $SCRIPTS_DIR/*
+sudo find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
 
 
 progress "=> Installing binaries..."
 recreate_dir $INSTALL_DIR
-cp -rt $INSTALL_DIR $STAGING_DIR/*
-chmod +x --recursive $INSTALL_DIR
+sudo cp -rt $INSTALL_DIR $STAGING_DIR/*
+sudo chmod +x --recursive $INSTALL_DIR
 
 
 progress "=> Cleaning up installation files..."
-rm -rf $STAGING_DIR
+sudo rm -rf $STAGING_DIR
 
 
 progress "=> Installed iukbtw."
