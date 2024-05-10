@@ -8,7 +8,7 @@ CRATES_FILE=$SOURCE_DIR/dependencies/cargo.txt
 
 CACHE_DIR=/var/iukbtw/cache
 CACHE_DIR_CARGO=${CACHE_DIR}/cargo
-CACHE_DIR_PARU=${CACHE_DIR}/paru
+TMP_DIR_PARU=/tmp/paru-install-$RANDOM
 
 STAGING_DIR=/tmp/iukbtw_install_staging/
 INSTALL_DIR=/usr/bin/iukbtw/
@@ -44,25 +44,25 @@ sudo -v
 ensure_dir() {
     set -e
     [[ -d $1 ]] || sudo mkdir --parents $1
-    sudo chown 0 $1
 }
 recreate_dir () {
     set -e
-    [[ ! -e $1 ]] || sudo rm -rf $1
+    [[ ! -e $1 ]] || sudo rm -r $1
     ensure_dir $1
 }
 
 
-ensure_dir $CACHE_DIR
-recreate_dir $STAGING_DIR
+ensure_dir $CACHE_DIR && sudo chown 0 $CACHE_DIR
+recreate_dir $STAGING_DIR && sudo chown 0 $STAGING_DIR
 
 
 if [[ ! $(command -v paru) ]]; then
     progress "=> Installing paru..."
-    ensure_dir $CACHE_DIR_PARU
+    recreate_dir $TMP_DIR_PARU
+    sudo chown $USER $TMP_DIR_PARU
     sudo pacman -S --quiet --needed --noconfirm base-devel git
-    git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $CACHE_DIR_PARU
-    cd $CACHE_DIR_PARU
+    git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMP_DIR_PARU
+    cd $TMP_DIR_PARU
     makepkg -si --needed --noconfirm
 fi
 
@@ -84,6 +84,7 @@ sudo find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' 
 
 progress "=> Installing binaries..."
 recreate_dir $INSTALL_DIR
+sudo chown 0 $INSTALL_DIR
 sudo cp -rt $INSTALL_DIR $STAGING_DIR/*
 sudo chmod +x --recursive $INSTALL_DIR
 
