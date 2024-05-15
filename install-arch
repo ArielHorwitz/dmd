@@ -1,0 +1,25 @@
+#! /bin/bash
+set -e
+
+SOURCE_DIR=$(realpath $(dirname $0))
+AUR_DEPS_FILE=$SOURCE_DIR/dependencies/aur.txt
+TMP_DIR_PARU=/tmp/paru-install-$RANDOM
+
+progress () { printf "\e[32m$1\e[0m\n" ; }
+
+sudo -v
+
+progress "=> Updating system..."
+sudo pacman --noconfirm -Syuu
+
+if [[ ! $(command -v paru) ]]; then
+    progress "=> Installing paru..."
+    mkdir --parents $TMP_DIR_PARU
+    sudo pacman -S --quiet --needed --noconfirm base-devel git
+    git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMP_DIR_PARU
+    cd $TMP_DIR_PARU
+    makepkg -si --needed --noconfirm
+fi
+
+progress "=> Installing AUR dependencies..."
+paru -S --quiet --needed --noconfirm $(cat $AUR_DEPS_FILE)

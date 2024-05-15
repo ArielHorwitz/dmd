@@ -1,0 +1,59 @@
+#! /bin/bash
+set -e
+
+SOURCE_DIR=$(realpath $(dirname $0))
+SCRIPTS_DIR=$SOURCE_DIR/bin/
+CARGO_DEPS_FILE=$SOURCE_DIR/dependencies/cargo.txt
+
+CACHE_DIR=/var/opt/iukbtw/cache-$USER
+CACHE_DIR_CARGO=$CACHE_DIR/cargo
+
+STAGING_DIR=/tmp/iukbtw_install_staging/
+INSTALL_DIR=/usr/bin/iukbtw/
+
+
+progress () { printf "\e[32m$1\e[0m\n" ; }
+info () { printf "\e[36m$1\e[0m\n" ; }
+notice () { printf "\e[35m$1\e[0m\n" ; }
+
+
+sudo -v
+
+
+[[ -d $STAGING_DIR ]] || mkdir --parents $STAGING_DIR
+if [[ ! -d $CACHE_DIR ]]; then
+    sudo mkdir --parents $CACHE_DIR
+    sudo chown $USER $CACHE_DIR
+fi
+
+
+progress "=> Staging binary crates from cargo..."
+cargo install --message-format=short --root $CACHE_DIR_CARGO $(cat $CARGO_DEPS_FILE)
+echo "The above warning regarding $CACHE_DIR_CARGO is irrelevant, as it is only the cache directory. See installation directory below (at the end of the script)."
+cargo_bin_names=($(jq -r '.installs[].bins[]' $CACHE_DIR_CARGO/.crates2.json))
+cargo_bin_paths=($(for binary in ${cargo_bin_names[@]}; do echo $CACHE_DIR_CARGO/bin/$binary; done))
+cp -t $STAGING_DIR ${cargo_bin_paths[@]}
+
+
+progress "=> Staging scripts..."
+cp -rt $STAGING_DIR $SCRIPTS_DIR/*
+# remove suffixes in staging
+find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+
+
+progress "=> Installing binaries..."
+sudo rm -rf $INSTALL_DIR
+sudo mkdir --parents $INSTALL_DIR
+
+sudo cp -rt $INSTALL_DIR $STAGING_DIR/*
+sudo chown --recursive 0 $INSTALL_DIR
+sudo chmod --recursive 755 $INSTALL_DIR
+
+
+progress "=> Cleaning up staging files..."
+rm -rf $STAGING_DIR
+
+
+progress "=> Installed iukbtw."
+echo -n "Scripts and binaries installed to: "; info "$INSTALL_DIR"
+notice "Be sure to add the installation directory to your PATH."
