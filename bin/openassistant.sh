@@ -21,7 +21,7 @@ STATS_FILE_CURRENT="$CONVO_DIR/stats"
 # Defaults
 API_URL="https://api.openai.com/v1/chat/completions"
 DEFAULT_MODEL_SETTINGS='# For details see: https://platform.openai.com/docs/api-reference/chat
-model: "gpt-4-turbo-preview"
+model: "gpt-4o"
 max_tokens: 4096
 temperature: 1.0
 top_p: 1.0
