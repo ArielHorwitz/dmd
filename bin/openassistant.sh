@@ -58,7 +58,7 @@ Write your OpenAI API key in the configuration folder (--config-dir).'
 CLI=(
     --prefix "args_"
     -o "preset;Instructions preset;default;p"
-    -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;ask-yes;y"
+    -O "history;Conversation history: (Y)es, (N)o, ask-(y)es, ask-(n)o;yes;y"
     -O "load;Load a conversation index (see --list);;L"
     -O "delete;Delete a conversation index (see --list);;D"
     -O "list-offset;Index offset of conversations to show (see --list);0;O"
