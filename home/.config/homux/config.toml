@@ -1,2 +1,2 @@
 # Source directory is relative to home directory unless absolute path is given
-source = "prog/myhomux/home"
+source = ".local/share/myhomux/home"
