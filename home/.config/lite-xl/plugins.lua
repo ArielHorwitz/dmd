@@ -13,6 +13,7 @@ config.plugins.lineguide.width = 2
 config.plugins.lineguide.enabled = true
 config.plugins.lineguide.rulers = { [1] = 80, [2] = 100, [3] = 120 }
 config.plugins.linenumbers.relative = true
+config.plugins.linewrapping.enable_by_default = true
 config.plugins.linewrapping.mode = "word"
 config.plugins.lsp.mouse_hover_delay = 750
 config.plugins.lsp.more_yielding = true
