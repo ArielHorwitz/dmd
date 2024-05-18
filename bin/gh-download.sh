@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-DEFAULT_INSTALL_LOCATION=~/.local/bin
+DEFAULT_INSTALL_LOCATION=$HOME/.local/bin
 
 APP_NAME=$(basename "$0")
 ABOUT="Install binary from GitHub repo release."
