@@ -43,11 +43,7 @@ find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
 
 progress "=> Installing binaries..."
 sudo rm -rf $INSTALL_DIR
-sudo mkdir --parents $INSTALL_DIR
-
-sudo cp -rt $INSTALL_DIR $STAGING_DIR/*
-sudo chown --recursive 0 $INSTALL_DIR
-sudo chmod --recursive 755 $INSTALL_DIR
+sudo install --owner root -Dm 755 -t $INSTALL_DIR $STAGING_DIR/*
 
 
 progress "=> Cleaning up staging files..."
