@@ -8,7 +8,7 @@ BINARY_URL="https://github.com/kmonad/kmonad/releases/download/0.4.2/kmonad"
 
 # Root
 [[ $EUID -eq 0 ]] && exit_error "Do not run `basename $0` as root."
-sudo :
+sudo -v
 printcolor -s ok "Root privileges aquired."
 
 setup_installation() {
