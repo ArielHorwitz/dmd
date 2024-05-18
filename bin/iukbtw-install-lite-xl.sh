@@ -37,11 +37,19 @@ mv -f data/* $HOME/.local/share/lite-xl/
 # XDG menus
 printcolor -s ok "Populating XDG application..."
 DESKTOP_APPS="$HOME/.local/share/applications/"
-DESKTOP_ICONS="$HOME/.local/share/icons/hicolor/48x48/apps/"
 mkdir -p $DESKTOP_APPS
-mkdir -p $DESKTOP_ICONS
-[[ -f $DATADIR/lite-xl.png ]] && cp -f $DATADIR/lite-xl.desktop $DESKTOP_APPS || printcolor -s warn "Missing desktop file"
-[[ -f $DATADIR/lite-xl.png ]] && cp -f $DATADIR/lite-xl.png $DESKTOP_ICONS || printcolor -s warn "Missing icon file"
+echo '[Desktop Entry]
+Type=Application
+Name=Lite XL
+Comment=A lightweight text editor written in Lua
+Exec=lite-xl %F
+# Icon=lite-xl
+Terminal=false
+StartupWMClass=lite-xl
+Categories=Development;IDE;
+MimeType=text/plain;inode/directory;' > $DESKTOP_APPS/lite-xl.desktop
+# DESKTOP_ICONS="$HOME/.local/share/icons/hicolor/48x48/apps/"
+# cp lite-xl.png
 xdg-desktop-menu forceupdate
 
 printcolor -s ok "Installing 'lpm' plugin manager..."
