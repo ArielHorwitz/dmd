@@ -2,8 +2,6 @@
 set -e
 
 HARDWARE_DIR=$HOME/.config/hardware/audio
-SPEAKERS_FILE=$HARDWARE_DIR/speakers
-HEADPHONES_FILE=$HARDWARE_DIR/speakers
 ALL_DEVICES=`pactl list short`
 
 APP_NAME=$(basename "$0")
