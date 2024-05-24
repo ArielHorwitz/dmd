@@ -2,8 +2,9 @@
 set -e
 
 APP_NAME=$(basename "$0")
-ABOUT="Get and set volume."
+ABOUT="Get and set volume of default device."
 CLI=(
+    --prefix "args_"
     -o "volume;Set volume percentage"
     -O "increase;Increase volume percentage;;i"
     -O "decrease;Decrease volume percentage;;d"
@@ -16,16 +17,18 @@ CLI=(
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
-if [[ -n $mic ]]; then
-    DEVICE="@DEFAULT_SOURCE@"
-    COMMAND_DEVICE="source"
+if [[ -n $args_mic ]]; then
+    device_type="source"
 else
-    DEVICE="@DEFAULT_SINK@"
-    COMMAND_DEVICE="sink"
+    device_type="sink"
 fi
 
+default_device_name=@DEFAULT_${device_type^^}@
+
 get_volume() {
-    volumes=$(pactl "get-$COMMAND_DEVICE-volume" $DEVICE | xargs)
+    set -e
+    local volumes left right
+    volumes=$(pactl get-${device_type}-volume ${default_device_name} | xargs)
     left=$(echo $volumes | awk '{print $5}')
     left="${left%?}"
     right=$(echo $volumes | awk '{print $12}')
@@ -34,37 +37,41 @@ get_volume() {
 }
 
 set_volume() {
-    pactl "set-$COMMAND_DEVICE-volume" $DEVICE "$1"%
-}
-
-get_mute() {
-    if [[ "Mute: yes" = $(pactl "get-$COMMAND_DEVICE-mute" $DEVICE $1) ]]; then
-        echo 1
-    else
-        echo 0
-    fi
+    set -e
+    pactl set-${device_type}-volume ${default_device_name} "$1"%
 }
 
 set_mute() {
-    pactl "set-$COMMAND_DEVICE-mute" $DEVICE $1
+    set -e
+    pactl "set-${device_type}-mute" ${default_device_name} $1
 }
 
-[[ -z $volume ]] || set_volume $volume
-[[ -z $increase ]] || set_volume +$increase
-[[ -z $decrease ]] || set_volume -$decrease
+[[ -z $args_volume ]] || set_volume $args_volume
+[[ -z $args_increase ]] || set_volume +$args_increase
+[[ -z $args_decrease ]] || set_volume -$args_decrease
 
-[[ -z $mute ]] || set_mute 1
-[[ -z $unmute ]] || set_mute 0
+[[ -z $args_mute ]] || set_mute 1
+[[ -z $args_unmute ]] || set_mute 0
 
-mute=$(get_mute)
+if [[ $(pactl get-${device_type}-mute ${default_device_name}) = "Mute: yes" ]]; then
+    mute_state=1
+else
+    mute_state=0
+fi
 
-if [[ -n $is_mute ]]; then
-    echo $mute
+if [[ -n $args_is_mute ]]; then
+    echo $mute_state
 else
     vol=$(get_volume)
     echo $vol
-    if [[ -z $no_notification ]]; then
-        [[ $mute -eq 0 ]] && text="${vol}%" || text="<s>${vol}%</s> <i>(muted)</i>"
-        notify-send -u low -t 1500 "Volume: $COMMAND_DEVICE" "$text" -h int:value:"$vol" -h string:synchronous:"volume"
+    if [[ -z $args_no_notification ]]; then
+        if [[ $mute_state -eq 0 ]]; then
+            volume_text="${vol}%"
+        else
+            volume_text="${vol}% [MUTED]"
+        fi
+        hints=(-h int:value:"$vol" -h string:synchronous:volume)
+        description=$([[ $device_type = 'sink' ]] && adevice || adevice --mic)
+        notify-send -u low -t 1500 "Volume: ${volume_text}" "${description} (${device_type})" ${hints[@]}
     fi
 fi
