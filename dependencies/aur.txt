@@ -1,11 +1,7 @@
 networkmanager
 
-pipewire
-pipewire-alsa
-pipewire-pulse
-alsa-firmware
 sof-firmware
-libpulse
+pulseaudio
 
 lemurs
 i3-wm
