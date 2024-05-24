@@ -29,7 +29,7 @@ fi
 
 progress "=> Staging binary crates from cargo..."
 cargo install --message-format=short --root $CACHE_DIR_CARGO $(cat $CARGO_DEPS_FILE)
-echo "The above warning regarding $CACHE_DIR_CARGO is irrelevant, as it is only the cache directory. See installation directory below (at the end of the script)."
+echo -e "\e[36;1mnote\e[0m: The above warning regarding $CACHE_DIR_CARGO is irrelevant, as it is only the cache directory. See installation directory below (at the end of the script)."
 cargo_bin_names=($(jq -r '.installs[].bins[]' $CACHE_DIR_CARGO/.crates2.json))
 cargo_bin_paths=($(for binary in ${cargo_bin_names[@]}; do echo $CACHE_DIR_CARGO/bin/$binary; done))
 cp -t $STAGING_DIR ${cargo_bin_paths[@]}
