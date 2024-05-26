@@ -27,4 +27,3 @@
     ctlt (around lctl (layer-toggle normal_keyboard))
     altt (around lalt (layer-toggle normal_keyboard))
 )
-
