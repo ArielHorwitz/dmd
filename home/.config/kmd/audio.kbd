@@ -1,23 +1,37 @@
 (deflayer audio
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    @volu @volU XX    XX    @sksp @aomt @volu @aoum @volU XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @vold @volD XX    XX    @skhd @prev @vold @next @volD XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @aimt @vol0 @aium XX    _                        XX           XX    XX    XX    XX
-  _     _     _                @pp               _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    XX    @AKvU @AKvu XX    XX    @AKum @AKvU @AKvu @AKss XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @Aalt @AKvD @AKvd XX    XX    @AKmt @AKvD @AKvd @AKsh XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @prev @pp   @next XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 @pp               _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer audio_alt
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @ACvU @ACvu XX    XX    @ACum @ACvU @ACvu @ACse XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @ACvD @ACvd XX    XX    @ACmt @ACvD @ACvd @ACsi XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    sksp (cmd-button "adevice speakers")
-    skhd (cmd-button "adevice headphones")
-    volu (cmd-button "avolume --increase 2")
-    vold (cmd-button "avolume --decrease 2")
-    volU (cmd-button "avolume --increase 10")
-    volD (cmd-button "avolume --decrease 10")
-    vol0 (cmd-button "avolume 10")
-    aimt (cmd-button "avolume --mic --mute")
-    aium (cmd-button "avolume --mic --unmute")
-    aomt (cmd-button "avolume --mute")
-    aoum (cmd-button "avolume --unmute")
+    Aalt (layer-toggle audio_alt)
+    AKss (cmd-button "adevice --class speakers")
+    AKsh (cmd-button "adevice --class headphones")
+    AKvu (cmd-button "avolume --increase 2")
+    AKvd (cmd-button "avolume --decrease 2")
+    AKvU (cmd-button "avolume --increase 10")
+    AKvD (cmd-button "avolume --decrease 10")
+    AKmt (cmd-button "avolume --mute")
+    AKum (cmd-button "avolume --unmute")
+    ACse (cmd-button "adevice --mic --class external")
+    ACsi (cmd-button "adevice --mic --class internal")
+    ACvu (cmd-button "avolume --mic --increase 2")
+    ACvd (cmd-button "avolume --mic --decrease 2")
+    ACvU (cmd-button "avolume --mic --increase 10")
+    ACvD (cmd-button "avolume --mic --decrease 10")
+    ACmt (cmd-button "avolume --mic --mute")
+    ACum (cmd-button "avolume --mic --unmute")
     prev PreviousSong
     next NextSong
     pp   PlayPause
