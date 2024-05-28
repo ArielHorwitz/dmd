@@ -7,29 +7,14 @@ export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
 
-# Path
-paths_descending_priority=(
-    # Personal
-    "$HOME/.local/bin/testing"
-    "$HOME/.local/bin"
-    "/usr/bin/iukbtw"
-    # Environments
+extra_paths=(
     "$HOME/.cargo/bin"
-    # System
+    "$HOME/.local/bin"
+    "$HOME/.local/bin/testing"
 ~>>>
 ~>>> think
     "/snap/bin"
 ~<<<
-    "/usr/local/sbin"
-    "/usr/local/bin"
-    "/usr/bin"
-    "/usr/bin/site_perl"
-    "/usr/bin/vendor_perl"
-    "/usr/bin/core_perl"
 )
-PATH=""
-for path in "${paths_descending_priority[@]}"; do
-    PATH+=":$path"
-done
-[[ $PATH = :* ]] && PATH=${PATH:1}
-export PATH
+
+export PATH=$(withpath ${extra_paths[@]})
