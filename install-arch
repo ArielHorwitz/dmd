@@ -23,3 +23,10 @@ fi
 
 progress "=> Installing AUR dependencies..."
 paru -S --quiet --needed --noconfirm $(cat $AUR_DEPS_FILE)
+
+progress "=> Installing root environment..."
+rootenv='# Add paths to installed binaries and crates via iukbtw
+append_path "/usr/bin/iukbtw"
+append_path "/usr/bin/iuk_cargo/bin"
+'
+printf "$rootenv" | sudo tee /etc/profile.d/iukbtw.sh

@@ -1,0 +1,16 @@
+#! /bin/bash
+set -e
+
+SOURCE_DIR=$(realpath $(dirname $0))
+CARGO_DEPS_FILE=$SOURCE_DIR/dependencies/cargo.txt
+INSTALL_DIR=/usr/bin/iuk_cargo
+BIN_DIR=$INSTALL_DIR/bin
+
+notice () { printf "\e[35m$1\e[0m\n" ; }
+
+sudo -v
+
+sudo mkdir --parents $INSTALL_DIR
+sudo chown --recursive $USER $INSTALL_DIR
+cargo install --root $INSTALL_DIR $(cat $CARGO_DEPS_FILE)
+sudo chown --recursive 0 $INSTALL_DIR
