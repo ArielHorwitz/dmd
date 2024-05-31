@@ -4,6 +4,7 @@ DISPLAYS_FILE=$HOME/.config/hardware/displays
 
 LOGDIR=/tmp/logs-$USER
 LOGFILE=$LOGDIR/startup.log
+cd $HOME
 echo "Startup script logging to: $LOGFILE"
 [[ ! -d $LOGDIR ]] || rm -rf $LOGDIR
 mkdir $LOGDIR
