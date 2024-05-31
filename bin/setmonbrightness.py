@@ -56,7 +56,7 @@ def main():
     brightness = get_brightness(device)
     max_brightness = get_max_brightness(device)
     # Find new brightness value
-    if args.set:
+    if args.set is not None:
         steps = max(0, min(int(args.set), MAX_STEPS))
         value = max_brightness * (2 ** (-MAX_STEPS + steps))
     elif args.increase:
