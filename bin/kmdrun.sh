@@ -1,41 +1,52 @@
 #!/bin/bash
+set -e
 
-[[ $EUID -eq 0 ]] && echo "Do not run $0 as root." >&2 && exit 1
+[[ $EUID -eq 0 ]] && exit_error "Do not run $0 as root."
 
-LOG_FILE=/tmp/logs-$USER/kmd.log
+LOG_DIR=/tmp/logs-$USER
+CONFIG_DIR=$HOME/.local/share/kmonad
+DEVICE_FILE=$HOME/.config/hardware/input
+ICON_PATH=$HOME/tux.png
+NOTIFY_SYNC_ARG="string:synchronous:volume"
 
 # Find a keyboard device path
-device_file=$HOME/.config/hardware/input
-all_device_files=`find /dev/input/by-path/ /dev/input/by-id/ -type l`
+all_devices=$(find /dev/input/by-path/ /dev/input/by-id/ -type l)
+printcolor -s info "Searching for devices..."
 while read my_device; do
-    echo "Searching for device: $my_device"
-    device=$(printf "$all_device_files" | grep -m 1 $my_device || echo '')
-    [[ -n $device ]] && break
-done <<< `decomment $device_file`
+    device_path=$(printf "$all_devices" | grep -m 1 $my_device || echo '')
+    [[ -z $device_path ]] || break
+done <<< $(decomment $DEVICE_FILE)
 
 # Confirm device file found
-if [[ -z $device ]]; then
-    printf "\n\nAvailable devices:\n$all_device_files\n\n" >&2
-    printf "Could not find devices from $device_file:\n$(cat $device_file)\n" >&2
-    exit 1
+if [[ -z $device_path ]]; then
+    printcolor -s warn "Available devices:" >&2
+    printf "\n${all_devices}\n\n" >&2
+    printcolor -s warn "Search devices from ${DEVICE_FILE}:"
+    cat ${DEVICE_FILE} >&2
+    exit_error "Could not find device"
 fi
-echo "kmd device: $device"
+device_name=$(echo $device_path | cut -d'/' -f5)
+printcolor -ns info "Found device: "; echo "$device_name"
 
 # Create (combine) new config file
-LOCAL_CONFIG=$HOME/.local/share/kmonad
-mkdir --parents $LOCAL_CONFIG
-kbd_file="$LOCAL_CONFIG/tmpconfig.kbd"
+mkdir --parents $CONFIG_DIR
+kbd_file=$CONFIG_DIR/$device_name.kbd
+printcolor -ns info "KMonad config file: "; echo $kbd_file
+[[ ! -e $kbd_file ]] || rm -r $kbd_file
 cat $HOME/.config/kmd/* > $kbd_file
 
 # Insert device path into kbd config file
-sed -i "s|<KMD_DEVICE_PATH>|$device|" $kbd_file
+sed -i "s|<KMD_DEVICE_PATH>|${device_path}|" $kbd_file
+# Insert start command into kbd config file
+start_command="notify-send -h ${NOTIFY_SYNC_ARG} -i ${ICON_PATH} \'Started KMonad\' \'${device_name}\'"
+sed -i "s|<KMD_START_CMD>|${start_command}|" $kbd_file
 
 # Kill KMonad
 sleep 0.1
-pkill -x kmonad
+pkill -x kmonad || :
 setlayer base
 
 # Start KMonad
-notify-send -i ~/tux.png "Starting KMonad" "$(echo $device | cut -d'/' -f5)"
-echo "Starting KMonad with $kbd_file"
-kmonad $kbd_file $@ >$LOG_FILE 2>&1 &
+notify-send -h ${NOTIFY_SYNC_ARG} -i ~/tux.png -u low "Starting KMonad..."
+printcolor -s info "Starting KMonad..."
+kmonad $kbd_file $@ >${LOG_DIR}/${device_name}.log 2>&1 &
