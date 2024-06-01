@@ -37,7 +37,7 @@ i3lock_args=(
 xss-lock --transfer-sleep-lock -- i3lock ${i3lock_args[@]} &> $LOGDIR/lock.log &
 
 log "running kmonad"
-kmdrun &> $LOGDIR/kmd.log &
+kmdrun
 
 log "restarting polybar"
 run_polybar() {
