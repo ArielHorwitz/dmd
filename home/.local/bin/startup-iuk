@@ -1,7 +1,5 @@
 #! /bin/bash
 
-DISPLAYS_FILE=$HOME/.config/hardware/displays
-
 LOGDIR=/tmp/logs-$USER
 LOGFILE=$LOGDIR/startup.log
 cd $HOME
@@ -48,8 +46,9 @@ run_polybar() {
     POLYBAR_MONITOR=$display polybar --reload $barname &> $LOGDIR/polybar-$barname-$display.log &
 }
 polybar-msg cmd quit
-mapfile -t displays < $DISPLAYS_FILE
-run_polybar ${displays[1]} main
+for connected_display in $(xrandr -q | grep ' connected' | awk '{print $1}'); do
+    run_polybar ${connected_display} main
+done
 
 log "toggling touchpad"
 touchpadtoggle --off
