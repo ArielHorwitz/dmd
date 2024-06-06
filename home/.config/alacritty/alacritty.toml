@@ -55,10 +55,10 @@ shape = "Beam"
 [font]
 # ~>>>
 size = 10
+# ~>>> zen
+size = 11
 # ~>>> lemnos
 size = 7
-# ~>>> zen
-size = 12
 # ~<<<
 
 [font.bold]
