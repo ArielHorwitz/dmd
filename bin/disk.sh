@@ -9,7 +9,8 @@ LSBLK_COLS_FULL="NAME,VENDOR,MOUNTPOINT,LABEL,FSTYPE,PARTTYPENAME,FSVER,SIZE,FSS
 APP_NAME=$(basename "$0")
 ABOUT="List, mount, and unmount volumes.
 
-Volumes can be specified by label or path basename (e.g. sda1, sdc2)."
+Volumes can be specified by label or path basename (e.g. sda1, sdc2).
+Volumes must have a label (use 'e2label' or 'exfatlabel')."
 CLI=(
     --prefix "args_"
     -o "volume;Volume label or name;;m"
