@@ -33,6 +33,7 @@ get_volume() {
     left="${left%?}"
     right=$(echo $volumes | awk '{print $12}')
     right="${right%?}"
+    right=${right:-$left}
     echo $((($left + $right) / 2))
 }
 
