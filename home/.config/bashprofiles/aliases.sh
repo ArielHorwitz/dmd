@@ -37,13 +37,13 @@ alias crf="cargo fmt; cargo run -q --"
 alias rustbt_on="export RUST_BACKTRACE=1"
 alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
-alias baconm="bacon clippy -- --"\
+alias bacongood="bacon clippy -- --"\
 " --warn clippy::panic"\
 " --warn clippy::unwrap_used"\
 " --warn clippy::unwrap_in_result"\
 " --warn clippy::str_to_string"\
 " --warn clippy::verbose_file_reads"
-#" --warn clippy::indexing_slicing"\
+alias baconbetter="bacongood --warn clippy::indexing_slicing"
 alias crr="cargo release --no-publish"
 
 # SSH
