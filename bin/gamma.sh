@@ -15,6 +15,6 @@ case $1 in
     *         ) gamma=1 ;;
 esac
 
-for monitor in $(listmonitors) ; do
+for monitor in $(xrandr -q | grep " connected" | awk '{print $1}') ; do
     xrandr --output $monitor --gamma $gamma
 done
