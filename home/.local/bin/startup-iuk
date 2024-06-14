@@ -46,7 +46,7 @@ run_polybar() {
     POLYBAR_MONITOR=$display polybar --reload $barname &> $LOGDIR/polybar-$barname-$display.log &
 }
 polybar-msg cmd quit
-for connected_display in $(xrandr -q | grep ' connected' | awk '{print $1}'); do
+for connected_display in $(polybar --list-monitors | cut -d':' -f1); do
     run_polybar ${connected_display} main
 done
 
