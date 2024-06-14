@@ -1,11 +1,16 @@
 #!/bin/bash
 
-polyhook() {
-    polybar-msg action kmd hook $1
-}
+layer=$1
+keyboard_layout=$2
 
-case $1 in
-    base ) polyhook 0; setxkbmap us; gamma ;;
-    text ) polyhook 1; setxkbmap $2; gamma cyan ;;
-    *    ) echo "No such layer $1" ;;
-esac
+if [[ $layer = "base" ]]; then
+    setxkbmap us
+    polybar-msg action kmd hook 0
+    gamma &
+elif [[ $layer = "text" ]]; then
+    setxkbmap $keyboard_layout
+    polybar-msg action kmd hook 1
+    gamma cyan &
+else
+    echo "No such layer '$layer'" >&2; exit 1
+fi
