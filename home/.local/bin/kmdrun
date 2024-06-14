@@ -2,17 +2,32 @@
 set -e
 
 LOG_DIR=/tmp/logs-$USER
-CONFIG_DIR=$HOME/.local/share/kmonad
-DEVICE_FILE=$HOME/.config/hardware/input
-ICON_PATH=$HOME/tux.png
+CATFILE_DIR=/tmp/kmonad
+CONFIG_DIR=$HOME/.config/kmd
+DEFAULT_DEVICES_FILE=$CONFIG_DIR/devices
+KBD_DIR=$CONFIG_DIR/kbd
+ICON_LOAD=$CONFIG_DIR/loading.png
+ICON_START=$CONFIG_DIR/icon.png
 NOTIFY_SYNC_ARG="string:synchronous:kmd"
+
+# Create default config
+[[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
+if [[ ! -f $DEFAULT_DEVICES_FILE ]]; then
+    echo "# Find available devices by running 'find /dev/input/by-* -type l'" > $DEFAULT_DEVICES_FILE
+fi
+if [[ ! -d $KBD_DIR ]]; then
+    mkdir --parents $KBD_DIR
+    touch $KBD_DIR/default.kbd
+fi
+[[ -f $ICON_LOAD ]] || touch $ICON_LOAD
+[[ -f $ICON_START ]] || touch $ICON_START
 
 APP_NAME=$(basename "$0")
 ABOUT="Run KMonad."
 CLI=(
     --prefix "args_"
     -c "devices;Devices to enable"
-    -O "device-file;File of devices to enable;${DEVICE_FILE};d"
+    -O "device-file;File of devices to enable;${DEFAULT_DEVICES_FILE};d"
     -f "debug;Enable debug mode;;D"
     -f "fail;Fail if a device cannot be enabled"
     -e "kmonad_args;Extra arguments for KMonad"
@@ -36,39 +51,33 @@ run_kmonad() {
     local sync_arg=${NOTIFY_SYNC_ARG}-$device_name
 
     # Create (combine) new config file
-    mkdir --parents $CONFIG_DIR
-    kbd_file=$CONFIG_DIR/$device_name.kbd
+    kbd_file=$CATFILE_DIR/$device_name.kbd
     printcolor -ns info "KMonad config file: "; echo $kbd_file
-    [[ ! -e $kbd_file ]] || rm -r $kbd_file
-    cat $HOME/.config/kmd/* > $kbd_file
+    mkdir --parents $CATFILE_DIR
+    cat $KBD_DIR/* > $kbd_file
 
     # Insert device path
     sed -i "s|<KMD_DEVICE_PATH>|${device_path}|" $kbd_file
     # Insert start command
-    start_command="notify-send -h ${sync_arg} -i ${ICON_PATH} \'Started KMonad\' \'${device_name}\'"
+    start_command="notify-send -h ${sync_arg} -i ${ICON_START} \'Started KMonad\' \'${device_name}\'"
     sed -i "s|<KMD_START_CMD>|${start_command}|" $kbd_file
 
-    # Kill KMonad
+    # Kill running instance of KMonad
     local running_pid=$(pgrep -ax kmonad | grep $device_name | awk '{print $1}' || echo '')
     if [[ -n $running_pid ]]; then
         sleep 0.1
         kill $running_pid
     fi
-    # setlayer base
+    setlayer base
 
     # Start KMonad
-    notify-send -h ${sync_arg} -i ~/tux.png -u low "Starting KMonad..." "$device_name"
-    kmonad $kbd_file ${args_kmonad_args[@]} >${LOG_DIR}/${device_name}.log 2>&1 &
+    notify-send -h ${sync_arg} -i ${ICON_LOAD} -u low "Starting KMonad..." "$device_name"
+    kmonad $kbd_file ${args_kmonad_args[@]} >${LOG_DIR}/kmd-${device_name}.log 2>&1 &
 }
 
 available_devices=$(find /dev/input/by-* -type l)
-printcolor -ns info "Available devices: "; echo $available_devices | wc -w
-
 mapfile devices_from_file <<< $(decomment $args_device_file)
-
 enable_devices=(${args_devices[@]} ${devices_from_file[@]})
-printcolor -ns info "Enable devices: "; echo "${#enable_devices[@]}"
-
 
 for some_device in ${enable_devices[@]} ; do
     device_path=$(echo "$available_devices" | grep $some_device || echo '')

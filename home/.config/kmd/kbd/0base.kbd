@@ -8,11 +8,6 @@
 )
 (defalias
     base (around (layer-switch base) (cmd-button "setlayer base"))
-    text (multi-tap
-        250 (around (layer-switch text) (cmd-button "setlayer text us"))
-        250 (around (layer-switch text) (cmd-button "setlayer text il"))
-        (layer-toggle normal_keyboard)
-    )
     txtu (around (layer-switch text) (cmd-button "setlayer text us"))
     txti (around (layer-switch text) (cmd-button "setlayer text il"))
     txtt (layer-toggle normal_keyboard)
