@@ -201,7 +201,7 @@
     frame_color = "#0000ff"
     timeout = 20
     # Icon for notifications with low urgency, uncomment to enable
-    #default_icon = /path/to/icon
+    default_icon = ~/.config/icons/arch.png
 
 [urgency_normal]
     background = "#002200"
@@ -209,7 +209,7 @@
     frame_color = "#00ff00"
     timeout = 120
     # Icon for notifications with normal urgency, uncomment to enable
-    #default_icon = /path/to/icon
+    default_icon = ~/.config/icons/tux.png
 
 [urgency_critical]
     background = "#220000"
