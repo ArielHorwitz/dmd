@@ -1,6 +1,17 @@
 #! /bin/bash
 set -e
 
+CONFIG_DIR=$HOME/.config/avolume
+ICON_SINK="$CONFIG_DIR/sink.png"
+ICON_SINK_MUTE="$CONFIG_DIR/sink-mute.png"
+ICON_SOURCE="$CONFIG_DIR/source.png"
+ICON_SOURCE_MUTE="$CONFIG_DIR/source-mute.png"
+
+[[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
+for missing_icon in "$ICON_SINK" "$ICON_SINK_MUTE" "$ICON_SOURCE" "$ICON_SOURCE_MUTE" ; do
+    [[ -f $missing_icon ]] || touch $missing_icon
+done
+
 APP_NAME=$(basename "$0")
 ABOUT="Get and set volume of default device."
 CLI=(
@@ -68,11 +79,15 @@ else
     if [[ -z $args_no_notification ]]; then
         if [[ $mute_state -eq 0 ]]; then
             volume_text="${vol}%"
+            icon_mute=""
         else
             volume_text="${vol}% [MUTED]"
+            icon_mute="_MUTE"
         fi
         hints=(-h int:value:"$vol" -h string:synchronous:volume)
         description=$([[ $device_type = 'sink' ]] && adevice || adevice --mic)
-        notify-send -u low -t 1500 "Volume: ${volume_text}" "${description} (${device_type})" ${hints[@]}
+        icon_name="ICON_${device_type^^}${icon_mute}"
+        icon=${!icon_name}
+        notify-send -u low -t 1500 -i $icon "Volume: ${volume_text}" "${description} (${device_type})" ${hints[@]}
     fi
 fi
