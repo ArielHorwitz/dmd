@@ -150,29 +150,28 @@ class State:
         )
 
 
-def print_layout(rows: int, columns: int, notification: bool, icon_path=str):
+def print_layout(display: str, rows: int, columns: int, notification: bool, icon_path=str):
     state = State.get()
-    displays_repr = " " + " ".join(f"{d:<7}" for d in state.display_names)
+    displays_repr = " " + " ".join(f"{d:<15}" for d in state.display_names)
     visible_workspaces = {d: "---" for d in state.display_names}
     for ws in state.workspaces.values():
         if ws.visible and ws.display in visible_workspaces:
             visible_workspaces[ws.display] = ws.name
     layout_reprs = [
-        " " + " ".join(f"{visible_workspaces[d]:<7}" for d in state.display_names)
+        " " + " ".join(f"{visible_workspaces[d]:<15}" for d in state.display_names)
     ]
-    for display in state.display_names:
-        row_reprs = []
-        for row in range(rows):
-            col_reprs = []
-            for col in range(columns):
-                name = Workspace(row, col, display).name
-                ws_repr = WORKSPACE_EMPTY
-                if (ws := state.workspaces.get(name)) is not None:
-                    ws_repr = WORKSPACE_OCCUPIED
-                    if ws.visible:
-                        ws_repr = WORKSPACE_FOCUS if ws.focused else WORKSPACE_VISIBLE
-                col_reprs.append(ws_repr)
-            row_reprs.append(" ".join(col_reprs))
+    row_reprs = []
+    for row in range(rows):
+        col_reprs = []
+        for col in range(columns):
+            name = Workspace(row, col, display).name
+            ws_repr = WORKSPACE_EMPTY
+            if (ws := state.workspaces.get(name)) is not None:
+                ws_repr = WORKSPACE_OCCUPIED
+                if ws.visible:
+                    ws_repr = WORKSPACE_FOCUS if ws.focused else WORKSPACE_VISIBLE
+            col_reprs.append(ws_repr)
+        row_reprs.append(" ".join(col_reprs))
     layout_reprs.append("\n".join(row_reprs))
     if len(state.invalid_workspaces) > 0:
         layout_reprs.append("\nOther workspaces:")
@@ -309,6 +308,7 @@ def main():
         else:
             switch_workspace(display_name, row, col)
     print_layout(
+        display=display_name,
         rows=rows,
         columns=columns,
         notification=not args.nonotification,
