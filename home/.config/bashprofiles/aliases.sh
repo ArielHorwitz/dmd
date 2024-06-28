@@ -40,10 +40,8 @@ alias rustbt_full="export RUST_BACKTRACE=full"
 alias bacongood="bacon clippy -- --"\
 " --warn clippy::panic"\
 " --warn clippy::unwrap_used"\
-" --warn clippy::unwrap_in_result"\
-" --warn clippy::str_to_string"\
-" --warn clippy::verbose_file_reads"
-alias baconbetter="bacongood --warn clippy::indexing_slicing"
+" --warn clippy::unwrap_in_result"
+alias baconbetter="bacon clippy -- -- --warn clippy::pedantic"
 alias crr="cargo release --no-publish"
 
 # SSH
