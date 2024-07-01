@@ -14,9 +14,7 @@ cd $TMPDIR
 printcolor -s ok "Downloading latest release..."
 asset_pattern="*addons-linux-x86_64-portable.tar.gz"
 downloaded_filename="lite-xl.tar.gz"
-latest_version=$(gh-latest 'lite-xl/lite-xl')
-printcolor -s info "Latest version: $latest_version"
-gh release download --repo 'lite-xl/lite-xl' $latest_version -p $asset_pattern -O $downloaded_filename
+gh release download --repo 'lite-xl/lite-xl' -p $asset_pattern -O $downloaded_filename
 
 printcolor -s ok "Extracting..."
 tar -xzf $downloaded_filename
