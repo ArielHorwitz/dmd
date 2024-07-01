@@ -28,18 +28,20 @@ CLI=(
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
-if [[ -n $args_mic ]]; then
-    device_type="source"
-else
-    device_type="sink"
-fi
+[[ -n $args_mic ]] && device_type="source" || device_type="sink"
 
-default_device_name=@DEFAULT_${device_type^^}@
-
-get_volume() {
+print_default_device() {
     set -e
+    local device_type=$1
+    echo "@DEFAULT_${device_type^^}@"
+}
+
+print_volume() {
+    set -e
+    local device_type=$1
+    local device_name=$(print_default_device $device_type)
     local volumes left right
-    volumes=$(pactl get-${device_type}-volume ${default_device_name} | xargs)
+    volumes=$(pactl get-${device_type}-volume ${device_name} | xargs)
     left=$(echo $volumes | awk '{print $5}')
     left="${left%?}"
     right=$(echo $volumes | awk '{print $12}')
@@ -50,44 +52,54 @@ get_volume() {
 
 set_volume() {
     set -e
-    pactl set-${device_type}-volume ${default_device_name} "$1"%
+    local device_type=$1
+    local new_volume=$2
+    local device_name=$(print_default_device $device_type)
+    pactl set-$1-volume ${device_name} "$new_volume"%
 }
 
 set_mute() {
     set -e
-    pactl "set-${device_type}-mute" ${default_device_name} $1
+    local device_type=$1
+    local mute_status=$2
+    local device_name=$(print_default_device $device_type)
+    pactl "set-${device_type}-mute" ${device_name} ${mute_status}
 }
 
-[[ -z $args_volume ]] || set_volume $args_volume
-[[ -z $args_increase ]] || set_volume +$args_increase
-[[ -z $args_decrease ]] || set_volume -$args_decrease
+print_mute() {
+    set -e
+    local device_type=$1
+    local device_name=$(print_default_device $device_type)
+    [[ $(pactl get-${device_type}-mute ${device_name}) = "Mute: yes" ]] && echo 1 || echo 0
+}
 
-[[ -z $args_mute ]] || set_mute 1
-[[ -z $args_unmute ]] || set_mute 0
+notify() {
+    local device_type=$1
+    local current_volume=$(print_volume $device_type)
+    if [[ $(print_mute $device_type) -eq 0 ]]; then
+        volume_text="${current_volume}%"
+        icon_mute=""
+    else
+        volume_text="${current_volume}% [MUTED]"
+        icon_mute="_MUTE"
+    fi
+    hints=(-h int:value:"$current_volume" -h string:synchronous:volume_${device_type})
+    description=$([[ $device_type = 'sink' ]] && adevice || adevice --mic)
+    icon_name="ICON_${device_type^^}${icon_mute}"
+    icon=${!icon_name}
+    notify-send -u low -t 1500 -i $icon "Volume: ${volume_text}" "${description} (${device_type})" ${hints[@]}
+}
 
-if [[ $(pactl get-${device_type}-mute ${default_device_name}) = "Mute: yes" ]]; then
-    mute_state=1
-else
-    mute_state=0
-fi
+[[ -z $args_volume ]] || set_volume $device_type $args_volume
+[[ -z $args_increase ]] || set_volume $device_type +$args_increase
+[[ -z $args_decrease ]] || set_volume $device_type -$args_decrease
+
+[[ -z $args_mute ]] || set_mute $device_type 1
+[[ -z $args_unmute ]] || set_mute $device_type 0
 
 if [[ -n $args_is_mute ]]; then
-    echo $mute_state
+    print_mute $device_type
 else
-    vol=$(get_volume)
-    echo $vol
-    if [[ -z $args_no_notification ]]; then
-        if [[ $mute_state -eq 0 ]]; then
-            volume_text="${vol}%"
-            icon_mute=""
-        else
-            volume_text="${vol}% [MUTED]"
-            icon_mute="_MUTE"
-        fi
-        hints=(-h int:value:"$vol" -h string:synchronous:volume_${device_type})
-        description=$([[ $device_type = 'sink' ]] && adevice || adevice --mic)
-        icon_name="ICON_${device_type^^}${icon_mute}"
-        icon=${!icon_name}
-        notify-send -u low -t 1500 -i $icon "Volume: ${volume_text}" "${description} (${device_type})" ${hints[@]}
-    fi
+    print_volume $device_type
+    [[ -n $args_no_notification ]] || notify $device_type
 fi
