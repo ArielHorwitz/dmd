@@ -84,7 +84,7 @@ else
             volume_text="${vol}% [MUTED]"
             icon_mute="_MUTE"
         fi
-        hints=(-h int:value:"$vol" -h string:synchronous:volume)
+        hints=(-h int:value:"$vol" -h string:synchronous:volume_${device_type})
         description=$([[ $device_type = 'sink' ]] && adevice || adevice --mic)
         icon_name="ICON_${device_type^^}${icon_mute}"
         icon=${!icon_name}
