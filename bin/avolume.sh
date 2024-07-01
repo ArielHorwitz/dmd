@@ -24,6 +24,7 @@ CLI=(
     -f "unmute;Unmute device;;u"
     -f "is-mute;Print mute status instead of volume;;M"
     -f "no-notification;Disable notifications;;N"
+    -f "notify-all;Show notificatioins for sink and source"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -99,6 +100,10 @@ notify() {
 
 if [[ -n $args_is_mute ]]; then
     print_mute $device_type
+elif [[ -n $args_notify_all ]]; then
+    notify 'sink'
+    sleep 0.1
+    notify 'source'
 else
     print_volume $device_type
     [[ -n $args_no_notification ]] || notify $device_type
