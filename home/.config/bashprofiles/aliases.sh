@@ -80,6 +80,10 @@ mkcd() {
     mkdir -p $1 && cd $1
 }
 
+cdre() {
+    cd $PWD
+}
+
 cdl() {
     cd $1 && lsl
 }
