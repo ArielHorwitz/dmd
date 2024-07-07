@@ -35,6 +35,7 @@ add({ ["ctrl+alt+shift+u"] = "doc:lower-case" }, true)
 add({ ["alt+l"] = "hybrid-line-numbers:toggle" }, true)
 add({ ["alt+shift+m"] = "markers:toggle-marker" }, true)
 add({ ["alt+m"] = "markers:go-to-next-marker" }, true)
+add({ ["alt+b"] = "git blame:toggle" }, true)
 
 -------------------------------- Notes ----------------------------------------
 
