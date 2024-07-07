@@ -87,8 +87,8 @@
                             "percent": 1,
                             "swallows": [
                                {
-                               "class": "^lite\\-xl$",
-                               "instance": "^lite\\-xl$"
+                               "class": "^pragtical$",
+                               "instance": "^pragtical$"
                                }
                             ],
                             "type": "con"

@@ -19,4 +19,4 @@ i3-msg append_layout ~/.config/i3/dev.json
 alacritty --working-directory "$project_dir" -T "$args_project - lazygit" -e lazygit &
 alacritty --working-directory "$project_dir" &
 alacritty --working-directory "$project_dir" &
-lite-xl $project_dir &
+pragtical $project_dir &
