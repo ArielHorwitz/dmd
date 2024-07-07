@@ -69,8 +69,8 @@
     msb3 (cmd-button "mouse --click 3")
     msb4 (cmd-button "mouse --click 4")
     msb5 (cmd-button "mouse --click 5")
-    scrU (cmd-button "mouse --right --edge-offset 5 --click 4")
-    scrD (cmd-button "mouse --right --edge-offset 5 --click 5")
+    scrU (cmd-button "mouse --right --edge-offset 9; mouse --right --edge-offset 10 --click 4")
+    scrD (cmd-button "mouse --right --edge-offset 9; mouse --right --edge-offset 10 --click 5")
 
     msu0 (cmd-button "xdotool mousemove_relative 0 -1")
     msd0 (cmd-button "xdotool mousemove_relative 0 1")
