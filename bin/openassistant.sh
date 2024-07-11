@@ -125,7 +125,7 @@ read_query_to_file() {
         echo "$query_content" > $QUERY_FILE
     else
         [[ -n $EDITOR ]] || exit_error "No editor configured (use EDITOR environment variable)"
-        [[ -z $VERBOSE ]] || printcolor -s notice "Reading query from editor: \"$EDITOR\"" >&2
+        [[ -z $VERBOSE ]] || printcolor -s notice "Reading query from editor: \"$EDITOR\" \"$QUERY_FILE\"" >&2
         [[ -f $QUERY_FILE && -n $(< $QUERY_FILE) ]] || echo $EDITOR_QUERY_BLURB > $QUERY_FILE
         `$EDITOR $QUERY_FILE` &>/dev/null
     fi
