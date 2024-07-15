@@ -73,7 +73,7 @@ C+=":un=38;5;124"
 #     xx Punctuation
 C+=":xx=38;5;240"
 #     da Timestamp
-C+=":da=38;5;53"
+C+=":da=38;5;164"
 #     in File inode
 #     bl Number of blocks
 #     hd Table header row
