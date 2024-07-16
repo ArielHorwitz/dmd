@@ -1,6 +1,7 @@
 #! /bin/python
 
 from dataclasses import dataclass, field
+from time import sleep
 from typing import Optional, Callable
 import argparse
 import json
@@ -14,13 +15,10 @@ from pathlib import Path
 ROWS = 3
 COLUMNS = 4
 
-NOTIFY_TIMEOUT = 1000
 NOTIFY_SEND = (
     "notify-send",
     "-u",
     "low",
-    "-t",
-    str(NOTIFY_TIMEOUT),
     "-h",
     'string:synchronous:"wsi"',
 )
@@ -31,11 +29,20 @@ WORKSPACE_FOCUS = "∇"
 USER = os.getenv("USER")
 CONFIG_DIR = Path(f"/home/{USER}/.config/wsi")
 CONFIG_FILE = Path(f"{CONFIG_DIR}/config.toml")
+ICON_FILE = f"{CONFIG_DIR}/icon.png"
 DEFAULT_CONFIG_TOML = f"""
 rows = 2
 columns = 3
-display = "eDP-1"
-icon = "{CONFIG_DIR}/icon.png"
+display_priorities = [
+    "DP-1",
+    "DP-2",
+    "DP-3",
+    "HDMI-1",
+    "HDMI-2",
+    "HDMI-3",
+    "eDP-1",
+]
+notification_timeout = 1000
 """.strip()
 HELP_TEXT = f"""Manage i3 workspaces.
 
@@ -44,55 +51,45 @@ Pass neither to print workspaces.
 Reads configuration from {CONFIG_FILE}"""
 
 
-class ParseError(BaseException):
+class ParseError(Exception):
     pass
 
 
 @dataclass(frozen=True, order=True)
 class Workspace:
-    row: int
-    col: int
-    display: str
+    name: str
+    display: str = field(default="")
     visible: bool = field(default=False)
     focused: bool = field(default=False)
+    is_gridable: bool = field(default=False)
 
-    def from_json(json_data: str, /, **kwargs) -> "Self":
+    @classmethod
+    def from_json(cls, json_data: str) -> "Self":
+        name = json_data["name"]
+        display = json_data["output"]
+        visible = json_data["visible"]
+        focused = json_data["focused"]
+        is_gridable = True
         try:
-            name = json_data["name"]
-            display = json_data["output"]
-            visible = json_data["visible"]
-            focused = json_data["focused"]
-            row, col, display = name.split(".")
-            row = int(row)
-            col = int(col)
-            return Workspace(row, col, display, visible, focused)
-        except BaseException as e:
-            raise ParseError(f"JSON parse error: {repr(e)} [ {json_data=} ]") from e
+            row, col = name.split('.')
+            int(row)
+            int(col)
+        except (TypeError, ValueError):
+            is_gridable = False
+        return cls(name, display, visible, focused, is_gridable)
 
-    @property
-    def name(self) -> str:
-        return f"{self.row}.{self.col}.{self.display}"
+    @classmethod
+    def from_coords(cls, row: int, col: int) -> "Self":
+        return cls(f"{row}.{col}", is_gridable=True)
 
 
 @dataclass(frozen=True)
 class State:
-    display_names: tuple[str, ...]
-    focused_display: str
+    displays: tuple[str, ...]
     workspaces: dict[str, Workspace]
+    ungridable_workspaces: tuple[str, ...]
+    focused_display: str
     focused_workspace: str
-    invalid_workspaces: tuple[str, ...]
-
-    def assert_display_exists(self, display_name: str):
-        if display_name not in self.display_names:
-            print(
-                f"Unknnown display: {display_name} [must be one of: {', '.join(self.display_names)}]",
-                file=sys.stderr,
-            )
-            exit(1)
-
-    def display_index(self, display_name: str) -> int:
-        self.assert_display_exists(display_name)
-        return self.display_names.index(display_name)
 
     @classmethod
     def get(cls) -> "Self":
@@ -104,12 +101,12 @@ class State:
                 capture_output=True,
             ).stdout.decode()
         )
-        display_names = tuple(
+        displays = tuple(
             d["name"]
             for d in sorted(raw_displays, key=lambda d: d["rect"]["x"])
             if d.get("name") != "xroot-0" and d.get("active") == True
         )
-        print(f"Displays: {', '.join(display_names)}")
+        print(f"Displays: {', '.join(displays)}")
 
         json_workspaces = json.loads(
             subprocess.run(
@@ -121,50 +118,45 @@ class State:
         focused_display: Optional[str] = None
         workspaces: dict[str, Workspace] = dict()
         focused_workspace: Optional[str] = None
-        invalid_workspaces: list[str] = list()
+        ungridable_workspaces: list[str] = list()
         for json_ws in json_workspaces:
-            if json_ws["focused"]:
-                focused_workspace = json_ws["name"]
-                focused_display = json_ws["output"]
-            parsed_ws = None
-            try:
-                parsed_ws = Workspace.from_json(json_ws)
-                print(parsed_ws)
-                assert parsed_ws.name not in workspaces
-                workspaces[parsed_ws.name] = parsed_ws
-            except BaseException as e:
-                print(f"Invalid workspace: {e}")
-                if (name := json_ws.get("name")) is not None:
-                    invalid_workspaces.append(name)
-                continue
+            ws = Workspace.from_json(json_ws)
+            print(ws)
+            if ws.focused:
+                focused_workspace = ws.name
+                focused_display = ws.display
+            assert ws.name not in workspaces
+            workspaces[ws.name] = ws
+            if not ws.is_gridable:
+                ungridable_workspaces.append(ws.name)
         if focused_display is None:
             raise ParseError("No display focused")
         if focused_workspace is None:
             raise ParseError("No workspace focused")
         return cls(
-            display_names=display_names,
-            focused_display=focused_display,
-            workspaces=workspaces,
-            focused_workspace=focused_workspace,
-            invalid_workspaces=tuple(invalid_workspaces),
+            displays,
+            workspaces,
+            tuple(ungridable_workspaces),
+            focused_display,
+            focused_workspace,
         )
 
 
-def print_layout(display: str, rows: int, columns: int, notification: bool, icon_path=str):
+def print_layout(rows: int, columns: int, notification: bool, notification_timeout: int):
     state = State.get()
-    displays_repr = " " + " ".join(f"{d:<15}" for d in state.display_names)
-    visible_workspaces = {d: "---" for d in state.display_names}
+    displays_repr = " " + " ".join(f"{d:<15}" for d in state.displays)
+    visible_workspaces = {d: "---" for d in state.displays}
     for ws in state.workspaces.values():
-        if ws.visible and ws.display in visible_workspaces:
+        if ws.visible and ws.display in visible_workspaces.keys():
             visible_workspaces[ws.display] = ws.name
     layout_reprs = [
-        " " + " ".join(f"{visible_workspaces[d]:<15}" for d in state.display_names)
+        " " + " ".join(f"{visible_workspaces[d]:<15}" for d in state.displays)
     ]
     row_reprs = []
     for row in range(rows):
         col_reprs = []
         for col in range(columns):
-            name = Workspace(row, col, display).name
+            name = Workspace.from_coords(row, col).name
             ws_repr = WORKSPACE_EMPTY
             if (ws := state.workspaces.get(name)) is not None:
                 ws_repr = WORKSPACE_OCCUPIED
@@ -173,40 +165,58 @@ def print_layout(display: str, rows: int, columns: int, notification: bool, icon
             col_reprs.append(ws_repr)
         row_reprs.append(" ".join(col_reprs))
     layout_reprs.append("\n".join(row_reprs))
-    if len(state.invalid_workspaces) > 0:
+    if len(state.ungridable_workspaces) > 0:
         layout_reprs.append("\nOther workspaces:")
-        layout_reprs.append(", ".join(state.invalid_workspaces))
+        layout_reprs.append(", ".join(state.ungridable_workspaces))
     layout_repr = "\n".join(layout_reprs)
 
     print(displays_repr)
     print(layout_repr)
     if notification:
-        subprocess.run((*NOTIFY_SEND, "-i", icon_path, displays_repr, layout_repr), check=True)
-
-
-def switch_workspace(display: str, row: int, col: int):
-    workspace = Workspace(row, col, display)
-    run_i3_command(
-        ";".join(
-            [
-                f"focus output {display}",
-                f"workspace {workspace.name}",
-                f"move to output {display}",
-                f"focus output {display}",
-            ]
+        subprocess.run(
+            (*NOTIFY_SEND, "-t", str(notification_timeout), "-i", ICON_FILE, displays_repr, layout_repr),
+            check=True,
         )
-    )
 
 
-def move_to_workspace(display: str, row: int, col: int):
+def _sort_displays(display_name: str, display_priorities: list[str]) -> int:
+    if display_name in display_priorities:
+        return display_priorities.index(display_name)
+    return len(display_priorities) + 1
+
+
+def switch_workspace(row: int, col: int, display_priorities: list[str]):
     state = State.get()
-    workspace = Workspace(row, col, display)
-    run_i3_command(f"move to workspace {workspace.name}")
+    refocus_display = state.focused_display
+    main_display, *other_displays = sorted(
+        state.displays,
+        key=lambda name: _sort_displays(name, display_priorities)
+    )
+    root_containers = get_root_container_ids(state.workspaces.keys())
+    for i, display_name in enumerate(other_displays):
+        set_workspace_display(display_name, str(i + 1))
+    main_workspace = Workspace.from_coords(row, col)
+    set_workspace_display(main_display, main_workspace.name)
+    run_i3_command(f"focus output {refocus_display}")
+
+
+def set_workspace_display(display: str, workspace_name: str):
+    commands = [
+        f"focus output {display}",
+        f"workspace {workspace_name}",
+        f"move workspace to output {display}",
+        f"focus output {display}",
+    ]
+    run_i3_command(";".join(commands))
+
+
+def move_to_workspace(workspace_name: str):
+    run_i3_command(f"move to workspace {workspace_name}")
 
 
 def collect_lost_windows():
     state = State.get()
-    container_ids = get_root_container_ids(state)
+    container_ids = get_root_container_ids(state.ungridable_workspaces)
     if len(container_ids) == 0:
         return
     i3_commands = [
@@ -216,7 +226,7 @@ def collect_lost_windows():
     run_i3_command(";".join(i3_commands))
 
 
-def get_root_container_ids(state: State):
+def get_root_container_ids(workspace_names: list[str]):
     root_node = json.loads(
         subprocess.run(
             ("i3-msg", "-t", "get_tree"),
@@ -234,7 +244,7 @@ def get_root_container_ids(state: State):
                 continue
             for workspace in con["nodes"]:
                 assert workspace["type"] == "workspace"
-                if workspace["name"] not in state.invalid_workspaces:
+                if workspace["name"] not in workspace_names:
                     continue
                 for node in workspace["nodes"]:
                     assert node["type"] == "con"
@@ -243,8 +253,8 @@ def get_root_container_ids(state: State):
 
 
 def run_i3_command(command: str):
-    print("running i3 command...")
-    print("\n".join(c.strip() for c in command.split(";")))
+    print("Running i3 command:")
+    print("\n".join(f"> {c.strip()}" for c in command.split(";")))
     result = subprocess.run(("i3-msg", command), capture_output=True)
     print(f"{result.returncode=}")
     print(f"stdout: {result.stdout.decode()}")
@@ -271,11 +281,6 @@ def main():
         help="move focused container to the workspace",
     )
     parser.add_argument(
-        "-d",
-        "--display",
-        help="display to manage (overrides config)",
-    )
-    parser.add_argument(
         "-n",
         "--nonotification",
         action="store_true",
@@ -291,8 +296,7 @@ def main():
     config = tomllib.loads(CONFIG_FILE.read_text())
     rows = config["rows"]
     columns = config["columns"]
-    display_name = config["display"] if args.display is None else args.display
-    icon_path = config["icon"]
+    notification_timeout = config["notification_timeout"]
 
     row = args.row
     col = args.column
@@ -304,15 +308,16 @@ def main():
         collect_lost_windows()
     elif (row is not None) and (col is not None):
         if args.move:
-            move_to_workspace(display_name, row, col)
+            workspace = Workspace.from_coords(row, col)
+            move_to_workspace(workspace.name)
         else:
-            switch_workspace(display_name, row, col)
+            display_priorities = config["display_priorities"]
+            switch_workspace(row, col, display_priorities)
     print_layout(
-        display=display_name,
         rows=rows,
         columns=columns,
         notification=not args.nonotification,
-        icon_path=icon_path,
+        notification_timeout=notification_timeout,
     )
 
 
