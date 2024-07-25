@@ -2,8 +2,8 @@
 
 [global]
     ### Display ###
-    monitor = 1
-    # follow = keyboard  # mouse | keyboard | none
+    monitor = eDP-1
+    follow = keyboard  # mouse | keyboard | none
 
     ### Geometry ###
     origin = bottom-right  # center | top-left | bottom-right
