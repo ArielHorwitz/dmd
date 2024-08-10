@@ -1,0 +1,91 @@
+# This is a preferences file for the bacon tool
+# https://dystroy.org/bacon/config/
+
+summary = true
+wrap = false
+reverse = false
+help_line = false
+
+default_job = "clippy-pedantic"
+
+
+[keybindings]
+ctrl-c = "quit"
+ctrl-q = "quit"
+q = "quit"
+Esc = "back"
+Home = "scroll-to-top"
+End = "scroll-to-bottom"
+Up = "scroll-lines(-1)"
+Down = "scroll-lines(1)"
+PageUp = "scroll-page(-1)"
+PageDown = "scroll-page(1)"
+F5 = "refresh"
+Space = "refresh"
+ctrl-r = "toggle-raw-output"
+ctrl-b = "toggle-backtrace"
+ctrl-s = "toggle-summary"
+ctrl-w = "toggle-wrap"
+
+i = "job:initial"
+c = "job:check"
+l = "job:clippy"
+p = "job:clippy-pedantic"
+d = "job:doc-open"
+t = "job:test"
+r = "job:run"
+
+
+[jobs.check]
+command = ["cargo", "check", "--all-targets", "--color", "always"]
+
+[jobs.clippy-normal]
+command = [
+    "cargo", "clippy", "--all-targets", "--color", "always",
+    "--",
+    "--warn", "clippy::panic",
+    "--warn", "clippy::unwrap_used",
+    "--warn", "clippy::unwrap_in_result",
+    "--allow", "clippy::missing_errors_doc",
+]
+
+[jobs.clippy-pedantic]
+command = [
+    "cargo", "clippy", "--all-targets", "--color", "always",
+    "--",
+    "--warn", "clippy::pedantic",
+    "--allow", "clippy::missing_errors_doc",
+]
+
+[jobs.test]
+command = [
+    "cargo", "test", "--color", "always",
+    "--", "--color", "always", # see https://github.com/Canop/bacon/issues/124
+]
+need_stdout = true
+
+[jobs.doc]
+command = ["cargo", "doc", "--color", "always", "--no-deps"]
+
+# If the doc compiles, then it opens in your browser and bacon switches
+# to the previous job
+[jobs.doc-open]
+command = ["cargo", "doc", "--color", "always", "--no-deps", "--open"]
+on_success = "back" # so that we don't open the browser at each change
+
+[jobs.run]
+command = ["cargo", "run", "--color", "always"]
+need_stdout = true
+allow_warnings = true
+background = false
+
+[jobs.ex]
+command = ["cargo", "run", "--color", "always", "--example"]
+need_stdout = true
+allow_warnings = true
+
+
+# [export]
+# enabled = false
+# path = ".bacon-locations"
+# line_format = "{kind} {path}:{line}:{column} {message}"
