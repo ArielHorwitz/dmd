@@ -5,18 +5,19 @@ APP_NAME=$(basename "$0")
 ABOUT="Open a development layout tree, and spawn terminals and editor"
 CLI=(
     --prefix "args_"
-    -o "project;Project to open"
-    -O "base;Base path of projects directory;$HOME/prog;b"
+    -o "project;Project directory to open"
+    -O "base;Base path of project directory;$HOME;b"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
 eval "$CLI" || exit 1
 
 project_dir=$args_base/$args_project
+project_name=$(basename $args_project)
 printcolor -s info "Project dir: $project_dir"
 
 i3-msg append_layout ~/.config/i3/dev.json
-alacritty --working-directory "$project_dir" -T "$args_project - lazygit" -e lazygit &
+alacritty --working-directory "$project_dir" -T "$project_name - lazygit" -e lazygit &
 alacritty --working-directory "$project_dir" &
 alacritty --working-directory "$project_dir" &
 pragtical $project_dir &
