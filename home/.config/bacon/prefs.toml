@@ -2,7 +2,7 @@
 # https://dystroy.org/bacon/config/
 
 summary = true
-wrap = false
+wrap = true
 reverse = false
 help_line = false
 
@@ -28,9 +28,10 @@ ctrl-s = "toggle-summary"
 ctrl-w = "toggle-wrap"
 
 i = "job:initial"
-c = "job:check"
 l = "job:clippy"
 p = "job:clippy-pedantic"
+f = "job:format"
+c = "job:check"
 d = "job:doc-open"
 t = "job:test"
 r = "job:run"
@@ -56,6 +57,11 @@ command = [
     "--warn", "clippy::pedantic",
     "--allow", "clippy::missing_errors_doc",
 ]
+
+[jobs.format]
+command = ["cargo", "fmt"]
+need_stdout = true
+on_success = "back"
 
 [jobs.test]
 command = [
