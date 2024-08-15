@@ -3,7 +3,8 @@
 local keymap = require "core.keymap"
 local add = keymap.add
 
-add({ ["ctrl+shift+r"] = "core:restart" }, true)
+add({ ["ctrl+shift+r"] = "doc:reload" }, true)
+add({ ["ctrl+alt+shift+r"] = "core:restart" }, true)
 add({ ["ctrl+shift+e"] = "lsp:restart-servers" }, true)
 
 -- Navigation
