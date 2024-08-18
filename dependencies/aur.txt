@@ -22,7 +22,7 @@ bc
 wget
 words
 inxi
-neofetch
+xsel
 
 python
 python-pip
