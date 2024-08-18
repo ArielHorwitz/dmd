@@ -1,0 +1,123 @@
+[api]
+# Get your API key from: https://platform.openai.com/api-keys
+key = ""
+
+[chat]
+# For details see: https://platform.openai.com/docs/api-reference/chat
+model = "gpt-4o"
+max_tokens = { value = 4096, min = 128, max = 4096, step = 128 }
+temperature = { value = 1.0, min = 0.0, max = 1.0, step = 0.05 }
+top_p = { value = 1.0, min = 0.0, max = 1.0, step = 0.05 }
+frequency_penalty = { value = 0.0, min = -2.0, max = 2.0, step = 0.05 }
+presence_penalty = { value = 0.0, min = -2.0, max = 2.0, step = 0.05 }
+
+[ui.layout]
+prompt_size = 0
+
+# Base palette: #1C1678 #8576FF #7BC9FF #A3FFD6 #D37C31
+[ui.colors.background]
+normal = "#04003C"
+inactive = "#04003C"
+highlight = "#2A21B4"
+title = "#04003C"
+warn = "#6A3100"
+[ui.colors.text]
+normal = "#7BC9FF"
+inactive = "#4D7E9F"
+highlight = "#11FF55"
+title = "#11FFBB"
+warn = "#D37C31"
+[ui.colors.frame]
+normal = "#8576FF"
+inactive = "#423B80"
+highlight = "#8576FF"
+title = "#A398FF"
+warn = "#D37C31"
+[ui.colors.widget]
+normal = "#7ABFA0"
+inactive = "#123313"
+highlight = "#7ABFA0"
+title = "#7ABFA0"
+warn = "#D37C31"
+[ui.colors.cursor]
+normal = "#9CD6FF"
+inactive = "#223333"
+highlight = "#9CD6FF"
+title = "#9CD6FF"
+warn = "#D37C31"
+
+[commands]
+editor = ["lite-xl"]
+copy = ["xsel", "-ib"]
+
+[hotkeys]
+quit_program = [ "ctrl q" ]
+new = [ "ctrl n" ]
+open = [ "ctrl o" ]
+edit = [ "alt e" ]
+copy = [ "ctrl c" ]
+clear = [ "ctrl delete" ]
+refresh = [ "f5" ]
+confirm = [ "alt enter" ]
+select = [ "enter" ]
+cancel = [ "esc" ]
+selection_up = [ "up" ]
+selection_down = [ "down" ]
+selection_start = [ "home" ]
+selection_end = [ "end" ]
+scroll_up = [ "pgup" ]
+scroll_down = [ "pgdn" ]
+increment = [ "ctrl up", "="]
+decrement = [ "ctrl down", "-"]
+cycle_tab = [ "tab" ]
+cycle_back_tab = [ "backtab", "shift backtab", "shift tab" ]
+view_conversation_tab = [ "f1" ]
+view_config_tab = [ "f2" ]
+view_debug_tab = [ "f3" ]
+
+[[system.instructions]]
+name = "Software (quick)"
+message = """
+I am an experienced software engineer that uses Arch Linux and Bash, and develops mostly in Rust and Python. I dislike needless dependencies, and avoid the Javascript ecosystem as much as possible.
+
+You are my assistant. Don't bother being polite. Your response should be formatted in markdown, and code blocks should have a language specified. Your code should be as simple and idiomatic as possible.
+
+Your answers should be terse and concise. If a question can be answered using a short and self-explanatory code snippet, prefer that.
+"""
+
+[[system.instructions]]
+name = "Software"
+message = """
+I am an experienced software engineer that uses Arch Linux and Bash, and develops mostly in Rust and Python. I dislike needless dependencies, and avoid the Javascript ecosystem as much as possible.
+
+You are my assistant. Don't bother being polite. Your response should be formatted in markdown, and code blocks should have a language specified. Your code should be as simple and idiomatic as possible.
+"""
+
+[[system.instructions]]
+name = "Science"
+message = """
+I have strong fundamentals in life sciences, engineering, and technology. I prefer to understand how things work than to just know the answer.
+
+You are my assistant. Don't bother being polite. Your response should be formatted in markdown.
+"""
+
+[[system.instructions]]
+name = "Quick"
+message = """
+You are a helpful assistant.
+Do not bother being polite. Your responses should be concise and terse.
+"""
+
+[[system.instructions]]
+name = "Detailed"
+message = """
+You are a helpful assistant.
+Do not bother being polite. Your responses should be detailed.
+"""
+
+[[system.instructions]]
+name = "Funny"
+message = """
+You are a funny assistant.
+Do not bother being polite. Your responses should be funny.
+"""
