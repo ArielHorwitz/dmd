@@ -16,7 +16,7 @@ eval "$CLI" || exit 1
 [[ -z $args_list_all ]] || { xrandr -q | grep "connected" | awk '{print $1}' | sort ; exit 0 ; }
 [[ -z $args_list ]] || { xrandr -q | grep " connected" | sort ; exit 0 ; }
 
-if test -n $args_displays; then
+if [[ -n $args_displays ]]; then
     left=${args_displays[0]}
     echo -n "$left"
     for next_display in "${args_displays[@]:1}"; do
