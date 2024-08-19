@@ -62,7 +62,7 @@ def custom_range(n, factor):
     return small + large
 
 
-parser = argparse.ArgumentParser("palette-expander", description="Get more colors out of your palettes")
+parser = argparse.ArgumentParser("colormod", description="Get more shades out of your colors palettes")
 parser.add_argument("COLORS", nargs="+", help="Base color in hex")
 parser.add_argument("-H", "--hide-leading-hex", action="store_true", help="Hide leading hex symbol")
 parser.add_argument("-t", "--text-color", default="none", help="Text color (black/grey/white)")
