@@ -13,7 +13,7 @@ CLI=(
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
-[[ -z $args_list_all ]] || { xrandr -q | grep "connected" | awk '{print $1}' | sort ; exit 0 ; }
+[[ -z $args_list_all ]] || { xrandr -q | grep "connected" | sort ; exit 0 ; }
 [[ -z $args_list ]] || { xrandr -q | grep " connected" | sort ; exit 0 ; }
 
 if [[ -n $args_displays ]]; then
