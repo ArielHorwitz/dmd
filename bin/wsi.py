@@ -9,8 +9,11 @@ import os
 import random
 import subprocess
 import sys
-import tomllib
 from pathlib import Path
+if sys.version_info >= (3, 12):
+    import tomllib
+else:
+    import tomli as tomllib
 
 ROWS = 3
 COLUMNS = 4
