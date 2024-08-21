@@ -3,7 +3,8 @@
 local keymap = require "core.keymap"
 local add = keymap.add
 
-add({ ["ctrl+shift+r"] = "core:restart" }, true)
+add({ ["ctrl+shift+r"] = "doc:reload" }, true)
+add({ ["ctrl+alt+shift+r"] = "core:restart" }, true)
 add({ ["ctrl+shift+e"] = "lsp:restart-servers" }, true)
 
 -- Navigation
@@ -30,6 +31,12 @@ add({ ["ctrl+shift+\\"] = "treeview:toggle-focus" }, true)
 add({ ["ctrl+alt+u"] = "doc:upper-case" }, true)
 add({ ["ctrl+alt+shift+u"] = "doc:lower-case" }, true)
 
+
+-- Plugins
+add({ ["alt+l"] = "hybrid-line-numbers:toggle" }, true)
+add({ ["alt+shift+m"] = "markers:toggle-marker" }, true)
+add({ ["alt+m"] = "markers:go-to-next-marker" }, true)
+add({ ["alt+b"] = "git blame:toggle" }, true)
 
 -------------------------------- Notes ----------------------------------------
 

@@ -1,8 +1,8 @@
 #! /bin/bash
 
 export PAGER=bat
-export VISUAL=pragtical
-export EDITOR=pragtical
+export VISUAL=lite-xl
+export EDITOR=lite-xl
 export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000

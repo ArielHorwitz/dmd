@@ -30,7 +30,7 @@ style.font = renderer.font.load(
 -- ~>>>
   12
 -- ~>>> zen
-  18
+  20
 -- ~<<<
 )
 style.big_font = renderer.font.load(
@@ -38,7 +38,7 @@ style.big_font = renderer.font.load(
 -- ~>>>
   12
 -- ~>>> zen
-  18
+  30
 -- ~<<<
 )
 -- style.icon_font

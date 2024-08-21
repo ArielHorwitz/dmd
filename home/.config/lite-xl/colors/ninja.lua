@@ -32,3 +32,10 @@ style.lint_warning = { common.color "#e80000" }
 style.bracketmatch_color = { common.color "#bb77ff" }
 style.guide = { common.color "#301a1e" }
 style.guide_highlight = { common.color "#363b54" }
+
+style.syntax.paren_unbalanced = { common.color "#DC0408" }
+style.syntax.paren1 = { common.color "#DC3F41"}
+style.syntax.paren2 = { common.color "#DCB053"}
+style.syntax.paren3 = { common.color "#6CF466"}
+style.syntax.paren4 = { common.color "#529AD2"}
+style.syntax.paren5 = { common.color "#AA38EF"}
