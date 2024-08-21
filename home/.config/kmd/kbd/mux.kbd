@@ -1,6 +1,6 @@
 (deflayer multiplexer
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    @Xxs1 @Xxs2 @Xxs3 @Xxs4 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @Xx11 @Xx12 @Xx13 @Xx14 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    @Xsum XX    XX    XX    @Xx21 @Xx22 @Xx23 @Xx24 XX    _                               XX    XX    XX
   _     XX    XX    @Xcol XX    XX    XX    @Xx31 @Xx32 @Xx33 @Xx34 _                        XX           XX    XX    XX    XX
@@ -8,7 +8,7 @@
 )
 (deflayer multiplexer_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    @Xms1 @Xms2 @Xms3 @Xms4 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @Xm11 @Xm12 @Xm13 @Xm14 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @Xm21 @Xm22 @Xm23 @Xm24 XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @Xm31 @Xm32 @Xm33 @Xm34 _                        XX           XX    XX    XX    XX
@@ -18,6 +18,10 @@
     Xalt (layer-toggle multiplexer_alt)
     Xsum (cmd-button "wsi")
     Xcol (cmd-button "wsi -c")
+    Xxs1 (cmd-button "i3-msg workspace 1")
+    Xxs2 (cmd-button "i3-msg workspace 2")
+    Xxs3 (cmd-button "i3-msg workspace 3")
+    Xxs4 (cmd-button "i3-msg workspace 4")
     Xx11 (cmd-button "wsi 0 0")
     Xx12 (cmd-button "wsi 0 1")
     Xx13 (cmd-button "wsi 0 2")
@@ -30,6 +34,10 @@
     Xx32 (cmd-button "wsi 2 1")
     Xx33 (cmd-button "wsi 2 2")
     Xx34 (cmd-button "wsi 2 3")
+    Xms1 (cmd-button "i3-msg move to workspace 1")
+    Xms2 (cmd-button "i3-msg move to workspace 2")
+    Xms3 (cmd-button "i3-msg move to workspace 3")
+    Xms4 (cmd-button "i3-msg move to workspace 4")
     Xm11 (cmd-button "wsi -m 0 0")
     Xm12 (cmd-button "wsi -m 0 1")
     Xm13 (cmd-button "wsi -m 0 2")
