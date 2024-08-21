@@ -1,6 +1,6 @@
 [api]
 # Get your API key from: https://platform.openai.com/api-keys
-key = ""
+key = "HOMUX_SECRET_OPENAI_API_KEY"
 
 [chat]
 # For details see: https://platform.openai.com/docs/api-reference/chat
