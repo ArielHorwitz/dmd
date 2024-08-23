@@ -1,6 +1,6 @@
 ## I use KMonad, btw
 
-A suite of custom utilities and scripts that let me live mostly in the terminal and disconnect the mouse permanently.
+A suite of custom utilities and scripts that let me live mostly in the terminal and disconnect the mouse permanently, as well as personal configurations and dotfiles, managed by [homux](https://github.com/ArielHorwitz/homux).
 
 > I'd just like to interject for a moment. What you’re referring to as my workstation, is in fact, Linux/KMonad, or as I’ve recently taken to calling it, Linux plus KMonad. An operating system is not complete unto itself, but rather the foundation of a mouseless system made possible by KMonad, shell utilities and vital system components comprising an efficient and streamlined workstation operated via the keyboard. Many computer users run a lame system, without realizing it.
 >

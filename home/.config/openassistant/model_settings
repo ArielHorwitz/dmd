@@ -1,0 +1,6 @@
+model: "gpt-4o"
+max_tokens: 4096
+temperature: 1
+top_p: 1
+frequency_penalty: .2
+presence_penalty: .1

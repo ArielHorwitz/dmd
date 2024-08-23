@@ -1,0 +1,12 @@
+# hostname = "custom_hostname"
+
+[directories]
+# Directories are relative to home directory unless path is absolute
+source = ".local/share/myhomux/home"
+dry_run = "/tmp/homux.dry_run"
+
+[matchpick]
+max_file_size = 1_000_000
+start_pattern = "~>>>" #NOMATCHPICK#
+end_pattern = "~<<<" #NOMATCHPICK#
+ignore_pattern = "#NOMATCHPICK#"

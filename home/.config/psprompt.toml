@@ -1,0 +1,41 @@
+# See also: https://wiki.archlinux.org/title/Bash/Prompt_customization
+
+# Available styles are: double, extended, full, normal, micro, nano
+style = "double"
+show_error_icon = true
+
+[text]
+icon_err = "$?"
+icon_ok = ""
+at = "@"
+delim = " "
+prompt = " "
+user = "\\u"
+host = "\\H"
+loc = "\\w"
+
+[fg]
+icon_err = "FF5533"
+icon_ok = "00416A"
+at = "00416A"
+delim = "00416A"
+prompt = "89A1D4"
+user = "1162EB"
+host = "1162EB"
+loc = "19A1D4"
+
+[command]
+fg = "89A1D4"
+
+[ps0] # After each command, before any output
+text = ""
+color = "FFFFFF"
+[ps2] # Multiline prompt
+text = " "
+color = "0088FF"
+[ps3] # Selection prompt
+text = "● "
+color = "0088FF"
+[ps4] # Bash debugging
+text = " "
+color = "0088FF"

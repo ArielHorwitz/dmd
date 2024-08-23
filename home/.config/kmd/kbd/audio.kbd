@@ -1,0 +1,39 @@
+(deflayer audio
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @AKvu @AKvU XX    XX    @AKvu @AKvU @AKum @AKss XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @Aalt @AKvd @AKvD XX    XX    @AKvd @AKvD @AKmt @AKsh XX    @Ashw                           XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @prev @pp   @next XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 @pp               _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer audio_alt
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @ACvu @ACvU XX    XX    @ACvu @ACvU @ACum @ACse XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @ACvd @ACvD XX    XX    @ACvd @ACvD @ACmt @ACsi XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(defalias
+    Aalt (layer-toggle audio_alt)
+    Ashw (cmd-button "avolume --notify-all")
+    AKss (cmd-button "adevice --class speakers")
+    AKsh (cmd-button "adevice --class headphones")
+    AKvu (cmd-button "avolume --increase 2")
+    AKvd (cmd-button "avolume --decrease 2")
+    AKvU (cmd-button "avolume --increase 10")
+    AKvD (cmd-button "avolume --decrease 10")
+    AKmt (cmd-button "avolume --mute")
+    AKum (cmd-button "avolume --unmute")
+    ACse (cmd-button "adevice --mic --class external")
+    ACsi (cmd-button "adevice --mic --class internal")
+    ACvu (cmd-button "avolume --mic --increase 2")
+    ACvd (cmd-button "avolume --mic --decrease 2")
+    ACvU (cmd-button "avolume --mic --increase 10")
+    ACvD (cmd-button "avolume --mic --decrease 10")
+    ACmt (cmd-button "avolume --mic --mute")
+    ACum (cmd-button "avolume --mic --unmute")
+    prev PreviousSong
+    next NextSong
+    pp   PlayPause
+)

@@ -1,0 +1,4 @@
+USERNAME="remote@ariel.ninja"
+SERVER="ftp.ariel.ninja"
+PORT=21
+PROTOCOL="ftp"

@@ -1,0 +1,90 @@
+#!/bin/bash
+set -e
+
+LOG_DIR=/tmp/logs-$USER
+CATFILE_DIR=/tmp/kmonad
+CONFIG_DIR=$HOME/.config/kmd
+DEFAULT_DEVICES_FILE=$CONFIG_DIR/devices
+KBD_DIR=$CONFIG_DIR/kbd
+ICON_LOAD=$CONFIG_DIR/loading.png
+ICON_START=$CONFIG_DIR/icon.png
+NOTIFY_SYNC_ARG="string:synchronous:kmd"
+
+# Create default config
+[[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
+if [[ ! -f $DEFAULT_DEVICES_FILE ]]; then
+    echo "# Find available devices by running 'find /dev/input/by-* -type l'" > $DEFAULT_DEVICES_FILE
+fi
+if [[ ! -d $KBD_DIR ]]; then
+    mkdir --parents $KBD_DIR
+    touch $KBD_DIR/default.kbd
+fi
+[[ -f $ICON_LOAD ]] || touch $ICON_LOAD
+[[ -f $ICON_START ]] || touch $ICON_START
+
+APP_NAME=$(basename "$0")
+ABOUT="Run KMonad."
+CLI=(
+    --prefix "args_"
+    -c "devices;Devices to enable"
+    -O "device-file;File of devices to enable;${DEFAULT_DEVICES_FILE};d"
+    -f "debug;Enable debug mode;;D"
+    -f "fail;Fail if a device cannot be enabled"
+    -e "kmonad_args;Extra arguments for KMonad"
+)
+CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
+# echo "$CLI" >&2
+eval "$CLI" || exit 1
+
+[[ $EUID -eq 0 ]] && exit_error "Do not run $APP_NAME as root."
+
+cd
+
+if [[ -n $args_debug ]]; then
+    args_kmonad_args=(-l debug ${args_kmonad_args[@]})
+fi
+
+run_kmonad() {
+    set -e
+    local device_path=$1
+    local device_name=$(basename $device_path)
+    local sync_arg=${NOTIFY_SYNC_ARG}-$device_name
+
+    # Create (combine) new config file
+    kbd_file=$CATFILE_DIR/$device_name.kbd
+    printcolor -ns info "KMonad config file: "; echo $kbd_file
+    mkdir --parents $CATFILE_DIR
+    cat $KBD_DIR/* > $kbd_file
+
+    # Insert device path
+    sed -i "s|<KMD_DEVICE_PATH>|${device_path}|" $kbd_file
+    # Insert start command
+    start_command="notify-send -h ${sync_arg} -i ${ICON_START} \'Started KMonad\' \'${device_name}\'"
+    sed -i "s|<KMD_START_CMD>|${start_command}|" $kbd_file
+
+    # Kill running instance of KMonad
+    local running_pid=$(pgrep -ax kmonad | grep $device_name | awk '{print $1}' || echo '')
+    if [[ -n $running_pid ]]; then
+        sleep 0.1
+        kill $running_pid
+    fi
+    setlayer base
+
+    # Start KMonad
+    notify-send -h ${sync_arg} -i ${ICON_LOAD} -u low "Starting KMonad..." "$device_name"
+    kmonad $kbd_file ${args_kmonad_args[@]} >${LOG_DIR}/kmd-${device_name}.log 2>&1 &
+}
+
+available_devices=$(find /dev/input/by-* -type l)
+mapfile devices_from_file <<< $(decomment $args_device_file)
+enable_devices=(${args_devices[@]} ${devices_from_file[@]})
+
+for some_device in ${enable_devices[@]} ; do
+    device_path=$(echo "$available_devices" | grep $some_device || echo '')
+    if [[ -z $device_path ]]; then
+        [[ -z $args_fail ]] || exit_error "Device unavailable: $some_device"
+        continue
+    fi
+    printcolor -ns ok "Enabling device: "; printcolor -s info "${some_device}"
+    run_kmonad $device_path
+done
