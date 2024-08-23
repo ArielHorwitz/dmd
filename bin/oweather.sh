@@ -104,12 +104,12 @@ display_summary() {
 }
 
 case $display in
-    summary) display_summary ;;
-    json)    cat "$response_cache" ;;
-    current)    jq '.current' "$response_cache" ;;
+    summary)   display_summary ;;
+    json)      cat "$response_cache" ;;
+    current)   jq '.current' "$response_cache" ;;
     hourly)    jq ".hourly[0]" "$response_cache" ;;
-    daily)    jq '.daily[0]' "$response_cache" ;;
-    none)    ;;
-    *)       echo "unknown display mode: '$display'" ;;
+    daily)     jq '.daily[0]' "$response_cache" ;;
+    none)      ;;
+    *)         echo "unknown display mode: '$display'" ;;
 esac
 
