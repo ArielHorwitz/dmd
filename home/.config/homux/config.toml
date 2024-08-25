@@ -2,7 +2,7 @@
 
 [directories]
 # Directories are relative to home directory unless path is absolute
-source = "prog/dmd/home/"
+source = ".dmd/home/"
 dry_run = "/tmp/homux.dry_run"
 
 [matchpick]
