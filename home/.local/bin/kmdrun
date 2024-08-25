@@ -2,6 +2,7 @@
 set -e
 
 LOG_DIR=/tmp/logs-$USER
+LOG_FILE=$LOG_DIR/kmdrun
 CATFILE_DIR=/tmp/kmonad
 CONFIG_DIR=$HOME/.config/kmd
 DEFAULT_DEVICES_FILE=$CONFIG_DIR/devices
@@ -9,6 +10,8 @@ KBD_DIR=$CONFIG_DIR/kbd
 ICON_LOAD=$CONFIG_DIR/loading.png
 ICON_START=$CONFIG_DIR/icon.png
 NOTIFY_SYNC_ARG="string:synchronous:kmd"
+exec >>$LOG_FILE 2>&1
+echo "Executing kmdrun from: $0"
 
 # Create default config
 [[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
@@ -71,6 +74,7 @@ run_kmonad() {
     setlayer base
 
     # Start KMonad
+    echo "Starting KMonad: $device_name"
     notify-send -h ${sync_arg} -i ${ICON_LOAD} -u low "Starting KMonad..." "$device_name"
     kmonad $kbd_file ${args_kmonad_args[@]} >${LOG_DIR}/kmd-${device_name}.log 2>&1 &
 }
