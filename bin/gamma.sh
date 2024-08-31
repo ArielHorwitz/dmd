@@ -31,9 +31,9 @@ green=$(bc <<< "$multi * $args_green")
 blue=$(bc <<< "$multi * $args_blue")
 gamma=$red:$green:$blue
 
-echo "$red $green $blue" >&2
 
-
+set +e
 for monitor in $(xrandr -q | grep " connected" | awk '{print $1}') ; do
+    echo "$monitor $gamma" >&2
     xrandr --output $monitor --gamma $gamma
 done
