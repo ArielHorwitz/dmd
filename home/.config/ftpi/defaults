@@ -1,4 +1,4 @@
-USERNAME="remote@ariel.ninja"
-SERVER="ftp.ariel.ninja"
+USERNAME=remote
+SERVER=192.248.191.4
 PORT=21
-PROTOCOL="ftp"
+PROTOCOL=ftp
