@@ -1,0 +1,11 @@
+autoinsert
+bracketmatch
+wordcount
+
+snippets
+
+lsp
+lintplus
+lsp_snippets
+
+gitblame
