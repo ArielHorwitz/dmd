@@ -6,14 +6,13 @@ alias resource="source ~/.bashrc" # Reread .bashrc
 alias c="clear"
 alias xo="xdg-open"
 alias cpi="cp -i"
-alias tarz="tar -vzcf"
-alias taru="tar -vkxf"
+alias tarz="tar -czf"
+alias taru="tar -xf"
 alias tarl="tar -tf"
 alias rp="rhinopuffin"
 alias gp="geckopanda"
-alias oa="openassistant"
-alias oam="openassistant -L0 | markdown"
-alias or="openartist"
+alias batn="bat --style=rule,snip,numbers"
+alias batf="bat --style=full"
 
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
@@ -31,13 +30,11 @@ alias py="python main.py"
 
 # Rust
 alias cr="cargo run --"
-alias crb="cargo run --bin"
 alias crq="cargo run -q --"
-alias crf="cargo fmt; cargo run -q --"
+alias crb="cargo run --bin"
 alias rustbt_on="export RUST_BACKTRACE=1"
 alias rustbt_off="export RUST_BACKTRACE=0"
 alias rustbt_full="export RUST_BACKTRACE=full"
-alias crr="cargo release --no-publish"
 
 # SSH
 alias "ssh-keygen"="ssh-keygen -t ed25519"
@@ -65,10 +62,6 @@ set-wallpaper() {
 
 set-lockscreen() {
     sudo cp -f $1 /usr/share/backgrounds/lockscreen.png
-}
-
-blog() {
-    bat -l log $@
 }
 
 mkcd() {
