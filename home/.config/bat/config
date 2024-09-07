@@ -2,8 +2,7 @@
 # a command-line option that you want to pass to `bat` by default. You can
 # run `bat --help` to get a list of all possible configuration options.
 
---italic-text=always
-
---theme="Dracula"
-
+--wrap=never
 --style="rule,snip"
+--italic-text=always
+--theme="Dracula"
