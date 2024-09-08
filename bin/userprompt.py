@@ -6,6 +6,9 @@ import subprocess
 import shlex
 
 
+WINDOW_CLASS_IDENTIFIER = "terminal-userprompt-py"
+
+
 def run(*command, **kwargs):
     kwargs = dict(check=True, capture_output=True) | kwargs
     result = subprocess.run(command, **kwargs)
@@ -31,8 +34,8 @@ if __name__ == "__main__":
     if "{{}}" not in args.execute:
         raise Exception("Missing '{{}}' placeholder in execute argument")
     # Kill existing prompts
-    while run("xdotool", "search", "--class", "iukprompt", check=False):
-        run("xdotool", "search", "--class", "iukprompt", "windowkill")
+    while run("xdotool", "search", "--class", WINDOW_CLASS_IDENTIFIER, check=False):
+        run("xdotool", "search", "--class", WINDOW_CLASS_IDENTIFIER, "windowkill")
     # Prompt user
     with NamedTemporaryFile() as tempfile:
         prompt_command = "; ".join([
@@ -49,7 +52,7 @@ if __name__ == "__main__":
             "--title",
             "User prompt",
             "--class",
-            "iukprompt",
+            WINDOW_CLASS_IDENTIFIER,
             "-o",
             "colors.primary.background='#aaffff'",
             "-o",
