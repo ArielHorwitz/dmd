@@ -18,7 +18,6 @@ CLI=(
     -f "full;Clear and install everything"
     -f "app;Install/update lite-xl"
     -f "lpm;Install lpm"
-    -f "lsp-arch;Install lsp languages via arch repos and AUR"
     -f "plugins;Install plugins"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
@@ -80,24 +79,6 @@ install_plugins() {
     lpm install --assume-yes $(< $args_plugins_file)
 }
 
-install_lsp_languages() {
-    cd $TMPDIR
-    printcolor -s ok "Installing language servers..."
-
-    printcolor -s ok "Installing Python LSP..."
-    sudo pacman -Sq --needed --noconfirm python-lsp-server
-    printcolor -s ok "Installing Rust LSP..."
-    sudo pacman -Sq --needed --noconfirm rust-analyzer
-    printcolor -s ok "Installing Lua LSP..."
-    sudo pacman -Sq --needed --noconfirm lua-language-server
-    printcolor -s ok "Installing Bash LSP..."
-    sudo pacman -Sq --needed --noconfirm bash-language-server
-    printcolor -s ok "Installing SQL LSP..."
-    paru -Sq --mflags silent --needed --noconfirm sql-language-server
-    printcolor -s ok "Installing Dockerfile LSP..."
-    paru -Sq --mflags silent --needed --noconfirm dockerfile-language-server
-}
-
 printcolor -s info "Temporary working directory: $TMPDIR"
 rm -rf $TMPDIR
 mkdir -p $TMPDIR
@@ -116,9 +97,6 @@ if [[ $args_full || $args_lpm ]]; then
 fi
 if [[ $args_full || $args_plugins ]]; then
     install_plugins
-fi
-if [[ $args_full || $args_lsp_arch ]]; then
-    install_lsp_languages
 fi
 
 printcolor -s ok "Cleaning up temporary working directory $TMPDIR"

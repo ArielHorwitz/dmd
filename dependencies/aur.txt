@@ -33,3 +33,11 @@ firefox
 lazygit
 scrot
 feh
+
+
+python-lsp-server
+rust-analyzer
+lua-language-server
+bash-language-server
+sql-language-server
+dockerfile-language-server
