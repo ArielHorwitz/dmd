@@ -1,4 +1,4 @@
-#! /usr/bin/bash
+#! /bin/bash
 
 # [[ $- = *i* ]] && interactive_terminal_setup || return
 

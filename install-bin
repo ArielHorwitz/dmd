@@ -5,7 +5,7 @@ SOURCE_DIR=$(realpath $(dirname $0))
 SCRIPTS_DIR=$SOURCE_DIR/bin/
 
 STAGING_DIR=/tmp/iukbtw_install_staging
-INSTALL_DIR=/usr/bin/iukbtw
+INSTALL_DIR=/bin/iukbtw
 
 progress () { printf "\e[32m$1\e[0m\n" ; }
 info () { printf "\e[36m$1\e[0m\n" ; }

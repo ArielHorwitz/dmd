@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#! /bin/bash
 set -e
 
 CACHE_DIR="/tmp/install-pragtical/"
