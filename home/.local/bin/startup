@@ -14,7 +14,7 @@ log () {
     echo "$timestamp | $1"
 }
 
-log "iuk startup"
+log "startup script"
 log "pwd: `pwd`"
 log "clearing localtestinstall dir"
 localtestinstall -c
@@ -56,4 +56,4 @@ touchpadtoggle --off
 log "setting wallpaper"
 $HOME/.fehbg
 
-log "iuk startup complete"
+log "startup script complete"

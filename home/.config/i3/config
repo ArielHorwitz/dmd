@@ -43,4 +43,4 @@ client.placeholder      #000000 #000000 #aaffaa #000000 #0c0c0c
 client.background       #003355
 
 # AUTOSTART
-exec --no-startup-id startup-iuk
+exec --no-startup-id startup

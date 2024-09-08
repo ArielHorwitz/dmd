@@ -4,8 +4,8 @@ set -e
 SOURCE_DIR=$(realpath $(dirname $0))
 SCRIPTS_DIR=$SOURCE_DIR/bin/
 
-STAGING_DIR=/tmp/iukbtw_install_staging
-INSTALL_DIR=/bin/iukbtw
+STAGING_DIR=/tmp/dmd_install_staging
+INSTALL_DIR=/bin/dmd
 
 progress () { printf "\e[32m$1\e[0m\n" ; }
 info () { printf "\e[36m$1\e[0m\n" ; }
@@ -22,11 +22,11 @@ find $STAGING_DIR -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
 
 progress "=> Installing..."
 sudo rm -rf $INSTALL_DIR
-sudo install --owner root -Dm 755 -t $INSTALL_DIR $STAGING_DIR/*
+sudo install --owner root -Dt $INSTALL_DIR $STAGING_DIR/*
 
 progress "=> Cleaning up..."
 rm -rf $STAGING_DIR
 
-progress "=> Installed iukbtw."
+progress "=> Installed dmd."
 echo -n "Scripts installed to: "; info "$INSTALL_DIR"
 [[ $PATH = *${INSTALL_DIR}* ]] || notice "Be sure to add ${INSTALL_DIR} to PATH."
