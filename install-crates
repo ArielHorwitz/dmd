@@ -12,5 +12,7 @@ sudo -v
 
 sudo mkdir --parents $INSTALL_DIR
 sudo chown --recursive $USER $INSTALL_DIR
-cargo install --root $INSTALL_DIR $(cat $CARGO_DEPS_FILE)
+for crate_name in $(cat $CARGO_DEPS_FILE); do
+    cargo install --root $INSTALL_DIR $crate_name
+done
 sudo chown --recursive 0 $INSTALL_DIR
