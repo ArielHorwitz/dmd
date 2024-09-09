@@ -56,4 +56,7 @@ touchpadtoggle --off
 log "setting wallpaper"
 $HOME/.fehbg
 
+log "switching desktop workspace"
+wsi 0 0
+
 log "startup script complete"
