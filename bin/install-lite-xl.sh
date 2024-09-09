@@ -47,6 +47,15 @@ install_lite_xl() {
 }
 
 update_xdg_menus() {
+    cd $TMPDIR
+
+    printcolor -s ok "Downloading icon..."
+    DESKTOP_ICONS="$HOME/.local/share/icons/hicolor/48x48/apps/"
+    mkdir -p $DESKTOP_ICONS
+    ICON_URL="https://raw.githubusercontent.com/lite-xl/lite-xl/master/resources/icons/lite-xl.svg"
+    curl -sSL $ICON_URL -o lite-xl.svg
+    rsvg-convert "lite-xl.svg" -o $DESKTOP_ICONS/lite-xl.png
+
     printcolor -s ok "Populating XDG application..."
     DESKTOP_APPS="$HOME/.local/share/applications/"
     mkdir -p $DESKTOP_APPS
@@ -55,13 +64,12 @@ update_xdg_menus() {
     Name=Lite XL
     Comment=A lightweight text editor written in Lua
     Exec=lite-xl %F
-    # Icon=lite-xl
+    Icon=lite-xl
     Terminal=false
     StartupWMClass=lite-xl
     Categories=Development;IDE;
     MimeType=text/plain;inode/directory;' > $DESKTOP_APPS/lite-xl.desktop
-    # DESKTOP_ICONS="$HOME/.local/share/icons/hicolor/48x48/apps/"
-    # cp lite-xl.png
+
     xdg-desktop-menu forceupdate
 }
 
