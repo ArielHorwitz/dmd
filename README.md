@@ -11,7 +11,7 @@ Personal configurations and dotfiles, managed by [homux](https://github.com/Arie
 I don't expect anyone to use this repository as-is, seeing as it uses many custom-built tools and some very particular personalizations. That being said, here are some references to help understand what is going on:
 * [KMonad](https://github.com/kmonad/kmonad/) - for making the keyboard 10x more useful
 * [spongecrab](https://github.com/ArielHorwitz/spongecrab) - for making bash scripts 10x more useful
-* [homux](https://github.com/ArielHorwitz/homux) (and by extension, [matchpick](https://github.com/ArielHorwitz/matchpick)) - for managing dotfiles even across hosts
+* [homux](https://github.com/ArielHorwitz/homux) (and by extension, [matchpick](https://github.com/ArielHorwitz/matchpick)) - for managing dotfiles from a single source across hosts
 * [ArchWiki](https://wiki.archlinux.org/) - I mean it's so good for Linux in general
 
 ### Fresh installation
