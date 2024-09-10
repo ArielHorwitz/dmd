@@ -23,9 +23,8 @@ The repository contains everything I need to configure a new arch installation (
     - Run `install-crates` ([tools](/dependencies/cargo.txt) via `cargo install`)
 * Install and configure stuff using `install-*` and `configure-*` scripts from the [bin](/bin) directory
 * Apply the dotfiles
-    - Create temporary config at `~/.config/homux/config.toml` with `source = ".dmd/home/"`
     - Copy/generate `~/.config/homux/secrets.toml`
-    - Run `homux apply`
+    - Run `homux apply` (first run probably needs `--config-file ~/.dmd/home/.config/homux/config.toml`)
 
 ### Updating configuration
 If I want to update/change configs then I would simply edit `~/.dmd/home` and rerun `homux apply` (and mostly likely also `git push`).
