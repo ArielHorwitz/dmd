@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 64 64">
+	<circle cx="32" cy="32" r="32" fill="lightgrey" />
+	<polygon fill="blue" points="
+		32,4
+		8,52
+		26,48
+		32,38
+		38,48
+		56,52
+	" />
+	<polygon fill="lightgrey" points="12,10 12,16 32,24" />
+	<polygon fill="lightgrey" points="56,42 56,46 42,36" />
+</svg>
