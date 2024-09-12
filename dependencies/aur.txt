@@ -41,3 +41,4 @@ lua-language-server
 bash-language-server
 sql-language-server
 dockerfile-language-server
+yaml-language-server
