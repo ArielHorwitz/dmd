@@ -6,11 +6,11 @@ AUR_DEPS_FILE=$SOURCE_DIR/dependencies/aur.txt
 TMP_DIR_PARU=/tmp/paru-install-$RANDOM
 
 progress () { printf "\e[32m$1\e[0m\n" ; }
+warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" ; }
 
 sudo -v
 
-progress "=> Updating system..."
-sudo pacman --noconfirm -Syuu
+[[ -z $(pacman -Qu) ]] || warn "System updates available!"
 
 if [[ ! $(command -v paru) ]]; then
     progress "=> Installing paru..."
