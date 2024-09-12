@@ -2,6 +2,7 @@ networkmanager
 
 sof-firmware
 pulseaudio
+librsvg
 
 lemurs
 i3-wm
