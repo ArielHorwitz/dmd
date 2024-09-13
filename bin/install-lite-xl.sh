@@ -53,8 +53,7 @@ update_xdg_menus() {
     DESKTOP_ICONS="$HOME/.local/share/icons/hicolor/48x48/apps/"
     mkdir -p $DESKTOP_ICONS
     ICON_URL="https://raw.githubusercontent.com/lite-xl/lite-xl/master/resources/icons/lite-xl.svg"
-    curl -sSL $ICON_URL -o lite-xl.svg
-    rsvg-convert "lite-xl.svg" -o $DESKTOP_ICONS/lite-xl.png
+    curl -sSL $ICON_URL -o $DESKTOP_ICONS/lite-xl.svg
 
     printcolor -s ok "Populating XDG application..."
     DESKTOP_APPS="$HOME/.local/share/applications/"
