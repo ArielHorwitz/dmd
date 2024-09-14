@@ -14,7 +14,7 @@ if [[ ! $(command -v paru) ]]; then
     progress "=> Installing paru..."
     mkdir --parents $TMP_DIR_PARU
     sudo pacman -S --quiet --needed --noconfirm base-devel git
-    git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $TMP_DIR_PARU
+    git clone --quiet --depth 1 --shallow-submodules https://aur.archlinux.org/paru-git.git $TMP_DIR_PARU
     cd $TMP_DIR_PARU
     makepkg -si --needed --noconfirm
 fi
