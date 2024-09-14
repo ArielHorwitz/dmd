@@ -10,8 +10,6 @@ warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" ; }
 
 sudo -v
 
-[[ -z $(pacman -Qu) ]] || warn "System updates available!"
-
 if [[ ! $(command -v paru) ]]; then
     progress "=> Installing paru..."
     mkdir --parents $TMP_DIR_PARU
@@ -30,3 +28,5 @@ append_path "/bin/dmd"
 append_path "/bin/dmd_cargo_crates/bin"
 '
 printf "$rootenv" | sudo tee /etc/profile.d/dmd.sh
+
+[[ -z $(pacman -Qu) ]] || warn "System updates available!"
