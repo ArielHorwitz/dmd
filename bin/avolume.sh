@@ -1,18 +1,7 @@
 #! /bin/bash
 set -e
 
-CONFIG_DIR=$HOME/.config/avolume
-ICON_SINK="$CONFIG_DIR/sink.png"
-ICON_SINK_MUTE="$CONFIG_DIR/sink-mute.png"
-ICON_SOURCE="$CONFIG_DIR/source.png"
-ICON_SOURCE_MUTE="$CONFIG_DIR/source-mute.png"
-
-[[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
-for missing_icon in "$ICON_SINK" "$ICON_SINK_MUTE" "$ICON_SOURCE" "$ICON_SOURCE_MUTE" ; do
-    [[ -f $missing_icon ]] || touch $missing_icon
-done
-
-APP_NAME=$(basename "$0")
+APP_NAME=$(basename "${0%.*}")
 ABOUT="Get and set volume of default device."
 CLI=(
     --prefix "args_"
@@ -24,10 +13,22 @@ CLI=(
     -f "unmute;Unmute device;;u"
     -f "is-mute;Print mute status instead of volume;;M"
     -f "no-notification;Disable notifications;;N"
-    -f "notify-all;Show notificatioins for sink and source"
+    -f "notify-all;Show notifications for sink and source"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
+
+# CONFIGURATION
+config_file=$HOME/.config/${APP_NAME}/config.toml
+config_keys=(icons__sink icons__sink_mute icons__source icons__source_mute)
+config_default='
+[icons]
+sink = "/usr/share/icons/dmd/speaker3.svg"
+sink_mute = "/usr/share/icons/dmd/speaker0.svg"
+source = "/usr/share/icons/dmd/mic1.svg"
+source_mute = "/usr/share/icons/dmd/mic0.svg"
+'
+tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX'); tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err && { eval $(<$tt_out); rm $tt_out; rm $tt_err; } || { echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1; }
 
 [[ -n $args_mic ]] && device_type="source" || device_type="sink"
 
@@ -82,11 +83,11 @@ notify() {
         icon_mute=""
     else
         volume_text="${current_volume}% [MUTED]"
-        icon_mute="_MUTE"
+        icon_mute="_mute"
     fi
     hints=(-h int:value:"$current_volume" -h string:synchronous:volume_${device_type})
     description=$([[ $device_type = 'sink' ]] && adevice || adevice --mic)
-    icon_name="ICON_${device_type^^}${icon_mute}"
+    icon_name="config__icons__${device_type}${icon_mute}"
     icon=${!icon_name}
     notify-send -u low -t 1500 -i $icon "Volume: ${volume_text}" "${description} (${device_type})" ${hints[@]}
 }

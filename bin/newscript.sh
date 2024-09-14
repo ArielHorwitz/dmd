@@ -1,7 +1,7 @@
 #! /bin/bash
 set -e
 
-APP_NAME=$(basename "$0")
+APP_NAME=$(basename "${0%.*}")
 ABOUT="Create a new executable bash script with boilerplate."
 CLI=(
     -p "name;Script name"
@@ -18,10 +18,12 @@ cd $target
 [[ ! -e $filename ]] || [[ -n $force ]] || exit_error "File exists, use --force to ignore this error."
 
 # Write boilerplate
-printf '#! /bin/bash
+cat << 'EOF' > $filename
+#! /bin/bash
 set -e
 
-APP_NAME=$(basename "$0")
+# CLI
+APP_NAME=$(basename "${0%.*}")
 ABOUT="DESCRIPTION"
 CLI=(
     --prefix "args_"
@@ -29,7 +31,13 @@ CLI=(
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
 eval "$CLI" || exit 1
-' > $filename
+
+# CONFIGURATION
+config_file=$HOME/.config/${APP_NAME}/config.toml
+config_keys=()
+config_default=''
+tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX'); tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err && { eval $(<$tt_out); rm $tt_out; rm $tt_err; } || { echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1; }
+EOF
 
 # Make executable
 chmod +x $filename

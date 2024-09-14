@@ -2,9 +2,8 @@
 
 set -e
 
-default_config_dir=~/.config/oweather
-default_cache_dir=~/.local/share/oweather
-default_display_color='255_150_220'
+CACHE_DIR=$HOME/.local/share/oweather
+DEFAULT_DISPLAY_COLOR='255_150_220'
 
 # Command line interface (based on `spongecrab --generate`)
 APP_NAME=$(basename "$0")
@@ -12,12 +11,10 @@ ABOUT="Get weather from https://openweathermap.org OneCall API 3.0"
 # Argument syntax: "<arg_name>;<help_text>;<default_value>;<short_name>"
 CLI=(
     -o "display;Display mode: summary,json,none;summary"
-    -O "display_color;Color in summary;$default_display_color"
+    -O "display_color;Color in summary;$DEFAULT_DISPLAY_COLOR"
     -f "nocolor;Disable color in summary"
     -f "nounits;Disable units in summary"
     -f "noicons;Disable icons in summary"
-    -O "config_dir;Configuration directory;$default_config_dir;c"
-    -O "cache_dir;Cache directory;$default_cache_dir"
     -O "cache_timeout;How long is the cache valid in seconds;600;t"
     -f "force;Ignore existing cached response;;f"
     -f "verbose;Print details to stderr;;v"
@@ -26,19 +23,28 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 eval "$CLI" || exit 1
 
 # Configuration
-apikey=$(cat $config_dir/apikey.txt)
-lat=$(cat $config_dir/lat.txt)
-lon=$(cat $config_dir/lon.txt)
+config_file=$HOME/.config/${APP_NAME}/config.toml
+config_keys=(_api_key _lat _lon)
+config_default='
+# api_key = \"<YOUR_API_KEY>\"
+# lat = 0.0
+# lon = 0.0
+'
+tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX'); tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err && { eval $(<$tt_out); rm $tt_out; rm $tt_err; } || { echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1; }
+
+
 display_color=$(echo $display_color | sed 's/_/;/g')
 
 # Cache
-[[ -d $cache_dir ]] || mkdir -p $cache_dir
-response_cache=$cache_dir/response.json
+[[ -d $CACHE_DIR ]] || mkdir -p $CACHE_DIR
+response_cache=$CACHE_DIR/response.json
 
 # API call parameters
 exclude=
 apipoint="https://api.openweathermap.org/data/3.0/onecall"
-url="$apipoint?units=metric&lat=$lat&lon=$lon&exclude=$exclude&appid=$apikey"
+url="$apipoint?units=metric&lat=$config__lat&lon=$config__lon&exclude=$exclude&appid=$config__api_key"
+
+[[ -z $verbose ]] || echo "Calling: $url" 1>&2
 
 is_cache_valid() {
     [[ -z $force ]] || return 1
@@ -57,6 +63,8 @@ else
     curl --silent --connect-timeout 10 $url > "$response_cache"
     touch "$response_cache" # Update timestamp
 fi
+
+[[ -z $verbose ]] || printf "$(< $response_cache)\n" 1>&2
 
 
 display_summary() {
