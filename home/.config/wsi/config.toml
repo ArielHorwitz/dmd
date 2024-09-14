@@ -20,3 +20,4 @@ display_priorities = [
 ~<<<
 ]
 notification_timeout = 2000
+icon = "/usr/share/icons/dmd/monitor.svg"

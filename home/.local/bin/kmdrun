@@ -7,8 +7,8 @@ CATFILE_DIR=/tmp/kmonad
 CONFIG_DIR=$HOME/.config/kmd
 DEFAULT_DEVICES_FILE=$CONFIG_DIR/devices
 KBD_DIR=$CONFIG_DIR/kbd
-ICON_LOAD=$CONFIG_DIR/loading.png
-ICON_START=$CONFIG_DIR/icon.png
+ICON_LOAD=/usr/share/icons/dmd/loading.svg
+ICON_START=/usr/share/icons/dmd/keyboard.svg
 NOTIFY_SYNC_ARG="string:synchronous:kmd"
 exec >>$LOG_FILE 2>&1
 echo "Executing kmdrun from: $0"

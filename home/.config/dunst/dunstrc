@@ -200,24 +200,21 @@
     foreground = "#5555ff"
     frame_color = "#0000ff"
     timeout = 20
-    # Icon for notifications with low urgency, uncomment to enable
-    default_icon = ~/.config/icons/arch.png
+    default_icon = /usr/share/icons/dmd/tux.svg
 
 [urgency_normal]
     background = "#002200"
     foreground = "#55ff55"
     frame_color = "#00ff00"
     timeout = 120
-    # Icon for notifications with normal urgency, uncomment to enable
-    default_icon = ~/.config/icons/tux.png
+    default_icon = /usr/share/icons/dmd/arch.svg
 
 [urgency_critical]
     background = "#220000"
     foreground = "#ff5555"
     frame_color = "#ff0000"
     timeout = 0
-    # Icon for notifications with critical urgency, uncomment to enable
-    #default_icon = /path/to/icon
+    default_icon = /usr/share/icons/dmd/error.svg
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

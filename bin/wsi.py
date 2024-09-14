@@ -32,7 +32,6 @@ WORKSPACE_FOCUS = "∇"
 USER = os.getenv("USER")
 CONFIG_DIR = Path(f"/home/{USER}/.config/wsi")
 CONFIG_FILE = Path(f"{CONFIG_DIR}/config.toml")
-ICON_FILE = f"{CONFIG_DIR}/icon.png"
 DEFAULT_CONFIG_TOML = f"""
 rows = 2
 columns = 3
@@ -46,6 +45,7 @@ display_priorities = [
     "eDP-1",
 ]
 notification_timeout = 1000
+icon = "/usr/share/icons/dmd/monitor.svg"
 """.strip()
 HELP_TEXT = f"""Manage i3 workspaces.
 
@@ -145,7 +145,7 @@ class State:
         )
 
 
-def print_layout(rows: int, columns: int, notification: bool, notification_timeout: int):
+def print_layout(rows: int, columns: int, notification: bool, notification_timeout: int, icon_file: str):
     state = State.get()
     displays_repr = " " + " ".join(f"{d:<15}" for d in state.displays)
     visible_workspaces = {d: "---" for d in state.displays}
@@ -177,7 +177,7 @@ def print_layout(rows: int, columns: int, notification: bool, notification_timeo
     print(layout_repr)
     if notification:
         subprocess.run(
-            (*NOTIFY_SEND, "-t", str(notification_timeout), "-i", ICON_FILE, displays_repr, layout_repr),
+            (*NOTIFY_SEND, "-t", str(notification_timeout), "-i", icon_file, displays_repr, layout_repr),
             check=True,
         )
 
@@ -300,6 +300,7 @@ def main():
     rows = config["rows"]
     columns = config["columns"]
     notification_timeout = config["notification_timeout"]
+    icon = config["icon"]
 
     row = args.row
     col = args.column
@@ -321,6 +322,7 @@ def main():
         columns=columns,
         notification=not args.nonotification,
         notification_timeout=notification_timeout,
+        icon_file=icon,
     )
 
 
