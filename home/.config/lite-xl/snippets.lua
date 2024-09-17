@@ -7,7 +7,7 @@ snippets.add {
     format   = 'lsp',
     template = [[
 fn ${1:func}() -> Result<()> {
-    ${2:Ok(())}
+    ${0:Ok(())}
 }]]
 }
 
@@ -23,20 +23,21 @@ snippets.add {
 }
 
 snippets.add {
-    trigger  = 'sf',
+    trigger  = 'sfn',
     info     = 'Shell function',
-    desc     = 'A function for bash',
+    desc     = 'A function for shellscript',
     format   = 'lsp',
     template = [[
-${0:shell_function}() {
+${1:shell_function}() {
     set -e
+    $0
 }]]
 }
 
 snippets.add {
     trigger  = 'sif',
     info     = 'Shell if statement',
-    desc     = 'If statement for bash',
+    desc     = 'If statement for shellscript',
     format   = 'lsp',
     template = [=[
 if [[ -n \$${1:arg} ]]; then
@@ -48,7 +49,7 @@ fi
 snippets.add {
     trigger  = 'ppf',
     info     = 'Python f-string',
-    desc     = 'Python print f-string',
+    desc     = 'Print a Python variable with an f-string',
     format   = 'lsp',
     template = [[print(f'{${0:expression}=}')]]
 }
@@ -57,7 +58,6 @@ snippets.add {
     trigger  = 'doc',
     info     = 'Python docstring',
     desc     = 'Python docstring',
-    scope    = 'source.python',
     format   = 'lsp',
     template = [["""${0:DOCSTRING_PLACEHOLDER}"""]]
 }
