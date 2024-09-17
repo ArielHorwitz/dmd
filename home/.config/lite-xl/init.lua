@@ -37,6 +37,7 @@ require "keybinds"
 require "style"
 require "plugins"
 require "lsp"
+require "snippets"
 
 
 -------------------------------- Notes ----------------------------------------
