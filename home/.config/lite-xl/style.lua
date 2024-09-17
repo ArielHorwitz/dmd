@@ -1,15 +1,7 @@
--------------------------------- Style ----------------------------------------
-
 local core = require "core"
 local style = require "core.style"
 
-
--------------------------------- Theme ----------------------------------------
-
 core.reload_module("colors.ninja")
-
-
--------------------------------- Fonts ----------------------------------------
 
 local home_dir = os.getenv("HOME")
 local fira_font = string.format("%s/.local/share/fonts/firacode/FiraCodeNerdFont-Regular.ttf", home_dir)

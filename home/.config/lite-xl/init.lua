@@ -1,15 +1,13 @@
-------------------------------- General ---------------------------------------
-
 local config = require "core.config"
 
-
+-- Editor
 config.indent_size = 4
 config.mouse_wheel_scroll = 270
 config.scroll_past_end = true
 config.file_size_limit = 5
 
 -- Animations
--- config.transitions = false
+config.transitions = true
 config.animation_rate = 0.5
 
 -- Miscallaneous
@@ -30,17 +28,8 @@ config.ignore_files = {
   "%.exe$", "%.dll$", "^%.DS_Store$",
 }
 
-
------------------------------ Load Config -------------------------------------
-
 require "keybinds"
 require "style"
 require "plugins"
 require "lsp"
 require "snippets"
-
-
--------------------------------- Notes ----------------------------------------
-
--- DATADIR - installed Lite XL Lua code, default color schemes and fonts.
--- USERDIR - configuration directory.

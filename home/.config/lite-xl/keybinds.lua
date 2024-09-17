@@ -1,4 +1,4 @@
-------------------------------- Keybinds --------------------------------------
+-- Default keybindings: https://lite-xl.com/en/documentation/keymap
 
 local keymap = require "core.keymap"
 local add = keymap.add
@@ -37,9 +37,3 @@ add({ ["alt+l"] = "hybrid-line-numbers:toggle" }, true)
 add({ ["alt+shift+m"] = "markers:toggle-marker" }, true)
 add({ ["alt+m"] = "markers:go-to-next-marker" }, true)
 add({ ["alt+b"] = "git blame:toggle" }, true)
-
--------------------------------- Notes ----------------------------------------
-
--- Default keybindings:
--- https://lite-xl.com/en/documentation/keymap
-

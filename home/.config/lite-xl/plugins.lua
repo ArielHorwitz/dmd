@@ -1,9 +1,5 @@
-------------------------------- Plugins ---------------------------------------
-
 local config = require "core.config"
 
-
--- Builtin plugins
 config.plugins.autocomplete.max_height = 15
 config.plugins.autocomplete.min_len = 1
 config.plugins.autoreload.always_show_nagview = true

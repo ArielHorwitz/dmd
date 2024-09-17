@@ -1,9 +1,6 @@
--------------------------------- LSP ------------------------------------------
-
 -- Refer to: https://github.com/lite-xl/lite-xl-lsp/blob/master/config.lua
 
 local lspconfig = require "plugins.lsp.config"
-
 
 -- Bash
 lspconfig.bashls.setup()
