@@ -7,14 +7,18 @@ export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
 
-extra_paths=(
+extra_paths_prepend=(
+    "$HOME/.local/bin/testing"
+)
+
+extra_paths_append=(
     "$HOME/.cargo/bin"
     "$HOME/.local/bin"
-    "$HOME/.local/bin/testing"
 ~>>>
 ~>>> think
     "/snap/bin"
 ~<<<
 )
 
-export PATH=$(withpath ${extra_paths[@]})
+export PATH=$(withpath ${extra_paths_append[@]})
+export PATH=$(withpath -p ${extra_paths_prepend[@]})
