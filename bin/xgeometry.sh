@@ -16,6 +16,8 @@ eval "$CLI" || exit 1
 [[ -z $args_list_all ]] || { xrandr -q | grep "connected" | sort ; exit 0 ; }
 [[ -z $args_list ]] || { xrandr -q | grep " connected" | sort ; exit 0 ; }
 
+xrandr --auto
+
 if [[ -n $args_displays ]]; then
     left=${args_displays[0]}
     echo -n "$left"
@@ -25,8 +27,6 @@ if [[ -n $args_displays ]]; then
         left=$next_display
     done
     echo
-else
-    xrandr --auto
 fi
 
 [[ -z $args_primary ]] || xrandr --output $args_primary --primary
