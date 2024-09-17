@@ -44,3 +44,5 @@ lspconfig.dockerls.setup()
 -- YAML
 lspconfig.yamlls.setup()
 
+-- SQL
+lspconfig.sqlls.setup()
