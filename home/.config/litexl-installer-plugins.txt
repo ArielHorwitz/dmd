@@ -1,6 +1,7 @@
 autoinsert
 bracketmatch
 wordcount
+autosave
 
 snippets
 
