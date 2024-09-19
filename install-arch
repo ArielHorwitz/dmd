@@ -22,11 +22,4 @@ fi
 progress "=> Installing AUR dependencies..."
 paru -S --quiet --needed --noconfirm $(cat $AUR_DEPS_FILE)
 
-progress "=> Installing root environment..."
-rootenv='# Add paths to installed binaries and crates via dmd
-append_path "/bin/dmd"
-append_path "/bin/dmd_cargo_crates/bin"
-'
-printf "$rootenv" | sudo tee /etc/profile.d/dmd.sh
-
 [[ -z $(pacman -Qu) ]] || warn "System updates available!"
