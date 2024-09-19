@@ -14,7 +14,7 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 # echo "$CLI" >&2
 eval "$CLI" || exit 1
 
-args_target_dir=$(realpath $args_target_dir)
+args_target_dir=$(realpath -m $args_target_dir)
 
 # Create temporary working directory
 TMPDIR=/tmp/clonedir-$RANDOM/
