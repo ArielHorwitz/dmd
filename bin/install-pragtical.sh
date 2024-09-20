@@ -42,12 +42,11 @@ mkdir -p $CACHE_DIR
 cd $CACHE_DIR
 
 # Download latest portable Pragtical
-printcolor -s ok "Downloading latest release..."
-asset_pattern="*linux-x86_64-portable.tar.gz"
 downloaded_filename="pragtical.tgz"
-# asset_pattern="*.AppImage"
-# downloaded_filename="pragtical.AppImage"
-[[ -f $downloaded_filename ]] || gh release download --repo 'pragtical/pragtical' -p $asset_pattern -O $downloaded_filename
+if [[ ! -f $downloaded_filename ]]; then
+    printcolor -s ok "Downloading latest release [$(gh-latest pragtical)]..."
+    curl -sSL $(gh-latest -A pragtical | rg 'linux-x86_64-portable.tar.gz') -o $downloaded_filename
+fi
 
 printcolor -s ok "Extracting..."
 tar -xzf $downloaded_filename

@@ -16,7 +16,7 @@ CLI=(
     -O "plugins-file;File specifying which plugins to install using lpm;$PLUGINS_FILE"
     -f "clear;Clear existing installation"
     -f "full;Clear and install everything"
-    -f "app;Install/update lite-xl"
+    -f "app;Clear and install lite-xl"
     -f "lpm;Install lpm"
     -f "plugins;Install plugins"
 )
@@ -24,20 +24,29 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 eval "$CLI" || exit 1
 
 
+clear_installed() {
+    set -e
+    rm -f $BIN_DIR/lite-xl
+    rm -f $BIN_DIR/lpm
+    rm -rf $DATA_DIR
+    rm -rf $CONFIG_DIR
+}
+
 install_lite_xl() {
+    set -e
     sudo -v
     cd $TMPDIR
 
-    printcolor -s ok "Downloading latest release..."
-    asset_pattern="*addons-linux-x86_64-portable.tar.gz"
-    downloaded_filename="lite-xl.tar.gz"
-    gh release download --repo 'lite-xl/lite-xl' -p $asset_pattern -O $downloaded_filename
+    printcolor -s ok "Downloading latest release [$(gh-latest lite-xl)]..."
+    download_url=$(gh-latest -A lite-xl | rg 'addons-linux-x86_64-portable.tar.gz')
+    downloaded_filename='lite-xl.tar.gz'
+    curl -sSL $download_url -o $downloaded_filename
 
     printcolor -s ok "Extracting..."
     tar -xzf $downloaded_filename
     cd lite-xl
 
-    printcolor -s ok "Installing binary..."
+    printcolor -s ok "Installing binary and plugins..."
     install -Dt $BIN_DIR lite-xl
 
     printcolor -s ok "Replacing existing plugins..."
@@ -47,6 +56,7 @@ install_lite_xl() {
 }
 
 update_xdg_menus() {
+    set -e
     cd $TMPDIR
 
     printcolor -s ok "Downloading icon..."
@@ -73,6 +83,7 @@ update_xdg_menus() {
 }
 
 install_lpm() {
+    set -e
     cd $TMPDIR
 
     printcolor -s ok "Installing 'lpm' plugin manager..."
@@ -82,6 +93,7 @@ install_lpm() {
 }
 
 install_plugins() {
+    set -e
     printcolor -s ok "Installing plugins..."
     lpm install --assume-yes $(< $args_plugins_file)
 }
@@ -90,12 +102,12 @@ printcolor -s info "Temporary working directory: $TMPDIR"
 rm -rf $TMPDIR
 mkdir -p $TMPDIR
 
-if [[ $args_full || $args_clear ]]; then
-    rm $BIN_DIR/lite-xl
-    rm -rf $DATA_DIR
-    rm -rf $CONFIG_DIR
+if [[ $args_clear ]]; then
+    clear_installed
 fi
+
 if [[ $args_full || $args_app ]]; then
+    clear_installed
     install_lite_xl
     update_xdg_menus
 fi

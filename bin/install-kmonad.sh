@@ -6,9 +6,10 @@ set -e
 sudo -v
 
 # Download and install latest KMonad
-gh release download --clobber --repo 'kmonad/kmonad' -p 'kmonad' -O /tmp/kmonad-install-binary
-sudo cp /tmp/kmonad-install-binary /bin/kmonad
-sudo chmod +x /bin/kmonad
+printcolor -s ok "Downloading latest release [$(gh-latest kmonad)]..."
+downloaded_file=$(mktemp /tmp/kmonad.XXXXXXXXX)
+curl -sSL $(gh-latest -A kmonad) -o $downloaded_file
+sudo install $downloaded_file /bin/kmonad
 
 printcolor -s ok "Configuring udev rules and uinput module..."
 # Add udev rules for KMonad
