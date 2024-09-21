@@ -2,7 +2,8 @@ autoinsert
 bracketmatch
 wordcount
 autosave
-
+rainbowparen
+sticky_scroll
 snippets
 
 lsp
