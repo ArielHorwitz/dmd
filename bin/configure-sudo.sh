@@ -41,10 +41,7 @@ fi
 if [[ -n $args_binaries ]]; then
     printf '# Allow user "%s" to run commands as root without password
 %s ALL=(root:root) NOPASSWD: ' "$args_user" "$args_user" >> $dropin_file
-    for binary in $args_binaries; do
-        printf "$binary" >> $dropin_file
-    done
-    echo
+    echo "$(IFS=,; echo "${args_binaries[*]}")" >> $dropin_file
 fi
 
 checksudo_args=("--force" "--apply")
