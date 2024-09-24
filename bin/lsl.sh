@@ -3,7 +3,7 @@
 set -e
 
 APP_NAME=$(basename "$0")
-ABOUT="Wrapper for exa with personal defaults.
+ABOUT="Wrapper for eza with personal defaults.
 
 Valid sort fields:
     name, Name, extension, Extension, size, type, modified, accessed, created,
@@ -42,11 +42,11 @@ if [[ -n $nographics ]]; then
     [[ $RECURSE != "--tree" ]] || RECURSE="--recurse"
 fi
 
-exa_command="exa $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER ${file[@]}"
+eza_command="eza $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER ${file[@]}"
 
 if [[ -n $nopaging ]]; then
-    eval "$exa_command"
+    eval "$eza_command"
 else
-    eval "$exa_command" | bat -p
+    eval "$eza_command" | bat -p
 fi
 

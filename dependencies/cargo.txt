@@ -1,4 +1,4 @@
-exa
+eza
 bat
 ripgrep
 fd-find
