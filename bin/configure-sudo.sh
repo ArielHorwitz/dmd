@@ -11,7 +11,6 @@ CLI=(
     -f "feedback;Show feedback when typing password;;b"
     -f "disable-feedback;Disable feedback when typing password;;B"
     -f "noconfirm;Do not ask for confirmation;;n"
-    -f "check;Check sudoers rules without applying;;c"
     -f "quiet;Be quiet;;q"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
