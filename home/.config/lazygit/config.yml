@@ -1,17 +1,52 @@
-
 gui:
   sidePanelWidth: 0.3
   mouseEvents: false
   showFileTree: false
   showBottomLine: false
   nerdFontsVersion: '3'
+  showDivergenceFromBaseBranch: arrowAndNumber
+  # expandFocusedSidePanel: true
+  # expandedSidePanelWeight: 2
+  showFileIcons: true
+  statusPanelView: allBranchesLog
+  showBranchCommitHash: true
+  commandLogSize: 4
 
-  log:
-    showGraph: 'always'
-    showWholeGraph: true
+  theme:
+    activeBorderColor:
+      - '#00ffbb'
+      - bold
+    inactiveBorderColor:
+      - white
+    inactiveViewSelectedLineBgColor:
+      - underline
+    searchingActiveBorderColor:
+      - cyan
+      - bold
+    optionsTextColor:
+      - blue
+    selectedLineBgColor:
+      - '#330099'
+      - underline
+    cherryPickedCommitBgColor:
+      - cyan
+    cherryPickedCommitFgColor:
+      - blue
+    unstagedChangesColor:
+      - red
+    defaultFgColor:
+      - default
 
 git:
   autoFetch: false
   parseEmoji: true
 
+  log:
+    showGraph: 'always'
+    # showWholeGraph: true
+
 disableStartupPopups: true
+
+confirmOnQuit: true
+
+notARepository: skip
