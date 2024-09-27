@@ -80,3 +80,18 @@ starttest() {
     mkcd /tmp/terminaltest-$RANDOM
     printcolor -s debug "New test directory."
 }
+
+
+function br {
+    local cmd cmd_file code
+    cmd_file=$(mktemp)
+    if broot --outcmd "$cmd_file" -sphd "$@"; then
+        cmd=$(<"$cmd_file")
+        command rm -f "$cmd_file"
+        eval "$cmd"
+    else
+        code=$?
+        command rm -f "$cmd_file"
+        return "$code"
+    fi
+}

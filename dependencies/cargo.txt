@@ -4,6 +4,7 @@ ripgrep
 fd-find
 du-dust
 cargo-release
+broot
 
 spongecrab
 tigerturtle
