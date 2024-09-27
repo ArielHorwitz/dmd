@@ -51,7 +51,7 @@
     wmvr (cmd-button "i3-msg move right 5 ppt")
     wmvu (cmd-button "i3-msg move up 5 ppt")
     wmvd (cmd-button "i3-msg move down 5 ppt")
-    wmvc (cmd-button "windowcenter")
+    wmvc (cmd-button "i3-msg move position center")
     wmmw (cmd-button "i3-msg border toggle 2")
 
     ;; Window size
