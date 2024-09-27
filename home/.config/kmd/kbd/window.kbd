@@ -16,8 +16,8 @@
 )
 (defalias
     wman (layer-toggle window_manipulation)
-    scrw (cmd-button "screenshot")
-    scrd (cmd-button "screenshotdesktop")
+    scrw (cmd-button "screenshot -p")
+    scrd (cmd-button "screenshot -pd")
     tgwt (cmd-button "i3-msg border toggle")
 
     ;; Launch and close
