@@ -1,6 +1,7 @@
 autoinsert
 autosave
 bracketmatch
+copyfilelocation
 gitblame
 lintplus
 lsp
