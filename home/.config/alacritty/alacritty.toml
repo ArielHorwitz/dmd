@@ -61,14 +61,8 @@ size = 11
 size = 7
 # ~<<<
 
-[font.bold]
-family = "FiraCode Nerd Font"
-[font.bold_italic]
-family = "FiraCode Nerd Font"
-[font.italic]
-family = "FiraCode Nerd Font"
-[font.normal]
-family = "FiraCode Nerd Font"
+# [font.normal]
+# family = "FiraCode Nerd Font"
 
 [window]
 dynamic_title = true

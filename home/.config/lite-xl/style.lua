@@ -3,9 +3,8 @@ local style = require "core.style"
 
 core.reload_module("colors.ninja")
 
-local home_dir = os.getenv("HOME")
-local fira_font = string.format("%s/.local/share/fonts/firacode/FiraCodeNerdFont-Regular.ttf", home_dir)
-local droid_font = string.format("%s/.local/share/fonts/droid/DroidSansMNerdFont-Regular.otf", home_dir)
+local fira_font = "/usr/share/fonts/FiraCode/FiraCodeNerdFont-Regular.ttf"
+local mononoki_font = "/usr/share/fonts/Mononoki/mononoki-Regular.ttf"
 
 style.code_font = renderer.font.load(
   fira_font,
@@ -18,7 +17,7 @@ style.code_font = renderer.font.load(
 -- ~<<<
 )
 style.font = renderer.font.load(
-  droid_font,
+  mononoki_font,
 -- ~>>>
   12
 -- ~>>> zen
@@ -26,7 +25,7 @@ style.font = renderer.font.load(
 -- ~<<<
 )
 style.big_font = renderer.font.load(
-  droid_font,
+  mononoki_font,
 -- ~>>>
   12
 -- ~>>> zen

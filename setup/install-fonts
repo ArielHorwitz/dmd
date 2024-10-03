@@ -1,0 +1,56 @@
+#! /bin/bash
+set -e
+
+NERD_FONTS=(FiraCode DroidSansMono)
+FONTS_TARGET_DIR=/usr/share/fonts
+TMPDIR=$(mktemp -d)
+
+progress () { printf "\e[32m$1\e[0m\n" ; }
+info () { printf "\e[36m$1\e[0m\n" ; }
+
+install_nerd_font() {
+    set -e
+    local name="$1"
+    local archive_name="${name}.tar.xz"
+    local target_dir=$FONTS_TARGET_DIR/$name
+    local url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${archive_name}"
+    sudo rm -rf $target_dir
+    sudo mkdir -p $target_dir
+    curl -OsSL $url
+    sudo tar -xf $archive_name -C $target_dir
+}
+
+install_mononoki() {
+    set -e
+    local target_dir=$FONTS_TARGET_DIR/Mononoki/
+    local url="https://github.com/madmalik/mononoki/releases/download/1.6/mononoki.zip"
+    sudo rm -rf $target_dir
+    sudo mkdir -p $target_dir
+    curl -OsSL $url
+    sudo unzip -q "mononoki.zip" -d $target_dir
+}
+
+install_noto_emoji_font() {
+    set -e
+    local target_dir=$FONTS_TARGET_DIR/NotoColorEmoji/
+    local url="https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
+    sudo rm -rf $target_dir
+    sudo mkdir -p $target_dir
+    sudo curl -sSL $url -o $target_dir/NotoColorEmoji.ttf
+}
+
+progress "Installing fonts..."
+
+cd $TMPDIR
+
+info "> FiraCode"
+install_nerd_font FiraCode
+info "> Mononoki"
+install_mononoki
+info "> NotoColorEmoji"
+install_noto_emoji_font
+
+fc-cache
+rm -rf $TMPDIR
+
+progress "Done."

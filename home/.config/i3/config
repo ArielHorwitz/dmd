@@ -1,7 +1,7 @@
 # i3 config file (v4)
 
 # BASIC CONFIG
-font pango:FiraCodeNerdFont Bold 8
+font pango:Mononoki Bold 8
 
 # DECORATIONS
 default_border normal 2
