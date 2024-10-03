@@ -1,0 +1,122 @@
+#! /bin/bash
+set -e
+
+if [[ $EUID -eq 0 ]]; then
+    echo "Do not run as root."
+    exit 1
+fi
+sudo -v
+
+SOURCE_DIR=$(realpath $(dirname $0))
+LOG_FILE=/tmp/dmd-install.log
+
+AUR_DEPS_FILE=$SOURCE_DIR/setup/deps/aur.txt
+
+CRATES_DEPS_FILE=$SOURCE_DIR/setup/deps/crates.txt
+CRATES_INSTALL_DIR=/bin/dmd_cargo_crates
+CRATES_BIN_DIR=$CRATES_INSTALL_DIR/bin
+
+BIN_SOURCE=$SOURCE_DIR/bin
+BIN_STAGING=$(mktemp -d)
+BIN_TARGET=/bin/dmd
+
+ICONS_SOURCE=$SOURCE_DIR/icons/
+ICONS_TAGRET=/usr/share/icons/dmd/
+
+progress () { printf "\e[32m$1\e[0m\n" | tee /dev/fd/3 ; }
+info () { printf "\e[36m$1\e[0m\n" | tee /dev/fd/3 ; }
+notice () { printf "\e[35m$1\e[0m\n" | tee /dev/fd/3 ; }
+warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" | tee /dev/fd/3 ; }
+error () { printf "\e[31m$1\e[0m\n" | tee /dev/fd/3 ; }
+
+echo '' > $LOG_FILE
+exec 3>&1 1>>$LOG_FILE 2>&1
+notice "Logging to: $LOG_FILE"
+
+
+progress "Installing packages..."
+if [[ -f /etc/arch-release ]]; then
+    if [[ ! $(command -v paru) ]]; then
+        progress "Installing paru..."
+        local paru_build_dir=$(mktemp -d)
+        sudo pacman -S --quiet --needed --noconfirm base-devel git
+        git clone --depth 1 --shallow-submodules https://aur.archlinux.org/paru-git.git $paru_build_dir
+        cd $paru_build_dir
+        makepkg -si --needed --noconfirm
+    fi
+    progress "Installing packages on Arch..."
+    paru -S --needed --noconfirm $(cat $AUR_DEPS_FILE)
+else
+    error "Unsupported OS"
+    exit 1
+fi
+
+
+progress "Installing crates..."
+sudo mkdir --parents $CRATES_INSTALL_DIR
+sudo chown --recursive $USER $CRATES_INSTALL_DIR
+for crate_name in $(cat $CRATES_DEPS_FILE); do
+    info "> $crate_name"
+    cargo install --root $CRATES_INSTALL_DIR $crate_name
+done
+sudo chown --recursive 0 $CRATES_INSTALL_DIR
+
+
+progress "Installing scripts..."
+# stage and remove suffixes
+cp -rt $BIN_STAGING $BIN_SOURCE/*
+find $BIN_STAGING -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+# install from staging
+sudo rm -rf $BIN_TARGET
+sudo install --owner root -Dt $BIN_TARGET $BIN_STAGING/*
+# clean up
+rm -rf $BIN_STAGING
+
+
+progress "Configuring sudoers..."
+SUDOERS_DROPIN=$(cat <<'EOL'
+# Enable feedback when typing password
+Defaults pwfeedback
+
+# Set password timeout
+Defaults timestamp_timeout=120
+
+# Allow 'hardware' group to control monitor brightness without password
+%hardware ALL=(root:root) NOPASSWD: /bin/setmonbrightness
+EOL
+)
+echo "$SUDOERS_DROPIN" | sudo tee /etc/sudoers.d/dmd
+sudo groupadd -f hardware
+sudo usermod -aG hardware $USER
+
+
+progress "Configuring profile..."
+PROFILE_DROPIN=$(cat <<EOL
+# Add paths to installed binaries and crates via dmd
+export PATH="\$PATH:$BIN_TARGET:$CRATES_BIN_DIR"
+EOL
+)
+echo "$PROFILE_DROPIN" | sudo tee /etc/profile.d/dmd.sh
+
+
+progress "Configuring lemurs..."
+# Add i3 in selection menu
+LEMURS_I3_DROPIN=$(cat <<'EOL'
+#! /bin/sh
+exec i3
+EOL
+)
+echo "$LEMURS_I3_DROPIN" | sudo tee /etc/lemurs/wms/i3
+sudo chmod 755 /etc/lemurs/wms/i3
+# Enable the systemd service
+sudo systemctl disable display-manager.service
+sudo systemctl enable lemurs.service
+
+
+progress "Installing icons..."
+sudo rm -rf $ICONS_TAGRET
+sudo mkdir -p $ICONS_TAGRET
+sudo cp -rt $ICONS_TAGRET $ICONS_SOURCE/*
+
+
+progress "Done."
