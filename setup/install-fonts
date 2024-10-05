@@ -30,6 +30,17 @@ install_mononoki() {
     sudo unzip -q "mononoki.zip" -d $target_dir
 }
 
+install_ubuntu() {
+    set -e
+    local target_dir=$FONTS_TARGET_DIR/Ubuntu/
+    local url="https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip"
+    local subdir="ubuntu-font-family-0.83"
+    curl -L $url -o ubuntu.zip
+    unzip ubuntu.zip
+    sudo rm -rf $target_dir
+    sudo mv $subdir $target_dir
+}
+
 install_noto_emoji_font() {
     set -e
     local target_dir=$FONTS_TARGET_DIR/NotoColorEmoji/
@@ -45,6 +56,8 @@ cd $TMPDIR
 
 info "> FiraCode"
 install_nerd_font FiraCode
+info "> Ubuntu"
+install_ubuntu
 info "> Mononoki"
 install_mononoki
 info "> NotoColorEmoji"
