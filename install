@@ -74,7 +74,7 @@ rm -rf $BIN_STAGING
 
 
 progress "Configuring sudoers..."
-SUDOERS_DROPIN=$(cat <<'EOL'
+SUDOERS_DROPIN=$(cat <<EOL
 # Enable feedback when typing password
 Defaults pwfeedback
 
@@ -82,7 +82,7 @@ Defaults pwfeedback
 Defaults timestamp_timeout=120
 
 # Allow 'hardware' group to control monitor brightness without password
-%hardware ALL=(root:root) NOPASSWD: /bin/setmonbrightness
+%hardware ALL=(root:root) NOPASSWD: $BIN_TARGET/setmonbrightness
 EOL
 )
 echo "$SUDOERS_DROPIN" | sudo tee /etc/sudoers.d/dmd
