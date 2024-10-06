@@ -14,16 +14,22 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 # echo "$CLI" >&2
 eval "$CLI" || exit 1
 
-if [[ -n $args_clear ]]]; then clear; fi
+if [[ -n $args_clear ]]; then clear; fi
 
 # Formatters
-printcolor -fc "=== isort  ==="
+printcolor -fc "=== isort ==="
 isort --line-length $args_line_length --profile black $args_target
-printcolor -fc "=== Black  ==="
+
+printcolor -fc "=== Black ==="
 black --line-length $args_line_length --fast $args_target
 
 # Linters
-printcolor -fm "===  MyPy  ==="
-mypy `[[ -n $args_strict ]] || echo --strict` --ignore-missing-imports $args_target
+printcolor -fm "=== MyPy ==="
+mypy_args=(
+    --exclude 'venv|.venv'
+    `[[ -z $args_strict ]] || echo --strict`
+)
+mypy ${mypy_args[@]} $args_target
+
 printcolor -fm "=== Flake8 ==="
 flake8 --max-line-length $args_line_length --extend-exclude 'venv,.venv' $args_target
