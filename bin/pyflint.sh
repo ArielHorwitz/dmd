@@ -21,7 +21,7 @@ printcolor -fc "=== isort ==="
 isort --line-length $args_line_length --profile black $args_target
 
 printcolor -fc "=== Black ==="
-black --line-length $args_line_length --fast $args_target
+black --check --line-length $args_line_length --fast $args_target
 
 # Linters
 printcolor -fm "=== MyPy ==="
