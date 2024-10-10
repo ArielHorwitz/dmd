@@ -17,6 +17,7 @@ extra_paths_append=(
 ~>>>
 ~>>> think
     "/snap/bin"
+    "$HOME/.npm/bin"
 ~<<<
 )
 
