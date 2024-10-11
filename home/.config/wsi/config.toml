@@ -1,7 +1,6 @@
 rows = 3
 columns = 4
 display_priorities = [
-~>>>
     "DP-1",
     "DP-2",
     "DP-3",
@@ -9,15 +8,6 @@ display_priorities = [
     "HDMI-2",
     "HDMI-3",
     "eDP-1",
-~>>> zen
-    "eDP-1",
-    "DP-1",
-    "DP-2",
-    "DP-3",
-    "HDMI-1",
-    "HDMI-2",
-    "HDMI-3",
-~<<<
 ]
 notification_timeout = 2000
 icon = "/usr/share/icons/dmd/monitor.svg"
