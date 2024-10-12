@@ -20,7 +20,6 @@ mons
 openssh
 jq
 bc
-wget
 words
 inxi
 xsel
