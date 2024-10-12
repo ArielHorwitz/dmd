@@ -75,6 +75,7 @@ sudo -v
 
 
 install_packages_arch() {
+    set -e
     [[ -f /etc/arch-release ]] || exit_error "Unsupported OS (not Arch Linux)"
     if [[ ! $(command -v paru) ]]; then
         progress "Installing paru..."
@@ -89,6 +90,7 @@ install_packages_arch() {
 }
 
 install_crates() {
+    set -e
     progress "Installing crates..."
     sudo mkdir --parents $CRATES_TARGET
     sudo chown --recursive $USER $CRATES_TARGET
@@ -101,6 +103,7 @@ install_crates() {
 
 
 install_scripts() {
+    set -e
     progress "Installing scripts..."
     local staging=$(mktemp -d)
     # stage and remove suffixes
@@ -115,6 +118,7 @@ install_scripts() {
 
 
 install_configs() {
+    set -e
     progress "Configuring profile..."
     cat $SETUP_DIR/profile.dropin \
         | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
@@ -131,6 +135,7 @@ install_configs() {
 
 
 install_icons() {
+    set -e
     progress "Installing icons..."
     sudo rm -rf $ICONS_TAGRET
     sudo mkdir -p $ICONS_TAGRET
@@ -162,6 +167,7 @@ install_remote_font() {
 }
 
 install_fonts() {
+    set -e
     progress "Installing fonts..."
     local font_downloads=(
         FiraCode-"https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz"
