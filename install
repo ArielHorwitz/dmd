@@ -180,6 +180,8 @@ install_fonts() {
         local font_url=${name_url#*-}
         if [[ -z $(fc-list | grep -i "$font_name") ]]; then
             install_remote_font $font_name $font_url
+        else
+            debug "Font '$font_name' already installed."
         fi
     done
     fc-cache
