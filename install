@@ -1,122 +1,200 @@
 #! /bin/bash
 set -e
 
-if [[ $EUID -eq 0 ]]; then
-    echo "Do not run as root."
-    exit 1
-fi
-sudo -v
+LOGFILE=/tmp/dmd-install.log
+USAGE_HELP="Install dmd.
 
-SOURCE_DIR=$(realpath $(dirname $0))
-LOG_FILE=/tmp/dmd-install.log
+USAGE: $(basename $0) [OPTIONS] [COMPONENTS]
 
-AUR_DEPS_FILE=$SOURCE_DIR/setup/deps/aur.txt
+COMPONENTS:
+packages, crates, scripts, config, icons, fonts
 
-CRATES_DEPS_FILE=$SOURCE_DIR/setup/deps/crates.txt
-CRATES_INSTALL_DIR=/bin/dmd_cargo_crates
-CRATES_BIN_DIR=$CRATES_INSTALL_DIR/bin
+OPTIONS:
+-a, --all           Install all components
+"
 
-BIN_SOURCE=$SOURCE_DIR/bin
-BIN_STAGING=$(mktemp -d)
-BIN_TARGET=/bin/dmd
 
-ICONS_SOURCE=$SOURCE_DIR/icons/
-ICONS_TAGRET=/usr/share/icons/dmd/
-
+exec 3>&1 1>/dev/null
+printhelp() { echo "$USAGE_HELP" | tee /dev/fd/3 ; }
 progress () { printf "\e[32m$1\e[0m\n" | tee /dev/fd/3 ; }
-info () { printf "\e[36m$1\e[0m\n" | tee /dev/fd/3 ; }
+debug () { printf "\e[36m$1\e[0m\n" ; }
 notice () { printf "\e[35m$1\e[0m\n" | tee /dev/fd/3 ; }
 warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" | tee /dev/fd/3 ; }
 error () { printf "\e[31m$1\e[0m\n" | tee /dev/fd/3 ; }
+exit_error() { error "$1"; exit 1; }
 
-echo '' > $LOG_FILE
-exec 3>&1 1>>$LOG_FILE 2>&1
-notice "Logging to: $LOG_FILE"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        packages)            INSTALL_PACKAGES=1; shift ;;
+        crates)              INSTALL_CRATES=1; shift ;;
+        scripts)             INSTALL_SCRIPTS=1; shift ;;
+        config)              INSTALL_CONFIG=1; shift ;;
+        icons)               INSTALL_ICONS=1; shift ;;
+        fonts)               INSTALL_FONTS=1; shift ;;
+        -a | --all)          INSTALL_ALL=1; shift ;;
+        -h | --help)         printhelp; exit 0 ;;
+        *)                   exit_error "Unknown option: $1" ;;
+    esac
+done
+
+if [[ $INSTALL_ALL ]]; then
+    INSTALL_PACKAGES=1
+    INSTALL_CRATES=1
+    INSTALL_SCRIPTS=1
+    INSTALL_CONFIG=1
+    INSTALL_ICONS=1
+    INSTALL_FONTS=1
+fi
+OPERATIONS_COUNT=$((\
+    ${INSTALL_PACKAGES:-0} + \
+    ${INSTALL_CRATES:-0} + \
+    ${INSTALL_SCRIPTS:-0} + \
+    ${INSTALL_CONFIG:-0} + \
+    ${INSTALL_ICONS:-0} + \
+    ${INSTALL_FONTS:-0} \
+))
+[[ $OPERATIONS_COUNT -gt 0 ]] || exit_error "Nothing to do (try --help)"
+
+printf '' > $LOGFILE
+exec 1>>$LOGFILE 2>&1
+notice "Logging to: $LOGFILE"
+echo "Invoked command with arguments: $0 $@"
+echo "Current working directory: $(pwd)"
+echo "Started at: $(date)"
+
+SOURCE_DIR=$(realpath $(dirname $0))
+SETUP_DIR=$SOURCE_DIR/setup
+CRATES_TARGET=/bin/dmd_cargo_crates
+BIN_TARGET=/bin/dmd
+ICONS_TAGRET=/usr/share/icons/dmd/
 
 
-progress "Installing packages..."
-if [[ -f /etc/arch-release ]]; then
+[[ -d $SETUP_DIR ]] || exit_error "Setup directory not found: ${SETUP_DIR}"
+[[ $EUID -ne 0 ]] || exit_error "Do not run as root."
+sudo -v
+
+
+install_packages_arch() {
+    [[ -f /etc/arch-release ]] || exit_error "Unsupported OS (not Arch Linux)"
     if [[ ! $(command -v paru) ]]; then
         progress "Installing paru..."
         local paru_build_dir=$(mktemp -d)
-        sudo pacman -S --quiet --needed --noconfirm base-devel git
+        sudo pacman -S --needed --noconfirm base-devel git
         git clone --depth 1 --shallow-submodules https://aur.archlinux.org/paru-git.git $paru_build_dir
         cd $paru_build_dir
         makepkg -si --needed --noconfirm
     fi
-    progress "Installing packages on Arch..."
-    paru -S --needed --noconfirm $(cat $AUR_DEPS_FILE)
-else
-    error "Unsupported OS"
-    exit 1
-fi
+    progress "Installing packages..."
+    paru -S --needed --noconfirm $(cat $SETUP_DIR/aur.txt)
+}
+
+install_crates() {
+    progress "Installing crates..."
+    sudo mkdir --parents $CRATES_TARGET
+    sudo chown --recursive $USER $CRATES_TARGET
+    for crate_name in $(cat $SETUP_DIR/crates.txt); do
+        debug "> $crate_name"
+        cargo install --root $CRATES_TARGET $crate_name
+    done
+    sudo chown --recursive 0 $CRATES_TARGET
+}
 
 
-progress "Installing crates..."
-sudo mkdir --parents $CRATES_INSTALL_DIR
-sudo chown --recursive $USER $CRATES_INSTALL_DIR
-for crate_name in $(cat $CRATES_DEPS_FILE); do
-    info "> $crate_name"
-    cargo install --root $CRATES_INSTALL_DIR $crate_name
-done
-sudo chown --recursive 0 $CRATES_INSTALL_DIR
+install_scripts() {
+    progress "Installing scripts..."
+    local staging=$(mktemp -d)
+    # stage and remove suffixes
+    cp -rt $staging $SOURCE_DIR/bin/*
+    find $staging -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
+    # install from staging
+    sudo rm -rf $BIN_TARGET
+    sudo install --owner root -Dt $BIN_TARGET $staging/*
+    # clean up
+    rm -rf $staging
+}
 
 
-progress "Installing scripts..."
-# stage and remove suffixes
-cp -rt $BIN_STAGING $BIN_SOURCE/*
-find $BIN_STAGING -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
-# install from staging
-sudo rm -rf $BIN_TARGET
-sudo install --owner root -Dt $BIN_TARGET $BIN_STAGING/*
-# clean up
-rm -rf $BIN_STAGING
+install_configs() {
+    progress "Configuring profile..."
+    cat $SETUP_DIR/profile.dropin \
+        | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
+        | sed "s|<CRATES_TARGET>|$CRATES_TARGET/bin|g" \
+        | sudo tee /etc/profile.d/dmd.sh
+
+    progress "Configuring sudoers..."
+    cat $SETUP_DIR/sudoers.dropin \
+        | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
+        | sudo tee /etc/sudoers.d/dmd
+    sudo groupadd -f hardware
+    sudo usermod -aG hardware $USER
+}
 
 
-progress "Configuring sudoers..."
-SUDOERS_DROPIN=$(cat <<EOL
-# Enable feedback when typing password
-Defaults pwfeedback
-
-# Set password timeout
-Defaults timestamp_timeout=120
-
-# Allow 'hardware' group to control monitor brightness without password
-%hardware ALL=(root:root) NOPASSWD: $BIN_TARGET/setmonbrightness
-EOL
-)
-echo "$SUDOERS_DROPIN" | sudo tee /etc/sudoers.d/dmd
-sudo groupadd -f hardware
-sudo usermod -aG hardware $USER
+install_icons() {
+    progress "Installing icons..."
+    sudo rm -rf $ICONS_TAGRET
+    sudo mkdir -p $ICONS_TAGRET
+    sudo cp -rt $ICONS_TAGRET $SOURCE_DIR/icons/*
+}
 
 
-progress "Configuring profile..."
-PROFILE_DROPIN=$(cat <<EOL
-# Add paths to installed binaries and crates via dmd
-export PATH="\$PATH:$BIN_TARGET:$CRATES_BIN_DIR"
-EOL
-)
-echo "$PROFILE_DROPIN" | sudo tee /etc/profile.d/dmd.sh
+install_remote_font() {
+    set -e
+    local name=$1
+    local url=$2
+    local tmpdir=$(mktemp -d)
+    local archive_name=$(basename $url)
+    local download_file=$tmpdir/$archive_name
+    local target_dir=$FONTS_TARGET_DIR/$font_name
+    debug "> ${name}: $archive_name"
+    curl -sSL $url -o $download_file
+    sudo rm -rf $target_dir
+    sudo mkdir -p $target_dir
+    case $archive_name in
+        *.zip       ) sudo unzip -q $download_file -d $target_dir ;;
+        *.tar.*     ) sudo tar -xf $download_file -C $target_dir ;;
+        *.ttf       ) sudo cp $download_file $target_dir ;;
+        *           ) exit_error "Unknown file type for font install: $archive_name" ;;
+    esac
+    sudo chown -R root:root $target_dir
+    sudo chmod -R 755 $target_dir
+    rm -r $tmpdir
+}
+
+install_fonts() {
+    progress "Installing fonts..."
+    local font_downloads=(
+        FiraCode-"https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz"
+        Ubuntu-"https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip"
+        Mononoki-"https://github.com/madmalik/mononoki/releases/download/1.6/mononoki.zip"
+        NotoColorEmoji-"https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
+    )
+    for name_url in ${font_downloads[@]}; do
+        local font_name=${name_url%%-*}
+        local font_url=${name_url#*-}
+        if [[ -z $(fc-list | grep -i "$font_name") ]]; then
+            install_remote_font $font_name $font_url
+        fi
+    done
+    fc-cache
+}
 
 
-progress "Configuring lemurs..."
-# Add i3 in selection menu
-LEMURS_I3_DROPIN=$(cat <<'EOL'
-#! /bin/sh
-exec i3
-EOL
-)
-echo "$LEMURS_I3_DROPIN" | sudo tee /etc/lemurs/wms/i3
-sudo chmod 755 /etc/lemurs/wms/i3
-# Enable the systemd service
-sudo systemctl disable display-manager.service
-sudo systemctl enable lemurs.service
+config_lemurs() {
+    progress "Configuring lemurs..."
+    # Add i3 in selection menu
+    printf '#! /bin/sh\nexec i3' | sudo tee /etc/lemurs/wms/i3
+    sudo chmod 755 /etc/lemurs/wms/i3
+    # Enable the systemd service
+    sudo systemctl disable display-manager.service
+    sudo systemctl enable lemurs.service
+}
 
-
-progress "Installing icons..."
-sudo rm -rf $ICONS_TAGRET
-sudo mkdir -p $ICONS_TAGRET
-sudo cp -rt $ICONS_TAGRET $ICONS_SOURCE/*
-
+[[ -z $INSTALL_PACKAGES ]] || install_packages_arch
+[[ -z $INSTALL_CRATES ]] || install_crates
+[[ -z $INSTALL_SCRIPTS ]] || install_scripts
+[[ -z $INSTALL_CONFIG ]] || install_configs
+[[ -z $INSTALL_ICONS ]] || install_icons
+[[ -z $INSTALL_FONTS ]] || install_fonts
 
 progress "Done."

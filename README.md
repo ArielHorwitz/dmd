@@ -8,7 +8,7 @@ Personal configurations and dotfiles, managed by [homux](https://github.com/Arie
 
 ## How to use this
 
-I don't expect anyone to use this repository as-is, seeing as it uses many custom-built tools and some very particular personalizations. That being said, here are some references to help understand what is going on:
+I don't expect anyone to use this repository as-is, seeing as it is a collection of bespoke tools and very particular personalizations. That being said, here are some references to help understand what is going on:
 * [KMonad](https://github.com/kmonad/kmonad/) - for making the keyboard 10x more useful
 * [spongecrab](https://github.com/ArielHorwitz/spongecrab) - for making bash scripts 10x more useful
 * [homux](https://github.com/ArielHorwitz/homux) (and by extension, [matchpick](https://github.com/ArielHorwitz/matchpick)) - for managing dotfiles from a single source across hosts
@@ -17,14 +17,9 @@ I don't expect anyone to use this repository as-is, seeing as it uses many custo
 ### Fresh installation
 The repository contains everything I need to configure a new arch installation (other than perhaps browser plugins). I should have a new computer set up to be a 1-to-1 clone of my daily driver following these steps more or less (some reboots may be required - some may be skipped if you know how to workaround missing paths):
 * Clone repository to `~/.dmd`
-* Install packages, tools, and scripts:
-    - Run `install-arch` ([arch/aur packages](/dependencies/aur.txt))
-    - Run `install-bin` (custom scripts from the [bin](/bin) directory)
-    - Run `install-crates` ([tools](/dependencies/cargo.txt) via `cargo install`)
-* Install and configure stuff using `install-*` and `configure-*` scripts from the [bin](/bin) directory
-* Apply the dotfiles
-    - Copy/generate `~/.config/homux/secrets.toml`
-    - Run `homux apply` (first run probably needs `--config-file ~/.dmd/home/.config/homux/config.toml`)
+* Install using: `install --all`
+* Copy or generate the `~/.config/homux/secrets.toml` file
+* Apply the dotfiles: `homux apply` (first run probably needs `--config-file ~/.dmd/home/.config/homux/config.toml`)
 
 ### Updating configuration
-If I want to update/change configs then I would simply edit `~/.dmd/home` and rerun `homux apply` (and mostly likely also `git push`).
+If I want to add/modify configuration then I would simply edit `~/.dmd/home` and rerun `homux apply` (mostly likely also `git push`).

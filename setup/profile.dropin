@@ -1,0 +1,4 @@
+# Installed by dmd
+
+# Add paths to installed binaries and crates via dmd
+PATH="$PATH:<BIN_TARGET>:<CRATES_TARGET>"
