@@ -52,13 +52,14 @@ printcolor -nf cyan -od "FTP Server:  "; echo ${ftp_server}
 USERPASS=
 resolve_userpass() {
     set -e
+    local buffer
     if [[ -z $USERPASS ]]; then
         # Resolve username
         if [[ -n $args_username ]]; then
             USERPASS="$args_username"
         else
-            prompttext "Username: "
-            USERPASS="$(prompttext --read)"
+            printcolor -nf yellow "Username: "; read buffer
+            USERPASS="$buffer"
         fi
         # Resolve password
         if [[ -n $args_password ]]; then
@@ -66,8 +67,8 @@ resolve_userpass() {
         elif [[ -n $PASSWORD ]]; then
             USERPASS+=":$PASSWORD"
         else
-            prompttext -H "Password: "
-            USERPASS+=":$(prompttext --read --clear)"
+            printcolor -nf yellow "Password: "; read -s buffer
+            USERPASS+=":$buffer"
         fi
     fi
 }
