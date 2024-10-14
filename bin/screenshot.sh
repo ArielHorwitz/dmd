@@ -16,7 +16,7 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 eval "$CLI" || exit 1
 
 temp_file="$(mktemp --dry-run).png"
-timestamp=$(date '+%Y-%m-%d_%H-%M-%S')
+timestamp=$(timestamp)
 if [[ $args_prompt ]]; then
     name=$(terminalprompt 'Screenshot name: ')
 else
