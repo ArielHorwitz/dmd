@@ -62,25 +62,26 @@ fi
 OPENAI_API_KEY="$(cat $KEY_FILE)"
 
 # Image style
-if [[ ! $args_style = vivid && ! $args_style = natural ]]; then
-    exit_error "Invalid style: $args_style (see --help)"
-fi
+case $args_style in
+    vivid   ) ;;
+    natural ) ;;
+    *       ) exit_error "Invalid style: $args_style (see --help)" ;;
+esac
 
 # Image quality
-if [[ ! $args_quality = hd && ! $args_quality = standard ]]; then
-    exit_error "Invalid quality: $args_quality (see --help)"
-fi
+case $args_quality in
+    hd       ) ;;
+    standard ) ;;
+    *        ) exit_error "Invalid quality: $args_quality (see --help)" ;;
+esac
 
 # Image size
-if [[ $args_resolution = square || $args_resolution = s ]]; then
-    image_size="1024x1024"
-elif [[ $args_resolution = horizontal || $args_resolution = h ]]; then
-    image_size="1792x1024"
-elif [[ $args_resolution = vertical || $args_resolution = v ]]; then
-    image_size="1024x1792"
-else
-    exit_error "Invalid resolution (see --help)"
-fi
+case $args_resolution in
+    s | square     ) image_size="1024x1024" ;;
+    h | horizontal ) image_size="1792x1024" ;;
+    v | vertical   ) image_size="1024x1792" ;;
+    *              ) exit_error "Invalid resolution (see --help)" ;;
+esac
 
 # Prompt
 if [[ -n $args_prompt ]]; then
@@ -104,11 +105,9 @@ fi
 
 
 # Image name
-if [[ -n $args_image_name ]]; then
-    image_name=$args_image_name
-else
+if [[ -z $args_image_name ]]; then
     printcolor -nf yellow "Image name: "
-    read image_name
+    read args_image_name
 fi
 
 # Generate image call data
@@ -143,8 +142,7 @@ curl_args=(
 curl "${curl_args[@]}" $API_ENDPOINT
 revised_prompt=$(jq -r '.data[].revised_prompt' "$RESPONSE_DATA_FILE")
 url=$(jq -r '.data[].url' "$RESPONSE_DATA_FILE")
-timestamp="$(date +%y-%m-%d--%H-%M-%S)"
-filename="$OUTPUT_DIR/${image_name}_${timestamp}.png"
+filename="$OUTPUT_DIR/$(timestamp)_${args_image_name}.png"
 
 # Print
 if [[ $VERBOSITY -ge 2 ]]; then
