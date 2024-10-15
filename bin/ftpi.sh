@@ -1,19 +1,22 @@
 #! /bin/bash
 set -e
 
-CONFIG_FILE=$HOME/.config/ftpi/defaults
+CONFIG_FILE=$HOME/.config/ftpi/defaults.toml
 
-DEFAULT_CONFIG="# Defaults for ftpi
-USERNAME='username'
-SERVER='ftp.example.com'
-PORT=21
-PROTOCOL='ftp'"
+DEFAULT_CONFIG='# Defaults for ftpi
+USERNAME = "username"
+SERVER = "ftp.example.com"
+PORT = 21
+PROTOCOL = "ftp" # One of: ftp, ftps'
 
-if [[ ! -f $CONFIG_FILE ]]; then
-    mkdir --parents $(dirname $CONFIG_FILE)
-    echo "$DEFAULT_CONFIG" > $CONFIG_FILE
+
+CONFIG_KEYS=(username server port protocol)
+tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX')
+if tigerturtle $CONFIG_FILE -WD "$DEFAULT_CONFIG" -p 'config__' -- ${CONFIG_KEYS[@]} >$tt_out 2>$tt_err; then
+    eval $(<$tt_out); rm $tt_out; rm $tt_err;
+else
+    echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1;
 fi
-eval "$(cat $CONFIG_FILE)"
 
 APP_NAME=$(basename "$0")
 ABOUT="Simple FTP client.
@@ -25,14 +28,14 @@ When deleting, 'file-path' is the remote file.
 Configure defaults in: $CONFIG_FILE"
 CLI=(
     --prefix "args_"
-    -p "operation;Operation to perform (one of: ls, dl, up, rm)"
+    -p "operation;Operation to perform (one of: ls, dl, up, rm, cat)"
     -o "file-path;File path to operate on"
     -O "target-path;Target file path;;t"
-    -O "username;Username;$USERNAME;u"
+    -O "username;Username;$config__username;u"
     -O "password;Password;;p"
-    -O "server;FTP server to connect to;$SERVER;s"
-    -O "port;FTP server port number;$PORT;p"
-    -O "protocol;Protocol to use (one of: ftp, ftps);$PROTOCOL;P"
+    -O "server;FTP server to connect to;$config__server;s"
+    -O "port;FTP server port number;$config__port;p"
+    -O "protocol;Protocol to use (one of: ftp, ftps);$config__protocol;P"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI"
@@ -44,41 +47,44 @@ file_path="${args_file_path}"
 if [[ -n $args_target_path ]]; then
     target_path="$args_target_path"
 elif [[ -n $args_file_path ]]; then
-    target_path="$(basename $args_file_path)"
+    target_path="$(basename '$args_file_path')"
 fi
 
-printcolor -nf cyan -od "FTP Server:  "; echo ${ftp_server}
+printcolor -nfc " FTP Server: " >&2; echo ${ftp_server} >&2
 
 USERPASS=
 resolve_userpass() {
     set -e
-    local buffer
+    local username
+    local password
     if [[ -z $USERPASS ]]; then
         # Resolve username
+        printcolor -nfc "   Username: " >&2
         if [[ -n $args_username ]]; then
-            USERPASS="$args_username"
+            username="$args_username"
+            echo $username >&2
         else
-            printcolor -nf yellow "Username: "; read buffer
-            USERPASS="$buffer"
+            read username
         fi
         # Resolve password
         if [[ -n $args_password ]]; then
-            USERPASS+=":$args_password"
-        elif [[ -n $PASSWORD ]]; then
-            USERPASS+=":$PASSWORD"
+            password=":$args_password"
         else
-            printcolor -nf yellow "Password: "; read -s buffer
-            USERPASS+=":$buffer"
+            password=$(promptpassword \
+                --cache="ftpi:${ftp_server}__${username}" \
+                "$(printcolor -nfc "   Password:")" \
+            )
         fi
     fi
+    USERPASS="${username}:${password}"
 }
 
 assert_file_arg() {
     set -e
     local operation_name=$1
     [[ -n $args_file_path ]] || exit_error "${operation_name} operation requires file path"
-    printcolor -nf cyan -od "File:        "; echo ${file_path}
-    printcolor -nf cyan -od "Target file: "; echo ${target_path}
+    printcolor -nfc "       File: "  >&2; echo "${file_path}" >&2
+    printcolor -nfc "Target file: "  >&2; echo "${target_path}" >&2
 }
 
 list() {
@@ -108,11 +114,19 @@ delete() {
     curl --user "${USERPASS}" -Q "DELE ${file_path}" "${ftp_server}"
 }
 
+show() {
+    set -e
+    assert_file_arg "Show"
+    resolve_userpass
+    curl --user "${USERPASS}" "${ftp_server}/${file_path}"
+}
+
 # Choose operation
 case $args_operation in
     ls )   list ;;
     dl )   download ;;
     up )   upload ;;
     rm )   delete ;;
+    cat )  show ;;
     *  )   exit_error "Invalid operation: $args_operation" ;;
 esac
