@@ -13,7 +13,7 @@ style.code_font = renderer.font.load(
 -- ~>>> lemnos
   15
 -- ~>>> zen
-  20
+  24
 -- ~<<<
 )
 style.font = renderer.font.load(
@@ -21,7 +21,7 @@ style.font = renderer.font.load(
 -- ~>>>
   12
 -- ~>>> zen
-  20
+  24
 -- ~<<<
 )
 style.big_font = renderer.font.load(
@@ -29,7 +29,7 @@ style.big_font = renderer.font.load(
 -- ~>>>
   12
 -- ~>>> zen
-  30
+  42
 -- ~<<<
 )
 -- style.icon_font
