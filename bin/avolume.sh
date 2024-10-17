@@ -28,7 +28,12 @@ sink_mute = "/usr/share/icons/dmd/speaker0.svg"
 source = "/usr/share/icons/dmd/mic1.svg"
 source_mute = "/usr/share/icons/dmd/mic0.svg"
 '
-tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX'); tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err && { eval $(<$tt_out); rm $tt_out; rm $tt_err; } || { echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1; }
+tt_out=$(mktemp); tt_err=$(mktemp)
+if tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err; then
+    eval $(<$tt_out); rm $tt_out; rm $tt_err;
+else
+    echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1;
+fi
 
 [[ -n $args_mic ]] && device_type="source" || device_type="sink"
 

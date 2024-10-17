@@ -7,7 +7,7 @@ sudo -v
 
 # Download and install latest KMonad
 printcolor -s ok "Downloading latest release [$(gh-latest kmonad)]..."
-downloaded_file=$(mktemp /tmp/kmonad.XXXXXXXXX)
+downloaded_file=$(mktemp --dry-run)
 curl -sSL $(gh-latest -A kmonad) -o $downloaded_file
 sudo install $downloaded_file /bin/kmonad
 

@@ -11,7 +11,7 @@ PROTOCOL = "ftp" # One of: ftp, ftps'
 
 
 CONFIG_KEYS=(username server port protocol)
-tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX')
+tt_out=$(mktemp); tt_err=$(mktemp)
 if tigerturtle $CONFIG_FILE -WD "$DEFAULT_CONFIG" -p 'config__' -- ${CONFIG_KEYS[@]} >$tt_out 2>$tt_err; then
     eval $(<$tt_out); rm $tt_out; rm $tt_err;
 else

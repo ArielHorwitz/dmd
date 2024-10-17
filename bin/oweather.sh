@@ -30,7 +30,12 @@ config_default='
 # lat = 0.0
 # lon = 0.0
 '
-tt_out=$(mktemp 'tt_out.XXXXXXXXXX'); tt_err=$(mktemp 'tt_err.XXXXXXXXXX'); tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err && { eval $(<$tt_out); rm $tt_out; rm $tt_err; } || { echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1; }
+tt_out=$(mktemp); tt_err=$(mktemp);
+if tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err; then
+    eval $(<$tt_out); rm $tt_out; rm $tt_err;
+else
+    echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1;
+fi
 
 
 display_color=$(echo $display_color | sed 's/_/;/g')
