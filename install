@@ -7,11 +7,10 @@ USAGE_HELP="Install dmd.
 USAGE: $(basename $0) [OPTIONS] [COMPONENTS]
 
 COMPONENTS:
-packages, crates, scripts, config, icons, fonts
+(a)ll, (p)ackages, (c)rates, (s)cripts, confi(g), (i)cons, (f)onts
 
 OPTIONS:
--a, --all           Install all components
-"
+-h, --help          Show this help and exit"
 
 
 exec 3>&1 1>/dev/null
@@ -25,13 +24,13 @@ exit_error() { error "$1"; exit 1; }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        packages)            INSTALL_PACKAGES=1; shift ;;
-        crates)              INSTALL_CRATES=1; shift ;;
-        scripts)             INSTALL_SCRIPTS=1; shift ;;
-        config)              INSTALL_CONFIG=1; shift ;;
-        icons)               INSTALL_ICONS=1; shift ;;
-        fonts)               INSTALL_FONTS=1; shift ;;
-        -a | --all)          INSTALL_ALL=1; shift ;;
+        a | all)             INSTALL_ALL=1; shift ;;
+        p | packages)        INSTALL_PACKAGES=1; shift ;;
+        c | crates)          INSTALL_CRATES=1; shift ;;
+        s | scripts)         INSTALL_SCRIPTS=1; shift ;;
+        g | config)          INSTALL_CONFIG=1; shift ;;
+        i | icons)           INSTALL_ICONS=1; shift ;;
+        f | fonts)           INSTALL_FONTS=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
     esac
