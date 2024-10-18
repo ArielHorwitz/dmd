@@ -65,7 +65,8 @@ SOURCE_DIR=$(realpath $(dirname $0))
 SETUP_DIR=$SOURCE_DIR/setup
 CRATES_TARGET=/bin/dmd_cargo_crates
 BIN_TARGET=/bin/dmd
-ICONS_TAGRET=/usr/share/icons/dmd/
+ICONS_TAGRET=/usr/share/icons/dmd
+FONTS_TARGET_DIR=/usr/share/fonts
 
 
 [[ -d $SETUP_DIR ]] || exit_error "Setup directory not found: ${SETUP_DIR}"
@@ -150,7 +151,7 @@ install_remote_font() {
     local archive_name=$(basename $url)
     local download_file=$tmpdir/$archive_name
     local target_dir=$FONTS_TARGET_DIR/$font_name
-    debug "> ${name}: $archive_name"
+    debug "Installing ${name}: ${archive_name} at ${target_dir}"
     curl -sSL $url -o $download_file
     sudo rm -rf $target_dir
     sudo mkdir -p $target_dir
@@ -174,6 +175,7 @@ install_fonts() {
         Mononoki-"https://github.com/madmalik/mononoki/releases/download/1.6/mononoki.zip"
         NotoColorEmoji-"https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
     )
+    fc-cache
     for name_url in ${font_downloads[@]}; do
         local font_name=${name_url%%-*}
         local font_url=${name_url#*-}
