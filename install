@@ -143,29 +143,6 @@ install_icons() {
 }
 
 
-install_remote_font() {
-    set -e
-    local name=$1
-    local url=$2
-    local tmpdir=$(mktemp -d)
-    local archive_name=$(basename $url)
-    local download_file=$tmpdir/$archive_name
-    local target_dir=$FONTS_TARGET_DIR/$font_name
-    debug "Installing ${name}: ${archive_name} at ${target_dir}"
-    curl -sSL $url -o $download_file
-    sudo rm -rf $target_dir
-    sudo mkdir -p $target_dir
-    case $archive_name in
-        *.zip       ) sudo unzip -q $download_file -d $target_dir ;;
-        *.tar.*     ) sudo tar -xf $download_file -C $target_dir ;;
-        *.ttf       ) sudo cp $download_file $target_dir ;;
-        *           ) exit_error "Unknown file type for font install: $archive_name" ;;
-    esac
-    sudo chown -R root:root $target_dir
-    sudo chmod -R 755 $target_dir
-    rm -r $tmpdir
-}
-
 install_fonts() {
     set -e
     progress "Installing fonts..."
@@ -176,16 +153,32 @@ install_fonts() {
         Mononoki-"https://github.com/madmalik/mononoki/releases/download/1.6/mononoki.zip"
         NotoColorEmoji-"https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
     )
+    local tmpdir=$(mktemp -d)
     fc-cache
     for name_url in ${font_downloads[@]}; do
         local font_name=${name_url%%-*}
         local font_url=${name_url#*-}
-        if [[ -z $(fc-list | grep -i "$font_name") ]]; then
-            install_remote_font $font_name $font_url
-        else
-            debug "Font '$font_name' already installed."
+        local target_dir=$FONTS_TARGET_DIR/$font_name
+        if [[ $(fc-list | grep -i "$target_dir/") ]]; then
+            debug "Font '$font_name' already installed at ${target_dir}"
+            continue
         fi
+        local archive_name=$(basename $font_url)
+        local download_file=$tmpdir/$archive_name
+        debug "Installing ${name}: ${archive_name} at ${target_dir}"
+        curl -sSL $font_url -o $download_file
+        sudo rm -rf $target_dir
+        sudo mkdir -p $target_dir
+        case $archive_name in
+            *.zip       ) sudo unzip -q $download_file -d $target_dir ;;
+            *.tar.*     ) sudo tar -xf $download_file -C $target_dir ;;
+            *.ttf       ) sudo cp $download_file $target_dir ;;
+            *           ) exit_error "Unknown file type for font install: $archive_name" ;;
+        esac
+        sudo chown -R root:root $target_dir
+        sudo chmod -R 755 $target_dir
     done
+    rm -r $tmpdir
     fc-cache
 }
 
