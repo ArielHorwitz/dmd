@@ -16,7 +16,7 @@ frequency_penalty = { value = 0.0, min = -2.0, max = 2.0, step = 0.05 }
 presence_penalty = { value = 0.0, min = -2.0, max = 2.0, step = 0.05 }
 
 [ui.layout]
-prompt_size = 0
+prompt_size = 5
 
 # Base palette: #1C1678 #8576FF #7BC9FF #A3FFD6 #D37C31
 [ui.colors.background]
