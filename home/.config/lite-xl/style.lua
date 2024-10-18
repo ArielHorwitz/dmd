@@ -3,7 +3,7 @@ local style = require "core.style"
 
 core.reload_module("colors.ninja")
 
-local fira_font = "/usr/share/fonts/FiraCode/FiraCodeNerdFont-Regular.ttf"
+local fira_font = "/usr/share/fonts/FiraCodeNerdFont/FiraCodeNerdFont-Regular.ttf"
 local mononoki_font = "/usr/share/fonts/Mononoki/mononoki-Regular.ttf"
 
 style.code_font = renderer.font.load(

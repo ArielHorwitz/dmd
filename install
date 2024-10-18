@@ -170,7 +170,8 @@ install_fonts() {
     set -e
     progress "Installing fonts..."
     local font_downloads=(
-        FiraCode-"https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz"
+        FiraCodeNerdFont-"https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.tar.xz"
+        MononokiNerdFont-"https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Mononoki.tar.xz"
         Ubuntu-"https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip"
         Mononoki-"https://github.com/madmalik/mononoki/releases/download/1.6/mononoki.zip"
         NotoColorEmoji-"https://github.com/googlefonts/noto-emoji/raw/main/fonts/NotoColorEmoji.ttf"
