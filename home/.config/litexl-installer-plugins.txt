@@ -3,6 +3,7 @@ autosave
 bracketmatch
 copyfilelocation
 gitblame
+indentguide
 lintplus
 lsp
 lsp_snippets
