@@ -8,7 +8,7 @@ USAGE_HELP="Install dmd.
 USAGE: $(basename $0) [OPTIONS] [COMPONENTS]
 
 COMPONENTS:
-(a)ll, (p)ackages, (c)rates, (s)cripts, confi(g), (i)cons, (f)onts
+(a)ll, (p)ackages, (c)rates, (s)cripts, confi(g), (i)cons, (f)onts, (h)ome
 
 OPTIONS:
 -h, --help          Show this help and exit"
@@ -32,6 +32,7 @@ while [[ $# -gt 0 ]]; do
         g | config)          INSTALL_CONFIG=1; shift ;;
         i | icons)           INSTALL_ICONS=1; shift ;;
         f | fonts)           INSTALL_FONTS=1; shift ;;
+        h | home)            INSTALL_HOME=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
     esac
@@ -44,6 +45,7 @@ if [[ $INSTALL_ALL ]]; then
     INSTALL_CONFIG=1
     INSTALL_ICONS=1
     INSTALL_FONTS=1
+    INSTALL_HOME=1
 fi
 OPERATIONS_COUNT=$((\
     ${INSTALL_PACKAGES:-0} + \
@@ -51,7 +53,8 @@ OPERATIONS_COUNT=$((\
     ${INSTALL_SCRIPTS:-0} + \
     ${INSTALL_CONFIG:-0} + \
     ${INSTALL_ICONS:-0} + \
-    ${INSTALL_FONTS:-0} \
+    ${INSTALL_FONTS:-0} + \
+    ${INSTALL_HOME:-0} \
 ))
 [[ $OPERATIONS_COUNT -gt 0 ]] || exit_error "Nothing to do (try --help)"
 
@@ -184,6 +187,12 @@ install_fonts() {
 }
 
 
+install_home() {
+    set -e
+    homux --config-file "$SOURCE_DIR/home/.config/homux/config.toml" apply --verbose
+}
+
+
 config_lemurs() {
     progress "Configuring lemurs..."
     # Add i3 in selection menu
@@ -200,5 +209,6 @@ config_lemurs() {
 [[ -z $INSTALL_CONFIG ]] || install_configs
 [[ -z $INSTALL_ICONS ]] || install_icons
 [[ -z $INSTALL_FONTS ]] || install_fonts
+[[ -z $INSTALL_HOME ]] || install_home
 
 progress "Done."
