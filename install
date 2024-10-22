@@ -8,7 +8,14 @@ USAGE_HELP="Install dmd.
 USAGE: $(basename $0) [OPTIONS] [COMPONENTS]
 
 COMPONENTS:
-(a)ll, (p)ackages, (c)rates, (s)cripts, confi(g), (i)cons, (f)onts, (h)ome
+  a | all           All components
+  p | packages      Sync system packages
+  c | crates        Cargo crate installations
+  s | scripts       Bin scripts
+  g | config        System configurations
+  i | icons         Icons
+  f | fonts         Fonts
+  h | home          Apply home data using homux
 
 OPTIONS:
 -h, --help          Show this help and exit"
