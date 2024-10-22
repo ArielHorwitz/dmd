@@ -1,6 +1,7 @@
 #! /bin/bash
 set -e
 
+INVOKED_COMMAND="$0 $@"
 LOGFILE=/tmp/dmd-install.log
 USAGE_HELP="Install dmd.
 
@@ -57,7 +58,7 @@ OPERATIONS_COUNT=$((\
 printf '' > $LOGFILE
 exec 1>>$LOGFILE 2>&1
 notice "Logging to: $LOGFILE"
-echo "Invoked command with arguments: $0 $@"
+echo "Invoked command with arguments: $INVOKED_COMMAND"
 echo "Current working directory: $(pwd)"
 echo "Started at: $(date)"
 
