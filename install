@@ -38,25 +38,15 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [[ $INSTALL_ALL ]]; then
-    INSTALL_PACKAGES=1
-    INSTALL_CRATES=1
-    INSTALL_SCRIPTS=1
-    INSTALL_CONFIG=1
-    INSTALL_ICONS=1
-    INSTALL_FONTS=1
-    INSTALL_HOME=1
-fi
-OPERATIONS_COUNT=$((\
-    ${INSTALL_PACKAGES:-0} + \
-    ${INSTALL_CRATES:-0} + \
-    ${INSTALL_SCRIPTS:-0} + \
-    ${INSTALL_CONFIG:-0} + \
-    ${INSTALL_ICONS:-0} + \
-    ${INSTALL_FONTS:-0} + \
-    ${INSTALL_HOME:-0} \
-))
-[[ $OPERATIONS_COUNT -gt 0 ]] || exit_error "Nothing to do (try --help)"
+INSTALLATION_OPERATION=
+INSTALLATION_COMPONENTS=(packages crates scripts config icons fonts home)
+for component_name in ${INSTALLATION_COMPONENTS[@]}; do
+    installation_component_name="INSTALL_${component_name^^}"
+    [[ -z $INSTALL_ALL ]] || declare "${installation_component_name}=1"
+    [[ -z ${!installation_component_name} ]] || INSTALLATION_OPERATION=1
+done
+[[ $INSTALLATION_OPERATION ]] || exit_error "Nothing to do (try --help)"
+
 
 printf '' > $LOGFILE
 exec 1>>$LOGFILE 2>&1
