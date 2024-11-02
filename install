@@ -186,6 +186,7 @@ install_fonts() {
 
 install_home() {
     set -e
+    progress "Applying home directory..."
     homux --config-file "$SOURCE_DIR/home/.config/homux/config.toml" apply --verbose
 }
 
