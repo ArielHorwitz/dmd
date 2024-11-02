@@ -4,7 +4,7 @@ set -e
 CONFIG_FILE=$HOME/.config/gamma
 
 APP_NAME=$(basename "$0")
-ABOUT="DESCRIPTION"
+ABOUT="Set the gamma for connected displays."
 CLI=(
     --prefix "args_"
     -o "multiplier;Override the base the multiplier value"
@@ -22,18 +22,17 @@ if [[ -n $args_save ]]; then
     echo "${args_multiplier:-1.0}" > $args_config_path
 fi
 
-[[ -f $args_config_path ]] || echo "1.0" > $args_config_path
+if [[ $args_multiplier ]]; then
+    multi=$args_multiplier
+else
+    [[ -f $args_config_path ]] || echo "1.0" > $args_config_path
+    multi=$(< $args_config_path)
+fi
 
-multi=${args_multiplier:-$(cat $args_config_path)}
+read -r gamma < <(awk \
+    -v m="$multi" -v r="$args_red" -v g="$args_green" -v b="$args_blue" \
+    'BEGIN {printf "%.3f:%.3f:%.3f\n", m*r, m*g, m*b}')
 
-red=$(bc <<< "$multi * $args_red")
-green=$(bc <<< "$multi * $args_green")
-blue=$(bc <<< "$multi * $args_blue")
-gamma=$red:$green:$blue
-
-
-set +e
-for monitor in $(xrandr -q | grep " connected" | awk '{print $1}') ; do
-    echo "$monitor $gamma" >&2
-    xrandr --output $monitor --gamma $gamma
-done
+while read -r monitor; do
+    xrandr --output "$monitor" --gamma "$gamma" &
+done < <(xrandr -q | awk '/ connected/{print $1}')
