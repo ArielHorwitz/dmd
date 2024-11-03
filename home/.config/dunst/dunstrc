@@ -29,16 +29,17 @@
     icon_corner_radius = 0
     indicate_hidden = yes
     transparency = 0
-    separator_height = 5
+    separator_height = 2
     padding = 8
     horizontal_padding = 8
     text_icon_padding = 10
-    frame_width = 5
+    frame_width = 2
     # frame_color = "#001242"
-    gap_size = 5
+    gap_size = 1
     separator_color = frame  # auto | foreground | frame | X color
     sort = yes
     idle_threshold = 60
+    corner_radius = 4
 
     ### Text ###
     ~>>>
@@ -127,13 +128,6 @@
 
     # Define the class of the windows spawned by dunst
     class = Dunst
-
-    # Define the corner radius of the notification window
-    # in pixel size. If the radius is 0, you have no rounded
-    # corners.
-    # The radius will be automatically lowered if it exceeds half of the
-    # notification height to avoid clipping text and/or icons.
-    corner_radius = 8
 
     # Ignore the dbus closeNotification message.
     # Useful to enforce the timeout set by dunst configuration. Without this
