@@ -31,6 +31,9 @@ add({ ["ctrl+shift+\\"] = "treeview:toggle-focus" }, true)
 add({ ["ctrl+alt+u"] = "doc:upper-case" }, true)
 add({ ["ctrl+alt+shift+u"] = "doc:lower-case" }, true)
 
+add({ ["f12"] = "macro:toggle-record" }, true)
+add({ ["shift+f12"] = "macro:play" }, true)
+
 
 -- Plugins
 add({ ["alt+l"] = "hybrid-line-numbers:toggle" }, true)
