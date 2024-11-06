@@ -47,7 +47,7 @@ file_path="${args_file_path}"
 if [[ -n $args_target_path ]]; then
     target_path="$args_target_path"
 elif [[ -n $args_file_path ]]; then
-    target_path="$(basename '$args_file_path')"
+    target_path=$(basename "$args_file_path")
 fi
 
 printcolor -nfc " FTP Server: " >&2; echo ${ftp_server} >&2
