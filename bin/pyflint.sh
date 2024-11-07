@@ -41,7 +41,7 @@ fi
 
 # Linters
 if command -v mypy >/dev/null; then
-    printcolor -fm "=== MyPy ==="
+    printcolor -fb "=== MyPy ==="
     mypy_args=(
         --exclude 'venv|.venv'
         `[[ -z $args_strict ]] || echo --strict`
@@ -52,8 +52,8 @@ else
 fi
 
 if command -v flake8 >/dev/null; then
-    printcolor -fm "=== Flake8 ==="
-    flake8 --max-line-length $args_line_length --extend-exclude 'venv,.venv' $args_target
+    printcolor -fb "=== Flake8 ==="
+    flake8 --max-line-length $args_line_length --extend-exclude 'venv,.venv' $args_target && printcolor -ob 'All good!'
 else
     warn "flake8"
 fi
