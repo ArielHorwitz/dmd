@@ -5,7 +5,7 @@ APP_NAME=$(basename "$0")
 ABOUT="Run a command when files tracked by git are modified."
 CLI=(
     --prefix "args_"
-    -O "file-trigger;Command listing files;git ls-files"
+    -O "file-trigger;Command listing files;git ls-files;t"
     -f "no-time;Disable time after command;;T"
     -f "no-hint;Disable hints after command;;H"
     -f "quiet;Disable all output other than the command;;q"
