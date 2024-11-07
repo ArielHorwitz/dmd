@@ -7,8 +7,8 @@ CLI=(
     --prefix "args_"
     -o "target;Target file or directory to operate on;."
     -O "line-length;Maximum line length;88"
-    -f "clear;Clear the terminal before running;c"
-    -f "strict;Run MyPy in strict mode;s"
+    -f "clear;Clear the terminal before running;;c"
+    -f "strict;Run MyPy in strict mode;;s"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
