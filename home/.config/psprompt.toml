@@ -5,7 +5,7 @@ style = "double"
 show_error_icon = true
 
 [text]
-icon_err = "$?"
+icon_err = "!$exit_code"
 icon_ok = ""
 at = "@"
 delim = " "
