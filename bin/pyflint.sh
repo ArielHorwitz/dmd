@@ -7,6 +7,7 @@ CLI=(
     --prefix "args_"
     -o "target;Target file or directory to operate on;."
     -O "line-length;Maximum line length;88"
+    -f "format;Run the formatters (not in check mode);;f"
     -f "clear;Clear the terminal before running;;c"
     -f "strict;Run MyPy in strict mode;;s"
     -f "warn;Warn on missing commands;;w"
@@ -24,17 +25,34 @@ warn() {
     fi
 }
 
+isort_args=(
+    --line-length $args_line_length
+    --profile black
+    $args_target
+)
+black_args=(
+    --line-length $args_line_length
+    --fast
+    $args_target
+)
+
+if [[ $args_format ]]; then
+    isort ${isort_args[@]}
+    black ${black_args[@]}
+    exit
+fi
+
 # Formatters
 if command -v isort >/dev/null; then
     printcolor -fc "=== isort ==="
-    isort --line-length $args_line_length --profile black $args_target
+    isort --check ${isort_args[@]}
 else
     warn "isort"
 fi
 
 if command -v black >/dev/null; then
     printcolor -fc "=== Black ==="
-    black --check --line-length $args_line_length --fast $args_target
+    black --check ${black_args[@]}
 else
     warn "black"
 fi
