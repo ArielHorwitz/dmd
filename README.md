@@ -17,7 +17,7 @@ I don't expect anyone to use this repository as-is, seeing as it is a collection
 ### Fresh installation
 The repository contains everything I need to configure a new arch installation (other than perhaps browser plugins). I should have a new computer set up to be a 1-to-1 clone of my daily driver following these steps more or less (a reboot may be required):
 * Clone repository to `~/.dmd`
-* Install using: `install --all`
+* Install using: `~/.dmd/install all`
 * Copy or generate the `~/.config/homux/secrets.toml` file
 * Apply the dotfiles: `homux apply` (first run probably needs `--config-file ~/.dmd/home/.config/homux/config.toml`)
 
