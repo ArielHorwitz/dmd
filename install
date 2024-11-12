@@ -40,6 +40,7 @@ while [[ $# -gt 0 ]]; do
         i | icons)           INSTALL_ICONS=1; shift ;;
         f | fonts)           INSTALL_FONTS=1; shift ;;
         h | home)            INSTALL_HOME=1; shift ;;
+        -f | --force)        INSTALL_FORCE=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
     esac
@@ -77,7 +78,13 @@ sudo -v
 
 install_packages_arch() {
     set -e
-    [[ -f /etc/arch-release ]] || exit_error "Unsupported OS (not Arch Linux)"
+    if [[ ! -f /etc/arch-release ]]; then
+        if [[ $INSTALL_FORCE ]]; then
+            warn "Skipping packages installation (not Arch Linux)"
+            return
+        fi
+        exit_error "Cannot install packages (not Arch Linux)"
+    fi
     if [[ ! $(command -v paru) ]]; then
         progress "Installing paru..."
         local paru_build_dir=$(mktemp -d)
