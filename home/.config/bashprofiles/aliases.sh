@@ -24,7 +24,7 @@ alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 alias watcha="watch "
 
 # Python
-alias "activate-python"="source venv/bin/activate"
+alias pyactivate="source venv/bin/activate"
 alias pipr="pip install -r requirements.txt"
 alias py="python main.py"
 
