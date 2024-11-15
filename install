@@ -3,11 +3,11 @@ set -e
 
 INVOKED_COMMAND="$0 $@"
 LOGFILE=/tmp/dmd-install.log
-USAGE_HELP="Install dmd.
+USAGE_HELP="\e[3;32mInstall dmd.\e[0m
 
-USAGE: $(basename $0) [OPTIONS] [COMPONENTS]
+\e[1;4mUSAGE:\e[0m $(basename $0) [OPTIONS] [COMPONENTS]
 
-COMPONENTS:
+\e[1;4mCOMPONENTS\e[0m
   a | all           All components
   p | packages      Sync system packages
   c | crates        Cargo crate installations
@@ -17,12 +17,14 @@ COMPONENTS:
   f | fonts         Fonts
   h | home          Apply home data using homux
 
-OPTIONS:
--h, --help          Show this help and exit"
+\e[1;4mOPTIONS\e[0m
+  -f, --force       Do not stop on warnings
+  -h, --help        Show this help and exit
+"
 
 
 exec 3>&1 1>/dev/null
-printhelp() { echo "$USAGE_HELP" | tee /dev/fd/3 ; }
+printhelp() { printf "$USAGE_HELP" | tee /dev/fd/3 ; }
 progress () { printf "\e[32m$1\e[0m\n" | tee /dev/fd/3 ; }
 debug () { printf "\e[36m$1\e[0m\n" ; }
 notice () { printf "\e[35m$1\e[0m\n" | tee /dev/fd/3 ; }
