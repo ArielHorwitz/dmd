@@ -47,6 +47,7 @@ run_kmonad() {
     local device_path=$1
     local device_name=$(basename $device_path)
     local sync_arg=${NOTIFY_SYNC_ARG}-$device_name
+    local device_log_file=${LOG_DIR}/kmd-${device_name}.log
 
     # Create (combine) new config file
     kbd_file=$CATFILE_DIR/$device_name.kbd
@@ -68,9 +69,9 @@ run_kmonad() {
     setlayer base
 
     # Start KMonad
-    echo "Starting KMonad: $device_name"
+    echo "Starting KMonad: $device_name (logging to: $device_log_file)"
     notify-send -h ${sync_arg} -i ${ICON_LOAD} -u low "Starting KMonad..." "$device_name"
-    kmonad $kbd_file ${kmonad_args[@]} >${LOG_DIR}/kmd-${device_name}.log 2>&1 &
+    kmonad $kbd_file ${kmonad_args[@]} >${device_log_file} 2>&1 &
 }
 
 available_devices=$(find /dev/input/by-* -type l)
