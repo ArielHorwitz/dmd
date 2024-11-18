@@ -95,7 +95,7 @@ class State:
     focused_workspace: str
 
     @classmethod
-    def get(cls) -> "Self":
+    def get(cls, verbose: bool) -> "Self":
         home = os.getenv("HOME")
         raw_displays = json.loads(
             subprocess.run(
@@ -109,7 +109,8 @@ class State:
             for d in sorted(raw_displays, key=lambda d: d["rect"]["x"])
             if d.get("name") != "xroot-0" and d.get("active") == True
         )
-        print(f"Displays: {', '.join(displays)}")
+        if verbose:
+            print(f"Displays: {', '.join(displays)}")
 
         json_workspaces = json.loads(
             subprocess.run(
@@ -124,7 +125,8 @@ class State:
         ungridable_workspaces: list[str] = list()
         for json_ws in json_workspaces:
             ws = Workspace.from_json(json_ws)
-            print(ws)
+            if verbose:
+                print(ws)
             if ws.focused:
                 focused_workspace = ws.name
                 focused_display = ws.display
@@ -145,8 +147,15 @@ class State:
         )
 
 
-def print_layout(rows: int, columns: int, notification: bool, notification_timeout: int, icon_file: str):
-    state = State.get()
+def print_layout(
+    rows: int,
+    columns: int,
+    notification: bool,
+    notification_timeout: int,
+    icon_file: str,
+    verbose: bool,
+):
+    state = State.get(verbose)
     displays_repr = " " + " ".join(f"{d:<15}" for d in state.displays)
     visible_workspaces = {d: "---" for d in state.displays}
     for ws in state.workspaces.values():
@@ -188,8 +197,8 @@ def _sort_displays(display_name: str, display_priorities: list[str]) -> int:
     return len(display_priorities) + 1
 
 
-def switch_workspace(row: int, col: int, display_priorities: list[str]):
-    state = State.get()
+def switch_workspace(row: int, col: int, display_priorities: list[str], verbose: bool):
+    state = State.get(verbose)
     refocus_display = state.focused_display
     main_display, *other_displays = sorted(
         state.displays,
@@ -197,28 +206,28 @@ def switch_workspace(row: int, col: int, display_priorities: list[str]):
     )
     root_containers = get_root_container_ids(state.workspaces.keys())
     for i, display_name in enumerate(other_displays):
-        set_workspace_display(display_name, str(i + 1))
+        set_workspace_display(display_name, str(i + 1), verbose)
     main_workspace = Workspace.from_coords(row, col)
-    set_workspace_display(main_display, main_workspace.name)
-    run_i3_command(f"focus output {refocus_display}")
+    set_workspace_display(main_display, main_workspace.name, verbose)
+    run_i3_command(f"focus output {refocus_display}", verbose)
 
 
-def set_workspace_display(display: str, workspace_name: str):
+def set_workspace_display(display: str, workspace_name: str, verbose: bool):
     commands = [
         f"focus output {display}",
         f"workspace {workspace_name}",
         f"move workspace to output {display}",
         f"focus output {display}",
     ]
-    run_i3_command(";".join(commands))
+    run_i3_command(";".join(commands), verbose)
 
 
-def move_to_workspace(workspace_name: str):
-    run_i3_command(f"move to workspace {workspace_name}")
+def move_to_workspace(workspace_name: str, verbose: bool):
+    run_i3_command(f"move to workspace {workspace_name}", verbose)
 
 
-def collect_lost_windows():
-    state = State.get()
+def collect_lost_windows(verbose: bool):
+    state = State.get(verbose)
     container_ids = get_root_container_ids(state.ungridable_workspaces)
     if len(container_ids) == 0:
         return
@@ -226,7 +235,7 @@ def collect_lost_windows():
         f"[con_id={container_id}] move container to workspace {state.focused_workspace}"
         for container_id in container_ids
     ]
-    run_i3_command(";".join(i3_commands))
+    run_i3_command(";".join(i3_commands), verbose)
 
 
 def get_root_container_ids(workspace_names: list[str]):
@@ -255,13 +264,15 @@ def get_root_container_ids(workspace_names: list[str]):
     return container_ids
 
 
-def run_i3_command(command: str):
-    print("Running i3 command:")
-    print("\n".join(f"> {c.strip()}" for c in command.split(";")))
+def run_i3_command(command: str, verbose: bool):
+    if verbose:
+        print("Running i3 command:")
+        print("\n".join(f"> {c.strip()}" for c in command.split(";")))
     result = subprocess.run(("i3-msg", command), capture_output=True)
-    print(f"{result.returncode=}")
-    print(f"stdout: {result.stdout.decode()}")
-    print(f"stderr: {result.stderr.decode()}")
+    if verbose:
+        print(f"{result.returncode=}")
+        print(f"stdout: {result.stdout.decode()}")
+        print(f"stderr: {result.stderr.decode()}")
     result.check_returncode()
 
 
@@ -283,17 +294,23 @@ def main():
         required=False,
         help="move focused container to the workspace",
     )
+    parser_command.add_argument(
+        "-c",
+        "--collect",
+        action="store_true",
+        help="collect windows from unknown workspaces to the current workspace",
+    )
     parser.add_argument(
         "-n",
         "--nonotification",
         action="store_true",
         help="disable notification",
     )
-    parser_command.add_argument(
-        "-c",
-        "--collect",
+    parser.add_argument(
+        "-v",
+        "--verbose",
         action="store_true",
-        help="collect windows from unknown workspaces to the current workspace",
+        help="be verbose",
     )
     args = parser.parse_args()
     config = tomllib.loads(CONFIG_FILE.read_text())
@@ -309,20 +326,21 @@ def main():
         print("Cannot specify row without column.", file=sys.stderr)
         exit(1)
     if args.collect:
-        collect_lost_windows()
+        collect_lost_windows(args.verbose)
     elif (row is not None) and (col is not None):
         if args.move:
             workspace = Workspace.from_coords(row, col)
-            move_to_workspace(workspace.name)
+            move_to_workspace(workspace.name, args.verbose)
         else:
             display_priorities = config["display_priorities"]
-            switch_workspace(row, col, display_priorities)
+            switch_workspace(row, col, display_priorities, args.verbose)
     print_layout(
         rows=rows,
         columns=columns,
         notification=not args.nonotification,
         notification_timeout=notification_timeout,
         icon_file=icon,
+        verbose=args.verbose,
     )
 
 
