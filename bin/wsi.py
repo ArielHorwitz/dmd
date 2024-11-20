@@ -161,8 +161,9 @@ def print_layout(
     for ws in state.workspaces.values():
         if ws.visible and ws.display in visible_workspaces.keys():
             visible_workspaces[ws.display] = ws.name
+    visible_workspaces_repr = " ".join(f"{visible_workspaces[d]:<15}" for d in state.displays)
     layout_reprs = [
-        " " + " ".join(f"{visible_workspaces[d]:<15}" for d in state.displays)
+        " " + visible_workspaces_repr
     ]
     row_reprs = []
     for row in range(rows):
@@ -173,7 +174,11 @@ def print_layout(
             if (ws := state.workspaces.get(name)) is not None:
                 ws_repr = WORKSPACE_OCCUPIED
                 if ws.visible:
-                    ws_repr = WORKSPACE_FOCUS if ws.focused else WORKSPACE_VISIBLE
+                    if ws.focused:
+                        ws_repr = WORKSPACE_FOCUS
+                        focused_ws_repr = name
+                    else:
+                        ws_repr = WORKSPACE_VISIBLE
             col_reprs.append(ws_repr)
         row_reprs.append(" ".join(col_reprs))
     layout_reprs.append("\n".join(row_reprs))
@@ -182,8 +187,10 @@ def print_layout(
         layout_reprs.append(", ".join(state.ungridable_workspaces))
     layout_repr = "\n".join(layout_reprs)
 
-    print(displays_repr)
-    print(layout_repr)
+    print(f"Focused workspace: {focused_ws_repr} Visible workspaces: {visible_workspaces_repr}")
+    if verbose:
+        print(displays_repr)
+        print(layout_repr)
     if notification:
         subprocess.run(
             (*NOTIFY_SEND, "-t", str(notification_timeout), "-i", icon_file, displays_repr, layout_repr),
