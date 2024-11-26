@@ -24,29 +24,26 @@ CLI=(
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
-CONSTANT_ARGS="--long --group-directories-first"
-HIDDEN="--all"
-GRAPHICS="--color=always"
 
-[[ -z $hide ]] || HIDDEN=""
-[[ -z $recursive ]] || RECURSE="--tree"
-[[ -z $depth ]] || LEVEL="--level $depth"
-[[ -z $sort ]] || SORT="--sort $sort"
-[[ -z $reverse ]] || SORT="--reverse --sort $reverse"
-[[ -z $git ]] || GIT="--git-ignore --git --ignore-glob .git"
+eza_args=(--long --group-directories-first)
 
-
-[[ -z $header ]] || HEADER="--header"
-if [[ -n $nographics ]]; then
-    GRAPHICS="--color=never"
-    [[ $RECURSE != "--tree" ]] || RECURSE="--recurse"
+[[ -n $hide ]] || eza_args+=(--all)
+[[ -z $header ]] || eza_args+=(--header)
+[[ -z $depth ]] || eza_args+=(--level $depth)
+[[ -z $sort ]] || eza_args+=(--sort $sort)
+[[ -z $reverse ]] || eza_args+=(--reverse --sort $reverse)
+[[ -z $git ]] || eza_args+=(--git-ignore --git --ignore-glob .git)
+[[ -n $nographics ]] && eza_args+=(--color=never) || eza_args+=(--color=always)
+if [[ -n $recursive && -n $nographics ]]; then
+    eza_args+=(--recurse)
+elif [[ -n $recursive ]]; then
+    eza_args+=(--tree)
 fi
 
-eza_command="eza $CONSTANT_ARGS $HIDDEN $RECURSE $LEVEL $SORT $GIT $GRAPHICS $HEADER ${file[@]}"
+eza_args+=("${file[@]}")
 
 if [[ -n $nopaging ]]; then
-    eval "$eza_command"
+    eza ${eza_args[@]}
 else
-    eval "$eza_command" | bat -p
+    eza ${eza_args[@]} | bat -p
 fi
-
