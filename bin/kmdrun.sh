@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 set -e
 
 LOG_DIR=/tmp/logs-$USER
@@ -29,6 +29,11 @@ eval "$CLI" || exit 1
 echo "Logging to: $LOG_FILE"
 exec >>$LOG_FILE 2>&1
 
+log() {
+    timestamp=$(date +"%Y-%m-%d %T")
+    echo "$timestamp | $@"
+}
+
 # Create default config
 [[ -d $CONFIG_DIR ]] || mkdir --parents $CONFIG_DIR
 if [[ ! -f $DEFAULT_DEVICES_FILE ]]; then
@@ -51,7 +56,7 @@ run_kmonad() {
 
     # Create (combine) new config file
     kbd_file=$CATFILE_DIR/$device_name.kbd
-    printcolor -ns info "KMonad config file: "; echo $kbd_file
+    log $(printcolor -ns info "KMonad config file: "; echo $kbd_file)
     cat $KBD_DIR/* > $kbd_file
 
     # Insert device path
@@ -69,7 +74,7 @@ run_kmonad() {
     setlayer base
 
     # Start KMonad
-    echo "Starting KMonad: $device_name (logging to: $device_log_file)"
+    log "Starting KMonad: $device_name (logging to: $device_log_file)"
     notify-send -h ${sync_arg} -i ${ICON_LOAD} -u low "Starting KMonad..." "$device_name"
     kmonad $kbd_file ${kmonad_args[@]} >${device_log_file} 2>&1 &
 }
@@ -84,6 +89,6 @@ for some_device in ${enable_devices[@]} ; do
         [[ -z $args_fail ]] || exit_error "Device unavailable: $some_device"
         continue
     fi
-    printcolor -ns ok "Enabling device: "; printcolor -s info "${some_device}"
+    log $(printcolor -ns ok "Enabling device: "; printcolor -s info "${some_device}")
     run_kmonad $device_path
 done
