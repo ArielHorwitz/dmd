@@ -21,7 +21,7 @@ eval "$CLI" || exit 1
 
 format=""
 if [[ -z $args_no_date ]]; then
-    format="+%y${args_num_delim}%m${args_num_delim}%d"
+    format="+%Y${args_num_delim}%m${args_num_delim}%d"
 fi
 if [[ -z $args_no_time ]]; then
     format="${format:+${format}${args_date_delim}}%H${args_num_delim}%M"
