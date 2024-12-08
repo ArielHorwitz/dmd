@@ -9,7 +9,7 @@
     origin = bottom-right  # center | top-left | bottom-right
     offset = 50x50
     width = (250, 1000)
-    height = 500
+    height = (20, 300)
     ~>>>
     scale = 0
     ~>>> zen
