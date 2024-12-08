@@ -17,16 +17,15 @@ eval "$CLI" || exit 1
 
 temp_file="$(mktemp --dry-run).png"
 timestamp=$(timestamp)
-if [[ $args_prompt ]]; then
-    name=$(terminalprompt 'Screenshot name: ')
-else
-    name=$args_name
-fi
-target_file="${args_targetdir}/${timestamp}${name:+_$name}.png"
-mkdir --parents $args_targetdir
 
 scrot_args=(--file $temp_file)
 [[ $args_desktop ]] || scrot_args+=(--focused)
-
+# Take screenshot
 scrot ${scrot_args[@]}
+
+# Get file path and name
+[[ $args_prompt ]] && name=$(terminalprompt 'Screenshot name: ') || name=$args_name
+target_file="${args_targetdir}/${timestamp}${name:+_$name}.png"
+# Move file
+mkdir --parents $args_targetdir
 mv $temp_file $target_file
