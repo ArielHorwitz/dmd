@@ -10,8 +10,7 @@ echo -n > $LOGFILE
 exec >>$LOGFILE 2>&1
 
 log () {
-    timestamp=$(date +"%Y-%m-%d %T")
-    echo "$timestamp | $1"
+    echo "$(timestamp) | $1"
 }
 
 log "startup script"

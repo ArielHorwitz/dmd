@@ -30,8 +30,7 @@ echo "Logging to: $LOG_FILE"
 exec >>$LOG_FILE 2>&1
 
 log() {
-    timestamp=$(date +"%Y-%m-%d %T")
-    echo "$timestamp | $@"
+    echo "$(timestamp) | $@"
 }
 
 # Create default config
