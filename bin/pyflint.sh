@@ -9,6 +9,7 @@ CLI=(
     -O "line-length;Maximum line length;88"
     -f "format;Run the formatters (not in check mode);;f"
     -f "clear;Clear the terminal before running;;c"
+    -f "check-stubs;Ignore missing stubs in MyPy"
     -f "strict;Run MyPy in strict mode;;s"
     -f "warn;Warn on missing commands;;w"
 )
@@ -21,7 +22,7 @@ if [[ -n $args_clear ]]; then clear; fi
 warn() {
     set -e
     if [[ $args_warn ]]; then
-        printcolor -s warn "missing $1"
+        printcolor -s warn "=== $1 missing ==="
     fi
 }
 
@@ -54,24 +55,25 @@ if command -v black >/dev/null; then
     printcolor -fc "=== Black ==="
     black --check ${black_args[@]}
 else
-    warn "black"
+    warn "Black"
 fi
 
 # Linters
+if command -v flake8 >/dev/null; then
+    printcolor -fc "=== Flake8 ==="
+    flake8 --max-line-length $args_line_length --extend-exclude 'venv,.venv' $args_target && printcolor -ob 'All good!'
+else
+    warn "Flake8"
+fi
+
 if command -v mypy >/dev/null; then
-    printcolor -fb "=== MyPy ==="
+    printcolor -fc "=== MyPy ==="
     mypy_args=(
         --exclude 'venv|.venv'
         `[[ -z $args_strict ]] || echo --strict`
+        `[[ -n $args_check_stubs ]] || echo --ignore-missing-imports`
     )
     mypy ${mypy_args[@]} $args_target
 else
-    warn "mypy"
-fi
-
-if command -v flake8 >/dev/null; then
-    printcolor -fb "=== Flake8 ==="
-    flake8 --max-line-length $args_line_length --extend-exclude 'venv,.venv' $args_target && printcolor -ob 'All good!'
-else
-    warn "flake8"
+    warn "MyPy"
 fi
