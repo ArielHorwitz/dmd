@@ -5,6 +5,7 @@ gui:
   showBottomLine: false
   nerdFontsVersion: '3'
   showDivergenceFromBaseBranch: arrowAndNumber
+  skipDiscardChangeWarning: true
   # expandFocusedSidePanel: true
   # expandedSidePanelWeight: 2
   showFileIcons: true
