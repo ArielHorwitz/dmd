@@ -3,7 +3,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @tst1 XX    XX    @i3re XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    @wmxr XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @sysa             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer systemalt
@@ -22,6 +22,7 @@
     wmlk (cmd-button "loginctl lock-session")
     wmlo (cmd-button "i3-msg exit")
     wmss (cmd-button "loginctl lock-session && systemctl suspend")
+    wmxr (cmd-button "xrandr --auto")
     wmhb (cmd-button "systemctl hibernate")
     wmpo (cmd-button "systemctl poweroff")
     wmrb (cmd-button "systemctl reboot")
