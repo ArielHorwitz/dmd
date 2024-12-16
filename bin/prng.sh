@@ -8,6 +8,7 @@ CLI=(
     --prefix "args_"
     -o "count;Number of characters or digits;6;c"
     -o "mode;Mode of operation [one of: digits, chars, alnum, hex, printable];alnum"
+    -f "no-clipboard;Do not copy to clipboard (print only);;n"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
@@ -24,4 +25,4 @@ esac
 
 output=$(</dev/urandom tr -dc "$filter" | head -c $args_count)
 echo "$output"
-printf "%s" "$output" | xsel -ib
+[[ -n $args_no_clipboard ]] || printf "%s" "$output" | xsel -ib
