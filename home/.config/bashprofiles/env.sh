@@ -6,6 +6,10 @@ export EDITOR=lite-xl
 export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
+~>>>
+~>>> zen
+export QT_SCALE_FACTOR=1.5
+~<<<
 
 extra_paths_prepend=(
     "$HOME/.local/bin/testing"
