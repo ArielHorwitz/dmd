@@ -1,2 +1,2 @@
 #!/bin/bash
-lsl -r $@
+lsl --recursive $@
