@@ -34,7 +34,11 @@ eza_args=(--long --group-directories-first)
 [[ -z $sort ]] || eza_args+=(--sort $sort)
 [[ -z $reverse ]] || eza_args+=(--reverse --sort $reverse)
 [[ -z $git ]] || eza_args+=(--git-ignore --git --ignore-glob .git)
-[[ -n $nographics ]] && eza_args+=(--color=never) || eza_args+=(--color=always)
+if [[ -n $nographics ]]; then
+    eza_args+=(--color=never --icons=never --classify=never)
+else
+    eza_args+=(--color=always --icons=always --classify=always)
+fi
 if [[ -n $recursive ]]; then
     [[ -n $nographics ]] && eza_args+=(--recurse) || eza_args+=(--tree)
 fi
@@ -45,5 +49,6 @@ eza_args+=("${file[@]}")
 if [[ -n $nopaging ]]; then
     eza ${eza_args[@]}
 else
-    eza ${eza_args[@]} | bat -p
+    # eza ${eza_args[@]} | bat --color=always -p  # breaks icons
+    eza ${eza_args[@]} | less --quit-if-one-screen --raw-control-chars
 fi
