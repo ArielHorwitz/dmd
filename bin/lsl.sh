@@ -20,6 +20,7 @@ CLI=(
     -f "header;Show header"
     -f "nographics;Do not use color and graphics;;n"
     -f "nopaging;Do not use paging;;p"
+    -e "extra_eza_args;Extra args to pass to eza"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -38,6 +39,7 @@ if [[ -n $recursive ]]; then
     [[ -n $nographics ]] && eza_args+=(--recurse) || eza_args+=(--tree)
 fi
 
+eza_args+=(${extra_eza_args[@]})
 eza_args+=("${file[@]}")
 
 if [[ -n $nopaging ]]; then
