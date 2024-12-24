@@ -34,10 +34,8 @@ eza_args=(--long --group-directories-first)
 [[ -z $reverse ]] || eza_args+=(--reverse --sort $reverse)
 [[ -z $git ]] || eza_args+=(--git-ignore --git --ignore-glob .git)
 [[ -n $nographics ]] && eza_args+=(--color=never) || eza_args+=(--color=always)
-if [[ -n $recursive && -n $nographics ]]; then
-    eza_args+=(--recurse)
-elif [[ -n $recursive ]]; then
-    eza_args+=(--tree)
+if [[ -n $recursive ]]; then
+    [[ -n $nographics ]] && eza_args+=(--recurse) || eza_args+=(--tree)
 fi
 
 eza_args+=("${file[@]}")
