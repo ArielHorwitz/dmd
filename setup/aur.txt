@@ -39,6 +39,7 @@ python-lsp-server
 rust-analyzer
 lua-language-server
 bash-language-server
+shellcheck
 sql-language-server
 dockerfile-language-server
 yaml-language-server
