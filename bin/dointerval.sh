@@ -25,9 +25,9 @@ while :; do
     if [[ $user_input_char = 'q' ]]; then
         break
     elif [[ $user_input_char = 't' && -n $args_notime ]]; then
-        args_time=
+        args_notime=
     elif [[ $user_input_char = 't' && -z $args_notime ]]; then
-        args_time=1
+        args_notime=1
     fi
 done
 echo
