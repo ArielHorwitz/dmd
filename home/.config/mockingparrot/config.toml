@@ -1,19 +1,12 @@
-[api]
-# Get your API key from: https://platform.openai.com/api-keys
-~>>>
-key = "HOMUX_SECRET_OPENAI_API_KEY"
-~>>> think
-key = "HOMUX_SECRET_OPENAI_API_KEY_THINK"
-~<<<
+# Supported providers include: "openai", "anthropic"
+# provider = "anthropic"
+provider = "openai"
 
-[chat]
-# For details see: https://platform.openai.com/docs/api-reference/chat
-model = "gpt-4o"
-max_tokens = { value = 4096, min = 128, max = 4096, step = 128 }
-temperature = { value = 1.0, min = 0.0, max = 1.0, step = 0.05 }
-top_p = { value = 1.0, min = 0.0, max = 1.0, step = 0.05 }
-frequency_penalty = { value = 0.0, min = -2.0, max = 2.0, step = 0.05 }
-presence_penalty = { value = 0.0, min = -2.0, max = 2.0, step = 0.05 }
+[keys]
+# Get your OpenAI API key from: https://platform.openai.com/api-keys
+openai = "HOMUX_SECRET_OPENAI_API_KEY"
+# Get your Anthropic API key from: https://console.anthropic.com/settings/keys
+anthropic = "HOMUX_SECRET_ANTHROPIC_API_KEY"
 
 [ui.layout]
 prompt_size = 5
@@ -75,9 +68,6 @@ increment = [ "ctrl up", "="]
 decrement = [ "ctrl down", "-"]
 cycle_tab = [ "tab" ]
 cycle_back_tab = [ "backtab", "shift backtab", "shift tab" ]
-view_conversation_tab = [ "f1" ]
-view_config_tab = [ "f2" ]
-view_debug_tab = [ "f3" ]
 
 [[system.instructions]]
 name = "Software (quick)"
