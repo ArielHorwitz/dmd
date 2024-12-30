@@ -16,5 +16,5 @@ if [[ -f ~/.config/bashprofiles/devenv.sh ]]; then
 fi
 
 # Colors and styles
-source ~/.config/bashprofiles/exa.sh
+source ~/.config/bashprofiles/eza.sh
 eval $(psprompt)

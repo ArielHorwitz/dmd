@@ -84,5 +84,4 @@ C+=":lp=38;5;43"
 # Overlays
 #     bO Broken link path
 
-export EXA_COLORS=$C
-
+export EZA_COLORS=$C
