@@ -166,6 +166,7 @@ def print_layout(
         " " + visible_workspaces_repr
     ]
     row_reprs = []
+    focused_ws_repr = "unknown"
     for row in range(rows):
         col_reprs = []
         for col in range(columns):
@@ -187,7 +188,7 @@ def print_layout(
         layout_reprs.append(", ".join(state.ungridable_workspaces))
     layout_repr = "\n".join(layout_reprs)
 
-    print(f"Focused workspace: {focused_ws_repr} Visible workspaces: {visible_workspaces_repr}")
+    print(f"Focused workspace: {focused_ws_repr}, Visible workspaces: {visible_workspaces_repr}")
     if verbose:
         print(displays_repr)
         print(layout_repr)
