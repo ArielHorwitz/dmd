@@ -4,6 +4,7 @@ sof-firmware
 pulseaudio
 librsvg
 
+xorg-server
 lemurs
 i3-wm
 i3lock
