@@ -1,12 +1,13 @@
 #! /bin/bash
-
 set -e
 
-# Command line interface (based on `spongecrab --generate`)
 APP_NAME=$(basename "$0")
 ABOUT="Control the mouse"
 CLI=(
-    -O "click;Click mouse button by number;;C"
+    --prefix "args_"
+    -o "click;Click mouse button by number"
+    -o "count;Number of clicks;1"
+    -O "delay;Delay between clicks in ms;0"
     -O "edge-offset;Pixel offset when moving mouse to edge;1;O"
     -f "center;Move mouse to window center;;c"
     -f "top;Move mouse to window top edge;;t"
@@ -19,17 +20,16 @@ eval "$CLI" || exit 1
 
 eval $(xdotool getactivewindow getwindowgeometry --shell)
 
-if [[ -n "$center$top$bottom$left$right" ]]; then
+if [[ -n "$args_center$args_top$args_bottom$args_left$args_right" ]]; then
     mx=$(( X + WIDTH / 2 ))
-    [[ -z $right ]] || mx=$(( X + WIDTH - edge_offset ))
-    [[ -z $left ]] || mx=$(( X + edge_offset ))
+    [[ -z $args_right ]] || mx=$(( X + WIDTH - args_edge_offset ))
+    [[ -z $args_left ]] || mx=$(( X + args_edge_offset ))
 
     my=$(( Y + HEIGHT / 2 ))
-    [[ -z $bottom ]] || my=$(( Y + HEIGHT - edge_offset ))
-    [[ -z $top ]] || my=$(( Y + edge_offset ))
+    [[ -z $args_bottom ]] || my=$(( Y + HEIGHT - args_edge_offset ))
+    [[ -z $args_top ]] || my=$(( Y + args_edge_offset ))
 
     xdotool mousemove $mx $my
 fi
 
-[[ -z $click ]] || xdotool click $click
-
+[[ -z $args_click ]] || xdotool click --delay $args_delay --repeat $args_count $args_click

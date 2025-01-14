@@ -17,40 +17,40 @@
 (deflayer mouse0
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @msu0 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     @msl0 @msd0 @msr0 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu0 _     @msU0 _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl0 @msd0 @msr0 @msD0 _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse1
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @msu1 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     @msl1 @msd1 @msr1 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu1 _     @msU1 _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl1 @msd1 @msr1 @msD1 _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse2
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @msu2 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     @msl2 @msd2 @msr2 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu2 _     @msU2 _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl2 @msd2 @msr2 @msD2 _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse3
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @msu3 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     @msl3 @msd3 @msr3 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu3 _     @msU3 _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl3 @msd3 @msr3 @msD3 _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse4
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     _     @msu4 _     _     _     _     _      XX    XX    XX     XX    XX    XX    XX
-  _     _     _     _     _     _     _     @msl4 @msd4 @msr4 _     _     _                               XX    XX    XX
+  _     _     _     _     _     _     _     _     @msu4 _     @msU4 _     _     _      XX    XX    XX     XX    XX    XX    XX
+  _     _     _     _     _     _     _     @msl4 @msd4 @msr4 @msD4 _     _                               XX    XX    XX
   _     _     _     _     _     _     _     _     _     _     _     _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -65,37 +65,47 @@
     mstg (cmd-button "touchpadtoggle")
     msps (cmd-button "xdotool mousedown 1")
     msrs (cmd-button "xdotool mouseup 1")
-    msb1 (cmd-button "mouse --click 1")
-    msb3 (cmd-button "mouse --click 3")
-    msb4 (cmd-button "mouse --click 4")
-    msb5 (cmd-button "mouse --click 5")
-    scrU (cmd-button "mouse --right --edge-offset 31; mouse --right --edge-offset 30 --click 4")
-    scrD (cmd-button "mouse --right --edge-offset 31; mouse --right --edge-offset 30 --click 5")
+    msb1 (cmd-button "mouse 1")
+    msb3 (cmd-button "mouse 3")
+    msb4 (cmd-button "mouse 4")
+    msb5 (cmd-button "mouse 5")
+    scrU (cmd-button "mouse --right --edge-offset 31; mouse --right --edge-offset 30 4")
+    scrD (cmd-button "mouse --right --edge-offset 31; mouse --right --edge-offset 30 5")
 
     msu0 (cmd-button "xdotool mousemove_relative 0 -1")
     msd0 (cmd-button "xdotool mousemove_relative 0 1")
     msl0 (cmd-button "xdotool mousemove_relative -- -1 0")
     msr0 (cmd-button "xdotool mousemove_relative 1 0")
+    msU0 (cmd-button "mouse 4 4")
+    msD0 (cmd-button "mouse 5 4")
 
     msu1 (cmd-button "xdotool mousemove_relative 0 -8")
     msd1 (cmd-button "xdotool mousemove_relative 0 8")
     msl1 (cmd-button "xdotool mousemove_relative -- -8 0")
     msr1 (cmd-button "xdotool mousemove_relative 8 0")
+    msU1 (cmd-button "mouse 4 8")
+    msD1 (cmd-button "mouse 5 8")
 
     msu2 (cmd-button "xdotool mousemove_relative 0 -32")
     msd2 (cmd-button "xdotool mousemove_relative 0 32")
     msl2 (cmd-button "xdotool mousemove_relative -- -32 0")
     msr2 (cmd-button "xdotool mousemove_relative 32 0")
+    msU2 (cmd-button "mouse 4 16")
+    msD2 (cmd-button "mouse 5 16")
 
     msu3 (cmd-button "xdotool mousemove_relative 0 -128")
     msd3 (cmd-button "xdotool mousemove_relative 0 128")
     msl3 (cmd-button "xdotool mousemove_relative -- -128 0")
     msr3 (cmd-button "xdotool mousemove_relative 128 0")
+    msU3 (cmd-button "mouse 4")
+    msD3 (cmd-button "mouse 5")
 
     msu4 (cmd-button "xdotool mousemove_relative 0 -512")
     msd4 (cmd-button "xdotool mousemove_relative 0 512")
     msl4 (cmd-button "xdotool mousemove_relative -- -512 0")
     msr4 (cmd-button "xdotool mousemove_relative 512 0")
+    msU4 (cmd-button "mouse 4 32")
+    msD4 (cmd-button "mouse 5 32")
 
     mwtl (cmd-button "mouse --top --left")
     mwtt (cmd-button "mouse --top")
