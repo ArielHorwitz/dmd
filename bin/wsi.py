@@ -25,10 +25,10 @@ NOTIFY_SEND = (
     "-h",
     'string:synchronous:"wsi"',
 )
-WORKSPACE_EMPTY = "▁"
-WORKSPACE_OCCUPIED = "◆"
-WORKSPACE_VISIBLE = "◇"
-WORKSPACE_FOCUS = "∇"
+WORKSPACE_EMPTY = ""
+WORKSPACE_OCCUPIED = ""
+WORKSPACE_VISIBLE = ""
+WORKSPACE_FOCUS = ""
 USER = os.getenv("USER")
 CONFIG_DIR = Path(f"/home/{USER}/.config/wsi")
 CONFIG_FILE = Path(f"{CONFIG_DIR}/config.toml")
