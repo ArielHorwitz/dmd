@@ -20,7 +20,7 @@ eval "$CLI" || exit 1
 if [[ $args_update ]] || [[ ! -f "$EMOJIS_DATA" ]] ; then
     mkdir -p "$DATA_DIR"
     curl -sSL https://www.emoji.family/api/emojis -o "$EMOJIS_DATA"
-    printcolor -s ok "Updated emojis: $EMOJIS_DATA"
+    printcolor -s ok "Updated emojis: $EMOJIS_DATA" >&2
 fi
 
 case $args_mode in
