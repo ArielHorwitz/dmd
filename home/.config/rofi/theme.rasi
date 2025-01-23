@@ -31,6 +31,8 @@
 }
 window {
     background-color: @background;
+    width:            1500;
+    height:           1000;
     border:           1;
     padding:          5;
 }
