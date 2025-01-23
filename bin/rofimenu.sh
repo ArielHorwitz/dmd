@@ -10,9 +10,7 @@ ABOUT="Run custom menus via rofi"
 CLI=(
     --prefix "args_"
     -o "menu;Menu name (leave blank to list menus)"
-    -f "no-fuzzy;Do not enable fuzzy search"
-    -O "dpi;Set dpi;0"
-    -e "menu_arguments;Extra arguments for the menu script"
+    -e "rofi_arguments;Extra arguments for rofi"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
@@ -20,12 +18,9 @@ eval "$CLI" || exit 1
 
 rofi_args=(
     -show "$args_menu"
-    -modes "${args_menu}:${EXECUTABLE_PREFIX}${args_menu} ${args_menu_arguments[@]}"
-    -dpi "$args_dpi"
+    -modes "${args_menu}:${EXECUTABLE_PREFIX}${args_menu}"
+    "${args_rofi_arguments[@]}"
 )
-if [[ $args_no_fuzzy ]]; then
-    rofi_args+=(-matching normal)
-fi
 
 if [[ $args_menu ]]; then
     rofi "${rofi_args[@]}"
