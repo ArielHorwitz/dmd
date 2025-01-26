@@ -1,0 +1,16 @@
+# utilities
+bat
+
+# desktop
+polybar
+rofi
+dunst
+
+# apps
+alacritty
+scrot
+feh
+
+# languages
+perl
+rustup

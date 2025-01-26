@@ -84,6 +84,7 @@ install_packages() {
     debug "Detected OS: $os_id"
     case $os_id in
         arch   ) install_packages_arch ;;
+        fedora ) install_packages_fedora ;;
         *      )
             if [[ $INSTALL_FORCE ]]; then
                 warn "Skipping packages installation (OS not supported: $os_id)"
@@ -106,6 +107,14 @@ install_packages_arch() {
     fi
     progress "Installing packages..."
     paru -S --needed --noconfirm $(decomment "$SETUP_DIR/aur.txt")
+}
+
+install_packages_fedora() {
+    set -e
+    sudo dnf $(decomment "$SETUP_DIR"/dnf.txt)
+    if ! command -v cargo &>/dev/null; then
+        rustup-init
+    fi
 }
 
 install_crates() {
