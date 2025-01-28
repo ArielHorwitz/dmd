@@ -6,7 +6,9 @@ APP_NAME=$(basename "${0%.*}")
 ABOUT="Prompt user for password.
 
 Uses 'systemd-ask-password' if available, otherwise defaults to 'read'.
-Timeout of 0 is invalid because of differences between implementations."
+Timeout of 0 is invalid because of differences between implementations.
+
+Set environment variable 'IGNORE_PASSWORD_CACHE' to force ignoring the cache."
 CLI=(
     --prefix "args_"
     -o "prompt;Prompt text"
@@ -25,7 +27,9 @@ ask_using_systemd() {
     set -e
     ask_password_args=(-n --emoji=no --timeout=$args_timeout)
     [[ -z $args_hide ]] || ask_password_args+=(--echo=no)
-    [[ -z $args_cache ]] || ask_password_args+=(--accept-cached --keyname="$args_cache")
+    if [[ $args_cache && -z $IGNORE_PASSWORD_CACHE ]]; then
+        ask_password_args+=(--accept-cached --keyname="$args_cache")
+    fi
     [[ $args_prompt ]] && ask_password_args+=("$args_prompt") || ask_password_args+=('')
     systemd-ask-password "${ask_password_args[@]}"
 }
