@@ -96,7 +96,7 @@ install_packages_arch() {
         makepkg -si --needed --noconfirm
     fi
     progress "Installing packages..."
-    paru -S --needed --noconfirm $(cat $SETUP_DIR/aur.txt)
+    paru -S --needed --noconfirm $(decomment "$SETUP_DIR/aur.txt")
 }
 
 install_crates() {
@@ -104,7 +104,7 @@ install_crates() {
     progress "Installing crates..."
     sudo mkdir --parents $CRATES_TARGET
     sudo chown --recursive $USER $CRATES_TARGET
-    for crate_name in $(cat $SETUP_DIR/crates.txt); do
+    for crate_name in $(decomment "$SETUP_DIR/crates.txt"); do
         debug "> $crate_name"
         cargo install --root $CRATES_TARGET $crate_name
     done

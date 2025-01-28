@@ -1,9 +1,22 @@
+# hardware
 networkmanager
-
 sof-firmware
 pulseaudio
-librsvg
 
+# utilities
+xdg-utils
+xdotool
+bat
+openssh
+jq
+librsvg
+words
+inxi
+xsel
+scrot
+feh
+
+# desktop
 xorg-server
 lemurs
 i3-wm
@@ -11,31 +24,21 @@ i3lock
 xss-lock
 polybar
 rofi
-
-xdg-utils
-xdotool
 libnotify
 dunst
 mons
 
-openssh
-jq
-bc
-words
-inxi
-xsel
+# apps
+alacritty
+firefox
+lazygit
 
+# languages
 python
 python-pip
 npm
 
-alacritty
-firefox
-lazygit
-scrot
-feh
-
-
+# language servers
 python-lsp-server
 rust-analyzer
 lua-language-server
