@@ -8,7 +8,7 @@ export HISTSIZE=10000
 export HISTFILESIZE=100000
 ~>>>
 ~>>> zen
-export QT_SCALE_FACTOR=1.5
+export QT_SCALE_FACTOR=2.0
 ~<<<
 
 extra_paths_prepend=(
