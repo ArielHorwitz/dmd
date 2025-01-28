@@ -78,15 +78,24 @@ FONTS_TARGET_DIR=/usr/share/fonts
 sudo -v
 
 
+install_packages() {
+    set -e
+    local os_id=$(grep '^ID=' /etc/os-release | awk -F= '{print $2}' | tr -d '"')
+    debug "Detected OS: $os_id"
+    case $os_id in
+        arch   ) install_packages_arch ;;
+        *      )
+            if [[ $INSTALL_FORCE ]]; then
+                warn "Skipping packages installation (OS not supported: $os_id)"
+                return
+            fi
+            exit_error "Cannot install packages (OS not supported: $os_id)"
+            ;;
+    esac
+}
+
 install_packages_arch() {
     set -e
-    if [[ ! -f /etc/arch-release ]]; then
-        if [[ $INSTALL_FORCE ]]; then
-            warn "Skipping packages installation (not Arch Linux)"
-            return
-        fi
-        exit_error "Cannot install packages (not Arch Linux)"
-    fi
     if [[ ! $(command -v paru) ]]; then
         progress "Installing paru..."
         local paru_build_dir=$(mktemp -d)
@@ -210,7 +219,7 @@ config_lemurs() {
     sudo systemctl enable lemurs.service
 }
 
-[[ -z $INSTALL_PACKAGES ]] || install_packages_arch
+[[ -z $INSTALL_PACKAGES ]] || install_packages
 [[ -z $INSTALL_CRATES ]] || install_crates
 [[ -z $INSTALL_SCRIPTS ]] || install_scripts
 [[ -z $INSTALL_CONFIG ]] || install_configs
