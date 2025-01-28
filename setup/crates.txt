@@ -1,5 +1,5 @@
+# stuff
 eza
-bat
 ripgrep
 fd-find
 du-dust
@@ -7,6 +7,7 @@ cargo-release
 bacon
 broot
 
+# personal
 spongecrab
 tigerturtle
 rhinopuffin
