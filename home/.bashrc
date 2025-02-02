@@ -14,6 +14,7 @@ source ~/.config/bashprofiles/aliases.sh
 if [[ -f ~/.config/bashprofiles/devenv.sh ]]; then
     source ~/.config/bashprofiles/devenv.sh
 fi
+eval $(sshman) > /dev/null
 
 # Colors and styles
 source ~/.config/bashprofiles/eza.sh
