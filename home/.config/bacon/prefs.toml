@@ -38,11 +38,11 @@ r = "job:run"
 
 
 [jobs.check]
-command = ["cargo", "check", "--all-targets", "--color", "always"]
+command = ["cargo", "check", "--all-features", "--all-targets", "--color", "always"]
 
 [jobs.clippy-normal]
 command = [
-    "cargo", "clippy", "--all-targets", "--color", "always",
+    "cargo", "clippy", "--all-features", "--all-targets", "--color", "always",
     "--",
     "--warn", "clippy::panic",
     "--warn", "clippy::unwrap_used",
@@ -52,8 +52,9 @@ command = [
 
 [jobs.clippy-pedantic]
 command = [
-    "cargo", "clippy", "--all-targets", "--color", "always",
+    "cargo", "clippy", "--all-features", "--all-targets", "--color", "always",
     "--",
+    "--warn", "rust-2018-idioms",
     "--warn", "clippy::pedantic",
     "--allow", "clippy::missing_errors_doc",
 ]
@@ -71,12 +72,10 @@ command = [
 need_stdout = true
 
 [jobs.doc]
-command = ["cargo", "doc", "--color", "always", "--no-deps"]
+command = ["cargo", "doc", "--color", "always", "--all-features"]
 
-# If the doc compiles, then it opens in your browser and bacon switches
-# to the previous job
 [jobs.doc-open]
-command = ["cargo", "doc", "--color", "always", "--no-deps", "--open"]
+command = ["cargo", "doc", "--color", "always", "--all-features", "--open"]
 on_success = "back" # so that we don't open the browser at each change
 
 [jobs.run]
