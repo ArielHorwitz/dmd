@@ -3,7 +3,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @tgwt  XX    XX    XX     XX    XX    XX    XX
   _     @klps XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr @wmfp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
-  _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort @wmfa _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer window_manipulation
@@ -35,6 +35,7 @@
     fdwn (cmd-button "i3-msg focus down")
     folt (cmd-button "i3-msg focus output left")
     fort (cmd-button "i3-msg focus output right")
+    wmfa (cmd-button "i3-msg 'focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent'")
     wmfp (cmd-button "i3-msg focus parent")
     wmfc (cmd-button "i3-msg focus child")
     wtmd (cmd-button "i3-msg focus mode_toggle")
