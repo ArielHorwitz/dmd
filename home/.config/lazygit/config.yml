@@ -51,3 +51,14 @@ disableStartupPopups: true
 confirmOnQuit: true
 
 notARepository: skip
+
+customCommands:
+  - key: '<c-u>'
+    context: 'global'
+    command: 'git reset --mixed HEAD^'
+    description: 'Uncommit'
+  - key: '<c-f>'
+    context: 'global'
+    command: 'git fetch --all --prune'
+    description: 'Fetch and prune'
+    loadingText: 'Fetching and pruning...'
