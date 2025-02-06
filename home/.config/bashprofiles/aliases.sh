@@ -27,6 +27,7 @@ alias watcha="watch "
 alias pyactivate="source venv/bin/activate"
 alias pipr="pip install -r requirements.txt"
 alias py="python main.py"
+alias pycalc="python -qic 'from math import *; import cmath;'"
 
 # Rust
 alias cr="cargo run --"
