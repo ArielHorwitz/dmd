@@ -16,8 +16,8 @@ extra_paths_prepend=(
 )
 
 extra_paths_append=(
-    "$HOME/.cargo/bin"
     "$HOME/.local/bin"
+    "$HOME/.cargo/bin"
 )
 
 export PATH=$(withpath ${extra_paths_append[@]})
