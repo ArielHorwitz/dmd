@@ -4,7 +4,7 @@
   _     XX    XX    XX    XX    @tst1 XX    XX    @i3re XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
   _     XX    @wmxr XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     @sysa             _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     @sysa             @Saut             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer systemalt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
@@ -37,4 +37,5 @@
     brt0 (cmd-button "sudo /bin/dmd/setmonbrightness --set 0")
     tst1 (cmd-button "bash -c ~/.test")
     Srdn (cmd-button "killall dunst")
+    Saut (cmd-button "pvrun ~/temp/pyautogui")
 )
