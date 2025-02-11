@@ -1,0 +1,6 @@
+wayland
+hyprland
+hyprlock
+hyprpaper
+waybar
+cliphist

@@ -1,6 +1,6 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @wmfP XX    XX    @tgwt  XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @wmfP XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @klps XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr @wmfp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort @wmfC _                        XX           XX    XX    XX    XX
@@ -10,7 +10,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    @wmmw                           XX    XX    XX
+  _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -18,21 +18,20 @@
     wman (layer-toggle window_manipulation)
     scrw (cmd-button "screenshot -p")
     scrd (cmd-button "screenshot -pd")
-    tgwt (cmd-button "i3-msg border toggle")
 
     ;; Launch and close
     wtrm (cmd-button "alacritty & disown")
     wrof (cmd-button "rofi -show drun & disown")
-    klps (cmd-button "i3-msg kill")
+    klps (cmd-button "hyprctl dispatch killactive")
     kltb C-w
     tabr C-tab
     tabl C-S-tab
 
     ;; Focus
-    frgt (cmd-button "i3-msg focus right")
-    flft (cmd-button "i3-msg focus left")
-    fup  (cmd-button "i3-msg focus up")
-    fdwn (cmd-button "i3-msg focus down")
+    frgt (cmd-button "hyprctl dispatch movefocus r")
+    flft (cmd-button "hyprctl dispatch movefocus l")
+    fup  (cmd-button "hyprctl dispatch movefocus u")
+    fdwn (cmd-button "hyprctl dispatch movefocus d")
     folt (cmd-button "i3-msg focus output left")
     fort (cmd-button "i3-msg focus output right")
     wmfP (cmd-button "i3-msg 'focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent'")
@@ -42,27 +41,26 @@
     wtmd (cmd-button "i3-msg focus mode_toggle")
 
     ;; Workspaces
-    wflt (cmd-button "i3-msg floating toggle")
+    wflt (cmd-button "hyprctl dispatch togglefloating")
     wsml (cmd-button "i3-msg move workspace to output left")
     wsmr (cmd-button "i3-msg move workspace to output right")
-    wspt (cmd-button "i3-msg split vertical")
+    wspt (cmd-button "hyprctl dispatch togglesplit")
     wtgt (cmd-button "i3-msg layout toggle tabbed split")
     wtgs (cmd-button "i3-msg layout toggle split")
-    fuls (cmd-button "i3-msg fullscreen toggle")
-    fulS (cmd-button "i3-msg fullscreen toggle global")
+    fuls (cmd-button "hyprctl dispatch fullscreen 1")
+    fulS (cmd-button "hyprctl dispatch fullscreen 0")
 
     ;; Window movement
-    wmvl (cmd-button "i3-msg move left 5 ppt")
-    wmvr (cmd-button "i3-msg move right 5 ppt")
-    wmvu (cmd-button "i3-msg move up 5 ppt")
-    wmvd (cmd-button "i3-msg move down 5 ppt")
+    wmvl (cmd-button "hyprctl dispatch movewindow l")
+    wmvr (cmd-button "hyprctl dispatch movewindow r")
+    wmvu (cmd-button "hyprctl dispatch movewindow u")
+    wmvd (cmd-button "hyprctl dispatch movewindow d")
     wmvc (cmd-button "i3-msg move position center")
-    wmmw (cmd-button "i3-msg border toggle 2")
 
     ;; Window size
-    wszr (cmd-button "i3-msg resize grow width 25 px")
-    wszl (cmd-button "i3-msg resize shrink width 25 px")
-    wszu (cmd-button "i3-msg resize shrink height 25 px")
-    wszd (cmd-button "i3-msg resize grow height 25 px")
+    wszr (cmd-button "hyprctl dispatch resizeactive -30 0")
+    wszl (cmd-button "hyprctl dispatch resizeactive 30 0")
+    wszu (cmd-button "hyprctl dispatch resizeactive 0 -30")
+    wszd (cmd-button "hyprctl dispatch resizeactive 0 30")
 )
 
