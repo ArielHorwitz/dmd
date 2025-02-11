@@ -26,6 +26,7 @@ eval "$CLI" || exit 1
 
 [[ $EUID -eq 0 ]] && exit_error "Do not run $APP_NAME as root."
 
+mkdir -p "$LOG_DIR"
 echo "Logging to: $LOG_FILE"
 exec >>$LOG_FILE 2>&1
 
