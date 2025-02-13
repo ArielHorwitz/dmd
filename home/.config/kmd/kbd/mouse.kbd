@@ -1,16 +1,16 @@
 (deflayer mouse
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  @mou0 XX    XX    XX    XX    XX    XX    @msb1 XX    @msb3 @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @mou1 @mou2 @mou3 @mou4 XX    XX    XX    XX    XX    @msb5 XX    @mstg                           XX    XX    XX
+  @mou0 XX    XX    XX    XX    XX    XX    @msb1 XX    @msb3 @msbU XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     @mou1 @mou2 @mou3 @mou4 XX    XX    XX    XX    XX    @msbD XX    @mstg                           XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @msps @mwrr @msrs XX    _                        XX           XX    XX    XX    XX
   _     _     @mswn             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mousewindow
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @mwtl @mwtt @mwtr @msb4 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @mwll @mwcn @mwrr @msb5 XX    XX                              XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mwtl @mwtt @mwtr @msbU XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mwll @mwcn @mwrr @msbD XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @mwbl @mwbb @mwbr XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -63,58 +63,57 @@
     mswn (layer-toggle mousewindow)
 
     mstg (cmd-button "touchpadtoggle")
-    msps (cmd-button "xdotool mousedown 1")
-    msrs (cmd-button "xdotool mouseup 1")
-    msb1 (cmd-button "mouse 1")
-    msb3 (cmd-button "mouse 3")
-    msb4 (cmd-button "mouse 4")
-    msb5 (cmd-button "mouse 5")
-    scrU (cmd-button "mouse --right --edge-offset 31; mouse --right --edge-offset 30 4")
-    scrD (cmd-button "mouse --right --edge-offset 31; mouse --right --edge-offset 30 5")
+    msps (cmd-button "ydotool click 40")
+    msrs (cmd-button "ydotool click 80")
+    msb1 (cmd-button "mouse left")
+    msb3 (cmd-button "mouse right")
+    msbU (cmd-button "mouse wheel-up")
+    msbD (cmd-button "mouse wheel-down")
+    scrU (cmd-button "mouse --window-edge r --edge-offset 30; mouse wheel-up")
+    scrD (cmd-button "mouse --window-edge r --edge-offset 30; mouse wheel-down")
 
-    msu0 (cmd-button "xdotool mousemove_relative 0 -1")
-    msd0 (cmd-button "xdotool mousemove_relative 0 1")
-    msl0 (cmd-button "xdotool mousemove_relative -- -1 0")
-    msr0 (cmd-button "xdotool mousemove_relative 1 0")
-    msU0 (cmd-button "mouse 4 4")
-    msD0 (cmd-button "mouse 5 4")
+    msu0 (cmd-button "mouse --up")
+    msd0 (cmd-button "mouse --down")
+    msl0 (cmd-button "mouse --left")
+    msr0 (cmd-button "mouse --right")
+    msU0 (cmd-button "mouse -r 4 wheel-up")
+    msD0 (cmd-button "mouse -r 4 wheel-down")
 
-    msu1 (cmd-button "xdotool mousemove_relative 0 -8")
-    msd1 (cmd-button "xdotool mousemove_relative 0 8")
-    msl1 (cmd-button "xdotool mousemove_relative -- -8 0")
-    msr1 (cmd-button "xdotool mousemove_relative 8 0")
-    msU1 (cmd-button "mouse 4 8")
-    msD1 (cmd-button "mouse 5 8")
+    msu1 (cmd-button "mouse --up 8")
+    msd1 (cmd-button "mouse --down 8")
+    msl1 (cmd-button "mouse --left 8")
+    msr1 (cmd-button "mouse --right 8")
+    msU1 (cmd-button "mouse -r 8 wheel-up")
+    msD1 (cmd-button "mouse -r 8 wheel-down")
 
-    msu2 (cmd-button "xdotool mousemove_relative 0 -32")
-    msd2 (cmd-button "xdotool mousemove_relative 0 32")
-    msl2 (cmd-button "xdotool mousemove_relative -- -32 0")
-    msr2 (cmd-button "xdotool mousemove_relative 32 0")
-    msU2 (cmd-button "mouse 4 16")
-    msD2 (cmd-button "mouse 5 16")
+    msu2 (cmd-button "mouse --up 32")
+    msd2 (cmd-button "mouse --down 32")
+    msl2 (cmd-button "mouse --left 32")
+    msr2 (cmd-button "mouse --right 32")
+    msU2 (cmd-button "mouse -r 16 wheel-up")
+    msD2 (cmd-button "mouse -r 16 wheel-down")
 
-    msu3 (cmd-button "xdotool mousemove_relative 0 -128")
-    msd3 (cmd-button "xdotool mousemove_relative 0 128")
-    msl3 (cmd-button "xdotool mousemove_relative -- -128 0")
-    msr3 (cmd-button "xdotool mousemove_relative 128 0")
-    msU3 (cmd-button "mouse 4")
-    msD3 (cmd-button "mouse 5")
+    msu3 (cmd-button "mouse --up 128")
+    msd3 (cmd-button "mouse --down 128")
+    msl3 (cmd-button "mouse --left 128")
+    msr3 (cmd-button "mouse --right 128")
+    msU3 (cmd-button "mouse wheel-up")
+    msD3 (cmd-button "mouse wheel-down")
 
-    msu4 (cmd-button "xdotool mousemove_relative 0 -512")
-    msd4 (cmd-button "xdotool mousemove_relative 0 512")
-    msl4 (cmd-button "xdotool mousemove_relative -- -512 0")
-    msr4 (cmd-button "xdotool mousemove_relative 512 0")
-    msU4 (cmd-button "mouse 4 32")
-    msD4 (cmd-button "mouse 5 32")
+    msu4 (cmd-button "mouse --up 512")
+    msd4 (cmd-button "mouse --down 512")
+    msl4 (cmd-button "mouse --left 512")
+    msr4 (cmd-button "mouse --right 512")
+    msU4 (cmd-button "mouse -r 32 wheel-up")
+    msD4 (cmd-button "mouse -r 32 wheel-down")
 
-    mwtl (cmd-button "mouse --top --left")
-    mwtt (cmd-button "mouse --top")
-    mwtr (cmd-button "mouse --top --right")
-    mwrr (cmd-button "mouse --right")
-    mwbr (cmd-button "mouse --bottom --right")
-    mwbb (cmd-button "mouse --bottom")
-    mwbl (cmd-button "mouse --bottom --left")
-    mwll (cmd-button "mouse --left")
-    mwcn (cmd-button "mouse --center")
+    mwtl (cmd-button "mouse --window-edge tl")
+    mwtt (cmd-button "mouse --window-edge t")
+    mwtr (cmd-button "mouse --window-edge tr")
+    mwrr (cmd-button "mouse --window-edge r")
+    mwbr (cmd-button "mouse --window-edge br")
+    mwbb (cmd-button "mouse --window-edge b")
+    mwbl (cmd-button "mouse --window-edge bl")
+    mwll (cmd-button "mouse --window-edge l")
+    mwcn (cmd-button "mouse --window-edge c")
 )
-
