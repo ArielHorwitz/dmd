@@ -56,15 +56,6 @@ view-source() {
     bat $(which $@)
 }
 
-set-wallpaper() {
-    sudo cp -f $1 /usr/share/backgrounds/desktop.png
-    feh --bg-fill --no-xinerama '/usr/share/backgrounds/desktop.png'
-}
-
-set-lockscreen() {
-    sudo cp -f $1 /usr/share/backgrounds/lockscreen.png
-}
-
 mkcd() {
     mkdir -p $1 && cd $1
 }
