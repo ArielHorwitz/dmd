@@ -7,9 +7,9 @@
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    base (around (layer-switch base) (cmd-button "setlayer base"))
-    txtu (around (layer-switch text) (cmd-button "setlayer text us"))
-    txti (around (layer-switch text) (cmd-button "setlayer text il"))
+    base (around (layer-switch base) (cmd-button "setlayoutkb 0"))
+    txtu (around (layer-switch text) (cmd-button "setlayoutkb 0"))
+    txti (around (layer-switch text) (cmd-button "setlayoutkb 1"))
     txtt (layer-toggle normal_keyboard)
     sys  (layer-toggle system)
     wnav (layer-toggle window_navigation)

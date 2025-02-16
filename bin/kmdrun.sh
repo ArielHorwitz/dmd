@@ -71,7 +71,7 @@ run_kmonad() {
         sleep 0.1
         kill $running_pid
     fi
-    setlayer base
+    setlayoutkb 0
 
     # Start KMonad
     log "Starting KMonad: $device_name (logging to: $device_log_file)"
