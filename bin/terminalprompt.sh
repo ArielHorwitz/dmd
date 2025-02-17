@@ -8,7 +8,7 @@ CLI=(
     --prefix "args_"
     -o "prompt-text;Prompt text"
     -O "width;Terminal width;1500;W"
-    -O "height;Terminal height;70;H"
+    -O "height;Terminal height;50;H"
     -O "size;Terminal text size;25;s"
     -O "background;Terminal text background color;'#000022';b"
     -O "foreground;Terminal text foreground color;'#0088cc';f"
@@ -21,7 +21,7 @@ eval "$CLI" || exit 1
 
 
 temp_file=$(mktemp)
-terminal_window_class="terminal-userprompt"
+terminal_window_class="terminal-userprompt-$RANDOM-_make_window_float_"
 [[ -z $args_hide ]] || read_args='-s'
 
 bash_command="printf '$args_prompt_text'; read $read_args buffer; printf \"\$buffer\" > $temp_file"
@@ -30,24 +30,22 @@ alacritty_args=(
     -o "font.size=$args_size"
     -o "colors.primary.background='$args_background'"
     -o "colors.primary.foreground='$args_foreground'"
-    --class $terminal_window_class
+    --class "$terminal_window_class"
     --command bash -c "$bash_command"
 )
 
 alacritty "${alacritty_args[@]}" &
-
 alacritty_pid=$!
-alacritty_wid=
-while [[ -z $alacritty_wid ]]; do
-    alacritty_wid=$(xdotool search --pid "$alacritty_pid" || :)
+
+while [[ ! $(hyprctl clients -j | jq -r '.[].class' | grep "$terminal_window_class") ]]; do
     sleep 0.05
 done
 
-i3-msg "[class=$terminal_window_class] floating enable; border pixel 2" >/dev/null
-sleep 0.05
-xdotool windowsize $alacritty_wid $args_width $args_height
-i3-msg "[class=$terminal_window_class] move position center" >/dev/null
+hyprctl dispatch focuswindow "initialclass:$terminal_window_class" >/dev/null
+hyprctl dispatch setfloating >/dev/null
+hyprctl dispatch resizeactive exact "$args_width" "$args_height" >/dev/null
+hyprctl dispatch centerwindow >/dev/null
 
 while ps -p $alacritty_pid >/dev/null; do sleep 0.05; done
-printf "%s" "$(< $temp_file)"
-rm -f $temp_file
+printf "%s" "$(< "$temp_file")"
+rm -f "$temp_file"
