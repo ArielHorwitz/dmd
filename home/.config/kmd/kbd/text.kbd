@@ -26,8 +26,8 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @webs @moji @prng XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @tmsp XX    XX    XX    XX    XX    @Mlck @lnkd XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    @Mwll @name @mail XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    @tmsp XX    XX    XX    XX    XX    XX    @lnkd XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    @name @mail XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -45,8 +45,6 @@
     prng (cmd-button "prng 20 alnum")
     tmsp (cmd-button "timestamp -C")
     moji (cmd-button "rofimenu emoji -- -dpi 200 -matching normal -theme-str '#window { width: 2500; }'")
-    Mwll (cmd-button "rofimenu wallpaper")
-    Mlck (cmd-button "rofimenu lockscreen")
 
     name #(A r i e l spc H o r w i t z)
     mail #(a r i e l . h o r w i t z @ g m a i l . c o m)

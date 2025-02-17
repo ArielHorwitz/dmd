@@ -1,0 +1,15 @@
+(deflayer config
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    @Cwyb XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Chyp XX    @Ckmd @Clck XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    @Cwll XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(defalias
+    Chyp (cmd-button "hyprctl dispatch forcerendererreload; hyprctl dispatch reload")
+    Cwyb (cmd-button "killall -SIGUSR2 waybar")
+    Cwll (cmd-button "rofimenu wallpaper")
+    Clck (cmd-button "rofimenu lockscreen")
+    Ckmd (cmd-button "kmdrun")
+)

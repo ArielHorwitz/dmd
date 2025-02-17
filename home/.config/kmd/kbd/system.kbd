@@ -1,8 +1,8 @@
 (deflayer system
   @lock @wmmp @wmms @wmml @wmmd @wmmr _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @Srld @tst1 XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @wmss XX    XX    XX    XX    XX    @kmdr @wmlk XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    @tst1 XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    _                               XX    XX    XX
   _     XX    @wmxr XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @sysa             @Saut             _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -17,8 +17,6 @@
 (defalias
     kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
     sysa (layer-toggle systemalt)
-    kmdr (cmd-button "kmdrun")
-    Srld (cmd-button "hyprctl dispatch forcerendererreload; hyprctl dispatch reload")
     wmlk (cmd-button "hyprlock")
     wmlo (cmd-button "hyprctl dispatch exit")
     wmss (cmd-button "nohup hyprlock & sleep 2 && systemctl suspend")
