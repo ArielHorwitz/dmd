@@ -15,15 +15,15 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 eval "$CLI" || exit 1
 
 # Resolve file
-dir_path=$(realpath $args_dir)
+dir_path=$(realpath "$args_dir")
 if [[ -f $dir_path ]]; then
-    dir_path=$(dirname $dir_path)
+    dir_path=$(dirname "$dir_path")
 fi
-last_modified_file=$(ls -1t $dir_path | head -n1)
+last_modified_file="$(ls -1t "$dir_path" | head -n1)"
 
 # Print
 if [[ -z $args_quiet ]]; then
-    echo $last_modified_file
+    echo "$last_modified_file"
 fi
 
 # Open
