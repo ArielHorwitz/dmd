@@ -1,53 +1,61 @@
 (deflayer multiplexer
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    @Xxs1 @Xxs2 @Xxs3 @Xxs4 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Xx11 @Xx21 @Xx31 @Xx41 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @Xsum XX    XX    XX    @Xx12 @Xx22 @Xx32 @Xx42 XX    _                               XX    XX    XX
-  _     XX    XX    @Xcol XX    XX    XX    @Xx13 @Xx23 @Xx33 @Xx43 _                        XX           XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    @Xx11 @Xx21 @Xx31 @Xx41 @Xx51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xx12 @Xx22 @Xx32 @Xx42 @Xx52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @Xsum XX    XX    @Xx13 @Xx23 @Xx33 @Xx43 @Xx53 XX    _                               XX    XX    XX
+  _     XX    XX    @Xcol XX    XX    @Xx14 @Xx24 @Xx34 @Xx44 @Xx54 _                        XX           XX    XX    XX    XX
   _     _     @Xalt             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer multiplexer_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    @Xms1 @Xms2 @Xms3 @Xms4 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Xm11 @Xm21 @Xm31 @Xm41 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Xm12 @Xm22 @Xm32 @Xm42 XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 _                        XX           XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    @Xm11 @Xm21 @Xm31 @Xm41 @Xm51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xm12 @Xm22 @Xm32 @Xm42 @Xm52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 @Xm53 XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xm14 @Xm24 @Xm34 @Xm44 @Xm54 _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     Xalt (layer-toggle multiplexer_alt)
-    Xsum (cmd-button "wsi")
-    Xcol (cmd-button "wsi -c")
-    Xxs1 (cmd-button "hyprctl dispatch workspace name:1.0")
-    Xx11 (cmd-button "hyprctl dispatch workspace name:1.1")
-    Xx12 (cmd-button "hyprctl dispatch workspace name:1.2")
-    Xx13 (cmd-button "hyprctl dispatch workspace name:1.3")
-    Xxs2 (cmd-button "hyprctl dispatch workspace name:2.0")
-    Xx21 (cmd-button "hyprctl dispatch workspace name:2.1")
-    Xx22 (cmd-button "hyprctl dispatch workspace name:2.2")
-    Xx23 (cmd-button "hyprctl dispatch workspace name:2.3")
-    Xxs3 (cmd-button "hyprctl dispatch workspace name:3.0")
-    Xx31 (cmd-button "hyprctl dispatch workspace name:3.1")
-    Xx32 (cmd-button "hyprctl dispatch workspace name:3.2")
-    Xx33 (cmd-button "hyprctl dispatch workspace name:3.3")
-    Xxs4 (cmd-button "hyprctl dispatch workspace name:4.0")
-    Xx41 (cmd-button "hyprctl dispatch workspace name:4.1")
-    Xx42 (cmd-button "hyprctl dispatch workspace name:4.2")
-    Xx43 (cmd-button "hyprctl dispatch workspace name:4.3")
-    Xms1 (cmd-button "hyprctl dispatch movetoworkspacesilent name:1.0")
-    Xm11 (cmd-button "hyprctl dispatch movetoworkspacesilent name:1.1")
-    Xm12 (cmd-button "hyprctl dispatch movetoworkspacesilent name:1.2")
-    Xm13 (cmd-button "hyprctl dispatch movetoworkspacesilent name:1.3")
-    Xms2 (cmd-button "hyprctl dispatch movetoworkspacesilent name:2.0")
-    Xm21 (cmd-button "hyprctl dispatch movetoworkspacesilent name:2.1")
-    Xm22 (cmd-button "hyprctl dispatch movetoworkspacesilent name:2.2")
-    Xm23 (cmd-button "hyprctl dispatch movetoworkspacesilent name:2.3")
-    Xms3 (cmd-button "hyprctl dispatch movetoworkspacesilent name:3.0")
-    Xm31 (cmd-button "hyprctl dispatch movetoworkspacesilent name:3.1")
-    Xm32 (cmd-button "hyprctl dispatch movetoworkspacesilent name:3.2")
-    Xm33 (cmd-button "hyprctl dispatch movetoworkspacesilent name:3.3")
-    Xms4 (cmd-button "hyprctl dispatch movetoworkspacesilent name:4.0")
-    Xm41 (cmd-button "hyprctl dispatch movetoworkspacesilent name:4.1")
-    Xm42 (cmd-button "hyprctl dispatch movetoworkspacesilent name:4.2")
-    Xm43 (cmd-button "hyprctl dispatch movetoworkspacesilent name:4.3")
+    Xsum (cmd-button "spacemux")
+    Xcol (cmd-button "spacemux -c")
+    Xx11 (cmd-button "spacemux -s 1.1")
+    Xx12 (cmd-button "spacemux -s 1.2")
+    Xx13 (cmd-button "spacemux -s 1.3")
+    Xx14 (cmd-button "spacemux -s 1.4")
+    Xx21 (cmd-button "spacemux -s 2.1")
+    Xx22 (cmd-button "spacemux -s 2.2")
+    Xx23 (cmd-button "spacemux -s 2.3")
+    Xx24 (cmd-button "spacemux -s 2.4")
+    Xx31 (cmd-button "spacemux -s 3.1")
+    Xx32 (cmd-button "spacemux -s 3.2")
+    Xx33 (cmd-button "spacemux -s 3.3")
+    Xx34 (cmd-button "spacemux -s 3.4")
+    Xx41 (cmd-button "spacemux -s 4.1")
+    Xx42 (cmd-button "spacemux -s 4.2")
+    Xx43 (cmd-button "spacemux -s 4.3")
+    Xx44 (cmd-button "spacemux -s 4.4")
+    Xx51 (cmd-button "spacemux -s 5.1")
+    Xx52 (cmd-button "spacemux -s 5.2")
+    Xx53 (cmd-button "spacemux -s 5.3")
+    Xx54 (cmd-button "spacemux -s 5.4")
+    Xm11 (cmd-button "spacemux -m 1.1")
+    Xm12 (cmd-button "spacemux -m 1.2")
+    Xm13 (cmd-button "spacemux -m 1.3")
+    Xm14 (cmd-button "spacemux -m 1.4")
+    Xm21 (cmd-button "spacemux -m 2.1")
+    Xm22 (cmd-button "spacemux -m 2.2")
+    Xm23 (cmd-button "spacemux -m 2.3")
+    Xm24 (cmd-button "spacemux -m 2.4")
+    Xm31 (cmd-button "spacemux -m 3.1")
+    Xm32 (cmd-button "spacemux -m 3.2")
+    Xm33 (cmd-button "spacemux -m 3.3")
+    Xm34 (cmd-button "spacemux -m 3.4")
+    Xm41 (cmd-button "spacemux -m 4.1")
+    Xm42 (cmd-button "spacemux -m 4.2")
+    Xm43 (cmd-button "spacemux -m 4.3")
+    Xm44 (cmd-button "spacemux -m 4.4")
+    Xm51 (cmd-button "spacemux -m 5.1")
+    Xm52 (cmd-button "spacemux -m 5.2")
+    Xm53 (cmd-button "spacemux -m 5.3")
+    Xm54 (cmd-button "spacemux -m 5.4")
 )
