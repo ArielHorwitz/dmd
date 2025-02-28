@@ -19,7 +19,7 @@
     sysa (layer-toggle systemalt)
     wmlk (cmd-button "hyprlock")
     wmlo (cmd-button "hyprctl dispatch exit")
-    wmss (cmd-button "nohup hyprlock & sleep 2 && systemctl suspend")
+    wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
     wmxr (cmd-button "xrandr --auto")
     wmhb (cmd-button "systemctl hibernate")
     wmpo (cmd-button "systemctl poweroff")
