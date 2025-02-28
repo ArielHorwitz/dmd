@@ -58,8 +58,8 @@
     wmvc (cmd-button "i3-msg move position center")
 
     ;; Window size
-    wszr (cmd-button "hyprctl dispatch resizeactive -30 0")
-    wszl (cmd-button "hyprctl dispatch resizeactive 30 0")
+    wszr (cmd-button "hyprctl dispatch resizeactive 30 0")
+    wszl (cmd-button "hyprctl dispatch resizeactive -30 0")
     wszu (cmd-button "hyprctl dispatch resizeactive 0 -30")
     wszd (cmd-button "hyprctl dispatch resizeactive 0 30")
 )
