@@ -112,6 +112,7 @@
     },
     "hyprland/workspaces": {
         "format": "{name}",
-        "active-only": true
+        "active-only": true,
+        "all-outputs": true,
     }
 }
