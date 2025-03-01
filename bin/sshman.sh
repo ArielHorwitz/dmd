@@ -47,6 +47,8 @@ start_agent() {
 }
 
 
+mkdir -p $(dirname "$SSH_ENV_FILE")
+
 if [[ -n $args_kill ]]; then
     kill_agents
     cat $SSH_ENV_FILE
