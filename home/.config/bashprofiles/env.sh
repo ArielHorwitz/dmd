@@ -13,11 +13,11 @@ export QT_SCALE_FACTOR=2.0
 
 extra_paths_prepend=(
     "$HOME/.local/bin/testing"
+    "$HOME/.cargo/bin"
 )
 
 extra_paths_append=(
     "$HOME/.local/bin"
-    "$HOME/.cargo/bin"
 )
 
 export PATH=$(withpath ${extra_paths_append[@]})
