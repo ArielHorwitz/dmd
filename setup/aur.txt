@@ -4,29 +4,22 @@ sof-firmware
 pulseaudio
 
 # utilities
+ydotool
+rofi
+libnotify
+dunst
 xdg-utils
-xdotool
-bat
 openssh
 jq
 librsvg
 words
 inxi
-xsel
-scrot
-feh
 
 # desktop
-xorg-server
-lemurs
-i3-wm
-i3lock
-xss-lock
-polybar
-rofi
-libnotify
-dunst
-mons
+hyprland
+hyprlock
+hyprpaper
+waybar
 
 # apps
 alacritty
