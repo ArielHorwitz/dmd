@@ -8,6 +8,7 @@ help_line = false
 
 default_job = "clippy-pedantic"
 
+env.CARGO_TERM_COLOR = "always"
 
 [keybindings]
 ctrl-c = "quit"
@@ -28,21 +29,23 @@ ctrl-s = "toggle-summary"
 ctrl-w = "toggle-wrap"
 
 i = "job:initial"
+c = "job:check"
 l = "job:clippy"
+l = "job:clippy-plain"
 p = "job:clippy-pedantic"
 f = "job:format"
-c = "job:check"
+f = "job:fix"
 d = "job:doc-open"
 t = "job:test"
 r = "job:run"
 
 
 [jobs.check]
-command = ["cargo", "check", "--all-features", "--all-targets", "--color", "always"]
+command = ["cargo", "check", "--all-features", "--all-targets"]
 
-[jobs.clippy-normal]
+[jobs.clippy]
 command = [
-    "cargo", "clippy", "--all-features", "--all-targets", "--color", "always",
+    "cargo", "clippy", "--all-features", "--all-targets",
     "--",
     "--warn", "clippy::panic",
     "--warn", "clippy::unwrap_used",
@@ -50,9 +53,12 @@ command = [
     "--allow", "clippy::missing_errors_doc",
 ]
 
+[jobs.clippy-plain]
+command = ["cargo", "clippy", "--all-features", "--all-targets"]
+
 [jobs.clippy-pedantic]
 command = [
-    "cargo", "clippy", "--all-features", "--all-targets", "--color", "always",
+    "cargo", "clippy", "--all-features", "--all-targets",
     "--",
     "--warn", "rust-2018-idioms",
     "--warn", "clippy::pedantic",
@@ -65,27 +71,29 @@ need_stdout = true
 on_success = "back"
 
 [jobs.test]
-command = [
-    "cargo", "test", "--color", "always",
-    "--", "--color", "always", # see https://github.com/Canop/bacon/issues/124
-]
+command = ["cargo", "test"]
 need_stdout = true
 
+[jobs.fix]
+command = ["cargo", "fix"]
+need_stdout = true
+on_success = "back"
+
 [jobs.doc]
-command = ["cargo", "doc", "--color", "always", "--all-features"]
+command = ["cargo", "doc", "--all-features"]
 
 [jobs.doc-open]
-command = ["cargo", "doc", "--color", "always", "--all-features", "--open"]
+command = ["cargo", "doc", "--all-features", "--open"]
 on_success = "back" # so that we don't open the browser at each change
 
 [jobs.run]
-command = ["cargo", "run", "--color", "always"]
+command = ["cargo", "run"]
 need_stdout = true
 allow_warnings = true
 background = false
 
 [jobs.ex]
-command = ["cargo", "run", "--color", "always", "--example"]
+command = ["cargo", "run", "--example"]
 need_stdout = true
 allow_warnings = true
 
