@@ -21,7 +21,7 @@
 
     ;; Launch and close
     wtrm (cmd-button "alacritty & disown")
-    wrof (cmd-button "rofi -show drun & disown")
+    wrof (cmd-button "pkill rofi; rofi -show drun & disown")
     klps (cmd-button "hyprctl dispatch killactive")
     kltb C-w
     tabr C-tab
