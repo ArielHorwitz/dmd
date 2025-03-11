@@ -1,13 +1,12 @@
 {
     // "layer": "top",
-    // "position": "bottom", // (top|bottom|left|right)
+    "position": "bottom", // (top|bottom|left|right)
     // "height": 24,
     "spacing": 4,
     "modules-left": [
         "tray",
         "clock",
         "pulseaudio",
-        "pulseaudio#source",
         "network",
         "hyprland/workspaces"
     ],
@@ -89,30 +88,27 @@
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid} ({signalStrength}%)  ",
-        "format-ethernet": "{ipaddr}/{cidr}  ",
-        "tooltip-format": "{ifname} via {gwaddr}  ",
-        "format-linked": "{ifname} (No IP)  ",
-        "format-disconnected": "Disconnected ⚠ ",
+        "format-ethernet": "{ipaddr}/{cidr} 󰀂 ",
+        "tooltip-format": "{ifname} via {gwaddr}",
+        "format-linked": "{ifname} (linked) 󰀂 ",
+        "format-disconnected": "Disconnected 󰯡 ",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-muted": "{volume}% {icon}",
-        "format-icons": {
-            "headphone": " ",
-            "hands-free": " ",
-            "headset": " ",
-            "phone": " ",
-            "portable": " ",
-            "car": " ",
-            "default": [" ", " ", " "]
-        },
-        "on-click": "pavucontrol"
-    },
-    "pulseaudio#source": {
-        "format": "{format_source}",
+        "format": "{volume}% {icon}  {format_source}",
+        "format-muted": "{volume}% {icon}  {format_source}",
         "format-source": "{volume}%  ",
         "format-source-muted": "{volume}%  ",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
     },
     "hyprland/workspaces": {
         "format": "{name}",
