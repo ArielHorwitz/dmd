@@ -7,6 +7,7 @@
         "tray",
         "clock",
         "pulseaudio",
+        "pulseaudio#source",
         "network",
         "hyprland/workspaces"
     ],
@@ -95,20 +96,23 @@
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
-        "format": "{volume}% {icon}  {format_source}",
-        "format-muted": "{volume}% {icon}  {format_source}",
-        "format-source": "{volume}%  ",
-        "format-source-muted": "{volume}%  ",
+        "format": "{volume}% {icon}",
+        "format-muted": "{volume}% {icon}",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
+            "headphone": " ",
+            "hands-free": " ",
+            "headset": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": " ",
+            "default": [" ", " ", " "]
         },
         "on-click": "pavucontrol"
+    },
+    "pulseaudio#source": {
+        "format": "{format_source}",
+        "format-source": "{volume}%  ",
+        "format-source-muted": "{volume}%  ",
     },
     "hyprland/workspaces": {
         "format": "{name}",

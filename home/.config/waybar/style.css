@@ -157,6 +157,11 @@ label:focus {
     background-color: rgba(90, 120, 120, 0.4);
 }
 
+#pulseaudio.source {
+    background-color: rgba(0, 160, 160, 0.3);
+    color: #000000;
+}
+
 #temperature {
     background-color: #f0932b;
 }
