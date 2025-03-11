@@ -72,10 +72,10 @@
     scrU (cmd-button "mouse --window-edge r --edge-offset 30; mouse wheel-up")
     scrD (cmd-button "mouse --window-edge r --edge-offset 30; mouse wheel-down")
 
-    msu0 (cmd-button "mouse --up")
-    msd0 (cmd-button "mouse --down")
-    msl0 (cmd-button "mouse --left")
-    msr0 (cmd-button "mouse --right")
+    msu0 (cmd-button "mouse --up 1")
+    msd0 (cmd-button "mouse --down 1")
+    msl0 (cmd-button "mouse --left 1")
+    msr0 (cmd-button "mouse --right 1")
     msU0 (cmd-button "mouse -r 4 wheel-up")
     msD0 (cmd-button "mouse -r 4 wheel-down")
 
