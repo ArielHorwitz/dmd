@@ -140,9 +140,10 @@ class Workspace:
     @cached_property
     def is_gridable(self):
         try:
-            row, col = self.name.split(".")
+            row, col, monitor = self.name.split(".")
             int(row)
             int(col)
+            int(monitor)
             return True
         except ValueError:
             return False
@@ -150,7 +151,7 @@ class Workspace:
     @cached_property
     def grid_coords(self):
         try:
-            col, row = self.name.split(".")
+            col, row, monitor = self.name.split(".")
             return int(col), int(row)
         except ValueError:
             return None
@@ -232,6 +233,13 @@ class State:
         raise RuntimeError("No last focused window found")
 
     @property
+    def focused_monitor(self):
+        for monitor in self.monitors.values():
+            if monitor.focused:
+                return monitor
+        raise RuntimeError("No focused monitor found")
+
+    @property
     def focused_workspace(self):
         return self.workspaces[self.focused_workspace_id]
 
@@ -257,6 +265,29 @@ def print_list(data_name, verbose):
             print(item)
 
 
+def switch_workspace(workspace_name):
+    state = State.get()
+    focused_monitor = state.focused_monitor
+    commands = []
+    for i, monitor in enumerate(state.monitors.values()):
+        commands.append(f"dispatch focusmonitor {monitor.name}")
+        commands.append(
+            "dispatch "
+            "focusworkspaceoncurrentmonitor "
+            f"name:{workspace_name}.{i}"
+        )
+    commands.append(f"dispatch focusmonitor {focused_monitor.name}")
+    run_hypr_command(*commands, batch_commands=True)
+
+
+def move_workspace(workspace_name):
+    run_hypr_command(
+        "dispatch",
+        "movetoworkspacesilent",
+        f"name:{workspace_name}.0",
+    )
+
+
 def collect_off_grid():
     state = State.get()
     target_ws = state.focused_workspace
@@ -273,7 +304,9 @@ def collect_off_grid():
         )
 
 
-def run_hypr_command(*args):
+def run_hypr_command(*args, batch_commands=False):
+    if batch_commands:
+        args = ("--batch", ";".join(args))
     result = subprocess.run(
         ("hyprctl", *args),
         capture_output=True,
@@ -355,13 +388,9 @@ def main():
         print_list("monitors", args.verbose)
         exit()
     elif args.switch:
-        run_hypr_command(
-            "dispatch",
-            "focusworkspaceoncurrentmonitor",
-            f"name:{args.switch}",
-        )
+        switch_workspace(args.switch)
     elif args.move:
-        run_hypr_command("dispatch", "movetoworkspacesilent", f"name:{args.move}")
+        move_workspace(args.move)
     elif args.collect:
         collect_off_grid()
 
