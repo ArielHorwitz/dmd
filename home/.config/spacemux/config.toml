@@ -1,4 +1,4 @@
 rows = 4
 columns = 5
-notification_timeout = 2000
+notification_timeout = 500
 icon = "/usr/share/icons/dmd/monitor.svg"
