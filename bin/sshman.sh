@@ -8,6 +8,7 @@ ABOUT="Manage ssh agent."
 CLI=(
     --prefix "args_"
     -f "check;Check if an ssh agent is running;;c"
+    -f "add;Add identities;;a"
     -f "kill;Kill all running agents;;k"
     -f "print_shell;Print shell commands;;p"
 )
@@ -19,7 +20,7 @@ check_running() {
     set -e
     local agent_pids=$(pgrep -x ssh-agent) || :
     if [[ -n $agent_pids ]]; then
-        echo Agent pid: $agent_pids
+        echo "Agent pid: $agent_pids"
         return 0
     else
         echo "No agent running"
@@ -46,6 +47,29 @@ start_agent() {
     chmod 600 $SSH_ENV_FILE
 }
 
+add_identities() {
+    if ssh-add -L >/dev/null; then
+        current_identities=$(ssh-add -l)
+        echo "Added identities:"
+        while IFS= read -r id_details; do
+            read -r _bits keyhash email _crypt <<< "$id_details"
+            echo "> $email [$keyhash]"
+        done <<< "$current_identities"
+    else
+        current_identities=
+    fi
+    for privkey in $(find ~/.ssh -type f -name 'id_*' ! -name '*.pub'); do
+        echo "Reading file: $privkey"
+        read -r _bits keyhash email _crypt <<< "$(ssh-keygen -lf "$privkey")"
+        echo "> $email [$keyhash]"
+        if echo "$current_identities" | grep "$keyhash" >/dev/null; then
+            echo "Skipping..."
+        else
+            ssh-add "$privkey"
+        fi
+    done
+}
+
 
 mkdir -p $(dirname "$SSH_ENV_FILE")
 
@@ -56,6 +80,11 @@ elif [[ -n $args_print_shell ]]; then
     cat $SSH_ENV_FILE
 elif [[ -n $args_check ]]; then
     check_running
+elif [[ -n $args_add ]]; then
+    if ! check_running >/dev/null; then
+        exit_error "Agent not running."
+    fi
+    add_identities
 else
     start_agent
     cat $SSH_ENV_FILE
