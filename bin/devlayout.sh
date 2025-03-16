@@ -6,17 +6,17 @@ APP_NAME=$(basename "${0%.*}")
 ABOUT="Open all the necessary windows for a development session."
 CLI=(
     --prefix "args_"
-    -p "dir;Project directory"
-    -f "in-home;Consider directory relative to home directory;;H"
+    -p "dir;Project directory relative to \$HOME"
+    -f "absolute;Consider directory as an absolute path"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
 eval "$CLI" || exit 1
 
-if [[ $args_in_home ]]; then
-    project_dir="$HOME/$args_dir"
-else
+if [[ $args_absolute ]]; then
     project_dir="$args_dir"
+else
+    project_dir="$HOME/$args_dir"
 fi
 project_name=$(basename "$project_dir")
 
