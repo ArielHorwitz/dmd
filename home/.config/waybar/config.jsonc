@@ -35,15 +35,15 @@
         "tooltip": false
     },
     "memory": {
-        "format": "{percentage}% [{avail}GiB free]  "
+        "format": "{percentage}% [{avail}GiB free]  ",
     },
     "disk": {
         "path": "/",
-        "format": "{path} {percentage_used}% [{free} free]  "
+        "format": "{path} {percentage_used}% [{free} free] 󰋊 ",
     },
     "disk#black": {
         "path": "/mnt/black",
-        "format": "{path} {percentage_used}% [{free} free]  "
+        "format": "{path} {percentage_used}% [{free} free]  ",
     },
     // "temperature": {
     //     // "thermal-zone": 2,
@@ -87,12 +87,12 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%)  ",
-        "format-ethernet": "{ipaddr}/{cidr} 󰀂 ",
-        "tooltip-format": "{ifname} via {gwaddr}",
-        "format-linked": "{ifname} (linked) 󰀂 ",
         "format-disconnected": "Disconnected 󰯡 ",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        "format-ethernet": "{ipaddr}/{cidr} 󰀂 ",
+        "format-wifi": "{essid} ({signalStrength}%)  ",
+        "format-linked": "{ifname} (linked)  ",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format": "{ifname} via {gwaddr}",
     },
     "pulseaudio": {
         "format": "{volume}% {icon}  {format_source}",
@@ -111,8 +111,8 @@
         "on-click": "pavucontrol"
     },
     "hyprland/workspaces": {
-        "format": "{name}",
+        "format": "󰨇 {name}",
         "active-only": true,
-        "all-outputs": true,
+        "show-special": true,
     }
 }
