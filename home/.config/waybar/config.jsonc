@@ -4,29 +4,36 @@
     // "height": 24,
     "spacing": 4,
     "modules-left": [
-        "tray",
+        "clock#date",
         "clock",
         "pulseaudio",
+        "pulseaudio#source",
         "network",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
     ],
     "modules-center": [
-        "hyprland/window"
+        "hyprland/window",
     ],
     "modules-right": [
         "disk",
         "disk#black",
         "memory",
         "cpu",
-        "battery"
+        "battery",
+        "tray",
     ],
     "tray": {
         // "icon-size": 21,
         "spacing": 10
     },
     "clock": {
-        "format": "{:%H:%M:%S / %d-%m-%Y}",
+        "format": "{:%H:%M:%S}",
         "interval": 1,
+        "tooltip": false,
+    },
+    "clock#date": {
+        "format": "{:%d-%m-%Y}",
+        "interval": 60,
         "tooltip": false,
         // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     },
@@ -35,15 +42,15 @@
         "tooltip": false
     },
     "memory": {
-        "format": "{percentage}% [{avail}GiB free]  ",
+        "format": "{avail}GiB  ",
     },
     "disk": {
         "path": "/",
-        "format": "{path} {percentage_used}% [{free} free] 󰋊 ",
+        "format": "{free} 󰋊 ",
     },
     "disk#black": {
         "path": "/mnt/black",
-        "format": "{path} {percentage_used}% [{free} free]  ",
+        "format": "{free}  ",
     },
     // "temperature": {
     //     // "thermal-zone": 2,
@@ -95,20 +102,20 @@
         "tooltip-format": "{ifname} via {gwaddr}",
     },
     "pulseaudio": {
-        "format": "{volume}% {icon}  {format_source}",
-        "format-muted": "{volume}% {icon}  {format_source}",
+        "format": "{volume}% {icon}",
+        "format-muted": "{volume}% {icon}",
+        "format-icons": {
+            "headphone": "󰋋 ",
+            "headphone-muted": "󰟎 ",
+            "default": [" ", " ", " "],
+            "default-muted": " ",
+        },
+    },
+    "pulseaudio#source": {
+        "format": "{format_source}",
+        "format-muted": "{format_source}",
         "format-source": "{volume}%  ",
         "format-source-muted": "{volume}%  ",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
     },
     "hyprland/workspaces": {
         "format": "󰨇 {name}",
