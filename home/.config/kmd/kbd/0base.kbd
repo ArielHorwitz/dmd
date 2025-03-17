@@ -1,6 +1,6 @@
 (deflayer base
   @conf _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  @sys  @ACmt @ACum @Ashw XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     esc   @wnav @edit XX    @txtm @scrU home  up    end   pgup  XX    XX    @txti  XX    XX    XX     XX    XX    XX    XX
   @txtu @audi @muxr @mous @mswn XX    @scrD left  down  right pgdn  XX    _                               XX    XX    XX
   _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    @txtt                    XX           XX    XX    XX    XX

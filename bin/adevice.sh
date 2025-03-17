@@ -18,7 +18,7 @@ CLI=(
     -f "class;Name a device by class instead of name;;c"
     -f "mic;Use source instead of sink;;m"
     -f "list;List devices or classes;;l"
-    -f "no-notification;Disable notifications;;N"
+    -f "notification;Show notification;;N"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -73,8 +73,8 @@ elif [[ -n $args_device ]]; then
     fi
     pactl set-default-${device_type} ${device_name}
 
-    if [[ -z $no_notification ]]; then
-        [[ $device_type = 'sink' ]] && avolume || avolume --mic
+    if [[ -n $notification ]]; then
+        if [[ $device_type = 'sink' ]]; then avolume else avolume --mic; fi
     fi
 else
     # Print default device description

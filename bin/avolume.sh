@@ -12,7 +12,7 @@ CLI=(
     -f "mute;Mute device;;m"
     -f "unmute;Unmute device;;u"
     -f "is-mute;Print mute status instead of volume;;M"
-    -f "no-notification;Disable notifications;;N"
+    -f "notification;Show notification;;N"
     -f "notify-all;Show notifications for sink and source"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
@@ -112,5 +112,5 @@ elif [[ -n $args_notify_all ]]; then
     notify 'source'
 else
     print_volume $device_type
-    [[ -n $args_no_notification ]] || notify $device_type
+    [[ -z $args_notification ]] || notify $device_type
 fi
