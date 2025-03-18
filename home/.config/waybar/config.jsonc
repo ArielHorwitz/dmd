@@ -4,23 +4,23 @@
     // "height": 24,
     "spacing": 4,
     "modules-left": [
-        "clock#date",
+        "battery",
         "clock",
-        "pulseaudio",
-        "pulseaudio#source",
-        "network",
+        "clock#date",
+        "tray",
         "hyprland/workspaces",
-    ],
-    "modules-center": [
         "hyprland/window",
     ],
+    "modules-center": [
+    ],
     "modules-right": [
+        "network",
         "disk",
         "disk#black",
         "memory",
         "cpu",
-        "battery",
-        "tray",
+        "pulseaudio#source",
+        "pulseaudio",
     ],
     "tray": {
         // "icon-size": 21,
@@ -121,5 +121,9 @@
         "format": "󰨇 {name}",
         "active-only": true,
         "show-special": true,
-    }
+    },
+    "hyprland/window": {
+        "icon": true,
+        "separate-outputs": true,
+    },
 }

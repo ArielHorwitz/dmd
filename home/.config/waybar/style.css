@@ -47,7 +47,7 @@ button:hover {
 {
     padding: 0 10px;
     background-color: rgba(30, 30, 30, 0.5);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Using steps() instead of linear as a timing function to limit cpu usage */
