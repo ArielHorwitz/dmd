@@ -288,13 +288,13 @@ def move_workspace(workspace_name):
     )
 
 
-def collect_off_grid():
+def collect_windows(off_grid_only: bool = False):
     state = State.get()
     target_ws = state.focused_workspace
     eprint(f"Target: {target_ws}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if ws.is_gridable:
+        if off_grid_only and ws.is_gridable:
             continue
         eprint(f"Collecting: {window}")
         run_hypr_command(
@@ -359,6 +359,12 @@ def main():
         action="store_true",
         help="collect windows from unknown workspaces to the current workspace",
     )
+    parser_command.add_argument(
+        "-C",
+        "--collect-all",
+        action="store_true",
+        help="collect all windows to the current workspace",
+    )
     parser.add_argument(
         "-n",
         "--nonotification",
@@ -392,7 +398,9 @@ def main():
     elif args.move:
         move_workspace(args.move)
     elif args.collect:
-        collect_off_grid()
+        collect_windows(off_grid_only=True)
+    elif args.collect_all:
+        collect_windows()
 
     create_missing_config(Path(args.config_file))
     config = tomllib.loads(args.config_file.read_text())
