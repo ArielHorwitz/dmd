@@ -137,16 +137,15 @@ class Workspace:
             raw_data=json_data,
         )
 
-    @cached_property
-    def is_gridable(self):
+    def is_gridable(self, monitor_count: int = 999):
         try:
             row, col, monitor = self.name.split(".")
             int(row)
             int(col)
-            int(monitor)
-            return True
+            monitor = int(monitor)
         except ValueError:
             return False
+        return monitor < monitor_count
 
     @cached_property
     def grid_coords(self):
@@ -204,7 +203,7 @@ class State:
         }
         workspace_grid = {ws.grid_coords: ws.id for ws in workspaces.values()}
         ungridable_workspaces = tuple(
-            ws.id for ws in workspaces.values() if not ws.is_gridable
+            ws.id for ws in workspaces.values() if not ws.is_gridable(len(monitors))
         )
         active_workspace = json.loads(run_hypr_command("activeworkspace", "-j"))
         active_window = json.loads(run_hypr_command("activewindow", "-j"))
@@ -294,7 +293,7 @@ def collect_windows(off_grid_only: bool = False):
     eprint(f"Target: {target_ws}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if off_grid_only and ws.is_gridable:
+        if off_grid_only and ws.is_gridable(len(state.monitors)):
             continue
         eprint(f"Collecting: {window}")
         run_hypr_command(
