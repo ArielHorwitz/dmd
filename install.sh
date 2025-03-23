@@ -32,6 +32,7 @@ warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" | tee /dev/fd/3 ; }
 error () { printf "\e[31m$1\e[0m\n" | tee /dev/fd/3 ; }
 exit_error() { error "$1"; exit 1; }
 
+HOMUX_SELECTIONS=()
 while [[ $# -gt 0 ]]; do
     case "$1" in
         a | all)             INSTALL_ALL=1; shift ;;
@@ -42,6 +43,7 @@ while [[ $# -gt 0 ]]; do
         i | icons)           INSTALL_ICONS=1; shift ;;
         f | fonts)           INSTALL_FONTS=1; shift ;;
         h | home)            INSTALL_HOME=1; shift ;;
+        -s | --select )      shift; HOMUX_SELECTIONS+=("$1"); shift ;;
         -f | --force)        INSTALL_FORCE=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
@@ -204,8 +206,17 @@ install_fonts() {
 
 install_home() {
     set -e
+    local selection
+    local homux_args=(
+        --config-file "$SOURCE_DIR/home/.config/homux/config.toml"
+        apply --verbose
+    )
+    for selection in "${HOMUX_SELECTIONS[@]}"; do
+        debug "Adding homux selection: $selection"
+        homux_args+=(-s "$selection")
+    done
     progress "Applying home directory..."
-    homux --config-file "$SOURCE_DIR/home/.config/homux/config.toml" apply --verbose
+    homux "${homux_args[@]}"
 }
 
 
