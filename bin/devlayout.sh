@@ -23,6 +23,8 @@ project_name=$(basename "$project_dir")
 alacritty_args=(--working-directory "$project_dir")
 
 lite-xl "$project_dir" &
+sleep 0.5
+alacritty "${alacritty_args[@]}" &
+alacritty "${alacritty_args[@]}" &
+sleep 0.2
 alacritty "${alacritty_args[@]}" --title "$project_name" --hold --command lazygit &
-alacritty "${alacritty_args[@]}" &
-alacritty "${alacritty_args[@]}" &
