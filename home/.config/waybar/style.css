@@ -77,9 +77,8 @@ button:hover {
     -gtk-icon-effect: highlight;
 }
 
-#workspaces {
-    padding: 0 10px;
-    margin: 0 4px;
+#workspaces button {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 #workspaces button.active {
