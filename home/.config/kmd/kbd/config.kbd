@@ -7,7 +7,7 @@
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    Chyp (cmd-button "hyprctl dispatch forcerendererreload; hyprctl dispatch reload")
+    Chyp (cmd-button "hyprctl dispatch forcerendererreload")
     Cwyb (cmd-button "killall -SIGUSR2 waybar")
     Cwll (cmd-button "rofimenu wallpaper")
     Clck (cmd-button "rofimenu lockscreen")
