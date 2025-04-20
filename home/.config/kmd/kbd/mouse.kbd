@@ -12,7 +12,15 @@
   _     XX    XX    XX    XX    XX    XX    @mwtl @mwtt @mwtr @msbU XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @mwll @mwcn @mwrr @msbD XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @mwbl @mwbb @mwbr XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     @msw2             _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer mousewindow_alt
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mWtl @mWtt @mWtr @msbU XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mWll @mWcn @mWrr @msbD XX    XX                              XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @mWbl @mWbb @mWbr XX    _                        XX           XX    XX    XX    XX
+  _     _     XX                _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer mouse0
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
@@ -61,6 +69,7 @@
     mou3 (layer-toggle mouse3)
     mou4 (layer-toggle mouse4)
     mswn (layer-toggle mousewindow)
+    msw2 (layer-toggle mousewindow_alt)
 
     mstg (cmd-button "touchpadtoggle")
     msps (cmd-button "ydotool click 40")
@@ -116,4 +125,14 @@
     mwbl (cmd-button "mouse --window-edge bl")
     mwll (cmd-button "mouse --window-edge l")
     mwcn (cmd-button "mouse --window-edge c")
+
+    mWtl (cmd-button "mouse --monitor-edge tl")
+    mWtt (cmd-button "mouse --monitor-edge t")
+    mWtr (cmd-button "mouse --monitor-edge tr")
+    mWrr (cmd-button "mouse --monitor-edge r")
+    mWbr (cmd-button "mouse --monitor-edge br")
+    mWbb (cmd-button "mouse --monitor-edge b")
+    mWbl (cmd-button "mouse --monitor-edge bl")
+    mWll (cmd-button "mouse --monitor-edge l")
+    mWcn (cmd-button "mouse --monitor-edge c")
 )
