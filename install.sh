@@ -230,6 +230,14 @@ config_lemurs() {
     sudo systemctl enable lemurs.service
 }
 
+install_reset() {
+    set -e
+    killall -SIGUSR2 waybar || :
+    hyprctl dispatch forcerendererreload || :
+    killall dunst || :
+    kmdrun
+}
+
 [[ -z $INSTALL_PACKAGES ]] || install_packages
 [[ -z $INSTALL_CRATES ]] || install_crates
 [[ -z $INSTALL_SCRIPTS ]] || install_scripts
@@ -237,5 +245,7 @@ config_lemurs() {
 [[ -z $INSTALL_ICONS ]] || install_icons
 [[ -z $INSTALL_FONTS ]] || install_fonts
 [[ -z $INSTALL_HOME ]] || install_home
+
+install_reset
 
 progress "Done."
