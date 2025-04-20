@@ -3,7 +3,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @tst1 XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    _                               XX    XX    XX
-  _     XX    @wmxr XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    @Sres XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     @sysa             @Saut             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer systemalt
@@ -20,7 +20,7 @@
     wmlk (cmd-button "hyprlock")
     wmlo (cmd-button "hyprctl dispatch exit")
     wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
-    wmxr (cmd-button "xrandr --auto")
+    Sres (cmd-button "frestore")
     wmhb (cmd-button "systemctl hibernate")
     wmpo (cmd-button "systemctl poweroff")
     wmrb (cmd-button "systemctl reboot")
