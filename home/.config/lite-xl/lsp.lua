@@ -6,13 +6,7 @@ local lspconfig = require "plugins.lsp.config"
 lspconfig.bashls.setup()
 
 -- Rust
-lspconfig.rust_analyzer.setup {
-    settings = {
-        diagnostics = {
-            styleLints = { enable = true },
-        }
-    }
-}
+lspconfig.rust_analyzer.setup()
 
 -- Python
 lspconfig.pylsp.setup {
