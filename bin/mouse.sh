@@ -28,28 +28,48 @@ CLI=(
     -O "down;Move the mouse down by pixels;0;D"
     -O "left;Move the mouse left by pixels;0;L"
     -O "right;Move the mouse right by pixels;0;R"
-    -O "window-edge;Move mouse to window edge (any or all of: c, t, b, l, r);;E"
+    -O "window-edge;Move mouse to window edge (any or all of: c, t, b, l, r)"
+    -O "monitor-edge;Move mouse to monitor edge (any or all of: c, t, b, l, r)"
     -O "edge-offset;Pixel offset when moving mouse to edge;1;O"
+    -f "debug;Print extra debug info"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
 
-if [[ -n $args_window_edge ]]; then
-    window_info=$(hyprctl activewindow -j)
-    window_x=$(echo "$window_info" | jq -r '.at.[0]')
-    window_y=$(echo "$window_info" | jq -r '.at.[1]')
-    window_w=$(echo "$window_info" | jq -r '.size.[0]')
-    window_h=$(echo "$window_info" | jq -r '.size.[1]')
-    mouse_x=$(( window_x + window_w / 2 ))
-    mouse_y=$(( window_y + window_h / 2 ))
+if [[ -n $args_window_edge || -n $args_monitor_edge ]]; then
+    if [[ -n $args_monitor_edge ]]; then
+        monitor_info=$(hyprctl-monitors-fixed --focused)
+        edge_x=$(echo "$monitor_info" | jq -r '.x')
+        edge_y=$(echo "$monitor_info" | jq -r '.y')
+        edge_w=$(echo "$monitor_info" | jq -r '.transformed_width')
+        edge_h=$(echo "$monitor_info" | jq -r '.transformed_height')
+        edges=$args_monitor_edge
+    elif [[ -n $args_window_edge ]]; then
+        window_info=$(hyprctl activewindow -j)
+        edge_x=$(echo "$window_info" | jq -r '.at.[0]')
+        edge_y=$(echo "$window_info" | jq -r '.at.[1]')
+        edge_w=$(echo "$window_info" | jq -r '.size.[0]')
+        edge_h=$(echo "$window_info" | jq -r '.size.[1]')
+        edges=$args_window_edge
+    else
+        exit_error "Internal error: not monitor_edge or window_edge"
+    fi
+    mouse_x=$(( edge_x + edge_w / 2 ))
+    mouse_y=$(( edge_y + edge_h / 2 ))
+    if [[ -n $args_debug ]]; then
+        printcolor -s debug "dimensions: ${edge_x}x${edge_y}+${edge_w}x${edge_h}"
+    fi
     while IFS='' read -rn1 edge; do
         case $edge in
-            r )  mouse_x=$(( window_x + window_w - args_edge_offset )) ;;
-            l )  mouse_x=$(( window_x + args_edge_offset )) ;;
-            b )  mouse_y=$(( window_y + window_h - args_edge_offset )) ;;
-            t )  mouse_y=$(( window_y + args_edge_offset )) ;;
+            r )  mouse_x=$(( edge_x + edge_w - args_edge_offset )) ;;
+            l )  mouse_x=$(( edge_x + args_edge_offset )) ;;
+            b )  mouse_y=$(( edge_y + edge_h - args_edge_offset )) ;;
+            t )  mouse_y=$(( edge_y + args_edge_offset )) ;;
         esac
-    done <<< "$args_window_edge"
+    done <<< "$edges"
+    if [[ -n $args_debug ]]; then
+        printcolor -s debug "mouse: ${mouse_x}x${mouse_y}"
+    fi
     ydotool mousemove --absolute "$mouse_x" "$mouse_y"
 fi
 
