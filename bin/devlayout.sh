@@ -42,6 +42,11 @@ else
 fi
 project_name=$(basename "$project_dir")
 
+if [[ ! -e $project_dir ]]; then
+    mkdir "$project_dir"
+    git init "$project_dir"
+fi
+
 alacritty_args=(--working-directory "$project_dir")
 
 lite-xl "$project_dir" &
