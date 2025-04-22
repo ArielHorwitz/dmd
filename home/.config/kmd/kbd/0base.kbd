@@ -3,7 +3,7 @@
   @sys  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     esc   @wnav @edit XX    @txtm @scrU home  up    end   pgup  XX    XX    @txti  XX    XX    XX     XX    XX    XX    XX
   @txtu @audi @muxr @mous @mswn XX    @scrD left  down  right pgdn  XX    _                               XX    XX    XX
-  _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    @txtt                    XX           XX    XX    XX    XX
+  _     @term @altt @ctlt lctl  lalt  XX    XX    XX    XX    XX    @txtt                    @Bsvr        XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -22,4 +22,5 @@
     txtm (layer-toggle text_macros)
     ctlt (around lctl (layer-toggle normal_keyboard))
     altt (around lalt (layer-toggle normal_keyboard))
+    Bsvr (cmd-button "mscreensaver")
 )

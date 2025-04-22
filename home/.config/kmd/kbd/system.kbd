@@ -9,8 +9,8 @@
 (deflayer systemalt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     @kill XX    XX    @wmrb XX    XX    XX    XX    XX    @wmpo XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    @wmlo XX    XX    _                               XX    XX    XX
+  _     @kill XX    XX    @wmrb XX    XX    XX    XX    @wmlo @wmpo XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    @Ssvr XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -21,6 +21,7 @@
     wmlo (cmd-button "hyprctl dispatch exit")
     wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
     Sres (cmd-button "frestore")
+    Ssvr (cmd-button "mscreensaver --lock")
     wmhb (cmd-button "systemctl hibernate")
     wmpo (cmd-button "systemctl poweroff")
     wmrb (cmd-button "systemctl reboot")
