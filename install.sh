@@ -230,7 +230,7 @@ config_lemurs() {
     sudo systemctl enable lemurs.service
 }
 
-install_reset() {
+post_install_user_config() {
     set -e
     killall -SIGUSR2 waybar || :
     hyprctl dispatch forcerendererreload || :
@@ -244,8 +244,10 @@ install_reset() {
 [[ -z $INSTALL_CONFIG ]] || install_configs
 [[ -z $INSTALL_ICONS ]] || install_icons
 [[ -z $INSTALL_FONTS ]] || install_fonts
-[[ -z $INSTALL_HOME ]] || install_home
+if [[ $INSTALL_HOME ]]; then
+    install_home
+    post_install_user_config
+fi
 
-install_reset
 
 progress "Done."
