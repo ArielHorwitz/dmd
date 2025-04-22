@@ -28,7 +28,7 @@ When deleting, 'file-path' is the remote file.
 Configure defaults in: $CONFIG_FILE"
 CLI=(
     --prefix "args_"
-    -p "operation;Operation to perform (one of: ls, dl, up, rm, cat)"
+    -p "operation;Operation to perform (one of: ls, dl, up, rm, dlrm, cat)"
     -o "file-path;File path to operate on"
     -O "target-path;Target file path;;t"
     -O "username;Username;$config__username;u"
@@ -114,6 +114,14 @@ delete() {
     curl --user "${USERPASS}" -Q "DELE ${file_path}" "${ftp_server}"
 }
 
+download_delete() {
+    set -e
+    assert_file_arg "Download+Delete"
+    resolve_userpass
+    curl --user "${USERPASS}" -o "${target_path}" "${ftp_server}/${file_path}"
+    curl --user "${USERPASS}" -Q "DELE ${file_path}" "${ftp_server}"
+}
+
 show() {
     set -e
     assert_file_arg "Show"
@@ -127,6 +135,7 @@ case $args_operation in
     dl )   download ;;
     up )   upload ;;
     rm )   delete ;;
+    dlrm ) download_delete ;;
     cat )  show ;;
     *  )   exit_error "Invalid operation: $args_operation" ;;
 esac
