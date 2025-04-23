@@ -1,0 +1,27 @@
+name = "dev"
+
+[[arguments.required]]
+placeholder = "$dir_path$"
+
+[[window]]
+name = "Editor"
+command = ["lite-xl", "$dir_path$"]
+force_focus = true
+
+[[window]]
+name = "Terminal 1"
+command = ["alacritty", "--working-directory", "$dir_path$"]
+force_focus = true
+
+[[window]]
+name = "Terminal 2"
+command = ["alacritty", "--working-directory", "$dir_path$"]
+force_focus = true
+
+[[window]]
+name = "Git"
+command = [
+    "alacritty", "--working-directory", "$dir_path$",
+    "--command", "bash", "-c", "lazygit",
+]
+force_focus = true
