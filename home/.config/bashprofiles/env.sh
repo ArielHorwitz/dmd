@@ -1,5 +1,17 @@
 #! /bin/bash
 
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_BIN_HOME=$HOME/.local/bin
+export XDG_DOWNLOAD_DIR=$HOME/temp
+export XDG_DOCUMENTS_DIR=$HOME/temp
+export XDG_DESKTOP_DIR=$HOME/temp
+export XDG_MUSIC_DIR=$HOME/media/music
+export XDG_PICTURES_DIR=$HOME/media/pics
+export XDG_VIDEOS_DIR=$HOME/media/video
+
 export PAGER=bat
 export VISUAL=lite-xl
 export EDITOR=lite-xl
