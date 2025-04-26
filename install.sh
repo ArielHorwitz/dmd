@@ -18,6 +18,7 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
   h | home          Apply home data using homux
 
 \e[1;4mOPTIONS\e[0m
+  -r, --reload      Reload home config
   -f, --force       Do not stop on warnings
   -h, --help        Show this help and exit
 "
@@ -44,6 +45,7 @@ while [[ $# -gt 0 ]]; do
         f | fonts)           INSTALL_FONTS=1; shift ;;
         h | home)            INSTALL_HOME=1; shift ;;
         -s | --select )      shift; HOMUX_SELECTIONS+=("$1"); shift ;;
+        -r | --reload)       POST_INSTALL_RELOAD=1; shift ;;
         -f | --force)        INSTALL_FORCE=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
@@ -244,10 +246,10 @@ post_install_user_config() {
 [[ -z $INSTALL_CONFIG ]] || install_configs
 [[ -z $INSTALL_ICONS ]] || install_icons
 [[ -z $INSTALL_FONTS ]] || install_fonts
-if [[ $INSTALL_HOME ]]; then
-    install_home
-    post_install_user_config
-fi
+[[ -z $INSTALL_HOME ]] || install_home
 
+if [[ $POST_INSTALL_RELOAD ]]; then
+    "$SOURCE_DIR"/bin/reloadhome.sh
+fi
 
 progress "Done."
