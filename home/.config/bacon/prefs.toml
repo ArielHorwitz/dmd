@@ -59,7 +59,6 @@ command = ["cargo", "clippy", "--all-features", "--all-targets"]
 command = [
     "cargo", "clippy", "--all-features", "--all-targets",
     "--",
-    "--warn", "rust-2018-idioms",
     "--warn", "clippy::pedantic",
     "--allow", "clippy::missing_errors_doc",
 ]
