@@ -6,16 +6,19 @@ placeholder = "$dir_path$"
 [[window]]
 name = "Editor"
 command = ["lite-xl", "$dir_path$"]
+monitor = "eDP-1"
 force_focus = true
 
 [[window]]
 name = "Terminal 1"
 command = ["alacritty", "--working-directory", "$dir_path$"]
+monitor = "eDP-1"
 force_focus = true
 
 [[window]]
 name = "Terminal 2"
 command = ["alacritty", "--working-directory", "$dir_path$"]
+monitor = "eDP-1"
 force_focus = true
 
 [[window]]
@@ -24,4 +27,5 @@ command = [
     "alacritty", "--working-directory", "$dir_path$",
     "--command", "bash", "-c", "lazygit",
 ]
+monitor = "eDP-1"
 force_focus = true
