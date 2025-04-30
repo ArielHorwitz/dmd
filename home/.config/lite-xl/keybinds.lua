@@ -34,8 +34,10 @@ keymap.add(
     ["alt+shift+m"] = "markers:toggle-marker",
     ["alt+m"] = "markers:go-to-next-marker",
     ["alt+b"] = "git blame:toggle",
-    ["f1"] = "bookmarks:open-bookmark",
-    ["f2"] = "bookmarks:add-bookmark",
+    ["ctrl+f1"] = "bookmarks:open-bookmark",
+    ["ctrl+f2"] = "bookmarks:add-bookmark",
+    ["ctrl+shift+["] = "exfold:fold",
+    ["ctrl+shift+]"] = "exfold:expand",
   },
   true
 )

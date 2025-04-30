@@ -1,7 +1,9 @@
 autoinsert
 autosave
 bracketmatch
+bookmarks
 copyfilelocation
+exfold
 gitblame
 indentguide
 lintplus

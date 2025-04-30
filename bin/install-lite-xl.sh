@@ -95,6 +95,7 @@ install_lpm() {
 install_plugins() {
     set -e
     printcolor -s ok "Installing plugins..."
+    lpm repo add https://github.com/ArielHorwitz/lite-xl-plugins:dev
     lpm install --assume-yes $(< $args_plugins_file)
 }
 
