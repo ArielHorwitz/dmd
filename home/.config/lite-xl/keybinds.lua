@@ -4,6 +4,7 @@ local keymap = require "core.keymap"
 local add = keymap.add
 
 add({ ["ctrl+shift+r"] = "doc:reload" }, true)
+add({ ["ctrl+shift+l"] = "core:open-log" }, true)
 add({ ["ctrl+alt+shift+r"] = "core:restart" }, true)
 add({ ["ctrl+shift+e"] = "lsp:restart-servers" }, true)
 
