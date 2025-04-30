@@ -4,28 +4,33 @@ name = "dev"
 placeholder = "$dir_path$"
 
 [[window]]
-name = "Editor"
-command = ["lite-xl", "$dir_path$"]
-monitor = "eDP-1"
-force_focus = true
-
-[[window]]
-name = "Terminal 1"
-command = ["alacritty", "--working-directory", "$dir_path$"]
-monitor = "eDP-1"
-force_focus = true
-
-[[window]]
-name = "Terminal 2"
-command = ["alacritty", "--working-directory", "$dir_path$"]
-monitor = "eDP-1"
-force_focus = true
-
-[[window]]
 name = "Git"
 command = [
     "alacritty", "--working-directory", "$dir_path$",
     "--command", "bash", "-c", "lazygit",
 ]
-monitor = "eDP-1"
 force_focus = true
+monitor = "eDP-1"
+
+[[window]]
+name = "Editor"
+command = ["lite-xl", "$dir_path$"]
+force_focus = true
+monitor = "eDP-1"
+
+[[window]]
+name = "Terminal 1"
+command = ["alacritty", "--working-directory", "$dir_path$"]
+force_focus = true
+monitor = "eDP-1"
+
+[[window]]
+name = "Terminal 2"
+command = ["alacritty", "--working-directory", "$dir_path$"]
+force_focus = true
+monitor = "eDP-1"
+
+[[window]]
+name = "Layout"
+command = ["true"]
+force_focus = false
