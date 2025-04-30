@@ -1,45 +1,41 @@
 -- Default keybindings: https://lite-xl.com/en/documentation/keymap
 
 local keymap = require "core.keymap"
-local add = keymap.add
 
-add({ ["ctrl+shift+r"] = "doc:reload" }, true)
-add({ ["ctrl+shift+l"] = "core:open-log" }, true)
-add({ ["ctrl+alt+shift+r"] = "core:restart" }, true)
-add({ ["ctrl+shift+e"] = "lsp:restart-servers" }, true)
-
--- Navigation
-add({ ["alt+down"] = "root:switch-to-down" }, true)
-add({ ["alt+left"] = "root:switch-to-left" }, true)
-add({ ["alt+right"] = "root:switch-to-right" }, true)
-add({ ["alt+up"] = "root:switch-to-up" }, true)
-
-add({ ["alt+shift+down"] = "root:split-down" }, true)
-add({ ["alt+shift+left"] = "root:split-left" }, true)
-add({ ["alt+shift+right"] = "root:split-right" }, true)
-add({ ["alt+shift+up"] = "root:split-up" }, true)
-
-add({ ["ctrl+pagedown"] = "root:switch-to-next-tab" }, true)
-add({ ["ctrl+pageup"] = "root:switch-to-previous-tab" }, true)
-
-add({ ["ctrl+alt+pagedown"] = "root:move-tab-right" }, true)
-add({ ["ctrl+alt+pageup"] = "root:move-tab-left" }, true)
-
-add({ ["ctrl+shift+\\"] = "treeview:toggle-focus" }, true)
-
-
--- Editor
-add({ ["ctrl+alt+u"] = "doc:upper-case" }, true)
-add({ ["ctrl+alt+shift+u"] = "doc:lower-case" }, true)
-
-add({ ["f12"] = "macro:toggle-record" }, true)
-add({ ["shift+f12"] = "macro:play" }, true)
-
-
--- Plugins
-add({ ["alt+l"] = "hybrid-line-numbers:toggle" }, true)
-add({ ["alt+shift+m"] = "markers:toggle-marker" }, true)
-add({ ["alt+m"] = "markers:go-to-next-marker" }, true)
-add({ ["alt+b"] = "git blame:toggle" }, true)
-add({ ["f1"] = "bookmarks:open-bookmark" }, true)
-add({ ["f2"] = "bookmarks:add-bookmark" }, true)
+keymap.add(
+  {
+    -- Basic
+    ["ctrl+shift+r"] = "doc:reload",
+    ["ctrl+shift+l"] = "core:open-log",
+    ["ctrl+alt+shift+r"] = "core:restart",
+    ["ctrl+shift+e"] = "lsp:restart-servers",
+    -- Navigation
+    ["alt+down"] = "root:switch-to-down",
+    ["alt+left"] = "root:switch-to-left",
+    ["alt+right"] = "root:switch-to-right",
+    ["alt+up"] = "root:switch-to-up",
+    ["alt+shift+down"] = "root:split-down",
+    ["alt+shift+left"] = "root:split-left",
+    ["alt+shift+right"] = "root:split-right",
+    ["alt+shift+up"] = "root:split-up",
+    ["ctrl+pagedown"] = "root:switch-to-next-tab",
+    ["ctrl+pageup"] = "root:switch-to-previous-tab",
+    ["ctrl+alt+pagedown"] = "root:move-tab-right",
+    ["ctrl+alt+pageup"] = "root:move-tab-left",
+    ["ctrl+shift+\\"] = "treeview:toggle-focus",
+    -- Editor
+    ["ctrl+alt+u"] = "doc:upper-case",
+    ["ctrl+alt+shift+u"] = "doc:lower-case",
+    -- Macros
+    ["f12"] = "macro:toggle-record",
+    ["shift+f12"] = "macro:play",
+    -- Plugins
+    ["alt+l"] = "hybrid-line-numbers:toggle",
+    ["alt+shift+m"] = "markers:toggle-marker",
+    ["alt+m"] = "markers:go-to-next-marker",
+    ["alt+b"] = "git blame:toggle",
+    ["f1"] = "bookmarks:open-bookmark",
+    ["f2"] = "bookmarks:add-bookmark",
+  },
+  true
+)
