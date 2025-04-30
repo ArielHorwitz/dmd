@@ -18,9 +18,9 @@ style.scrollbar2 = { common.color "#414868" }
 
 style.syntax["normal"] = { common.color "#9abdf5" }
 style.syntax["symbol"] = { common.color "#00d2d2" }
-style.syntax["comment"] = { common.color "#414868" }
+style.syntax["comment"] = { common.color "#4e5858" }
 style.syntax["keyword"] = { common.color "#6749ff" }
-style.syntax["keyword2"] = { common.color "#51a200" }
+style.syntax["keyword2"] = { common.color "#00a1d2" }
 style.syntax["number"] = { common.color "#4078f2" }
 style.syntax["literal"] = { common.color "#c0caf5" }
 style.syntax["string"] = { common.color "#008b2e" }
