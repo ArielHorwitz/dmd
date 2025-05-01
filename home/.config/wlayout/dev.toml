@@ -1,36 +1,33 @@
-name = "dev"
-
 [[arguments.required]]
 placeholder = "$dir_path$"
 
-[[window]]
-name = "Git"
+[[arguments.optional]]
+placeholder = "$git$"
+default = "lazygit"
+
+[[command]]
 command = [
     "alacritty", "--working-directory", "$dir_path$",
-    "--command", "bash", "-c", "lazygit",
+    "--command", "bash", "-c", "$git$",
 ]
-force_focus = true
+focus_window = true
+monitor = "eDP-1"
+order = 200
+
+[[command]]
+command = ["alacritty", "--working-directory", "$dir_path$"]
+focus_window = true
 monitor = "eDP-1"
 
-[[window]]
-name = "Editor"
+[[command]]
+command = ["alacritty", "--working-directory", "$dir_path$"]
+focus_window = true
+monitor = "eDP-1"
+
+[[command]]
 command = ["lite-xl", "$dir_path$"]
-force_focus = true
+focus_window = true
 monitor = "eDP-1"
 
-[[window]]
-name = "Terminal 1"
-command = ["alacritty", "--working-directory", "$dir_path$"]
-force_focus = true
-monitor = "eDP-1"
-
-[[window]]
-name = "Terminal 2"
-command = ["alacritty", "--working-directory", "$dir_path$"]
-force_focus = true
-monitor = "eDP-1"
-
-[[window]]
-name = "Layout"
-command = ["true"]
-force_focus = false
+[[command]]
+command = ["hyprctl", "--batch", "dispatch movefocus u;dispatch movewindow d;dispatch movewindow l;dispatch movefocus r"]
