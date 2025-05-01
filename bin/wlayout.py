@@ -17,7 +17,6 @@ TITLE = "wlayout"
 DESCRIPTION = "Spawn commands and configure their layout in hyprland. Uses config provided by stdin or by arguments."
 EXAMPLE_CONFIG_TOML = """
 # wlayout example config file
-name = "Example layout"
 
 [[arguments.required]]
 placeholder = "$dir_path$"
@@ -30,40 +29,41 @@ default = "Default title"
 placeholder = "$terminal_monitor$"
 default = "eDP-1"
 
-# [[window]]
+# [[command]]
 # Only the command is required, everything else is optional
-# name = "string"
 # command = ["list", "of", "strings"]
-# force_focus = bool
+# enabled = bool
+# order = number
+# focus_window = bool
 # monitor = "string"
 # fullscreen = bool
 # wait_complete = bool
 # pause_seconds = number
 
-[[window]]
-name = "Directory contents"
+[[command]]
+# Directory contents
 command = [
     "alacritty", "--hold",
     "--title", "$title$",
     "--command", "bash", "-c", "ls -la $dir_path$"
 ]
 monitor = "$terminal_monitor$"
-force_focus = true
+focus_window = true
 
-[[window]]
+[[command]]
 command = ["bash", "-c", "sleep 1"]
-force_focus = false
+focus_window = false
 wait_complete = true
 
-[[window]]
-name = "Editor"
+[[command]]
+# Editor
 command = ["lite-xl", "$dir_path$"]
-force_focus = true
+focus_window = true
 monitor = "eDP-1"
 fullscreen = true
 pause_seconds = 0.5
 
-[[window]]
+[[command]]
 command = ["notify-send", "Layout complete"]
 """.strip()
 
@@ -121,23 +121,24 @@ def focus_pid_window(process, verbose):
     raise RuntimeError(f"Timed out waiting for window for PID {pid}")
 
 
-def open_window(window_details, verbose):
-    name = window_details.get("name", "Unnamed window")
-    monitor = window_details.get("monitor")
-    fullscreen = window_details.get("fullscreen")
-    force_focus = window_details.get("force_focus", True)
-    pause_seconds = window_details.get("pause_seconds")
-    wait_complete = window_details.get("wait_complete")
-    command = window_details["command"]
+def run_command(command_details, verbose):
+    if not command_details.get("enabled", True):
+        return
+    command = command_details["command"]
+    monitor = command_details.get("monitor")
+    fullscreen = command_details.get("fullscreen")
+    focus_window = command_details.get("focus_window")
+    pause_seconds = command_details.get("pause_seconds")
+    wait_complete = command_details.get("wait_complete")
     if verbose:
-        print(f"{name} {command}")
+        print(command)
     process = subprocess.Popen(command)
     pid = process.pid
     if verbose:
         print(f"PID: {pid}")
     else:
         print(pid)
-    if force_focus:
+    if focus_window:
         focus_pid_window(process, verbose)
     if monitor:
         subprocess.run(
@@ -215,14 +216,17 @@ def main():
         exit()
     if args.config_name:
         config_path = Path(config_home) / TITLE / f"{args.config_name}.toml"
+        config_name = str(config_path)
         if args.verbose:
             print(f"Reading config from {config_path}")
         config_text = config_path.read_text()
     elif args.config_file:
+        config_name = str(args.config_file)
         if args.verbose:
             print(f"Reading config from {args.config_file}")
         config_text = Path(args.config_file).read_text()
     else:
+        config_name = "<stdin>"
         if args.verbose:
             print("Reading config from stdin")
         config_text = sys.stdin.read()
@@ -238,10 +242,14 @@ def main():
         exit()
     config = tomllib.loads(config_text)
     if args.verbose:
-        config_name = config.get("name", "Unnamed")
         print(f"Config: {config_name}")
-    for window_info in config["window"]:
-        open_window(window_info, args.verbose)
+    sorted_commands = sorted(
+        enumerate(config["command"]),
+        key=lambda i_w: i_w[1].get("order", 100 + i_w[0]),
+    )
+    commands = [w for (i, w) in sorted_commands]
+    for command_details in commands:
+        run_command(command_details, args.verbose)
 
 
 if __name__ == "__main__":
