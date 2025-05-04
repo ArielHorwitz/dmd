@@ -93,6 +93,8 @@ for ((i=0; i<args_repeat; i++)); do
             * ) exit_error "Unknown button: $button" ;;
         esac
         ydotool "${ydt_args[@]}"
-        sleep "$args_delay"
+        if [[ $args_delay != 0 ]]; then
+            sleep "$args_delay"
+        fi
     done
 done
