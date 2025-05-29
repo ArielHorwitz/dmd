@@ -28,16 +28,12 @@ ctrl-b = "toggle-backtrace"
 ctrl-s = "toggle-summary"
 ctrl-w = "toggle-wrap"
 
-i = "job:initial"
 c = "job:check"
 l = "job:clippy"
 p = "job:clippy-pedantic"
 f = "job:format"
-x = "job:fix"
 d = "job:doc-open"
-t = "job:test"
-r = "job:run"
-s = "job:lint-script"
+t = "job:lint-script"
 
 
 [jobs.check]
