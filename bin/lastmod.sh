@@ -13,8 +13,9 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 # echo "$CLI" >&2
 eval "$CLI" || exit 1
 
-if [[ $args_first ]]; then
-    ls -1t "$args_dir_path" | tail -n1
-else
-    ls -1t "$args_dir_path" | head -n1
+sort_args=(--numeric-sort)
+if [[ -z $args_first ]]; then
+    sort_args+=(--reverse)
 fi
+
+find "$args_dir_path" -maxdepth 1 -type f -printf '%T@ %p\n' | sort "${sort_args[@]}" | head -n1 | cut -d' ' -f2-
