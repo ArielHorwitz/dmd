@@ -13,6 +13,7 @@ alias rp="rhinopuffin"
 alias gp="geckopanda"
 alias batn="bat --style=rule,snip,numbers"
 alias batf="bat --style=full"
+alias batj="bat --style=full -l json"
 
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
