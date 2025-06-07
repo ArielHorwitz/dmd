@@ -1,7 +1,7 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @wmfP XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @klps XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr @wmfp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     @Wkil XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr @wmfp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort @wmfC _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
@@ -9,7 +9,7 @@
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     @Wfkl XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
@@ -22,7 +22,8 @@
     ;; Launch and close
     wtrm (cmd-button "alacritty & disown")
     wrof (cmd-button "pkill rofi; rofi -show drun & disown")
-    klps (cmd-button "hyprctl dispatch killactive")
+    Wkil (cmd-button "hyprctl dispatch killactive")
+    Wfkl (cmd-button "hyprctl dispatch forcekillactive")
     kltb C-w
     tabr C-tab
     tabl C-S-tab
