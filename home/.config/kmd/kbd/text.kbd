@@ -4,6 +4,14 @@
   _     XX    XX    XX    XX    XX    XX    @undo XX    @redo XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @sela @save XX    XX    XX    XX    bspc  XX    del   XX    XX    XX    _                               XX    XX
   _     XX    XX    XX    XX    XX    XX    @copy @cut  @past XX    _                        XX           XX    XX    XX    XX
+  _     _     @Ealt             _                 _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer editing_alt
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    @Eact XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    @Eacs XX    XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer text
@@ -34,6 +42,11 @@
     txt1 (layer-toggle text_alt)
     txt2 (around lsft (layer-toggle text_alt))
     sftc (tap-next-press caps rsft)
+
+
+    Ealt (layer-toggle editing_alt)
+    Eacs (cmd-button "clipcat-suspend")
+    Eact (cmd-button "clipcat-suspend --toggle")
     copy C-c
     past C-v
     cut  C-x
