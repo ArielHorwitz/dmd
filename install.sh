@@ -54,10 +54,17 @@ done
 
 INSTALLATION_OPERATION=
 INSTALLATION_COMPONENTS=(packages crates scripts config icons fonts home)
+NEEDS_ROOT=
+ROOT_COMPONENTS=(packages crates scripts config icons fonts)
 for component_name in ${INSTALLATION_COMPONENTS[@]}; do
     installation_component_name="INSTALL_${component_name^^}"
     [[ -z $INSTALL_ALL ]] || declare "${installation_component_name}=1"
-    [[ -z ${!installation_component_name} ]] || INSTALLATION_OPERATION=1
+    if [[ ${!installation_component_name} ]]; then
+        INSTALLATION_OPERATION=1
+        if [[ " ${ROOT_COMPONENTS[*]} " == *" ${component_name} "* ]]; then
+            NEEDS_ROOT=1
+        fi
+    fi
 done
 [[ $INSTALLATION_OPERATION ]] || exit_error "Nothing to do (try --help)"
 
@@ -79,7 +86,7 @@ FONTS_TARGET_DIR=/usr/share/fonts
 
 [[ -d $SETUP_DIR ]] || exit_error "Setup directory not found: ${SETUP_DIR}"
 [[ $EUID -ne 0 ]] || exit_error "Do not run as root."
-sudo -v
+[[ -z $NEEDS_ROOT ]] || sudo -v
 
 
 install_packages() {
