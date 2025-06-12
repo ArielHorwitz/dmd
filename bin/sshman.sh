@@ -68,6 +68,7 @@ add_identities() {
             ssh-add "$privkey"
         fi
     done
+    echo "Finished adding identities."
 }
 
 
