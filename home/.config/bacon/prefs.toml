@@ -33,7 +33,6 @@ l = "job:clippy"
 p = "job:clippy-pedantic"
 f = "job:format"
 d = "job:doc-open"
-t = "job:lint-script"
 
 
 [jobs.check]
@@ -65,36 +64,12 @@ command = ["cargo", "fmt"]
 need_stdout = true
 on_success = "back"
 
-[jobs.test]
-command = ["cargo", "test"]
-need_stdout = true
-
-[jobs.fix]
-command = ["cargo", "fix"]
-need_stdout = true
-on_success = "back"
-
 [jobs.doc]
 command = ["cargo", "doc", "--all-features"]
 
 [jobs.doc-open]
 command = ["cargo", "doc", "--all-features", "--open"]
 on_success = "back" # so that we don't open the browser at each change
-
-[jobs.run]
-command = ["cargo", "run"]
-need_stdout = true
-allow_warnings = true
-background = false
-
-[jobs.ex]
-command = ["cargo", "run", "--example"]
-need_stdout = true
-allow_warnings = true
-
-[jobs.lint-script]
-command = ["bash", "-c", "scripts/lint.sh"]
-need_stdout = true
 
 
 # [export]
