@@ -229,16 +229,6 @@ install_home() {
 }
 
 
-config_lemurs() {
-    progress "Configuring lemurs..."
-    # Add i3 in selection menu
-    printf '#! /bin/sh\nexec i3' | sudo tee /etc/lemurs/wms/i3
-    sudo chmod 755 /etc/lemurs/wms/i3
-    # Enable the systemd service
-    sudo systemctl disable display-manager.service
-    sudo systemctl enable lemurs.service
-}
-
 post_install_user_config() {
     set -e
     killall -SIGUSR2 waybar || :
