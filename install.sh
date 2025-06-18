@@ -18,6 +18,8 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
   h | home          Apply home data using homux
 
 \e[1;4mOPTIONS\e[0m
+  -s, --select      Homux selections
+  --no-hostname     Do not implicitly add hostname to homux selections
   -r, --reload      Reload home config
   -f, --force       Do not stop on warnings
   -h, --help        Show this help and exit
@@ -33,6 +35,7 @@ warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" | tee /dev/fd/3 ; }
 error () { printf "\e[31m$1\e[0m\n" | tee /dev/fd/3 ; }
 exit_error() { error "$1"; exit 1; }
 
+HOMUX_HOSTNAME=1
 HOMUX_SELECTIONS=()
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -45,6 +48,7 @@ while [[ $# -gt 0 ]]; do
         f | fonts)           INSTALL_FONTS=1; shift ;;
         h | home)            INSTALL_HOME=1; shift ;;
         -s | --select )      shift; HOMUX_SELECTIONS+=("$1"); shift ;;
+        --no-hostname )      HOMUX_HOSTNAME= ; shift ;;
         -r | --reload)       POST_INSTALL_RELOAD=1; shift ;;
         -f | --force)        INSTALL_FORCE=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
@@ -224,6 +228,12 @@ install_home() {
         debug "Adding homux selection: $selection"
         homux_args+=(-s "$selection")
     done
+    if [[ "${HOMUX_SELECTIONS[*]}" && $HOMUX_HOSTNAME ]]; then
+        local hostname
+        hostname=$(hostnamectl hostname)
+        debug "Adding hostname as homux selection: $hostname"
+        homux_args+=(-s "$hostname")
+    fi
     progress "Applying home directory..."
     homux "${homux_args[@]}"
 }
