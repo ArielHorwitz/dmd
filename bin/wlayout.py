@@ -35,6 +35,7 @@ default = "eDP-1"
 # enabled = bool
 # order = number
 # focus_window = bool
+# wait_focus_seconds = number
 # monitor = "string"
 # fullscreen = bool
 # wait_complete = bool
@@ -66,6 +67,7 @@ pause_seconds = 0.5
 [[command]]
 command = ["notify-send", "Layout complete"]
 """.strip()
+DEFAULT_WAIT_FOCUS_SECONDS = 5
 
 
 def get_hyprland_json(*args):
@@ -102,10 +104,9 @@ def get_window_details(pid=None):
     return None
 
 
-def focus_pid_window(process, verbose):
+def focus_pid_window(process, verbose, max_wait_seconds=5):
     pid = process.pid
     sleep_time_seconds = 0.05
-    max_wait_seconds = 2
     max_iterations = int(max_wait_seconds / sleep_time_seconds)
     for _ in range(max_iterations):
         time.sleep(sleep_time_seconds)
@@ -128,6 +129,10 @@ def run_command(command_details, verbose):
     monitor = command_details.get("monitor")
     fullscreen = command_details.get("fullscreen")
     focus_window = command_details.get("focus_window")
+    wait_focus_seconds = command_details.get(
+        "wait_focus_seconds",
+        DEFAULT_WAIT_FOCUS_SECONDS,
+    )
     pause_seconds = command_details.get("pause_seconds")
     wait_complete = command_details.get("wait_complete")
     if verbose:
@@ -139,7 +144,7 @@ def run_command(command_details, verbose):
     else:
         print(pid)
     if focus_window:
-        focus_pid_window(process, verbose)
+        focus_pid_window(process, verbose, wait_focus_seconds)
     if monitor:
         subprocess.run(
             ["hyprctl", "dispatch", "movewindow", f"mon:{monitor}"],
