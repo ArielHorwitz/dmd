@@ -6,15 +6,6 @@ placeholder = "$git$"
 default = "lazygit"
 
 [[command]]
-command = [
-    "alacritty", "--working-directory", "$dir_path$",
-    "--command", "bash", "-c", "$git$",
-]
-focus_window = true
-monitor = "eDP-1"
-order = 200
-
-[[command]]
 command = ["alacritty", "--working-directory", "$dir_path$"]
 focus_window = true
 monitor = "eDP-1"
@@ -31,3 +22,14 @@ monitor = "eDP-1"
 
 [[command]]
 command = ["hyprctl", "--batch", "dispatch movefocus u;dispatch movewindow d;dispatch movewindow l;dispatch movefocus r"]
+
+[[command]]
+command = [
+    "alacritty", "--working-directory", "$dir_path$",
+    "--command", "bash", "-c", "$git$",
+]
+focus_window = true
+monitor = "eDP-1"
+
+[[command]]
+command = ["spacemux", "--move-special"]
