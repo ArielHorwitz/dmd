@@ -106,6 +106,7 @@ class Monitor:
     focused: bool
     id: int = field(repr=False)
     workspace_id: int = field(repr=False)
+    special_workspace_id: int = field(repr=False)
     raw_data: dict = field(repr=False)
 
     @classmethod
@@ -116,6 +117,7 @@ class Monitor:
             focused=json_data["focused"],
             id=json_data["id"],
             workspace_id=json_data["activeWorkspace"]["id"],
+            special_workspace_id=json_data["specialWorkspace"]["id"],
             raw_data=json_data,
         )
 
