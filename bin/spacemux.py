@@ -139,13 +139,22 @@ class Workspace:
 
     def is_gridable(self, monitor_count: int = 999):
         try:
-            row, col, monitor = self.name.split(".")
+            parts = self.name.removeprefix("special:").split(".")
+            row = parts[0]
+            col = parts[1]
             int(row)
             int(col)
+            if self.is_special:
+                return True
+            monitor = parts[2]
             monitor = int(monitor)
-        except ValueError:
+        except (ValueError, IndexError):
             return False
         return monitor < monitor_count
+
+    @cached_property
+    def is_special(self):
+        return self.name.startswith("special:")
 
     @cached_property
     def grid_coords(self):
@@ -287,13 +296,42 @@ def move_workspace(workspace_name):
     )
 
 
+def toggle_special():
+    state = State.get()
+    x, y = state.focused_workspace.grid_coords
+    workspace_name = f"{x}.{y}"
+    print(workspace_name)
+    result = run_hypr_command(
+        "dispatch",
+        "togglespecialworkspace",
+        f"{workspace_name}"
+    )
+    print(result)
+
+
+def move_special():
+    state = State.get()
+    x, y = state.focused_workspace.grid_coords
+    workspace_name = f"{x}.{y}"
+    print(workspace_name)
+    result = run_hypr_command(
+        "dispatch",
+        "movetoworkspacesilent",
+        f"special:{workspace_name}"
+    )
+    print(result)
+
+
 def collect_windows(off_grid_only: bool = False):
     state = State.get()
     target_ws = state.focused_workspace
     eprint(f"Target: {target_ws}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if off_grid_only and ws.is_gridable(len(state.monitors)):
+        if off_grid_only and (
+            ws.is_gridable(len(state.monitors))
+            and not ws.is_special
+        ):
             continue
         eprint(f"Collecting: {window}")
         run_hypr_command(
@@ -353,6 +391,16 @@ def main():
         help="move focused window to workspace",
     )
     parser_command.add_argument(
+        "--toggle-special",
+        action="store_true",
+        help="toggle the special workspace",
+    )
+    parser_command.add_argument(
+        "--move-special",
+        action="store_true",
+        help="move to the special workspace",
+    )
+    parser_command.add_argument(
         "-c",
         "--collect",
         action="store_true",
@@ -392,6 +440,10 @@ def main():
     elif args.monitors:
         print_list("monitors", args.verbose)
         exit()
+    elif args.toggle_special:
+        toggle_special()
+    elif args.move_special:
+        move_special()
     elif args.switch:
         switch_workspace(args.switch)
     elif args.move:
