@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import re
 import os
 import subprocess
 import sys
@@ -200,22 +201,22 @@ class State:
     def get(cls):
         monitors = {
             (monitor := Monitor.from_hypr_json(monitor_data)).id: monitor
-            for monitor_data in json.loads(run_hypr_command("monitors", "-j"))
+            for monitor_data in hypr_json("monitors")
         }
         workspaces = {
             (ws := Workspace.from_hypr_json(ws_data)).id: ws
-            for ws_data in json.loads(run_hypr_command("workspaces", "-j"))
+            for ws_data in hypr_json("workspaces")
         }
         windows = {
             (window := Window.from_hypr_json(client_data)).address: window
-            for client_data in json.loads(run_hypr_command("clients", "-j"))
+            for client_data in hypr_json("clients")
         }
         workspace_grid = {ws.grid_coords: ws.id for ws in workspaces.values()}
         ungridable_workspaces = tuple(
             ws.id for ws in workspaces.values() if not ws.is_gridable(len(monitors))
         )
-        active_workspace = json.loads(run_hypr_command("activeworkspace", "-j"))
-        active_window = json.loads(run_hypr_command("activewindow", "-j"))
+        active_workspace = hypr_json("activeworkspace")
+        active_window = hypr_json("activewindow")
         return cls(
             monitors=monitors,
             workspaces=workspaces,
@@ -278,48 +279,31 @@ def switch_workspace(workspace_name):
     focused_monitor = state.focused_monitor
     commands = []
     for i, monitor in enumerate(state.monitors.values()):
-        commands.append(f"dispatch focusmonitor {monitor.name}")
+        commands.append(f"focusmonitor {monitor.name}")
         commands.append(
-            "dispatch "
             "focusworkspaceoncurrentmonitor "
             f"name:{workspace_name}.{i}"
         )
-    commands.append(f"dispatch focusmonitor {focused_monitor.name}")
-    run_hypr_command(*commands, batch_commands=True)
+    commands.append(f"focusmonitor {focused_monitor.name}")
+    hypr_dispatch(*commands, batch_commands=True)
 
 
 def move_workspace(workspace_name):
-    run_hypr_command(
-        "dispatch",
-        "movetoworkspacesilent",
-        f"name:{workspace_name}.0",
-    )
+    hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}.0")
 
 
 def toggle_special():
     state = State.get()
     x, y = state.focused_workspace.grid_coords
     workspace_name = f"{x}.{y}"
-    print(workspace_name)
-    result = run_hypr_command(
-        "dispatch",
-        "togglespecialworkspace",
-        f"{workspace_name}"
-    )
-    print(result)
+    hypr_dispatch(f"togglespecialworkspace {workspace_name}")
 
 
 def move_special():
     state = State.get()
     x, y = state.focused_workspace.grid_coords
     workspace_name = f"{x}.{y}"
-    print(workspace_name)
-    result = run_hypr_command(
-        "dispatch",
-        "movetoworkspacesilent",
-        f"special:{workspace_name}"
-    )
-    print(result)
+    hypr_dispatch(f"movetoworkspacesilent special:{workspace_name}")
 
 
 def collect_windows(off_grid_only: bool = False):
@@ -334,24 +318,51 @@ def collect_windows(off_grid_only: bool = False):
         ):
             continue
         eprint(f"Collecting: {window}")
-        run_hypr_command(
-            "dispatch",
-            "movetoworkspacesilent",
-            f"name:{target_ws.name},address:{window.address}",
+        hypr_dispatch(
+            "movetoworkspacesilent "
+            f"name:{target_ws.name},address:{window.address}"
         )
 
 
 def run_hypr_command(*args, batch_commands=False):
     if batch_commands:
-        args = ("--batch", ";".join(args))
-    result = subprocess.run(
-        ("hyprctl", *args),
-        capture_output=True,
-        check=True,
-    )
+        command = ("hyprctl", "--batch", ";".join(args))
+    else:
+        command = ("hyprctl", *args)
+    result = subprocess.run(command, capture_output=True, check=True)
     if result.stderr:
-        eprint(result.stderr.decode())
+        raise RuntimeError(f"command {command!r} failed: {result.stderr.decode()}")
     return result.stdout.decode()
+
+
+def hypr_dispatch(*args, batch_commands=False):
+    if batch_commands:
+        command = (
+            "hyprctl",
+            "--batch",
+            ";".join(f"dispatch {c}" for c in args),
+        )
+    else:
+        command = ("hyprctl", "dispatch", *args)
+    result = subprocess.run(command, capture_output=True, check=True)
+    stderr = result.stderr.decode()
+    stdout = result.stdout.decode()
+    success = bool(re.fullmatch(r'\s*(?:ok\s*)*', stdout.strip()))
+    if not success:
+        stderr = f"stdout: '{stdout}' stderr: '{stderr}'"
+    if stderr:
+        raise RuntimeError(f"command {command!r} failed: {stderr}")
+    return stdout
+
+
+def hypr_json(*args):
+    command = ("-j", *args)
+    result = run_hypr_command(*command)
+    try:
+        data = json.loads(result)
+    except json.decoder.JSONDecodeError as e:
+        raise RuntimeError(f"decoding result of command {command!r} failed") from e
+    return data
 
 
 def create_missing_config(file_path):
