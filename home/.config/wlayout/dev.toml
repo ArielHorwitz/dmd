@@ -2,8 +2,8 @@
 placeholder = "$dir_path$"
 
 [[arguments.optional]]
-placeholder = "$git$"
-default = "lazygit"
+placeholder = "$editor$"
+default = "lite-xl"
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir_path$"]
@@ -16,7 +16,7 @@ focus_window = true
 monitor = "eDP-1"
 
 [[command]]
-command = ["lite-xl", "$dir_path$"]
+command = ["$editor$", "$dir_path$"]
 focus_window = true
 monitor = "eDP-1"
 
@@ -26,7 +26,7 @@ command = ["hyprctl", "--batch", "dispatch movefocus u;dispatch movewindow d;dis
 [[command]]
 command = [
     "alacritty", "--working-directory", "$dir_path$",
-    "--command", "bash", "-c", "$git$",
+    "--command", "bash", "-c", "lazygit",
 ]
 focus_window = true
 monitor = "eDP-1"
