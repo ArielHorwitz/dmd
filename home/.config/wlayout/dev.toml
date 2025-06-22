@@ -6,6 +6,17 @@ placeholder = "$editor$"
 default = "lite-xl"
 
 [[command]]
+command = [
+    "alacritty", "--working-directory", "$dir_path$",
+    "--command", "bash", "-c", "lazygit",
+]
+focus_window = true
+
+[[command]]
+command = ["spacemux", "--move-special"]
+pause_seconds = 0.5
+
+[[command]]
 command = ["alacritty", "--working-directory", "$dir_path$"]
 focus_window = true
 monitor = "eDP-1"
@@ -22,14 +33,3 @@ monitor = "eDP-1"
 
 [[command]]
 command = ["hyprctl", "--batch", "dispatch movefocus u;dispatch movewindow d;dispatch movewindow l;dispatch movefocus r"]
-
-[[command]]
-command = [
-    "alacritty", "--working-directory", "$dir_path$",
-    "--command", "bash", "-c", "lazygit",
-]
-focus_window = true
-monitor = "eDP-1"
-
-[[command]]
-command = ["spacemux", "--move-special"]
