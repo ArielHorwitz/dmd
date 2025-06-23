@@ -4,6 +4,7 @@ bracketmatch
 bookmarks
 copyfilelocation
 exfold
+finalnewline
 gitblame
 indentguide
 lintplus
