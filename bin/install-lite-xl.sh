@@ -34,7 +34,6 @@ clear_installed() {
 
 install_lite_xl() {
     set -e
-    sudo -v
     cd $TMPDIR
 
     printcolor -s ok "Downloading latest release [$(gh-latest lite-xl)]..."
