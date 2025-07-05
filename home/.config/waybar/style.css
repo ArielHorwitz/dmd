@@ -81,10 +81,6 @@ button:hover {
     color: rgba(255, 255, 255, 0.8);
 }
 
-#workspaces button.active {
-    box-shadow: inset 0 -3px #ffffff;
-}
-
 #workspaces button.urgent {
     background-color: rgba(120, 0, 0, 0.8);
 }

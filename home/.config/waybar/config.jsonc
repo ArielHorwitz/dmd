@@ -121,6 +121,7 @@
         "format": "󰨇 {name}",
         "active-only": true,
         "show-special": true,
+        "special-visible-only": true,
     },
     "hyprland/window": {
         "icon": true,
