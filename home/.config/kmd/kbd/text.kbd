@@ -9,9 +9,9 @@
 (deflayer editing_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    @Eact XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    @Eacs XX    XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Ecbt @Ecbs @Ecbc XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    @Ecbr @Ecbf XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer text
@@ -45,8 +45,11 @@
 
 
     Ealt (layer-toggle editing_alt)
-    Eacs (cmd-button "clipcat-suspend")
-    Eact (cmd-button "clipcat-suspend --toggle")
+    Ecbs (cmd-button "clipcat-suspend")
+    Ecbt (cmd-button "clipcat-suspend --toggle")
+    Ecbf (cmd-button "clipcat-menu insert")
+    Ecbr (cmd-button "clipcat-menu remove")
+    Ecbc (cmd-button "clipcatctl clear")
     copy C-c
     past C-v
     cut  C-x
