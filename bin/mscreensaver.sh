@@ -39,7 +39,7 @@ for i in ${!monitors[@]}; do
     pid=$!
     echo "PID: $pid"
     pids+=("$pid")
-    sleep 0.1
+    sleep 0.3
     ps "$pid" >/dev/null || exit_error "r-matrix command failed"
     hyprctl dispatch fullscreen 2
 done
