@@ -7,4 +7,3 @@ for device_name in ${device_names[@]}; do
     echo "Switching '$device_name' to layout index $keyboard_layout_index" >&2
     hyprctl switchxkblayout "$device_name" "$keyboard_layout_index"
 done
-
