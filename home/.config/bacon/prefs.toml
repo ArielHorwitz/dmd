@@ -1,7 +1,7 @@
 # This is a preferences file for the bacon tool
 # https://dystroy.org/bacon/config/
 
-summary = true
+summary = false
 wrap = true
 reverse = false
 help_line = false
