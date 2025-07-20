@@ -12,6 +12,7 @@
         "hyprland/window",
     ],
     "modules-center": [
+        "hyprland/language",
     ],
     "modules-right": [
         "network",
@@ -127,4 +128,9 @@
         "icon": true,
         "separate-outputs": true,
     },
+    "hyprland/language": {
+        "keyboard-name": "kmd",
+        "format-en": "English",
+        "format-he": "עברית",
+    }
 }
