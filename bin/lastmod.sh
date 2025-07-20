@@ -8,6 +8,7 @@ CLI=(
     --prefix "args_"
     -o "dir-path;Path to directory;."
     -O "filter;Filter files by pattern (shell glob);*;f"
+    -O "file-types;File types (files, dirs, all);files;t"
     -f "first;Show first modified instead of last;;F"
     -f "name;Consider name instead of modified time;;n"
 )
@@ -25,4 +26,20 @@ if [[ $args_name ]]; then
     file_format='0 %p\n'
 fi
 
-find "$args_dir_path" -maxdepth 1 -type f -name "$args_filter" -printf "$file_format" | sort "${sort_args[@]}" | head -n1 | cut -d' ' -f2-
+find_args=(
+    "$args_dir_path"
+    -maxdepth 1
+    -name "$args_filter"
+)
+
+if [[ $args_file_types = "files" ]]; then
+    find_args+=(-type f)
+elif [[ $args_file_types = "dirs" ]]; then
+    find_args+=(-type d)
+elif [[ $args_file_types != "all" ]]; then
+    exit_error "Unknown file type: $args_file_types"
+fi
+
+find_args+=(-printf "$file_format")
+
+find "${find_args[@]}" | sort "${sort_args[@]}" | head -n1 | cut -d' ' -f2-
