@@ -236,6 +236,36 @@ install_home() {
     fi
     progress "Applying home directory..."
     homux "${homux_args[@]}"
+    set_perms
+}
+
+
+set_perms() {
+    set -e
+    local perm
+    local target_path
+    local perm_file
+    local file_paths
+    local old_mode
+    local perms_dir="$SOURCE_DIR/setup/perms"
+    debug "Setting permissions according to $perms_dir (user: $USER $EUID)"
+    for perm_file in "$perms_dir"/*; do
+        [[ -f "$perm_file" ]] || continue
+        debug "Reading $perm_file"
+        perm=$(basename "$perm_file")
+        readarray -t file_paths < "$perm_file"
+        for path in "${file_paths[@]}"; do
+            [[ -n "$path" ]] || continue
+            target_path="$HOME/$path"
+            if [[ ! -e "$target_path" ]]; then
+                warn "Ignoring chmod for non-existent path $target_path"
+                continue
+            fi
+            old_mode=$(stat -c %a "$target_path")
+            debug "chmodding $target_path [$old_mode -> $perm]"
+            chmod "$perm" "$target_path"
+        done
+    done
 }
 
 
