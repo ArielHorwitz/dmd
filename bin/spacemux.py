@@ -412,72 +412,7 @@ def set_monitor_lock(*, lock=None, monitor=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(TITLE, description="Manage workspaces.")
-    parser_command = parser.add_mutually_exclusive_group()
-    parser_command.add_argument(
-        "-l",
-        "--workspaces",
-        action="store_true",
-        help="list all workspaces details",
-    )
-    parser_command.add_argument(
-        "-L",
-        "--windows",
-        action="store_true",
-        help="list all windows details",
-    )
-    parser_command.add_argument(
-        "--monitors",
-        action="store_true",
-        help="list all monitors details",
-    )
-    parser_command.add_argument(
-        "-s",
-        "--switch",
-        help="switch to workspace",
-    )
-    parser_command.add_argument(
-        "-m",
-        "--move",
-        help="move focused window to workspace",
-    )
-    parser_command.add_argument(
-        "-k",
-        "--lock-monitor",
-        help="lock a monitor",
-    )
-    parser_command.add_argument(
-        "-K",
-        "--unlock-monitor",
-        help="unlock a monitor",
-    )
-    parser_command.add_argument(
-        "--toggle-lock-focused-monitor",
-        action="store_true",
-        help="toggle lock of the focused monitor",
-    )
-    parser_command.add_argument(
-        "--toggle-special",
-        action="store_true",
-        help="toggle the special workspace",
-    )
-    parser_command.add_argument(
-        "--move-special",
-        action="store_true",
-        help="move to the special workspace",
-    )
-    parser_command.add_argument(
-        "-c",
-        "--collect",
-        action="store_true",
-        help="collect windows from unknown workspaces to the current workspace",
-    )
-    parser_command.add_argument(
-        "-C",
-        "--collect-all",
-        action="store_true",
-        help="collect all windows to the current workspace",
-    )
+    parser = argparse.ArgumentParser(TITLE, description="Manage workspaces")
     parser.add_argument(
         "-n",
         "--nonotification",
@@ -495,35 +430,71 @@ def main():
         action="store_true",
         help="be verbose",
     )
+    subparsers = parser.add_subparsers(dest="command")
+    info_parser = subparsers.add_parser("info", help="Show info")
+    info_parser.add_argument(
+        "info_type",
+        choices=["workspaces", "windows", "monitors"],
+        help="Info type",
+    )
+    switch_parser = subparsers.add_parser("switch", help="Switch to workspace")
+    switch_parser.add_argument("workspace", help="Workspace to switch to")
+    move_parser = subparsers.add_parser("move", help="Move focused window to workspace")
+    move_parser.add_argument("workspace", help="Workspace to move window to")
+    lock_parser = subparsers.add_parser("lock", help="Set or toggle monitor lock state")
+    lock_parser.add_argument(
+        "lock",
+        choices=["lock", "unlock", "toggle"],
+        default="toggle",
+        nargs="?",
+        help="Set the lock state (defaults to toggle)",
+    )
+    lock_parser.add_argument(
+        "--monitor",
+        help="Monitor to set lock state (defaults to focused monitor)",
+    )
+    special_parser = subparsers.add_parser("special", help="Manage the special workspace")
+    special_parser.add_argument(
+        "--move",
+        action="store_true",
+        help="Move the focused window to the special workspace instead of toggling",
+    )
+    collect_parser = subparsers.add_parser(
+        "collect",
+        help="Collect windows from unknown workspaces to the current workspace",
+    )
+    collect_parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Collect from all workspaces",
+    )
     args = parser.parse_args()
 
-    if args.workspaces:
-        print_list("workspaces", args.verbose)
+    if args.command == "info":
+        print_list(args.info_type, args.verbose)
         exit()
-    elif args.windows:
-        print_list("windows", args.verbose)
-        exit()
-    elif args.monitors:
-        print_list("monitors", args.verbose)
-        exit()
-    elif args.lock_monitor:
-        set_monitor_lock(lock=True, monitor=args.lock_monitor)
-    elif args.unlock_monitor:
-        set_monitor_lock(lock=False, monitor=args.unlock_monitor)
-    elif args.toggle_lock_focused_monitor:
-        set_monitor_lock()
-    elif args.toggle_special:
-        toggle_special()
-    elif args.move_special:
-        move_special()
-    elif args.switch:
-        switch_workspace(args.switch)
-    elif args.move:
-        move_workspace(args.move)
-    elif args.collect:
-        collect_windows(off_grid_only=True)
-    elif args.collect_all:
-        collect_windows()
+    elif args.command == "lock":
+        if args.lock == "lock":
+            lock = True
+        elif args.lock == "unlock":
+            lock = False
+        else:
+            lock = None
+        set_monitor_lock(lock=lock, monitor=args.monitor)
+    elif args.command == "special":
+        if args.move:
+            move_special()
+        else:
+            toggle_special()
+    elif args.command == "switch":
+        switch_workspace(args.workspace)
+    elif args.command == "move":
+        move_workspace(args.workspace)
+    elif args.command == "collect":
+        if args.all:
+            collect_windows()
+        else:
+            collect_windows(off_grid_only=True)
 
     create_missing_config(Path(args.config_file))
     config = tomllib.loads(args.config_file.read_text())
