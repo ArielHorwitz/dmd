@@ -21,6 +21,8 @@ WORKSPACE_OCCUPIED = ""
 WORKSPACE_VISIBLE = ""
 WORKSPACE_FOCUS = ""
 USER = os.getenv("USER")
+VARIABLE_DIR = Path(f"/home/{USER}/.local/share/spacemux")
+LOCKED_MONITORS_FILE = VARIABLE_DIR / "locked_monitors"
 DEFAULT_CONFIG_FILE = Path(f"/home/{USER}/.config/{TITLE}/config.toml")
 DEFAULT_CONFIG_TOML = """
 rows = 2
@@ -50,16 +52,28 @@ def print_layout(
     verbose: bool,
 ):
     state = State.get()
+    monitor_names = tuple(m.name for m in state.monitors.values())
+    locked_monitors = tuple(
+        m for m in get_locked_monitors(state)
+        if m in monitor_names
+    )
     visible_workspaces_repr = " ".join(
         f"{state.monitor_workspace(mid).name:<15}" for mid in state.monitors
     )
+    locked_monitors_repr = " ".join(f"{m:<15}" for m in locked_monitors)
     print(f" Focused workspace: {state.focused_workspace.name}")
     print(f"Visible workspaces: {visible_workspaces_repr}")
+    print(f"   Locked monitors: {locked_monitors_repr}")
 
     if not (verbose or notification):
         return
 
-    displays_repr = " " + " ".join(f"{m.name:<15}" for m in state.monitors.values())
+    displays_repr = " " + " ".join(
+        f"{m:<15}"
+        if m not in locked_monitors
+        else f"🔒 {m:<13}"
+        for m in monitor_names
+    )
     layout_reprs = [" " + visible_workspaces_repr]
     row_reprs = []
     for row in range(1, rows + 1):
@@ -280,7 +294,10 @@ def switch_workspace(workspace_name):
     state = State.get()
     focused_monitor = state.focused_monitor
     commands = []
+    locked_monitors = get_locked_monitors(state)
     for i, monitor in enumerate(state.monitors.values()):
+        if monitor.name in locked_monitors:
+            continue
         commands.append(f"focusmonitor {monitor.name}")
         commands.append(
             "focusworkspaceoncurrentmonitor "
@@ -373,6 +390,27 @@ def create_missing_config(file_path):
         file_path.write_text(DEFAULT_CONFIG_TOML)
 
 
+def get_locked_monitors(state):
+    VARIABLE_DIR.mkdir(parents=True, exist_ok=True)
+    LOCKED_MONITORS_FILE.touch()
+    locked_monitors = LOCKED_MONITORS_FILE.read_text()
+    return tuple(m for m in locked_monitors.splitlines() if m)
+
+
+def set_monitor_lock(*, lock=None, monitor=None):
+    state = State.get()
+    if monitor is None:
+        monitor = state.focused_monitor.name
+    locked_monitors = set(get_locked_monitors(state))
+    if lock is None:
+        lock = monitor not in locked_monitors
+    if lock:
+        locked_monitors.add(monitor)
+    elif monitor in locked_monitors:
+        locked_monitors.remove(monitor)
+    LOCKED_MONITORS_FILE.write_text("\n".join(m for m in locked_monitors))
+
+
 def main():
     parser = argparse.ArgumentParser(TITLE, description="Manage workspaces.")
     parser_command = parser.add_mutually_exclusive_group()
@@ -402,6 +440,21 @@ def main():
         "-m",
         "--move",
         help="move focused window to workspace",
+    )
+    parser_command.add_argument(
+        "-k",
+        "--lock-monitor",
+        help="lock a monitor",
+    )
+    parser_command.add_argument(
+        "-K",
+        "--unlock-monitor",
+        help="unlock a monitor",
+    )
+    parser_command.add_argument(
+        "--toggle-lock-focused-monitor",
+        action="store_true",
+        help="toggle lock of the focused monitor",
     )
     parser_command.add_argument(
         "--toggle-special",
@@ -453,6 +506,12 @@ def main():
     elif args.monitors:
         print_list("monitors", args.verbose)
         exit()
+    elif args.lock_monitor:
+        set_monitor_lock(lock=True, monitor=args.lock_monitor)
+    elif args.unlock_monitor:
+        set_monitor_lock(lock=False, monitor=args.unlock_monitor)
+    elif args.toggle_lock_focused_monitor:
+        set_monitor_lock()
     elif args.toggle_special:
         toggle_special()
     elif args.move_special:

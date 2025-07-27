@@ -10,7 +10,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    @Xm11 @Xm21 @Xm31 @Xm41 @Xm51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    @Xm12 @Xm22 @Xm32 @Xm42 @Xm52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 @Xm53 XX    @Xmsp                           XX    XX    XX
+  _     XX    XX    @Xlck XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 @Xm53 XX    @Xmsp                           XX    XX    XX
   _     XX    XX    @XCol XX    XX    @Xm14 @Xm24 @Xm34 @Xm44 @Xm54 _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -19,6 +19,7 @@
     Xsum (cmd-button "spacemux")
     Xcol (cmd-button "spacemux -c")
     XCol (cmd-button "spacemux -C")
+    Xlck (cmd-button "spacemux --toggle-lock-focused-monitor")
     Xxsp (cmd-button "spacemux --toggle-special")
     Xmsp (cmd-button "spacemux --move-special")
     Xx11 (cmd-button "spacemux -s 1.1")
