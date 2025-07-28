@@ -9,8 +9,8 @@ command = [
 focus_window = true
 
 [[command]]
-command = ["spacemux", "--move-special"]
-pause_seconds = 0.5
+command = ["spacemux", "special", "move"]
+pause_seconds = 0.25
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir_path$"]

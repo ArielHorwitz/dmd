@@ -484,10 +484,17 @@ def main():
         "special",
         help="Manage the special workspace",
     )
-    special_parser.add_argument(
-        "--move",
-        action="store_true",
-        help="Move the focused window to the special workspace instead of toggling",
+    special_subparser = special_parser.add_subparsers(
+        dest="subcommand",
+        required=True,
+    )
+    special_subparser.add_parser(
+        "toggle",
+        help="Toggle the special workspace",
+    )
+    special_subparser.add_parser(
+        "move",
+        help="Move the focused window to the special workspace",
     )
     collect_parser = subparsers.add_parser(
         "collect",
@@ -512,10 +519,12 @@ def main():
             lock = None
         set_monitor_lock(lock=lock, monitor=args.monitor)
     elif args.command == "special":
-        if args.move:
+        if args.subcommand == "toggle":
+            toggle_special()
+        elif args.subcommand == "move":
             move_special()
         else:
-            toggle_special()
+            raise ValueError(f"Unknown special subcommand: {args.special_subcommand}")
     elif args.command == "switch":
         switch_workspace(args.workspace)
     elif args.command == "move":
@@ -525,6 +534,10 @@ def main():
             collect_windows()
         else:
             collect_windows(off_grid_only=True)
+    elif args.command is None:
+        pass
+    else:
+        raise ValueError(f"Unknown command: {args.command}")
 
     create_missing_config(Path(args.config_file))
     config = tomllib.loads(args.config_file.read_text())
