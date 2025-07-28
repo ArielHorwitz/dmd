@@ -322,9 +322,7 @@ def collect_windows(off_grid_only: bool = False):
     eprint(f"Target: {target_ws}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if off_grid_only and (
-            ws.is_gridable(len(state.monitors)) and not ws.is_special
-        ):
+        if off_grid_only and ws.is_gridable(len(state.monitors)):
             continue
         eprint(f"Collecting: {window}")
         hypr_dispatch(
