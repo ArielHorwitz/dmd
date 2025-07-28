@@ -7,13 +7,14 @@ FG_WHITE_CODE = "38;0"
 FG_BLACK_CODE = "38;2;0;0;0"
 FG_GRAY_CODE = "38;2;128;128;128"
 
+
 def clamp(value):
     return max(0, min(1, value))
 
 
 def hex_to_rgb(hex):
-    hex = hex.lstrip('#')
-    return tuple(int(hex[i:i+2], 16) / 255.0 for i in (0, 2, 4))
+    hex = hex.lstrip("#")
+    return tuple(int(hex[i : i + 2], 16) / 255.0 for i in (0, 2, 4))
 
 
 def rgb_to_hex(rgb, leading_hex):
@@ -62,15 +63,57 @@ def custom_range(n, factor):
     return small + large
 
 
-parser = argparse.ArgumentParser("colormod", description="Get more shades out of your colors palettes")
+parser = argparse.ArgumentParser(
+    "colormod",
+    description="Get more shades out of your colors palettes",
+)
 parser.add_argument("COLORS", nargs="+", help="Base color in hex")
-parser.add_argument("-H", "--hide-leading-hex", action="store_true", help="Hide leading hex symbol")
-parser.add_argument("-t", "--text-color", default="none", help="Text color (black/grey/white)")
-parser.add_argument("-s", "--saturation", default=2, type=float, help="How much to modify color saturation")
-parser.add_argument("-S", "--saturations", default=5, type=int, help="How many colorsaturation columns")
-parser.add_argument("-v", "--value", default=2, type=float, help="How much to modify color value")
-parser.add_argument("-V", "--values", default=5, type=int, help="How many color value rows")
-parser.add_argument("-L", "--show-legend", action="store_true", help="Show saturation and value legend")
+parser.add_argument(
+    "-H",
+    "--hide-leading-hex",
+    action="store_true",
+    help="Hide leading hex symbol",
+)
+parser.add_argument(
+    "-t",
+    "--text-color",
+    default="none",
+    help="Text color (black/grey/white)",
+)
+parser.add_argument(
+    "-s",
+    "--saturation",
+    default=2,
+    type=float,
+    help="How much to modify color saturation",
+)
+parser.add_argument(
+    "-S",
+    "--saturations",
+    default=5,
+    type=int,
+    help="How many saturation columns",
+)
+parser.add_argument(
+    "-v",
+    "--value",
+    default=2,
+    type=float,
+    help="How much to modify color value",
+)
+parser.add_argument(
+    "-V",
+    "--values",
+    default=5,
+    type=int,
+    help="How many color value rows",
+)
+parser.add_argument(
+    "-L",
+    "--show-legend",
+    action="store_true",
+    help="Show saturation and value legend",
+)
 args = parser.parse_args()
 
 saturations = custom_range(args.saturations, args.saturation)

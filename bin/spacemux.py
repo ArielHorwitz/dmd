@@ -53,10 +53,7 @@ def print_layout(
 ):
     state = State.get()
     monitor_names = tuple(m.name for m in state.monitors.values())
-    locked_monitors = tuple(
-        m for m in get_locked_monitors(state)
-        if m in monitor_names
-    )
+    locked_monitors = tuple(m for m in get_locked_monitors(state) if m in monitor_names)
     visible_workspaces_repr = " ".join(
         f"{state.monitor_workspace(mid).name:<15}" for mid in state.monitors
     )
@@ -69,10 +66,7 @@ def print_layout(
         return
 
     displays_repr = " " + " ".join(
-        f"{m:<15}"
-        if m not in locked_monitors
-        else f"🔒 {m:<13}"
-        for m in monitor_names
+        f"{m:<15}" if m not in locked_monitors else f"🔒 {m:<13}" for m in monitor_names
     )
     layout_reprs = [" " + visible_workspaces_repr]
     row_reprs = []
@@ -299,10 +293,7 @@ def switch_workspace(workspace_name):
         if monitor.name in locked_monitors:
             continue
         commands.append(f"focusmonitor {monitor.name}")
-        commands.append(
-            "focusworkspaceoncurrentmonitor "
-            f"name:{workspace_name}.{i}"
-        )
+        commands.append(f"focusworkspaceoncurrentmonitor name:{workspace_name}.{i}")
     commands.append(f"focusmonitor {focused_monitor.name}")
     hypr_dispatch(*commands, batch_commands=True)
 
@@ -332,14 +323,12 @@ def collect_windows(off_grid_only: bool = False):
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
         if off_grid_only and (
-            ws.is_gridable(len(state.monitors))
-            and not ws.is_special
+            ws.is_gridable(len(state.monitors)) and not ws.is_special
         ):
             continue
         eprint(f"Collecting: {window}")
         hypr_dispatch(
-            "movetoworkspacesilent "
-            f"name:{target_ws.name},address:{window.address}"
+            f"movetoworkspacesilent name:{target_ws.name},address:{window.address}"
         )
 
 
@@ -366,7 +355,7 @@ def hypr_dispatch(*args, batch_commands=False):
     result = subprocess.run(command, capture_output=True, check=True)
     stderr = result.stderr.decode()
     stdout = result.stdout.decode()
-    success = bool(re.fullmatch(r'\s*(?:ok\s*)*', stdout.strip()))
+    success = bool(re.fullmatch(r"\s*(?:ok\s*)*", stdout.strip()))
     if not success:
         stderr = f"stdout: '{stdout}' stderr: '{stderr}'"
     if stderr:
@@ -453,7 +442,10 @@ def main():
         "--monitor",
         help="Monitor to set lock state (defaults to focused monitor)",
     )
-    special_parser = subparsers.add_parser("special", help="Manage the special workspace")
+    special_parser = subparsers.add_parser(
+        "special",
+        help="Manage the special workspace",
+    )
     special_parser.add_argument(
         "--move",
         action="store_true",

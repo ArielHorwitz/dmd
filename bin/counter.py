@@ -16,5 +16,5 @@ lines = sys.stdin.read().splitlines()
 counter = collections.Counter(lines)
 print(f"       Count | Line")
 print(f"---------------------------")
-for (line, count) in counter.most_common():
+for line, count in counter.most_common():
     print(f"{count:>12,} | {line}")

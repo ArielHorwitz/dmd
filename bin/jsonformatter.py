@@ -5,12 +5,30 @@ from pathlib import Path
 import sys
 import json
 
-parser = argparse.ArgumentParser("indent-json", description="Format JSON with or without indentation.")
-parser.add_argument("FILE", type=Path, nargs='?', help="Read from file instead of stdin")
-parser.add_argument("-I", "--indent", type=int, default=4, help="Indentation in characters [default: 4]")
-parser.add_argument("-m", "--minify", action="store_true", help="Minify: remove indentation (overrides --indent)")
-parser.add_argument("-i", "--inplace", action="store_true", help="Overwrite input file in place (overrides --output-file)")
-parser.add_argument("-o", "--output-file", type=Path, required=False, help="Output to file")
+parser = argparse.ArgumentParser(
+    "indent-json", description="Format JSON with or without indentation."
+)
+parser.add_argument(
+    "FILE", type=Path, nargs="?", help="Read from file instead of stdin"
+)
+parser.add_argument(
+    "-I", "--indent", type=int, default=4, help="Indentation in characters [default: 4]"
+)
+parser.add_argument(
+    "-m",
+    "--minify",
+    action="store_true",
+    help="Minify: remove indentation (overrides --indent)",
+)
+parser.add_argument(
+    "-i",
+    "--inplace",
+    action="store_true",
+    help="Overwrite input file in place (overrides --output-file)",
+)
+parser.add_argument(
+    "-o", "--output-file", type=Path, required=False, help="Output to file"
+)
 args = parser.parse_args()
 
 if args.FILE is not None:

@@ -15,7 +15,7 @@ USERCHROME_CSS = "toolbar#TabsToolbar { display: none !important }\n"
 def main():
     config_parser = ConfigParser()
     config_parser.read(FF_DIR / "installs.ini")
-    profile = config_parser[config_parser.sections()[0]]['Default']
+    profile = config_parser[config_parser.sections()[0]]["Default"]
     profile_dir = FF_DIR / profile
     print(f"Profile dir: {profile_dir}")
     userchrome = profile_dir / "chrome" / "userChrome.css"

@@ -38,7 +38,10 @@ def get_hex(value) -> int:
 
 
 def main():
-    parser = argparse.ArgumentParser("hexer", description="Show details of integer and hexadecimal values")
+    parser = argparse.ArgumentParser(
+        "hexer",
+        description="Show details of integer and hexadecimal values",
+    )
     parser.add_argument("values", nargs="+", help="Integer and hexadecimal values")
     parser.add_argument("--width", help="Width of the output")
     args = parser.parse_args()
@@ -54,7 +57,9 @@ def main():
     for value in args.values:
         output_hex = analyze("hex", get_hex(value), column_size)
         output_int = analyze("int", get_int(value), column_size)
-        table = "\n".join(f" {h:<{column_size}} | {i}" for h, i in zip(output_hex, output_int))
+        table = "\n".join(
+            f" {h:<{column_size}} | {i}" for h, i in zip(output_hex, output_int)
+        )
         output.append(table)
         output.append(split)
     print(f"\n".join(output))

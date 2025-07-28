@@ -6,6 +6,7 @@ import argparse
 
 MAX_STEPS = 10
 
+
 def run(*command, **kwargs):
     kwargs = dict(capture_output=True, check=True) | kwargs
     result = subprocess.run(command, **kwargs)
