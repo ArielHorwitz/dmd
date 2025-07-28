@@ -49,7 +49,6 @@ def print_layout(
     notification: bool,
     notification_timeout: int,
     icon_file: str,
-    verbose: bool,
 ):
     state = State.get()
     monitor_names = tuple(m.name for m in state.monitors.values())
@@ -61,9 +60,6 @@ def print_layout(
     print(f" Focused workspace: {state.focused_workspace.name}")
     print(f"Visible workspaces: {visible_workspaces_repr}")
     print(f"   Locked monitors: {locked_monitors_repr}")
-
-    if not (verbose or notification):
-        return
 
     displays_repr = " " + " ".join(
         f"{m:<15}" if m not in locked_monitors else f"🔒 {m:<13}" for m in monitor_names
@@ -91,9 +87,9 @@ def print_layout(
         layout_reprs.append(", ".join(ungridables))
     layout_repr = "\n".join(layout_reprs)
 
-    if verbose:
-        print(displays_repr)
-        print(layout_repr)
+    print(displays_repr)
+    print(layout_repr)
+
     if notification:
         command_args = (
             *NOTIFY_SEND_ARGS,
@@ -128,6 +124,15 @@ class Monitor:
             special_workspace_id=json_data["specialWorkspace"]["id"],
             raw_data=json_data,
         )
+
+    def get_display_props(self, state):
+        props = {
+            "id": self.id,
+            "focused": self.focused,
+            "enabled": self.enabled,
+            "workspace": state.workspaces[self.workspace_id].name,
+        }
+        return self.name, props
 
 
 @dataclass(frozen=True)
@@ -175,6 +180,16 @@ class Workspace:
         except ValueError:
             return None
 
+    def get_display_props(self, state):
+        props = {
+            "monitor": state.monitors[self.monitor_id].name,
+            "windows": self.windows,
+            "special": self.is_special,
+            "gridable": self.is_gridable(len(state.monitors)),
+            "id": self.id,
+        }
+        return self.name, props
+
 
 @dataclass(frozen=True)
 class Window:
@@ -195,6 +210,15 @@ class Window:
             address=json_data["address"],
             raw_data=json_data,
         )
+
+    def get_display_props(self, state):
+        props = {
+            # "title": self.title,
+            "workspace": state.workspaces[self.workspace_id].name,
+            "focus_id": self.focus_id,
+            "address": self.address,
+        }
+        return f"[[{self.class_}]] {self.title}", props
 
 
 @dataclass(frozen=True)
@@ -276,12 +300,29 @@ class State:
         return monitor.workspace_id == wid
 
 
-def print_list(data_name, verbose):
-    for item in getattr(State.get(), data_name).values():
-        if verbose:
+def print_list(data_name, raw):
+    state = State.get()
+    if data_name == "monitors":
+        items = sorted(state.monitors.values(), key=lambda m: m.id)
+    elif data_name == "workspaces":
+        items = sorted(state.workspaces.values(), key=lambda m: m.name)
+    elif data_name == "windows":
+        items = sorted(state.windows.values(), key=lambda w: (state.workspaces[w.workspace_id].name, w.focus_id))
+    else:
+        raise RuntimeError(f"Unknown data type {data_name!r}")
+    if raw:
+        for item in items:
             print(item.raw_data)
-        else:
-            print(item)
+    else:
+        item_reprs = []
+        for item in items:
+            name, props = item.get_display_props(state)
+            lines = [
+                name,
+                *(f"    {k}: {v}" for k, v in props.items())
+            ]
+            item_reprs.append("\n".join(lines))
+        print("\n\n".join(item_reprs))
 
 
 def switch_workspace(workspace_name):
@@ -411,18 +452,17 @@ def main():
         default=DEFAULT_CONFIG_FILE,
         help="config file path",
     )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="be verbose",
-    )
     subparsers = parser.add_subparsers(dest="command")
     info_parser = subparsers.add_parser("info", help="Show info")
     info_parser.add_argument(
         "info_type",
         choices=["workspaces", "windows", "monitors"],
         help="Info type",
+    )
+    info_parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="show raw data from hyprland",
     )
     switch_parser = subparsers.add_parser("switch", help="Switch to workspace")
     switch_parser.add_argument("workspace", help="Workspace to switch to")
@@ -461,7 +501,7 @@ def main():
     args = parser.parse_args()
 
     if args.command == "info":
-        print_list(args.info_type, args.verbose)
+        print_list(args.info_type, args.raw)
         exit()
     elif args.command == "lock":
         if args.lock == "lock":
@@ -498,7 +538,6 @@ def main():
         notification=not args.nonotification,
         notification_timeout=notification_timeout,
         icon_file=icon,
-        verbose=args.verbose,
     )
 
 
