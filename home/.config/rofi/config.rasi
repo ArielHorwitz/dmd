@@ -71,14 +71,14 @@ configuration {
 //    display-filebrowser: ;
     kb-primary-paste: "Control+V";
     kb-secondary-paste: "Control+v";
-    kb-clear-line: "Control+w,Shift+Left";
+    kb-clear-line: "";
     kb-move-front: "";
     kb-move-end: "";
     kb-move-word-back: "Control+Left";
     kb-move-word-forward: "Control+Right";
     kb-move-char-back: "Left";
     kb-move-char-forward: "Right";
-    kb-remove-word-back: "Control+BackSpace";
+    kb-remove-word-back: "Control+BackSpace,Control+w";
     kb-remove-word-forward: "Control+Delete";
     kb-remove-char-forward: "Delete";
     kb-remove-char-back: "BackSpace";
