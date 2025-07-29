@@ -23,6 +23,12 @@ if [[ $args_update ]] || [[ ! -f "$EMOJIS_DATA" ]] ; then
     printcolor -s ok "Updated emojis: $EMOJIS_DATA" >&2
 fi
 
+if [[ $args_emoji ]]; then
+    emoji=$(printf "%s" "$args_emoji" | awk '{ printf "%s", $1 }')
+    printf '%s' "$emoji" | xsel -ib
+    exit
+fi
+
 case $args_mode in
     full   ) jq_filter='.[] | .emoji + "  " + .annotation + " [" + .group + " / " + .subgroup + "]  " + (.tags | .? | map("#" + .) | join(" "))'  ;;
     tags   ) jq_filter='.[] | .emoji + "  " + .annotation + " " + (.tags | .? | map("#" + .) | join(" "))'  ;;
@@ -31,12 +37,4 @@ case $args_mode in
     *      ) exit_error "Unknown mode: $args_mode"
 esac
 
-emojis=$(jq -r "$jq_filter" < "$EMOJIS_DATA")
-
-if [[ $args_emoji ]]; then
-    emoji=$(printf "%s" "$args_emoji" | awk '{ printf "%s", $1 }')
-    printf '%s' "$emoji" | xsel -ib
-    exit
-fi
-
-echo "$emojis"
+jq -r "$jq_filter" < "$EMOJIS_DATA"
