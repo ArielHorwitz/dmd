@@ -15,19 +15,23 @@ else:
 
 TITLE = "wlayout"
 DESCRIPTION = "Spawn commands and configure their layout in hyprland. Uses config provided by stdin or by arguments."
-EXAMPLE_CONFIG_TOML = """
+ARGUMENTS_SEPARATOR = "#>> END OF ARGUMENTS"
+EXAMPLE_CONFIG_TOML = f"""
 # wlayout example config file
 
-[[arguments.required]]
-placeholder = "$dir_path$"
+[[argument]]
+name = "dir-path"
+default = "."
 
-[[arguments.optional]]
-placeholder = "$title$"
-default = "Default title"
+[[argument]]
+name = "title"
+default = "wlayout"
 
-[[arguments.optional]]
-placeholder = "$terminal_monitor$"
+[[argument]]
+name = "terminal-monitor"
 default = "eDP-1"
+
+{ARGUMENTS_SEPARATOR}
 
 # [[command]]
 # Only the command is required, everything else is optional
@@ -46,9 +50,9 @@ default = "eDP-1"
 command = [
     "alacritty", "--hold",
     "--title", "$title$",
-    "--command", "bash", "-c", "ls -la $dir_path$"
+    "--command", "bash", "-c", "ls -la $dir-path$"
 ]
-monitor = "$terminal_monitor$"
+monitor = "$terminal-monitor$"
 focus_window = true
 
 [[command]]
@@ -58,7 +62,7 @@ wait_complete = true
 
 [[command]]
 # Editor
-command = ["lite-xl", "$dir_path$"]
+command = ["lite-xl", "$dir-path$"]
 focus_window = true
 monitor = "eDP-1"
 fullscreen = true
@@ -163,36 +167,48 @@ def run_command(command_details, verbose):
         time.sleep(pause_seconds)
 
 
-def replace_argument_placeholders(text, config, args):
-    config_required = config.get("required", [])
-    for required_index, arg in enumerate(config_required):
-        placeholder = arg["placeholder"]
-        if placeholder in text and len(args) <= required_index:
-            raise ValueError(f"Missing argument for {placeholder}")
-        text = text.replace(placeholder, args[required_index])
-    config_optional = config.get("optional", [])
-    for optional_index, arg in enumerate(config_optional):
-        index = required_index + 1 + optional_index
-        placeholder = arg["placeholder"]
-        default = arg.get("default", placeholder)
-        value = args[index] if len(args) > index else default
-        text = text.replace(placeholder, value)
-    return text
+def resolve_user_arguments(arg_spec, user_args, verbose):
+    arg_spec = tomllib.loads(arg_spec)
+    args = {
+        a["name"]: a.get("default")
+        for a in arg_spec.get("argument", [])
+    }
+    if not args:
+        if verbose:
+            print("No arguments found")
+        return args
+    if verbose:
+        print(f"Defaults: {args}")
+    current_arg_name = None
+    for uarg in user_args:
+        if uarg.startswith("--") and current_arg_name is None:
+            current_arg_name = uarg.removeprefix("--")
+            if verbose:
+                print(f"Parsing argument {current_arg_name!r}")
+            if current_arg_name not in args:
+                raise ValueError(f"Unknown argument name {current_arg_name!r}")
+            continue
+        elif current_arg_name and current_arg_name is not None:
+            args[current_arg_name] = uarg
+            if verbose:
+                print(f"Value of {current_arg_name!r}: {uarg!r}")
+            current_arg_name = None
+            continue
+        else:
+            raise ValueError(f"Unknown argument given {uarg!r}")
+    for name, value in args.items():
+        if value is None:
+            raise ValueError(f"Missing value for argument without default {name!r}")
+    return args
 
 
 def main():
-    parser = argparse.ArgumentParser(TITLE, description=DESCRIPTION)
     config_home = os.getenv("XDG_CONFIG_HOME", str(Path.home() / ".config"))
-    parser.add_argument(
-        "arguments",
-        metavar="<PLACEHOLDERS>",
-        nargs="*",
-        help="Arguments for the config (used in placeholders)",
-    )
+    parser = argparse.ArgumentParser(TITLE, description=DESCRIPTION)
     parser.add_argument(
         "-c",
         "--config-name",
-        help=f"Config file name (in {config_home}/{TITLE})",
+        help=f"Config file name (shortcut for --config-file {config_home}/{TITLE}/<NAME>.toml)",
     )
     parser.add_argument(
         "-C",
@@ -202,51 +218,60 @@ def main():
     parser.add_argument(
         "--example",
         action="store_true",
-        help="Print an example config",
+        help="Print an example config and exit",
     )
     parser.add_argument(
-        "--debug-config",
-        action="store_true",
-        help="Print config after resolving placeholders",
+        "--debug",
+        choices=["args", "config", "parsed", "execution"],
+        help="Print detailed info for debugging",
     )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="Print detailed information",
-    )
-    args = parser.parse_args()
+    args, user_args = parser.parse_known_args()
+    verbose = args.debug is not None
     if args.example:
         print(EXAMPLE_CONFIG_TOML)
         exit()
-    if args.config_name:
+    if verbose:
+        print(f"User arguments: {user_args}")
+    if args.config_name == "EXAMPLE":
+        config_name = "<EXAMPLE>"
+        config_text = EXAMPLE_CONFIG_TOML
+    elif args.config_name:
         config_path = Path(config_home) / TITLE / f"{args.config_name}.toml"
         config_name = str(config_path)
-        if args.verbose:
+        if verbose:
             print(f"Reading config from {config_path}")
         config_text = config_path.read_text()
     elif args.config_file:
         config_name = str(args.config_file)
-        if args.verbose:
+        if verbose:
             print(f"Reading config from {args.config_file}")
         config_text = Path(args.config_file).read_text()
     else:
         config_name = "<stdin>"
-        if args.verbose:
+        if verbose:
             print("Reading config from stdin")
         config_text = sys.stdin.read()
-    args_config = tomllib.loads(config_text).get("arguments")
-    if args_config:
-        config_text = replace_argument_placeholders(
-            config_text,
-            args_config,
-            args.arguments,
-        )
-    if args.debug_config:
+
+    if ARGUMENTS_SEPARATOR in config_text:
+        arg_spec, config_text = config_text.split(ARGUMENTS_SEPARATOR, 1)
+        resolved_user_args = resolve_user_arguments(arg_spec, user_args, verbose)
+        if args.debug == "args":
+            print(resolved_user_args)
+            exit()
+        for uname, uvalue in resolved_user_args.items():
+            config_text = config_text.replace(f"${uname}$", uvalue)
+    else:
+        if verbose:
+            print("No argument separator found")
+
+    if args.debug == "config":
         print(config_text)
         exit()
     config = tomllib.loads(config_text)
-    if args.verbose:
+    if args.debug == "parsed":
+        print(config["command"])
+        exit()
+    if verbose:
         print(f"Config: {config_name}")
     sorted_commands = sorted(
         enumerate(config["command"]),
@@ -254,7 +279,7 @@ def main():
     )
     commands = [w for (i, w) in sorted_commands]
     for command_details in commands:
-        run_command(command_details, args.verbose)
+        run_command(command_details, verbose)
 
 
 if __name__ == "__main__":
