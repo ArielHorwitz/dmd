@@ -41,6 +41,7 @@ gui:
 git:
   autoFetch: false
   parseEmoji: true
+  ignoreWhitespaceInDiffView: false
 
   log:
     showGraph: 'always'
