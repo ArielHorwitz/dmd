@@ -34,7 +34,7 @@ default = "eDP-1"
 {ARGUMENTS_SEPARATOR}
 
 # [[command]]
-# Only the command is required, everything else is optional
+# All fields are optional
 # command = ["list", "of", "strings"]
 # enabled = bool
 # order = number
@@ -129,7 +129,7 @@ def focus_pid_window(process, verbose, max_wait_seconds=5):
 def run_command(command_details, verbose):
     if not command_details.get("enabled", True):
         return
-    command = command_details["command"]
+    command = command_details.get("command")
     monitor = command_details.get("monitor")
     fullscreen = command_details.get("fullscreen")
     focus_window = command_details.get("focus_window")
@@ -141,14 +141,24 @@ def run_command(command_details, verbose):
     wait_complete = command_details.get("wait_complete")
     if verbose:
         print(command)
-    process = subprocess.Popen(command)
-    pid = process.pid
-    if verbose:
-        print(f"PID: {pid}")
-    else:
-        print(pid)
-    if focus_window:
-        focus_pid_window(process, verbose, wait_focus_seconds)
+    if monitor:
+        subprocess.run(
+            ["hyprctl", "dispatch", "focusmonitor", monitor],
+            capture_output=True,
+            check=True,
+        )
+    if command:
+        process = subprocess.Popen(command)
+        pid = process.pid
+        if verbose:
+            print(f"PID: {pid}")
+        else:
+            print(pid)
+        if focus_window:
+            try:
+                focus_pid_window(process, verbose, wait_focus_seconds)
+            except Exception as e:
+                print(f"Error focusing window: {e!r}")
     if monitor:
         subprocess.run(
             ["hyprctl", "dispatch", "movewindow", f"mon:{monitor}"],
@@ -161,7 +171,7 @@ def run_command(command_details, verbose):
             capture_output=True,
             check=True,
         )
-    if wait_complete:
+    if command and wait_complete:
         process.wait()
     if pause_seconds:
         time.sleep(pause_seconds)
