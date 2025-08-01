@@ -8,6 +8,7 @@ CLI=(
     --prefix "args_"
     -o "character;Selected character"
     -f "force-generate;Force generating from scratch;;f"
+    -f "run;Run in rofi;;r"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
@@ -94,6 +95,11 @@ extract_first_unicode() {
     set -e
     printf "%s" "$args_character" | python3 -c 'import sys; print(sys.stdin.read(1), end="")'
 }
+
+if [[ $args_run ]]; then
+    rofi -show "unicode" -modes "unicode:$0"
+    exit
+fi
 
 if [[ $args_character ]]; then
     char=$(extract_first_unicode "$args_character")
