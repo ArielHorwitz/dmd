@@ -1,11 +1,11 @@
 [[argument]]
-name = "dir-path"
+name = "dir"
 
 #>> END OF ARGUMENTS
 
 [[command]]
 command = [
-    "alacritty", "--working-directory", "$dir-path$",
+    "alacritty", "--working-directory", "$dir$",
     "--command", "bash", "-c", "lazygit",
 ]
 focus_window = true
@@ -15,17 +15,17 @@ command = ["spacemux", "special", "move"]
 pause_seconds = 0.25
 
 [[command]]
-command = ["alacritty", "--working-directory", "$dir-path$"]
+command = ["alacritty", "--working-directory", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
 
 [[command]]
-command = ["alacritty", "--working-directory", "$dir-path$"]
+command = ["alacritty", "--working-directory", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
 
 [[command]]
-command = ["lite-xl", "$dir-path$"]
+command = ["lite-xl", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
 
