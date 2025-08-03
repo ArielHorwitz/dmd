@@ -1,5 +1,6 @@
-[[argument]]
-name = "dir"
+argument = [
+    { name = "dir" }
+]
 
 #>> END OF ARGUMENTS
 
