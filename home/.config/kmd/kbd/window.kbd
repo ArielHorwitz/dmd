@@ -1,17 +1,17 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @wmfP XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @Wkil XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr @wmfp XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt @wmfc XX    @wtrm                           XX    XX    XX
-  _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort @wmfC _                        XX           XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     @Wkil XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
+  _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     @Wfkl XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @wsml @wmvc @wsmr XX    _                        XX           XX    XX    XX    XX
+  _     @Wfkl XX    XX    XX    @wtmd @WOma @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    @fulS XX    @WOmr @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
+  _     XX    XX    XX    XX    XX    @WOcy @wsml @wmvc @wsmr @WOrs _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -35,10 +35,6 @@
     fdwn (cmd-button "hyprctl dispatch movefocus d")
     folt (cmd-button "hyprctl dispatch focusmonitor l")
     fort (cmd-button "hyprctl dispatch focusmonitor r")
-    wmfP (cmd-button "i3-msg 'focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent; focus parent'")
-    wmfC (cmd-button "i3-msg 'focus child; focus child; focus child; focus child; focus child; focus child; focus child; focus child; focus child'")
-    wmfp (cmd-button "i3-msg focus parent")
-    wmfc (cmd-button "i3-msg focus child")
     wtmd (cmd-button "hyprctl cyclenext prev hist")
 
     ;; Workspaces
@@ -57,6 +53,10 @@
     wmvu (cmd-button "hyprctl dispatch movewindow u")
     wmvd (cmd-button "hyprctl dispatch movewindow d")
     wmvc (cmd-button "i3-msg move position center")
+    WOma (cmd-button "hyprctl dispatch layoutmsg addmaster")
+    WOmr (cmd-button "hyprctl dispatch layoutmsg removemaster")
+    WOcy (cmd-button "hyprctl dispatch layoutmsg orientationcycle left right")
+    WOrs (cmd-button "hyprctl dispatch layoutmsg mfact exact 0.5")
 
     ;; Window size
     wszr (cmd-button "hyprctl dispatch resizeactive 30 0")
