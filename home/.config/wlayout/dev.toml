@@ -31,4 +31,4 @@ focus_window = true
 monitor = "eDP-1"
 
 [[command]]
-command = ["hyprctl", "--batch", "dispatch movefocus u;dispatch movewindow d;dispatch movewindow l;dispatch movefocus r"]
+command = ["hyprctl", "dispatch layoutmsg swapwithmaster master ignoremaster"]
