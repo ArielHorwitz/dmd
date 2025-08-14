@@ -160,4 +160,4 @@ curl "${curl_args[@]}" "$url"
 
 # Print and open
 [[ $VERBOSITY -lt 1 ]] || echo $filename
-[[ -n $args_noopen ]] || xdg-open "$filename" &
+[[ -n $args_noopen ]] || xdg-open "$filename" >/dev/null 2>&1 &
