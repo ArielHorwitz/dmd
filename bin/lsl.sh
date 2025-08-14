@@ -47,8 +47,8 @@ eza_args+=(${extra_eza_args[@]})
 eza_args+=("${file[@]}")
 
 if [[ -n $nopaging ]]; then
-    eza ${eza_args[@]}
+    eza "${eza_args[@]}"
 else
     # eza ${eza_args[@]} | bat --color=always -p  # breaks icons
-    eza ${eza_args[@]} | less --quit-if-one-screen --raw-control-chars
+    eza "${eza_args[@]}" | less --quit-if-one-screen --raw-control-chars
 fi
