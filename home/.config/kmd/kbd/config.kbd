@@ -2,7 +2,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @Cwyb XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @Chyp XX    @Ckmd @Clck XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Chyp XX    @Ckmd @Clck XX    XX    @Cawn                           XX    XX    XX
   _     XX    XX    XX    XX    @Cwll XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -12,4 +12,5 @@
     Cwll (cmd-button "rofimenu-wallpaper --run")
     Clck (cmd-button "rofimenu-lockscreen --run")
     Ckmd (cmd-button "kmdrun")
+    Cawn (cmd-button "activewindow")
 )
