@@ -39,6 +39,8 @@ default = "eDP-1"
 # enabled = bool
 # order = number
 # focus_window = bool
+# focus_window_title = "string"
+# focus_window_class = "string"
 # wait_focus_seconds = number
 # monitor = "string"
 # fullscreen = bool
@@ -126,6 +128,24 @@ def focus_pid_window(process, verbose, max_wait_seconds=5):
     raise RuntimeError(f"Timed out waiting for window for PID {pid}")
 
 
+def focus_window_by_text(title, class_name, verbose, max_wait_seconds=5):
+    if not title and not class_name:
+        raise ValueError("Must provide title or class_name")
+    sleep_time_seconds = 0.05
+    max_iterations = int(max_wait_seconds / sleep_time_seconds)
+    for _ in range(max_iterations):
+        time.sleep(sleep_time_seconds)
+        active_title = get_hyprland_json("activewindow").get("title")
+        active_class = get_hyprland_json("activewindow").get("class")
+        if verbose:
+            print(f"Active window title: {active_title!r}, class: {active_class!r}")
+        if title and title in active_title:
+            return
+        if class_name and class_name in active_class:
+            return
+    raise RuntimeError(f"Timed out waiting for window with title {title!r} and class {class_name!r}")
+
+
 def run_command(command_details, verbose):
     if not command_details.get("enabled", True):
         return
@@ -133,6 +153,8 @@ def run_command(command_details, verbose):
     monitor = command_details.get("monitor")
     fullscreen = command_details.get("fullscreen")
     focus_window = command_details.get("focus_window")
+    focus_window_title = command_details.get("focus_window_title")
+    focus_window_class = command_details.get("focus_window_class")
     wait_focus_seconds = command_details.get(
         "wait_focus_seconds",
         DEFAULT_WAIT_FOCUS_SECONDS,
@@ -156,7 +178,10 @@ def run_command(command_details, verbose):
             print(pid)
         if focus_window:
             try:
-                focus_pid_window(process, verbose, wait_focus_seconds)
+                if focus_window_title or focus_window_class:
+                    focus_window_by_text(focus_window_title, focus_window_class, verbose, wait_focus_seconds)
+                else:
+                    focus_pid_window(process, verbose, wait_focus_seconds)
             except Exception as e:
                 print(f"Error focusing window: {e!r}")
     if monitor:
