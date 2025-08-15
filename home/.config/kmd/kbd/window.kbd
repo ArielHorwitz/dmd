@@ -55,7 +55,7 @@
     wmvc (cmd-button "i3-msg move position center")
     WOma (cmd-button "hyprctl dispatch layoutmsg addmaster")
     WOmr (cmd-button "hyprctl dispatch layoutmsg removemaster")
-    WOcy (cmd-button "hyprctl dispatch layoutmsg orientationcycle left right")
+    WOcy (cmd-button "hyprctl dispatch layoutmsg orientationcycle left right top")
     WOrs (cmd-button "hyprctl dispatch layoutmsg mfact exact 0.5")
 
     ;; Window size
