@@ -1,8 +1,8 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @Wkil XX    @kltb XX    @wtgt XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @scrw @scrd @fuls @wtgs XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
+  _     @Wkil XX    @kltb XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @scrw @scrd @fuls XX    XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -42,8 +42,6 @@
     wsml (cmd-button "hyprctl dispatch movecurrentworkspacetomonitor l")
     wsmr (cmd-button "hyprctl dispatch movecurrentworkspacetomonitor r")
     wspt (cmd-button "hyprctl dispatch togglesplit")
-    wtgt (cmd-button "i3-msg layout toggle tabbed split")
-    wtgs (cmd-button "i3-msg layout toggle split")
     fuls (cmd-button "hyprctl dispatch fullscreen 1")
     fulS (cmd-button "hyprctl dispatch fullscreen 0")
 
