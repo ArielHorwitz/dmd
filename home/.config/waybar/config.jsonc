@@ -12,7 +12,8 @@
         "hyprland/window",
     ],
     "modules-center": [
-        "hyprland/language",
+        // "hyprland/language",
+        "custom/layer",
     ],
     "modules-right": [
         "network",
@@ -128,9 +129,9 @@
         "icon": true,
         "separate-outputs": true,
     },
-    "hyprland/language": {
-        "keyboard-name": "kmd",
-        "format-en": "English",
-        "format-he": "עברית",
-    }
+    "custom/layer": {
+        "exec": "setlayer --read-loop 0.2",
+        "format": "[{}]",
+        "restart-interval": 1,
+    },
 }
