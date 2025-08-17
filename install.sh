@@ -163,6 +163,10 @@ install_configs() {
     cat $SETUP_DIR/sudoers.dropin \
         | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
         | sudo tee /etc/sudoers.d/dmd
+    sudo cp $SETUP_DIR/udev.rules /etc/udev/rules.d/80-dmd.rules
+    sudo mkdir -p /var/opt/dmd
+    sudo chgrp hardware /var/opt/dmd
+    sudo chmod g+w /var/opt/dmd
     sudo groupadd -f hardware
     sudo usermod -aG hardware $USER
 }

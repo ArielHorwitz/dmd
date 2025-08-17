@@ -5,6 +5,3 @@ Defaults pwfeedback
 
 # Set password timeout
 Defaults timestamp_timeout=120
-
-# Allow 'hardware' group to control monitor brightness without password
-%hardware ALL=(root:root) NOPASSWD: <BIN_TARGET>/setmonbrightness

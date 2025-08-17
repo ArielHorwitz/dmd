@@ -1,0 +1,11 @@
+# Installed by dmd
+
+SUBSYSTEM=="backlight", \
+  ACTION=="add", \
+  RUN+="/bin/chgrp hardware /sys/class/backlight/%k/brightness", \
+  RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+
+SUBSYSTEM=="leds", \
+  ACTION=="add", \
+  RUN+="/bin/chgrp hardware /sys/class/leds/%k/brightness", \
+  RUN+="/bin/chmod g+w /sys/class/leds/%k/brightness"
