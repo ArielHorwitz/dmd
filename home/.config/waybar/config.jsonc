@@ -1,6 +1,6 @@
 {
-    // "layer": "top",
-    "position": "bottom", // (top|bottom|left|right)
+    "layer": "top",
+    "position": "top",
     // "height": 24,
     "spacing": 4,
     "modules-left": [
