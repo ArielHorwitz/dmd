@@ -26,7 +26,7 @@
     ],
     "tray": {
         // "icon-size": 21,
-        "spacing": 10
+        "spacing": 10,
     },
     "clock": {
         "format": "{:%H:%M:%S}",
@@ -41,7 +41,7 @@
     },
     "cpu": {
         "format": "{usage}%  ",
-        "tooltip": false
+        "tooltip": false,
     },
     "memory": {
         "format": "{avail}GiB  ",
@@ -71,7 +71,7 @@
         "states": {
             // "good": 95,
             "warning": 30,
-            "critical": 15
+            "critical": 15,
         },
         "format": "{capacity}% {icon} ",
         "format-full": "{capacity}% {icon} ",
@@ -81,7 +81,7 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         // "interval": 10,
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": ["", "", "", "", ""],
     },
     "power-profiles-daemon": {
       "format": "{icon} ",
@@ -91,8 +91,8 @@
             "default": "",
             "performance": "",
             "balanced": "",
-            "power-saver": ""
-        }
+            "power-saver": "",
+        },
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
