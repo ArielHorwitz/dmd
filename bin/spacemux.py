@@ -7,8 +7,8 @@ import os
 import subprocess
 import sys
 from dataclasses import dataclass, field
-from functools import cached_property
 from pathlib import Path
+from typing import Optional
 
 if sys.version_info >= (3, 12):
     import tomllib
@@ -16,10 +16,12 @@ else:
     import tomli as tomllib
 
 TITLE = "spacemux"
-WORKSPACE_EMPTY = ""
-WORKSPACE_OCCUPIED = ""
-WORKSPACE_VISIBLE = ""
-WORKSPACE_FOCUS = ""
+
+WORKSPACE_EMPTY = ""  # ○
+WORKSPACE_OCCUPIED = "●"
+WORKSPACE_SPECIAL = "△"
+WORKSPACE_OCCUPIED_SPECIAL = "▲"
+
 USER = os.getenv("USER")
 VARIABLE_DIR = Path(f"/home/{USER}/.local/share/spacemux")
 LOCKED_MONITORS_FILE = VARIABLE_DIR / "locked_monitors"
@@ -41,6 +43,13 @@ NOTIFY_SEND_ARGS = (
 
 def eprint(*args):
     print(*args, file=sys.stderr)
+
+
+@dataclass
+class GridState:
+    regular: bool = False
+    special: bool = False
+    visible: bool = False
 
 
 def print_layout(
@@ -66,18 +75,40 @@ def print_layout(
     )
     layout_reprs = [" " + visible_workspaces_repr]
     row_reprs = []
+    grid_states = {
+        (c, r): GridState() for r in range(1, rows + 1) for c in range(1, columns + 1)
+    }
+    for window in state.windows.values():
+        ws = state.workspaces[window.workspace_id]
+        if ws.id in state.ungridable_workspaces:
+            continue
+        gs = grid_states[ws.coords]
+        if ws.is_special:
+            gs.special = True
+        else:
+            gs.regular = True
+        if ws.is_visible:
+            gs.visible = True
+    focused_workspace = state.workspaces[state.focused_workspace_id]
+    grid_states[focused_workspace.coords].visible = True
     for row in range(1, rows + 1):
         col_reprs = []
         for col in range(1, columns + 1):
-            ws_repr = WORKSPACE_EMPTY
-            if (ws := state.workspace_from_grid(col, row)) is not None:
-                ws_repr = WORKSPACE_OCCUPIED
-                if state.workspace_is_focused(ws.id):
-                    ws_repr = WORKSPACE_FOCUS
-                elif state.workspace_is_visible(ws.id):
-                    ws_repr = WORKSPACE_VISIBLE
+            gs = grid_states[(col, row)]
+            if gs.regular and gs.special:
+                icon = WORKSPACE_OCCUPIED_SPECIAL
+            elif gs.regular:
+                icon = WORKSPACE_OCCUPIED
+            elif gs.special:
+                icon = WORKSPACE_SPECIAL
+            else:
+                icon = WORKSPACE_EMPTY
+            if gs.visible:
+                ws_repr = f"[{icon}]"
+            else:
+                ws_repr = f" {icon} "
             col_reprs.append(ws_repr)
-        row_reprs.append(" ".join(col_reprs))
+        row_reprs.append("".join(col_reprs))
     layout_reprs.append("\n".join(row_reprs))
     if len(state.ungridable_workspaces) > 0:
         ungridables = (
@@ -113,18 +144,6 @@ class Monitor:
     special_workspace_id: int = field(repr=False)
     raw_data: dict = field(repr=False)
 
-    @classmethod
-    def from_hypr_json(cls, json_data):
-        return cls(
-            name=json_data["name"],
-            enabled=not json_data["disabled"],
-            focused=json_data["focused"],
-            id=json_data["id"],
-            workspace_id=json_data["activeWorkspace"]["id"],
-            special_workspace_id=json_data["specialWorkspace"]["id"],
-            raw_data=json_data,
-        )
-
     def get_display_props(self, state):
         props = {
             "id": self.id,
@@ -136,56 +155,54 @@ class Monitor:
 
 
 @dataclass(frozen=True)
+class WorkspaceGeometry:
+    row: Optional[int]
+    col: Optional[int]
+    monitor: Optional[int] = None
+
+    @property
+    def coords(self):
+        return (self.col, self.row)
+
+
+@dataclass(frozen=True)
 class Workspace:
     name: str
     windows: int
     id: int = field(repr=False)
     monitor_id: int = field(repr=False)
+    is_visible: bool = field(repr=False)
     raw_data: dict = field(repr=False)
 
-    @classmethod
-    def from_hypr_json(cls, json_data):
-        return cls(
-            name=json_data["name"],
-            windows=json_data["windows"],
-            id=json_data["id"],
-            monitor_id=json_data["monitorID"],
-            raw_data=json_data,
-        )
-
-    def is_gridable(self, monitor_count: int = 999):
+    @property
+    def geometry(self):
+        parts = self.name.removeprefix("special:").split(".")
         try:
-            parts = self.name.removeprefix("special:").split(".")
-            row = parts[0]
-            col = parts[1]
-            int(row)
-            int(col)
+            col = int(parts[0])
+            row = int(parts[1])
             if self.is_special:
-                return True
-            monitor = parts[2]
-            monitor = int(monitor)
+                return WorkspaceGeometry(row=row, col=col)
+            monitor = int(parts[2])
+            return WorkspaceGeometry(row=row, col=col, monitor=monitor)
         except (ValueError, IndexError):
-            return False
-        return monitor < monitor_count
+            return None
 
-    @cached_property
+    @property
+    def coords(self):
+        if self.geometry is None:
+            return None
+        return self.geometry.coords
+
+    @property
     def is_special(self):
         return self.name.startswith("special:")
-
-    @cached_property
-    def grid_coords(self):
-        try:
-            col, row, monitor = self.name.split(".")
-            return int(col), int(row)
-        except ValueError:
-            return None
 
     def get_display_props(self, state):
         props = {
             "monitor": state.monitors[self.monitor_id].name,
             "windows": self.windows,
             "special": self.is_special,
-            "gridable": self.is_gridable(len(state.monitors)),
+            "geo": self.geometry,
             "id": self.id,
         }
         return self.name, props
@@ -199,17 +216,6 @@ class Window:
     workspace_id: int = field(repr=False)
     address: str = field(repr=False)
     raw_data: dict = field(repr=False)
-
-    @classmethod
-    def from_hypr_json(cls, json_data):
-        return cls(
-            class_=json_data["class"],
-            title=json_data["title"],
-            focus_id=json_data["focusHistoryID"],
-            workspace_id=json_data["workspace"]["id"],
-            address=json_data["address"],
-            raw_data=json_data,
-        )
 
     def get_display_props(self, state):
         props = {
@@ -226,37 +232,54 @@ class State:
     monitors: dict[int, Monitor]
     workspaces: dict[int, Workspace]
     windows: dict[str, Window]
-    workspace_grid: dict[(int, int), int]
-    ungridable_workspaces: tuple[int, ...]
     focused_workspace_id: int
     focused_window_address: str | None
 
     @classmethod
     def get(cls):
-        monitors = {
-            (monitor := Monitor.from_hypr_json(monitor_data)).id: monitor
-            for monitor_data in hypr_json("monitors")
-        }
-        workspaces = {
-            (ws := Workspace.from_hypr_json(ws_data)).id: ws
-            for ws_data in hypr_json("workspaces")
-        }
-        windows = {
-            (window := Window.from_hypr_json(client_data)).address: window
-            for client_data in hypr_json("clients")
-        }
-        workspace_grid = {ws.grid_coords: ws.id for ws in workspaces.values()}
-        ungridable_workspaces = tuple(
-            ws.id for ws in workspaces.values() if not ws.is_gridable(len(monitors))
-        )
+        monitors = {}
+        for json_data in hypr_json("monitors"):
+            m = Monitor(
+                name=json_data["name"],
+                enabled=not json_data["disabled"],
+                focused=json_data["focused"],
+                id=json_data["id"],
+                workspace_id=json_data["activeWorkspace"]["id"],
+                special_workspace_id=json_data["specialWorkspace"]["id"],
+                raw_data=json_data,
+            )
+            monitors[m.id] = m
+        workspaces = {}
+        for json_data in hypr_json("workspaces"):
+            id = json_data["id"]
+            monitor_id = json_data["monitorID"]
+            is_visible = monitors[monitor_id].workspace_id == id
+            w = Workspace(
+                name=json_data["name"],
+                windows=json_data["windows"],
+                id=id,
+                monitor_id=monitor_id,
+                is_visible=is_visible,
+                raw_data=json_data,
+            )
+            workspaces[w.id] = w
+        windows = {}
+        for json_data in hypr_json("clients"):
+            w = Window(
+                class_=json_data["class"],
+                title=json_data["title"],
+                focus_id=json_data["focusHistoryID"],
+                workspace_id=json_data["workspace"]["id"],
+                address=json_data["address"],
+                raw_data=json_data,
+            )
+            windows[w.address] = w
         active_workspace = hypr_json("activeworkspace")
         active_window = hypr_json("activewindow")
         return cls(
             monitors=monitors,
             workspaces=workspaces,
             windows=windows,
-            workspace_grid=workspace_grid,
-            ungridable_workspaces=ungridable_workspaces,
             focused_workspace_id=active_workspace["id"],
             focused_window_address=active_window.get("address"),
         )
@@ -264,16 +287,23 @@ class State:
     def monitor_workspace(self, monitor_id):
         return self.workspaces[self.monitors[monitor_id].workspace_id]
 
-    @property
-    def focused_window(self):
-        return self.windows.get(self.focused_window_address)
+    def is_gridable_workspace(self, wid):
+        ws = self.workspaces[wid]
+        if ws.is_special and ws.geometry is not None:
+            return True
+        return (
+            ws.geometry is not None
+            and ws.geometry.monitor is not None
+            and ws.geometry.monitor < len(self.monitors)
+        )
 
     @property
-    def last_focused_window(self):
-        for window in self.windows.values():
-            if window.focus_id == 0:
-                return window
-        raise RuntimeError("No last focused window found")
+    def ungridable_workspaces(self):
+        return [
+            ws.id
+            for ws in self.workspaces.values()
+            if not self.is_gridable_workspace(ws.id)
+        ]
 
     @property
     def focused_monitor(self):
@@ -286,19 +316,6 @@ class State:
     def focused_workspace(self):
         return self.workspaces[self.focused_workspace_id]
 
-    def workspace_from_grid(self, col, row):
-        return self.workspaces.get(self.workspace_grid.get((col, row)))
-
-    def workspace_is_focused(self, wid):
-        ws = self.workspaces[wid]
-        monitor = self.monitors[ws.monitor_id]
-        return monitor.focused and monitor.workspace_id == wid
-
-    def workspace_is_visible(self, wid):
-        ws = self.workspaces[wid]
-        monitor = self.monitors[ws.monitor_id]
-        return monitor.workspace_id == wid
-
 
 def print_list(data_name, raw):
     state = State.get()
@@ -307,7 +324,10 @@ def print_list(data_name, raw):
     elif data_name == "workspaces":
         items = sorted(state.workspaces.values(), key=lambda m: m.name)
     elif data_name == "windows":
-        items = sorted(state.windows.values(), key=lambda w: (state.workspaces[w.workspace_id].name, w.focus_id))
+        items = sorted(
+            state.windows.values(),
+            key=lambda w: (state.workspaces[w.workspace_id].name, w.focus_id),
+        )
     else:
         raise RuntimeError(f"Unknown data type {data_name!r}")
     if raw:
@@ -317,10 +337,7 @@ def print_list(data_name, raw):
         item_reprs = []
         for item in items:
             name, props = item.get_display_props(state)
-            lines = [
-                name,
-                *(f"    {k}: {v}" for k, v in props.items())
-            ]
+            lines = [name, *(f"    {k}: {v}" for k, v in props.items())]
             item_reprs.append("\n".join(lines))
         print("\n\n".join(item_reprs))
 
@@ -345,14 +362,14 @@ def move_workspace(workspace_name):
 
 def toggle_special():
     state = State.get()
-    x, y = state.focused_workspace.grid_coords
+    x, y = state.focused_workspace.coords
     workspace_name = f"{x}.{y}"
     hypr_dispatch(f"togglespecialworkspace {workspace_name}")
 
 
 def move_special():
     state = State.get()
-    x, y = state.focused_workspace.grid_coords
+    x, y = state.focused_workspace.coords
     workspace_name = f"{x}.{y}"
     hypr_dispatch(f"movetoworkspacesilent special:{workspace_name}")
 
@@ -363,7 +380,7 @@ def collect_windows(off_grid_only: bool = False):
     eprint(f"Target: {target_ws}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if off_grid_only and ws.is_gridable(len(state.monitors)):
+        if off_grid_only and ws.geometry is not None:
             continue
         eprint(f"Collecting: {window}")
         hypr_dispatch(
