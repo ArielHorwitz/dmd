@@ -78,8 +78,8 @@
     msb3 (cmd-button "mouse right")
     msbU (cmd-button "mouse wheel-up")
     msbD (cmd-button "mouse wheel-down")
-    scrU (cmd-button "mouse --window-edge r --edge-offset 30; mouse wheel-up")
-    scrD (cmd-button "mouse --window-edge r --edge-offset 30; mouse wheel-down")
+    scrU (cmd-button "mouse --window-edge r --edge-offset 40; mouse wheel-up")
+    scrD (cmd-button "mouse --window-edge r --edge-offset 40; mouse wheel-down")
 
     msu0 (cmd-button "mouse --up 1")
     msd0 (cmd-button "mouse --down 1")
