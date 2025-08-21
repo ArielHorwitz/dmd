@@ -38,5 +38,5 @@ fi
 output=$(date "$format")
 echo "$output"
 if [[ $args_clipboard ]]; then
-    printf "%s" "$output" | xsel -ib
+    printf "%s" "$output" | clipcatctl load
 fi

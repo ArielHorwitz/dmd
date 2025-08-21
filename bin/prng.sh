@@ -25,4 +25,4 @@ esac
 
 output=$(</dev/urandom tr -dc "$filter" | head -c $args_count)
 echo "$output"
-[[ -n $args_no_clipboard ]] || printf "%s" "$output" | xsel -ib
+[[ -n $args_no_clipboard ]] || printf "%s" "$output" | clipcatctl load

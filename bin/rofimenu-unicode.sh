@@ -103,7 +103,7 @@ fi
 
 if [[ $args_character ]]; then
     char=$(extract_first_unicode "$args_character")
-    printf "%s" "$char" | xsel -ib
+    printf "%s" "$char" | clipcatctl load
     exit
 fi
 

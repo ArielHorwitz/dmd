@@ -13,7 +13,7 @@ prompt_size = 5
 
 [commands]
 editor = ["lite-xl"]
-copy = ["xsel", "-ib"]
+copy = ["clipcatctl", "load"]
 
 [hotkeys]
 quit_program = [ "ctrl q" ]

@@ -31,7 +31,7 @@ fi
 
 if [[ $args_emoji ]]; then
     emoji=$(printf "%s" "$args_emoji" | awk '{ printf "%s", $1 }')
-    printf '%s' "$emoji" | xsel -ib
+    printf '%s' "$emoji" | clipcatctl load
     exit
 fi
 
