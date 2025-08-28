@@ -5,5 +5,5 @@
 # Restore keyboard
 killall kmonad
 # Restore monitors
-hyprctl keyword monitor ",preferred,auto,auto"
-hyprctl keyword monitor "eDP-1,preferred,auto,auto"
+hyprctl --instance 0 keyword monitor ",preferred,auto,auto"
+hyprctl --instance 0 keyword monitor "eDP-1,preferred,auto,auto"
