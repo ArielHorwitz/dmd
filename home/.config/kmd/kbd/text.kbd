@@ -10,8 +10,8 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Ecbt @Ecbs @Ecbc XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    @Ecbr @Ecbf XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Ecbr @Ecbc @EcbC XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Ecbf @Ecbs XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer text
@@ -45,11 +45,11 @@
 
 
     Ealt (layer-toggle editing_alt)
-    Ecbs (cmd-button "clipcat-suspend")
-    Ecbt (cmd-button "clipcat-suspend --toggle")
+    Ecbc (cmd-button "dclipboard --clear")
+    EcbC (cmd-button "dclipboard --clear-history")
     Ecbf (cmd-button "clipcat-menu insert")
     Ecbr (cmd-button "clipcat-menu remove")
-    Ecbc (cmd-button "clipcatctl clear")
+    Ecbs (cmd-button "dclipboard --suspend-watcher 20")
     copy C-c
     past C-v
     cut  C-x
