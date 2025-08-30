@@ -8,6 +8,7 @@ CLI=(
     -o "volume;Set volume percentage"
     -O "increase;Increase volume percentage;;i"
     -O "decrease;Decrease volume percentage;;d"
+    -O "fade-out;Fade out volume over a number of seconds;;O"
     -f "mic;Use source instead of sink"
     -f "mute;Mute device;;m"
     -f "unmute;Unmute device;;u"
@@ -80,6 +81,38 @@ print_mute() {
     [[ $(pactl get-${device_type}-mute ${device_name}) = "Mute: yes" ]] && echo 1 || echo 0
 }
 
+fade_out() {
+    set -e
+    local device_type=$1
+    local fade_seconds=${2:-5}
+    local device_name
+    local initial_volume current_volume expected_volume volume_step new_volume
+    local steps
+    local step_delay=0.1
+    device_name=$(print_default_device "$device_type")
+
+    initial_volume=$(print_volume "$device_type")
+    expected_volume=$initial_volume
+    steps=$(awk "BEGIN {printf \"%.0f\", $fade_seconds / $step_delay}")
+    volume_step=$(awk "BEGIN { print int(($initial_volume / ($steps - 1)) + 0.5) }")
+    echo "Fading out volume of ${initial_volume}% in $steps steps of ${volume_step}% over ${fade_seconds} seconds" >&2
+    [[ $volume_step -gt 0 ]] || exit_error "Cannot fade out with steps of 0%"
+
+    while :; do
+        current_volume=$(print_volume "$device_type")
+        if [[ current_volume -ne expected_volume ]]; then
+            echo "Volume changed externally, stopping fade out" >&2
+            return 1
+        fi
+        new_volume=$(( current_volume - volume_step ))
+        [[ $new_volume -gt 0 ]] || new_volume=0
+        set_volume "$device_type" "$new_volume"
+        [[ $new_volume -gt 0 ]] || break
+        expected_volume=$new_volume
+        sleep "$step_delay"
+    done
+}
+
 notify() {
     local device_type=$1
     local current_volume=$(print_volume $device_type)
@@ -103,6 +136,7 @@ notify() {
 
 [[ -z $args_mute ]] || set_mute $device_type 1
 [[ -z $args_unmute ]] || set_mute $device_type 0
+[[ -z $args_fade_out ]] || fade_out $device_type $args_fade_out
 
 if [[ -n $args_is_mute ]]; then
     print_mute $device_type
