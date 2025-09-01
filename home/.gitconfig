@@ -51,9 +51,10 @@
 	stl = stash list --stat
 	stlp = stash list --stat -p
 	stp = stash pop
-	st = stash -m
-	sts = stash --staged -m
-	stus = !"git stash save --keep-index 'Unstaged only' && git stash save 'Staged only' && git stash pop && git add . --all && git status"
+	st = stash push -m
+	sts = stash push --staged -m
+	stus = git stash push --keep-index -m
+	sta = git stash push -u -m
 	# Stage
 	a = add
 	au = add --update .
