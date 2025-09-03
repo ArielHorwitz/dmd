@@ -1,7 +1,7 @@
 # hardware
 networkmanager
 sof-firmware
-pulseaudio
+pipewire-pulse
 
 # utilities
 ydotool

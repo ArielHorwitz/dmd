@@ -21,8 +21,10 @@
         "disk#black",
         "memory",
         "cpu",
-        "pulseaudio#source",
-        "pulseaudio",
+        // "pulseaudio#source",
+        // "pulseaudio",
+        "wireplumber#source",
+        "wireplumber",
     ],
     "tray": {
         // "icon-size": 21,
@@ -121,6 +123,23 @@
         "format-muted": "{format_source}",
         "format-source": "{volume}%  ",
         "format-source-muted": "{volume}%  ",
+    },
+    "wireplumber": {
+        "format": "{volume}% {icon}",
+        "format-muted": "{volume}%  ",
+        // "format-icons": [" ", " ", " "],
+        "format-icons": {
+            "headphone": "󰋋 ",
+            "headphone-muted": "󰟎 ",
+            "default": [" ", " ", " "],
+            "default-muted": " ",
+        },
+    },
+    "wireplumber#source": {
+        // 󰍬 󰍭
+        "node-type": "Audio/Source",
+        "format": "{volume}%  ",
+        "format-muted": "{volume}%  ",
     },
     "hyprland/workspaces": {
         "format": "󰨇 {name}",
