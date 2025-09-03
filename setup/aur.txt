@@ -21,6 +21,7 @@ hyprland
 hyprlock
 hyprpaper
 waybar
+xdg-desktop-portal-hyprland
 
 # apps
 alacritty
