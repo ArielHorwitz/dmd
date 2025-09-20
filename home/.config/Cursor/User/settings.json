@@ -1,0 +1,7 @@
+{
+    "window.commandCenter": true,
+    "workbench.colorTheme": "Cursor Dark Midnight",
+    "cursor.composer.usageSummaryDisplay": "always",
+    "editor.fontFamily": "monospace, FiraCodeNerdFont",
+    "workbench.editor.focusRecentEditorAfterClose": false
+}
