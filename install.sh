@@ -22,6 +22,7 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
   --no-hostname     Do not implicitly add hostname to homux selections
   -r, --reload      Reload home config
   -f, --force       Do not stop on warnings
+  -u, --user-mode   Install without root access (local user installation)
   -h, --help        Show this help and exit
 "
 
@@ -51,6 +52,7 @@ while [[ $# -gt 0 ]]; do
         --no-hostname )      HOMUX_HOSTNAME= ; shift ;;
         -r | --reload)       POST_INSTALL_RELOAD=1; shift ;;
         -f | --force)        INSTALL_FORCE=1; shift ;;
+        -u | --user-mode)    USER_MODE=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
     esac
@@ -58,16 +60,11 @@ done
 
 INSTALLATION_OPERATION=
 INSTALLATION_COMPONENTS=(packages crates scripts config icons fonts home)
-NEEDS_ROOT=
-ROOT_COMPONENTS=(packages crates scripts config icons fonts)
 for component_name in ${INSTALLATION_COMPONENTS[@]}; do
     installation_component_name="INSTALL_${component_name^^}"
     [[ -z $INSTALL_ALL ]] || declare "${installation_component_name}=1"
     if [[ ${!installation_component_name} ]]; then
         INSTALLATION_OPERATION=1
-        if [[ " ${ROOT_COMPONENTS[*]} " == *" ${component_name} "* ]]; then
-            NEEDS_ROOT=1
-        fi
     fi
 done
 [[ $INSTALLATION_OPERATION ]] || exit_error "Nothing to do (try --help)"
@@ -82,19 +79,42 @@ echo "Started at: $(date)"
 
 SOURCE_DIR=$(realpath $(dirname $0))
 SETUP_DIR=$SOURCE_DIR/setup
-CRATES_TARGET=/bin/dmd_cargo_crates
-BIN_TARGET=/bin/dmd
-ICONS_TAGRET=/usr/share/icons/dmd
-FONTS_TARGET_DIR=/usr/share/fonts
+DMD_DATA_DIR=/var/opt/dmd
+
+if [[ $USER_MODE ]]; then
+    CRATES_TARGET=$HOME/.local/bin/dmd_cargo_crates
+    BIN_TARGET=$HOME/.local/bin/dmd
+    ICONS_TAGRET=$HOME/.local/share/icons/dmd
+    FONTS_TARGET_DIR=$HOME/.local/share/fonts
+else
+    CRATES_TARGET=/bin/dmd_cargo_crates
+    BIN_TARGET=/bin/dmd
+    ICONS_TAGRET=/usr/share/icons/dmd
+    FONTS_TARGET_DIR=/usr/share/fonts
+fi
 
 
 [[ -d $SETUP_DIR ]] || exit_error "Setup directory not found: ${SETUP_DIR}"
 [[ $EUID -ne 0 ]] || exit_error "Do not run as root."
-[[ -z $NEEDS_ROOT ]] || sudo -v
+
+
+run_with_privilege() {
+    if [[ $USER_MODE ]]; then
+        "$@"
+    else
+        sudo "$@"
+    fi
+}
 
 
 install_packages() {
     set -e
+    if [[ $USER_MODE ]]; then
+        warn "Skipping packages installation in user mode (requires root access)"
+        warn "Please install these packages manually:"
+        warn "$(decomment "$SETUP_DIR/aur.txt" | tr '\n' ' ')"
+        return
+    fi
     local os_id=$(grep '^ID=' /etc/os-release | awk -F= '{print $2}' | tr -d '"')
     debug "Detected OS: $os_id"
     case $os_id in
@@ -126,13 +146,17 @@ install_packages_arch() {
 install_crates() {
     set -e
     progress "Installing crates..."
-    sudo mkdir --parents $CRATES_TARGET
-    sudo chown --recursive $USER $CRATES_TARGET
+    run_with_privilege mkdir --parents $CRATES_TARGET
+    if [[ -z $USER_MODE ]]; then
+        sudo chown --recursive $USER $CRATES_TARGET
+    fi
     for crate_name in $(decomment "$SETUP_DIR/crates.txt"); do
         debug "> $crate_name"
         cargo install --root $CRATES_TARGET $crate_name
     done
-    sudo chown --recursive 0 $CRATES_TARGET
+    if [[ -z $USER_MODE ]]; then
+        sudo chown --recursive 0 $CRATES_TARGET
+    fi
 }
 
 
@@ -144,8 +168,13 @@ install_scripts() {
     cp -rt $staging $SOURCE_DIR/bin/*
     find $staging -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
     # install from staging
-    sudo rm -rf $BIN_TARGET
-    sudo install --owner root -Dt $BIN_TARGET $staging/*
+    run_with_privilege rm -rf $BIN_TARGET
+    if [[ $USER_MODE ]]; then
+        mkdir -p $BIN_TARGET
+        install -Dt $BIN_TARGET $staging/*
+    else
+        sudo install --owner root -Dt $BIN_TARGET $staging/*
+    fi
     # clean up
     rm -rf $staging
 }
@@ -153,6 +182,14 @@ install_scripts() {
 
 install_configs() {
     set -e
+    if [[ $USER_MODE ]]; then
+        warn "Skipping system configurations in user mode:"
+        warn "  - sudoers configuration"
+        warn "  - hardware group and udev rules"
+        warn "Some scripts or configurations may not work correctly"
+        return
+    fi
+
     progress "Configuring profile..."
     cat $SETUP_DIR/profile.dropin \
         | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
@@ -164,9 +201,9 @@ install_configs() {
         | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
         | sudo tee /etc/sudoers.d/dmd
     sudo cp $SETUP_DIR/udev.rules /etc/udev/rules.d/80-dmd.rules
-    sudo mkdir -p /var/opt/dmd
-    sudo chgrp hardware /var/opt/dmd
-    sudo chmod g+w /var/opt/dmd
+    run_with_privilege mkdir -p "$DMD_DATA_DIR"
+    sudo chgrp hardware "$DMD_DATA_DIR"
+    sudo chmod g+w "$DMD_DATA_DIR"
     sudo groupadd -f hardware
     sudo usermod -aG hardware $USER
 }
@@ -175,9 +212,9 @@ install_configs() {
 install_icons() {
     set -e
     progress "Installing icons..."
-    sudo rm -rf $ICONS_TAGRET
-    sudo mkdir -p $ICONS_TAGRET
-    sudo cp -rt $ICONS_TAGRET $SOURCE_DIR/icons/*
+    run_with_privilege rm -rf $ICONS_TAGRET
+    run_with_privilege mkdir -p $ICONS_TAGRET
+    run_with_privilege cp -rt $ICONS_TAGRET $SOURCE_DIR/icons/*
 }
 
 
@@ -203,18 +240,20 @@ install_fonts() {
         fi
         local archive_name=$(basename $font_url)
         local download_file=$tmpdir/$archive_name
-        debug "Installing ${name}: ${archive_name} at ${target_dir}"
+        debug "Installing ${font_name}: ${archive_name} at ${target_dir}"
         curl -sSL $font_url -o $download_file
-        sudo rm -rf $target_dir
-        sudo mkdir -p $target_dir
+        run_with_privilege rm -rf $target_dir
+        run_with_privilege mkdir -p $target_dir
         case $archive_name in
-            *.zip       ) sudo unzip -q $download_file -d $target_dir ;;
-            *.tar.*     ) sudo tar -xf $download_file -C $target_dir ;;
-            *.ttf       ) sudo cp $download_file $target_dir ;;
+            *.zip       ) run_with_privilege unzip -q $download_file -d $target_dir ;;
+            *.tar.*     ) run_with_privilege tar -xf $download_file -C $target_dir ;;
+            *.ttf       ) run_with_privilege cp $download_file $target_dir ;;
             *           ) exit_error "Unknown file type for font install: $archive_name" ;;
         esac
-        sudo chown -R root:root $target_dir
-        sudo chmod -R 755 $target_dir
+        if [[ -z $USER_MODE ]]; then
+            sudo chown -R root:root $target_dir
+            sudo chmod -R 755 $target_dir
+        fi
     done
     rm -r $tmpdir
     fc-cache
