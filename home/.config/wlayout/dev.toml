@@ -26,7 +26,7 @@ focus_window = true
 monitor = "eDP-1"
 
 [[command]]
-command = ["lite-xl", "$dir$"]
+command = ["cursor", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
 
