@@ -65,12 +65,6 @@ run_kmonad() {
     start_command="notify-send -h ${sync_arg} -i ${ICON_START} \'Started KMonad\' \'${device_name}\'"
     sed -i "s|<KMD_START_CMD>|${start_command}|" $kbd_file
 
-    # Kill running instance of KMonad
-    local running_pid=$(pgrep -ax kmonad | grep $device_name | awk '{print $1}' || echo '')
-    if [[ -n $running_pid ]]; then
-        sleep 0.1
-        kill $running_pid
-    fi
     setlayoutkb 0
 
     # Start KMonad
@@ -78,6 +72,8 @@ run_kmonad() {
     notify-send -h ${sync_arg} -i ${ICON_LOAD} -u low "Starting KMonad..." "$device_name"
     kmonad $kbd_file ${kmonad_args[@]} >${device_log_file} 2>&1 &
 }
+
+pkill kmonad || :
 
 available_devices=$(find /dev/input/by-* -type l)
 mapfile devices_from_file <<< $(decomment $args_device_file)
