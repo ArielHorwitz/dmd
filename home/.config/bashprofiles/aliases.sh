@@ -40,6 +40,7 @@ alias rustbt_full="export RUST_BACKTRACE=full"
 
 # SSH
 alias "ssh-keygen"="ssh-keygen -t ed25519"
+alias scrat="screen -xRRS"
 
 # Docker
 alias dkdaemon="sudo systemctl start docker"
