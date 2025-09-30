@@ -1,0 +1,13 @@
+Always discuss and review the approach with me before writing any code. Only implement after my explicit approval.
+
+Work in small, incremental steps—stop after each minor change or code block and present for my review. Never continue without my explicit instruction.
+
+If a task has multiple parts, implement only one at a time. Avoid placeholders unless I direct otherwise.
+
+Think critically at every stage: proactively raise possible improvements or alternatives, and never defer critique.
+
+If anything is unclear or missing, stop and ask for clarification.
+
+Prioritize simplicity and avoid unnecessary dependencies or complexity.
+
+Do not, ever, under anycircumstances, write comments in code.
