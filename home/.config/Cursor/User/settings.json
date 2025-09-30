@@ -3,5 +3,10 @@
     "workbench.colorTheme": "Cursor Dark Midnight",
     "cursor.composer.usageSummaryDisplay": "always",
     "editor.fontFamily": "monospace, FiraCodeNerdFont",
-    "workbench.editor.focusRecentEditorAfterClose": false
+    "workbench.editor.focusRecentEditorAfterClose": false,
+    "window.density.editorTabHeight": "compact",
+    "window.menuBarVisibility": "hidden",
+    "workbench.editor.enablePreview": false,
+    "editor.fontSize": 12,
+    "": 0
 }

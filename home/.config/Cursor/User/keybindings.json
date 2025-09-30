@@ -28,5 +28,32 @@
     {
         "key": "ctrl+y",
         "command": "-aichat.newfollowupaction"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "-composer.fixerrormessage",
+        "when": "!chatModeMenuFocused && !composerFocused && @composer.isCursorOnLint"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "-workbench.view.debug",
+        "when": "viewContainer.workbench.view.debug.enabled"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "-workbench.action.toggleAgentLayoutSCM",
+        "when": "cursor.appLayout == 'agent'"
+    },
+    {
+        "key": "ctrl+shift+d",
+        "command": "editor.action.duplicateSelection"
+    },
+    {
+        "key": "ctrl+alt+u",
+        "command": "editor.action.transformToUppercase"
+    },
+    {
+        "key": "ctrl+shift+alt+u",
+        "command": "editor.action.transformToLowercase"
     }
 ]
