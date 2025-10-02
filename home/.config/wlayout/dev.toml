@@ -32,3 +32,6 @@ monitor = "eDP-1"
 
 [[command]]
 command = ["hyprctl", "dispatch layoutmsg swapwithmaster master ignoremaster"]
+
+[[command]]
+command = ["hyprctl", "dispatch layoutmsg mfact exact 0.6"]
