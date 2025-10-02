@@ -11,5 +11,11 @@ start_pattern = "~>>>" #NOMATCHPICK#
 end_pattern = "~<<<" #NOMATCHPICK#
 ignore_pattern = "#NOMATCHPICK#"
 
+[variable_ignore]
+line_pattern = "#NOHOMUXVARIABLE#"
+files = [
+    ".config/homux/config.toml",
+]
+
 [variables]
-HOMUX_VARIABLE_MONITOR_HOME = "Dell Inc. DELL SE2219H DC464X2" #NOMATCHPICK#
+HOMUX_VARIABLE_MONITOR_HOME = "Dell Inc. DELL SE2219H DC464X2"
