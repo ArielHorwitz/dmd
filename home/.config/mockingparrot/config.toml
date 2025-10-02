@@ -1,6 +1,6 @@
 # Supported providers include: "openai", "anthropic"
-# provider = "anthropic"
-provider = "openai"
+provider = "anthropic"
+# provider = "openai"
 
 [keys]
 # Get your OpenAI API key from: https://platform.openai.com/api-keys
