@@ -10,8 +10,8 @@ CLI=(
     -O "width;Terminal width;1500;W"
     -O "height;Terminal height;50;H"
     -O "size;Terminal text size;25;s"
-    -O "background;Terminal text background color;'#000022';b"
-    -O "foreground;Terminal text foreground color;'#0088cc';f"
+    -O "background;Terminal text background color;#000022;b"
+    -O "foreground;Terminal text foreground color;#0088cc;f"
     -O "prompt-title;Title for prompt terminal;Text prompt;T"
     -f "hide;Hide input text"
 )
