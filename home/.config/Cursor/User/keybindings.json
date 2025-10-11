@@ -55,5 +55,9 @@
     {
         "key": "ctrl+shift+alt+u",
         "command": "editor.action.transformToLowercase"
+    },
+    {
+        "key": "ctrl+shift+o",
+        "command": "outline.focus"
     }
 ]
