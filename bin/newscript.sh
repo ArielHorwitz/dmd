@@ -18,31 +18,8 @@ cd $target
 [[ ! -e $filename ]] || [[ -n $force ]] || exit_error "File exists, use --force to ignore this error."
 
 # Write boilerplate
-cat << 'EOF' > $filename
-#! /bin/bash
-set -e
-
-# CLI
-APP_NAME=$(basename "${0%.*}")
-ABOUT="DESCRIPTION"
-CLI=(
-    --prefix "args_"
-)
-CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
-# echo "$CLI" >&2
-eval "$CLI" || exit 1
-
-# CONFIGURATION
-config_file=$HOME/.config/${APP_NAME}/config.toml
-config_keys=()
-config_default=''
-tt_out=$(mktemp); tt_err=$(mktemp)
-if tigerturtle -WD "$config_default" -p "config__" $config_file -- ${config_keys[@]} >$tt_out 2>$tt_err; then
-    eval $(<$tt_out); rm $tt_out; rm $tt_err;
-else
-    echo "$(<$tt_err)" >&2; rm $tt_out; rm $tt_err; exit 1;
-fi
-EOF
+spongecrab --generate > "$filename"
+tigerturtle --generate >> "$filename"
 
 # Make executable
 chmod +x $filename
