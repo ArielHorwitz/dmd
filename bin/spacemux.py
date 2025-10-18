@@ -90,7 +90,8 @@ def print_layout(
         if ws.is_visible:
             gs.visible = True
     focused_workspace = state.workspaces[state.focused_workspace_id]
-    grid_states[focused_workspace.coords].visible = True
+    if focused_workspace.coords is not None:
+        grid_states[focused_workspace.coords].visible = True
     for row in range(1, rows + 1):
         col_reprs = []
         for col in range(1, columns + 1):
