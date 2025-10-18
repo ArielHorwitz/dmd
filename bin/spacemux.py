@@ -343,7 +343,10 @@ def print_list(data_name, raw):
         print("\n\n".join(item_reprs))
 
 
-def switch_workspace(workspace_name):
+def switch_workspace(workspace_name, raw=False):
+    if raw:
+        hypr_dispatch(f"focusworkspaceoncurrentmonitor name:{workspace_name}")
+        return
     state = State.get()
     focused_monitor = state.focused_monitor
     commands = []
@@ -357,8 +360,10 @@ def switch_workspace(workspace_name):
     hypr_dispatch(*commands, batch_commands=True)
 
 
-def move_workspace(workspace_name):
-    hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}.0")
+def move_workspace(workspace_name, raw=False):
+    if not raw:
+        workspace_name = f"{workspace_name}.0"
+    hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}")
 
 
 def toggle_special():
@@ -484,8 +489,10 @@ def main():
     )
     switch_parser = subparsers.add_parser("switch", help="Switch to workspace")
     switch_parser.add_argument("workspace", help="Workspace to switch to")
+    switch_parser.add_argument("--raw", action="store_true", help="Use workspace name verbatim"),
     move_parser = subparsers.add_parser("move", help="Move focused window to workspace")
     move_parser.add_argument("workspace", help="Workspace to move window to")
+    move_parser.add_argument("--raw", action="store_true", help="Use workspace name verbatim"),
     lock_parser = subparsers.add_parser("lock", help="Set or toggle monitor lock state")
     lock_parser.add_argument(
         "lock",
@@ -544,9 +551,9 @@ def main():
         else:
             raise ValueError(f"Unknown special subcommand: {args.special_subcommand}")
     elif args.command == "switch":
-        switch_workspace(args.workspace)
+        switch_workspace(args.workspace, args.raw)
     elif args.command == "move":
-        move_workspace(args.workspace)
+        move_workspace(args.workspace, args.raw)
     elif args.command == "collect":
         if args.all:
             collect_windows()
