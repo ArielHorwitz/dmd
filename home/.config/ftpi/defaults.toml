@@ -1,4 +1,0 @@
-username = "remote"
-server = "192.248.191.4"
-port = 21
-protocol = "ftp"
