@@ -290,11 +290,12 @@ class State:
 
     def is_gridable_workspace(self, wid):
         ws = self.workspaces[wid]
-        if ws.is_special and ws.geometry is not None:
+        if ws.geometry is None:
+            return False
+        if ws.is_special:
             return True
         return (
-            ws.geometry is not None
-            and ws.geometry.monitor is not None
+            ws.geometry.monitor is not None
             and ws.geometry.monitor < len(self.monitors)
         )
 
@@ -384,9 +385,13 @@ def collect_windows(off_grid_only: bool = False):
     state = State.get()
     target_ws = state.focused_workspace
     eprint(f"Target: {target_ws}")
+    ungridable = state.ungridable_workspaces
+    if off_grid_only:
+        eprint(f"Ungridable: {[state.workspaces[wid] for wid in ungridable]}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if off_grid_only and ws.geometry is not None:
+        if off_grid_only and ws.id not in ungridable:
+            eprint(f"Skipping: {window} {ws.id=}")
             continue
         eprint(f"Collecting: {window}")
         hypr_dispatch(
