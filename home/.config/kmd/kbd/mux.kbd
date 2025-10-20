@@ -16,7 +16,7 @@
 )
 (defalias
     Xalt (layer-toggle multiplexer_alt)
-    Xsum (cmd-button "spacemux")
+    Xsum (cmd-button "spacemux show")
     Xcol (cmd-button "spacemux collect")
     XCol (cmd-button "spacemux collect --all")
     Xlck (cmd-button "spacemux lock")

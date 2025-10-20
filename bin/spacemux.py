@@ -535,7 +535,20 @@ def main():
         action="store_true",
         help="Collect from all workspaces",
     )
+    show_parser = subparsers.add_parser("show", help="Show the current layout")
+    show_parser.add_argument(
+        "--notification-timeout",
+        type=int,
+        default=5000,
+    )
     args = parser.parse_args()
+
+    create_missing_config(Path(args.config_file))
+    config = tomllib.loads(args.config_file.read_text())
+    rows = config["rows"]
+    columns = config["columns"]
+    notification_timeout = config["notification_timeout"]
+    icon = config["icon"]
 
     if args.command == "info":
         print_list(args.info_type, args.raw)
@@ -564,17 +577,13 @@ def main():
             collect_windows()
         else:
             collect_windows(off_grid_only=True)
+    elif args.command == "show":
+        notification_timeout = args.notification_timeout
     elif args.command is None:
         pass
     else:
         raise ValueError(f"Unknown command: {args.command}")
 
-    create_missing_config(Path(args.config_file))
-    config = tomllib.loads(args.config_file.read_text())
-    rows = config["rows"]
-    columns = config["columns"]
-    notification_timeout = config["notification_timeout"]
-    icon = config["icon"]
     print_layout(
         rows=rows,
         columns=columns,
