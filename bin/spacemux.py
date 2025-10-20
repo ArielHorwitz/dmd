@@ -60,10 +60,10 @@ def print_layout(
     icon_file: str,
 ):
     state = State.get()
-    monitor_names = tuple(m.name for m in state.monitors.values())
+    monitor_names = tuple(m.name for m in state.get_monitors_by_position())
     locked_monitors = tuple(m for m in get_locked_monitors(state) if m in monitor_names)
     visible_workspaces_repr = " ".join(
-        f"{state.monitor_workspace(mid).name:<15}" for mid in state.monitors
+        f"{state.monitor_workspace(m.id).name:<15}" for m in state.get_monitors_by_position()
     )
     locked_monitors_repr = " ".join(f"{m:<15}" for m in locked_monitors)
     print(f" Focused workspace: {state.focused_workspace.name}")
@@ -140,6 +140,8 @@ class Monitor:
     name: str
     enabled: bool
     focused: bool
+    x: int
+    y: int
     id: int = field(repr=False)
     workspace_id: int = field(repr=False)
     special_workspace_id: int = field(repr=False)
@@ -244,6 +246,8 @@ class State:
                 name=json_data["name"],
                 enabled=not json_data["disabled"],
                 focused=json_data["focused"],
+                x=json_data["x"],
+                y=json_data["y"],
                 id=json_data["id"],
                 workspace_id=json_data["activeWorkspace"]["id"],
                 special_workspace_id=json_data["specialWorkspace"]["id"],
@@ -318,6 +322,9 @@ class State:
     def focused_workspace(self):
         return self.workspaces[self.focused_workspace_id]
 
+    def get_monitors_by_position(self):
+        return sorted(self.monitors.values(), key=lambda m: (m.x, m.y, m.id))
+
 
 def print_list(data_name, raw):
     state = State.get()
@@ -352,7 +359,7 @@ def switch_workspace(workspace_name, raw=False):
     focused_monitor = state.focused_monitor
     commands = []
     locked_monitors = get_locked_monitors(state)
-    for i, monitor in enumerate(state.monitors.values()):
+    for i, monitor in enumerate(state.get_monitors_by_position()):
         if monitor.name in locked_monitors:
             continue
         commands.append(f"focusmonitor {monitor.name}")
