@@ -413,6 +413,25 @@ def move_workspace(workspace_name, raw=False):
     hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}")
 
 
+def rename_workspace(target_name, raw=False, swap=False):
+    state = State.get()
+    source_ws = state.focused_workspace
+    if not raw:
+        target_name = f"{target_name}.0"
+    target_ws = [
+        ws for ws in state.workspaces.values()
+        if ws.name == target_name
+    ]
+    if target_ws and not swap:
+        raise ValueError(f"Workspace {target_name} already exists (use --swap)")
+
+    hypr_dispatch(f"renameworkspace {source_ws.id} {target_name}")
+    if swap:
+        for ws in target_ws:
+            hypr_dispatch(f"renameworkspace {ws.id} {source_ws.name}")
+    switch_workspace(source_ws.name, raw=True)
+
+
 def toggle_special():
     state = State.get()
     x, y = state.focused_workspace.coords
@@ -552,6 +571,18 @@ def main():
         action="store_true",
         help="Use workspace name verbatim",
     )
+    rename_parser = subparsers.add_parser("rename", help="Rename focused workspace")
+    rename_parser.add_argument("target", help="New name (e.g. 2.3)")
+    rename_parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Use workspace name verbatim",
+    )
+    rename_parser.add_argument(
+        "--swap",
+        action="store_true",
+        help="Swap with target if it exists",
+    )
     lock_parser = subparsers.add_parser("lock", help="Set or toggle monitor lock state")
     lock_parser.add_argument(
         "lock",
@@ -626,6 +657,8 @@ def main():
         switch_workspace(args.workspace, args.raw)
     elif args.command == "move":
         move_workspace(args.workspace, args.raw)
+    elif args.command == "rename":
+        rename_workspace(args.target, args.raw, args.swap)
     elif args.command == "collect":
         if args.all:
             collect_windows()
