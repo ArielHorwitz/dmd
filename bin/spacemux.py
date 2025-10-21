@@ -357,14 +357,53 @@ def switch_workspace(workspace_name, raw=False):
         return
     state = State.get()
     focused_monitor = state.focused_monitor
-    commands = []
     locked_monitors = get_locked_monitors(state)
-    for i, monitor in enumerate(state.get_monitors_by_position()):
-        if monitor.name in locked_monitors:
-            continue
-        commands.append(f"focusmonitor {monitor.name}")
-        commands.append(f"focusworkspaceoncurrentmonitor name:{workspace_name}.{i}")
+    unlocked_monitors = [
+        m for m in state.get_monitors_by_position()
+        if m.name not in locked_monitors
+    ]
+    if not unlocked_monitors:
+        return
+    row, col = workspace_name.split(".")
+    target_coords = (int(row), int(col))
+    existing_workspaces = [
+        ws for ws in state.workspaces.values()
+        if ws.geometry.coords is not None
+        and ws.geometry.coords == target_coords
+        and ws.geometry.monitor is not None
+    ]
+    existing_workspaces.sort(key=lambda ws: ws.geometry.monitor)
+
+    current_ws = state.monitor_workspace(unlocked_monitors[0].id)
+    on_target_cell = (
+        current_ws.geometry is not None
+        and current_ws.geometry.coords == target_coords
+    )
+
+    eprint(f"{on_target_cell=}")
+    eprint(f"{existing_workspaces=}")
+    if on_target_cell and len(existing_workspaces) > len(unlocked_monitors):
+        first_index = existing_workspaces.index(current_ws)
+        next_index = (first_index + 1) % len(existing_workspaces)
+        existing_workspaces = existing_workspaces[next_index:] + existing_workspaces[:next_index]
+        eprint(f"{existing_workspaces=}")
+
+    targets = set(ws.geometry.monitor for ws in existing_workspaces[:len(unlocked_monitors)])
+    eprint(f"{targets=}")
+    for i in range(len(unlocked_monitors)):
+        if len(targets) >= len(unlocked_monitors):
+            break
+        targets.add(i)
+    targets = sorted(targets)
+    eprint(f"{targets=}")
+
+    commands = []
+    for monitor, index in zip(unlocked_monitors, targets):
+        commands.append(f"focusmonitor {state.monitors[monitor.id].name}")
+        commands.append(f"focusworkspaceoncurrentmonitor name:{workspace_name}.{index}")
     commands.append(f"focusmonitor {focused_monitor.name}")
+    eprint(f"{targets=}")
+    eprint(f"{commands=}")
     hypr_dispatch(*commands, batch_commands=True)
 
 
