@@ -539,11 +539,19 @@ def main():
         help="show raw data from hyprland",
     )
     switch_parser = subparsers.add_parser("switch", help="Switch to workspace")
-    switch_parser.add_argument("workspace", help="Workspace to switch to")
-    switch_parser.add_argument("--raw", action="store_true", help="Use workspace name verbatim"),
+    switch_parser.add_argument("workspace", help="Workspace to switch to (e.g. 2.3)")
+    switch_parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Use workspace name verbatim",
+    )
     move_parser = subparsers.add_parser("move", help="Move focused window to workspace")
-    move_parser.add_argument("workspace", help="Workspace to move window to")
-    move_parser.add_argument("--raw", action="store_true", help="Use workspace name verbatim"),
+    move_parser.add_argument("workspace", help="Workspace to move window to (e.g. 2.3)")
+    move_parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Use workspace name verbatim",
+    )
     lock_parser = subparsers.add_parser("lock", help="Set or toggle monitor lock state")
     lock_parser.add_argument(
         "lock",
