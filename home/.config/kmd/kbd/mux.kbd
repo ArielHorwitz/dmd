@@ -12,10 +12,19 @@
   _     XX    XX    XX    XX    XX    @Xm12 @Xm22 @Xm32 @Xm42 @Xm52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    @Xlck XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 @Xm53 XX    @Xmsp                           XX    XX    XX
   _     XX    XX    @XCol XX    XX    @Xm14 @Xm24 @Xm34 @Xm44 @Xm54 _                        XX           XX    XX    XX    XX
+  _     _     _                 @Xrnm             _     _     _     _                  XX    XX    XX     XX    XX
+)
+(deflayer multiplexer_rename
+  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
+  XX    XX    XX    XX    XX    XX    @Xr11 @Xr21 @Xr31 @Xr41 @Xr51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xr12 @Xr22 @Xr32 @Xr42 @Xr52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xr13 @Xr23 @Xr33 @Xr43 @Xr53 XX    XX                              XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xr14 @Xr24 @Xr34 @Xr44 @Xr54 _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     Xalt (layer-toggle multiplexer_alt)
+    Xrnm (layer-toggle multiplexer_rename)
     Xsum (cmd-button "spacemux show")
     Xcol (cmd-button "spacemux collect")
     XCol (cmd-button "spacemux collect --all")
@@ -62,4 +71,24 @@
     Xm52 (cmd-button "spacemux move 5.2")
     Xm53 (cmd-button "spacemux move 5.3")
     Xm54 (cmd-button "spacemux move 5.4")
+    Xr11 (cmd-button "spacemux rename --swap 1.1")
+    Xr12 (cmd-button "spacemux rename --swap 1.2")
+    Xr13 (cmd-button "spacemux rename --swap 1.3")
+    Xr14 (cmd-button "spacemux rename --swap 1.4")
+    Xr21 (cmd-button "spacemux rename --swap 2.1")
+    Xr22 (cmd-button "spacemux rename --swap 2.2")
+    Xr23 (cmd-button "spacemux rename --swap 2.3")
+    Xr24 (cmd-button "spacemux rename --swap 2.4")
+    Xr31 (cmd-button "spacemux rename --swap 3.1")
+    Xr32 (cmd-button "spacemux rename --swap 3.2")
+    Xr33 (cmd-button "spacemux rename --swap 3.3")
+    Xr34 (cmd-button "spacemux rename --swap 3.4")
+    Xr41 (cmd-button "spacemux rename --swap 4.1")
+    Xr42 (cmd-button "spacemux rename --swap 4.2")
+    Xr43 (cmd-button "spacemux rename --swap 4.3")
+    Xr44 (cmd-button "spacemux rename --swap 4.4")
+    Xr51 (cmd-button "spacemux rename --swap 5.1")
+    Xr52 (cmd-button "spacemux rename --swap 5.2")
+    Xr53 (cmd-button "spacemux rename --swap 5.3")
+    Xr54 (cmd-button "spacemux rename --swap 5.4")
 )

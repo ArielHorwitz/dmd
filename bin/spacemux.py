@@ -429,7 +429,6 @@ def rename_workspace(target_name, raw=False, swap=False):
     if swap:
         for ws in target_ws:
             hypr_dispatch(f"renameworkspace {ws.id} {source_ws.name}")
-    switch_workspace(source_ws.name, raw=True)
 
 
 def toggle_special():
