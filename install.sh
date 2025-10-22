@@ -30,6 +30,7 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
 exec 3>&1 1>/dev/null
 printhelp() { printf "$USAGE_HELP" | tee /dev/fd/3 ; }
 progress () { printf "\e[32m$1\e[0m\n" | tee /dev/fd/3 ; }
+subprogress () { printf "\e[36m$1\e[0m\n" | tee /dev/fd/3 ; }
 debug () { printf "\e[36m$1\e[0m\n" ; }
 notice () { printf "\e[35m$1\e[0m\n" | tee /dev/fd/3 ; }
 warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" | tee /dev/fd/3 ; }
@@ -151,7 +152,7 @@ install_crates() {
         sudo chown --recursive $USER $CRATES_TARGET
     fi
     for crate_name in $(decomment "$SETUP_DIR/crates.txt"); do
-        debug "> $crate_name"
+        subprogress "> $crate_name"
         cargo install --root $CRATES_TARGET $crate_name
     done
     if [[ -z $USER_MODE ]]; then
