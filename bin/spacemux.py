@@ -368,7 +368,7 @@ def switch_workspace(workspace_name, raw=False):
     target_coords = (int(row), int(col))
     existing_workspaces = [
         ws for ws in state.workspaces.values()
-        if ws.geometry.coords is not None
+        if ws.geometry is not None
         and ws.geometry.coords == target_coords
         and ws.geometry.monitor is not None
     ]
