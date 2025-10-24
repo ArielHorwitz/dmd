@@ -408,9 +408,16 @@ def switch_workspace(workspace_name, raw=False):
 
 
 def move_workspace(workspace_name, raw=False):
-    if not raw:
-        workspace_name = f"{workspace_name}.0"
-    hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}")
+    if raw:
+        hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}")
+        return
+    current_ws = State.get().focused_workspace
+    if current_ws.geometry is not None and current_ws.geometry.monitor is not None:
+        monitor_index = current_ws.geometry.monitor
+        target_name = f"{workspace_name}.{monitor_index}"
+    else:
+        target_name = f"{workspace_name}.0"
+    hypr_dispatch(f"movetoworkspacesilent name:{target_name}")
 
 
 def rename_workspace(target_name, raw=False, swap=False):
