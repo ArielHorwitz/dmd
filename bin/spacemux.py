@@ -351,9 +351,9 @@ def print_list(data_name, raw):
         print("\n\n".join(item_reprs))
 
 
-def switch_workspace(workspace_name, raw=False):
-    if raw:
-        hypr_dispatch(f"focusworkspaceoncurrentmonitor name:{workspace_name}")
+def switch_cell(cell_name, workspace=False):
+    if workspace:
+        hypr_dispatch(f"focusworkspaceoncurrentmonitor name:{cell_name}")
         return
     state = State.get()
     focused_monitor = state.focused_monitor
@@ -364,7 +364,7 @@ def switch_workspace(workspace_name, raw=False):
     ]
     if not unlocked_monitors:
         return
-    row, col = workspace_name.split(".")
+    row, col = cell_name.split(".")
     target_coords = (int(row), int(col))
     existing_workspaces = [
         ws for ws in state.workspaces.values()
@@ -400,39 +400,41 @@ def switch_workspace(workspace_name, raw=False):
     commands = []
     for monitor, index in zip(unlocked_monitors, targets):
         commands.append(f"focusmonitor {state.monitors[monitor.id].name}")
-        commands.append(f"focusworkspaceoncurrentmonitor name:{workspace_name}.{index}")
+        commands.append(f"focusworkspaceoncurrentmonitor name:{cell_name}.{index}")
     commands.append(f"focusmonitor {focused_monitor.name}")
     eprint(f"{targets=}")
     eprint(f"{commands=}")
     hypr_dispatch(*commands, batch_commands=True)
 
 
-def move_workspace(workspace_name, raw=False):
-    if raw:
-        hypr_dispatch(f"movetoworkspacesilent name:{workspace_name}")
+def move_window(cell_name, workspace=False):
+    if workspace:
+        hypr_dispatch(f"movetoworkspacesilent name:{cell_name}")
         return
     current_ws = State.get().focused_workspace
     if current_ws.geometry is not None and current_ws.geometry.monitor is not None:
         monitor_index = current_ws.geometry.monitor
-        target_name = f"{workspace_name}.{monitor_index}"
+        target_workspace_name = f"{cell_name}.{monitor_index}"
     else:
-        target_name = f"{workspace_name}.0"
-    hypr_dispatch(f"movetoworkspacesilent name:{target_name}")
+        target_workspace_name = f"{cell_name}.0"
+    hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
 
 
-def rename_workspace(target_name, raw=False, swap=False):
+def move_workspace(cell_name, workspace=False, swap=False):
     state = State.get()
     source_ws = state.focused_workspace
-    if not raw:
-        target_name = f"{target_name}.0"
+    if not workspace:
+        target_workspace_name = f"{cell_name}.0"
+    else:
+        target_workspace_name = cell_name
     target_ws = [
         ws for ws in state.workspaces.values()
-        if ws.name == target_name
+        if ws.name == target_workspace_name
     ]
     if target_ws and not swap:
-        raise ValueError(f"Workspace {target_name} already exists (use --swap)")
+        raise ValueError(f"Workspace {target_workspace_name} already exists (use --swap)")
 
-    hypr_dispatch(f"renameworkspace {source_ws.id} {target_name}")
+    hypr_dispatch(f"renameworkspace {source_ws.id} {target_workspace_name}")
     if swap:
         for ws in target_ws:
             hypr_dispatch(f"renameworkspace {ws.id} {source_ws.name}")
@@ -463,15 +465,15 @@ def swap_monitors(monitor_a, monitor_b):
 def toggle_special():
     state = State.get()
     x, y = state.focused_workspace.coords
-    workspace_name = f"{x}.{y}"
-    hypr_dispatch(f"togglespecialworkspace {workspace_name}")
+    cell_name = f"{x}.{y}"
+    hypr_dispatch(f"togglespecialworkspace {cell_name}")
 
 
 def move_special():
     state = State.get()
     x, y = state.focused_workspace.coords
-    workspace_name = f"{x}.{y}"
-    hypr_dispatch(f"movetoworkspacesilent special:{workspace_name}")
+    cell_name = f"{x}.{y}"
+    hypr_dispatch(f"movetoworkspacesilent special:{cell_name}")
 
 
 def collect_windows(off_grid_only: bool = False):
@@ -585,28 +587,28 @@ def main():
         action="store_true",
         help="show raw data from hyprland",
     )
-    switch_parser = subparsers.add_parser("switch", help="Switch to workspace")
-    switch_parser.add_argument("workspace", help="Workspace to switch to (e.g. 2.3)")
+    switch_parser = subparsers.add_parser("switch", help="Switch to cell")
+    switch_parser.add_argument("cell", help="Cell to switch to (e.g. 2.3)")
     switch_parser.add_argument(
-        "--raw",
+        "--workspace",
         action="store_true",
-        help="Use workspace name verbatim",
+        help="Treat argument as workspace name instead of cell coordinates",
     )
-    move_parser = subparsers.add_parser("move", help="Move focused window to workspace")
-    move_parser.add_argument("workspace", help="Workspace to move window to (e.g. 2.3)")
+    move_parser = subparsers.add_parser("move", help="Move focused window to cell")
+    move_parser.add_argument("cell", help="Cell to move window to (e.g. 2.3)")
     move_parser.add_argument(
-        "--raw",
+        "--workspace",
         action="store_true",
-        help="Use workspace name verbatim",
+        help="Treat argument as workspace name instead of cell coordinates",
     )
-    rename_parser = subparsers.add_parser("rename", help="Rename focused workspace")
-    rename_parser.add_argument("target", help="New name (e.g. 2.3)")
-    rename_parser.add_argument(
-        "--raw",
+    move_workspace_parser = subparsers.add_parser("move-workspace", help="Move focused workspace to cell")
+    move_workspace_parser.add_argument("cell", help="Cell to move workspace to (e.g. 2.3)")
+    move_workspace_parser.add_argument(
+        "--workspace",
         action="store_true",
-        help="Use workspace name verbatim",
+        help="Treat argument as workspace name instead of cell coordinates",
     )
-    rename_parser.add_argument(
+    move_workspace_parser.add_argument(
         "--swap",
         action="store_true",
         help="Swap with target if it exists",
@@ -698,11 +700,11 @@ def main():
         else:
             raise ValueError(f"Unknown special subcommand: {args.special_subcommand}")
     elif args.command == "switch":
-        switch_workspace(args.workspace, args.raw)
+        switch_cell(args.cell, args.workspace)
     elif args.command == "move":
-        move_workspace(args.workspace, args.raw)
-    elif args.command == "rename":
-        rename_workspace(args.target, args.raw, args.swap)
+        move_window(args.cell, args.workspace)
+    elif args.command == "move-workspace":
+        move_workspace(args.cell, args.workspace, args.swap)
     elif args.command == "collect":
         if args.all:
             collect_windows()
