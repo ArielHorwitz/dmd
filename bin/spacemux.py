@@ -431,6 +431,28 @@ def rename_workspace(target_name, raw=False, swap=False):
             hypr_dispatch(f"renameworkspace {ws.id} {source_ws.name}")
 
 
+def swap_monitors(monitor_a, monitor_b):
+    state = State.get()
+    workspaces_a = [
+        ws for ws in state.workspaces.values()
+        if ws.geometry is not None
+        and ws.geometry.monitor == monitor_a
+    ]
+    workspaces_b = [
+        ws for ws in state.workspaces.values()
+        if ws.geometry is not None
+        and ws.geometry.monitor == monitor_b
+    ]
+    for ws in workspaces_a:
+        col, row = ws.geometry.coords
+        new_name = f"{col}.{row}.{monitor_b}"
+        hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
+    for ws in workspaces_b:
+        col, row = ws.geometry.coords
+        new_name = f"{col}.{row}.{monitor_a}"
+        hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
+
+
 def toggle_special():
     state = State.get()
     x, y = state.focused_workspace.coords
@@ -619,6 +641,22 @@ def main():
         action="store_true",
         help="Collect from all workspaces",
     )
+    swap_monitors_parser = subparsers.add_parser(
+        "swap-monitors",
+        help="Swap all workspaces between two monitor indices"
+    )
+    swap_monitors_parser.add_argument(
+        "monitor_a",
+        metavar="A",
+        type=int,
+        help="First monitor index"
+    )
+    swap_monitors_parser.add_argument(
+        "monitor_b",
+        metavar="B",
+        type=int,
+        help="Second monitor index"
+    )
     show_parser = subparsers.add_parser("show", help="Show the current layout")
     show_parser.add_argument(
         "--notification-timeout",
@@ -663,6 +701,8 @@ def main():
             collect_windows()
         else:
             collect_windows(off_grid_only=True)
+    elif args.command == "swap-monitors":
+        swap_monitors(args.monitor_a, args.monitor_b)
     elif args.command == "show":
         notification_timeout = args.notification_timeout
     elif args.command is None:
