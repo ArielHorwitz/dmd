@@ -99,6 +99,11 @@ fi
 [[ $EUID -ne 0 ]] || exit_error "Do not run as root."
 
 
+decomment() {
+    $SOURCE_DIR/bin/decomment.sh "$@"
+}
+
+
 run_with_privilege() {
     if [[ $USER_MODE ]]; then
         "$@"
