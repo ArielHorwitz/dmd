@@ -19,13 +19,11 @@ input=$file
 [[ -n $input ]] || input='-'
 
 # Resolve script
-script=""
-[[ -n $keep_empty ]] || script+="/^\s*\$/d ; /^\s*$pattern.*\$/d ; "
-script+="s/$pattern.*//g ; "
+script="s/$pattern.*//g ; "
+[[ -n $keep_empty ]] || script+="/^\s*\$/d ; "
 
 # Show script
 [[ -z $show_script ]] || { echo $script; exit 0; }
 
 # Execute sed
 cat $input | sed -e "$script" || { echo "Script: $script"; exit 1; }
-
