@@ -1,5 +1,3 @@
-#! /bin/bash
-
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_CACHE_HOME=$HOME/.cache
@@ -24,13 +22,13 @@ export QT_SCALE_FACTOR=2.0
 ~<<<
 
 extra_paths_prepend=(
-    "$HOME/.local/bin/testing"
     "$HOME/.cargo/bin"
+    "$HOME/.local/bin/testing"
 )
 
 extra_paths_append=(
     "$HOME/.local/bin"
 )
 
-export PATH=$(withpath ${extra_paths_append[@]})
-export PATH=$(withpath -p ${extra_paths_prepend[@]})
+append_path "${extra_paths_append[@]}"
+prepend_path "${extra_paths_prepend[@]}"

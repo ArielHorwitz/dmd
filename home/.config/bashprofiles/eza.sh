@@ -1,5 +1,3 @@
-#! /bin/bash
-
 C=
 
 # File classes

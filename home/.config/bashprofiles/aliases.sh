@@ -1,8 +1,6 @@
-#! /bin/bash
-
 unalias -a
 
-alias resource="source ~/.bashrc" # Reread .bashrc
+alias resource="source ~/.profile"
 alias c="clear"
 alias xo="xdg-open"
 alias cpi="cp -i"
