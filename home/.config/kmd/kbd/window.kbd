@@ -1,15 +1,15 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     @Wkil XX    @kltb XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wkil XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @kltb XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls XX    XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     @Wfkl XX    XX    XX    @wtmd @WOma @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wfkl  XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    @wtmd @WOma @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @fulS XX    @WOmr @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    @WOcy @wsml @wmvc @wsmr @WOrs _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
