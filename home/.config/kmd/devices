@@ -1,7 +1,7 @@
 # Find available devices by running 'find /dev/input/by-* -type l'
 
-# Mechanical
-usb-Logitech_Gaming_Keyboard_G610_086535563536-event-kbd
+# Black mid
+usb-Telink_Wireless_Receiver_TLSR8366-if01-event-kbd
 
 # Black slim
 usb-YICHIP_Wireless_Device-event-kbd
