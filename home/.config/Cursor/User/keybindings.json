@@ -68,5 +68,35 @@
         "key": "ctrl+shift+e",
         "command": "-workbench.view.explorer",
         "when": "viewContainer.workbench.view.explorer.enabled"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "composer.selectNextComposer",
+        "when": "agentsPaneFocused || composerFocused"
+    },
+    {
+        "key": "meta+tab",
+        "command": "-composer.selectNextComposer",
+        "when": "agentsPaneFocused && cursor.agentIdeUnification.enabled || composerFocused && cursor.agentIdeUnification.enabled"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "composer.selectPreviousComposer",
+        "when": "agentsPaneFocused || composerFocused"
+    },
+    {
+        "key": "shift+meta+tab",
+        "command": "-composer.selectPreviousComposer",
+        "when": "agentsPaneFocused && cursor.agentIdeUnification.enabled || composerFocused && cursor.agentIdeUnification.enabled"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup",
+        "when": "editorFocus && !activeEditorGroupEmpty && !terminalFocus || !activeEditorGroupEmpty && !terminalFocus && activeEditor == 'workbench.editor.reviewchanges'"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
+        "when": "editorFocus && !activeEditorGroupEmpty && !terminalFocus || !activeEditorGroupEmpty && !terminalFocus && activeEditor == 'workbench.editor.reviewchanges'"
     }
 ]
