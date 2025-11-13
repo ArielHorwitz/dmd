@@ -1,6 +1,6 @@
 unalias -a
 
-alias resource="source ~/.profile"
+alias resource="unset BASHPROFILES_INIT_SOURCED; source ~/.profile"
 alias c="clear"
 alias xo="xdg-open"
 alias cpi="cp -i"
