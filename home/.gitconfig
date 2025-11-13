@@ -98,6 +98,8 @@
 	upm = branch -f master
 	# Remote
 	fp = fetch --all --prune
+	ffup = git merge --ff-only @{u}
+	resetup = reset --hard @{u}
 	pushb = !"git push -u origin $(git rev-parse --abbrev-ref HEAD)"
 	href = rev-parse --abbrev-ref HEAD
     rref = !"bash -c ' \
