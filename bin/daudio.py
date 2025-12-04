@@ -209,29 +209,34 @@ def set_default_device(device_id: int):
     run_cmd("wpctl", "set-default", str(device_id))
 
 
-def fade_out(device_id: int, fade_seconds: float = 5.0):
+def fade(device_id: int, target_volume: float, fade_seconds: float):
     initial_volume = get_volume(device_id)
-    if initial_volume <= 0:
+    volume_diff = abs(initial_volume - target_volume)
+    if volume_diff == 0:
         return
+    direction = 1 if target_volume > initial_volume else -1
     current_volume = initial_volume
     step_volume = 1
-    step_delay = fade_seconds / initial_volume * step_volume
+    step_delay = fade_seconds / volume_diff * step_volume
 
     print(
-        f"Fading out volume of {initial_volume}% in steps of {step_volume}% of {step_delay:.2f} seconds over {fade_seconds} seconds",
+        f"Fading from {initial_volume}% to {target_volume}% over {fade_seconds}s",
         file=sys.stderr,
     )
     last_step = time.time()
     while True:
-        if current_volume <= 0:
+        if current_volume == target_volume:
             break
         if current_volume != get_volume(device_id):
-            print("Volume changed externally, stopping fade out", file=sys.stderr)
+            print("Volume changed externally, stopping fade", file=sys.stderr)
             break
-        current_volume = max(0, current_volume - step_volume)
+        if direction > 0:
+            current_volume = min(target_volume, current_volume + step_volume)
+        else:
+            current_volume = max(target_volume, current_volume - step_volume)
         set_volume(device_id, current_volume)
         print(current_volume)
-        if current_volume <= 0:
+        if current_volume == target_volume:
             break
         step_elapsed = time.time() - last_step
         time.sleep(max(0, step_delay - step_elapsed))
@@ -344,10 +349,10 @@ def main():
         help="Decrease volume percentage",
     )
     volume_parser.add_argument(
-        "-O",
-        "--fade-out",
+        "-F",
+        "--fade",
         type=float,
-        help="Fade out volume over seconds",
+        help="Fade to target volume over seconds (requires --volume)",
     )
     mute_group = volume_parser.add_mutually_exclusive_group()
     mute_group.add_argument(
@@ -363,7 +368,7 @@ def main():
         help="Unmute device",
     )
     mute_group.add_argument(
-        "--mute-toggle", action="store_true", help="Toggle device mute"
+        "--mute-toggle", action="store_true", help="Toggle device mute",
     )
     volume_parser.add_argument(
         "-M",
@@ -407,7 +412,10 @@ def command_volume(args):
         node = state.default_source if args.mic else state.default_sink
         device_id = node.id
     if args.volume is not None:
-        set_volume(device_id, args.volume)
+        if args.fade is not None:
+            fade(device_id, args.volume, args.fade)
+        else:
+            set_volume(device_id, args.volume)
     if args.increase is not None:
         set_volume(device_id, increment=args.increase)
         # raise NotImplementedError("increase")
@@ -420,8 +428,6 @@ def command_volume(args):
         set_mute(device_id, False)
     if args.mute_toggle:
         set_mute(device_id, None)
-    if args.fade_out is not None:
-        fade_out(device_id, args.fade_out)
     if args.is_mute:
         is_muted = get_mute(device_id)
         print(int(is_muted))
