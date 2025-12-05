@@ -352,7 +352,7 @@ def main():
         "-F",
         "--fade",
         type=float,
-        help="Fade to target volume over seconds (requires --volume)",
+        help="Fade to target volume over seconds",
     )
     mute_group = volume_parser.add_mutually_exclusive_group()
     mute_group.add_argument(
