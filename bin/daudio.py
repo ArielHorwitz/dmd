@@ -296,9 +296,9 @@ def main():
     subparsers.add_parser("config", help="Show user configuration")
 
     list_parser = subparsers.add_parser("list", help="Show information")
-    select_group = list_parser.add_mutually_exclusive_group()
-    select_group.add_argument("--id", type=int, help="Device ID")
-    select_group.add_argument("--class", dest="dclass", help="Device class")
+    list_select_group = list_parser.add_mutually_exclusive_group()
+    list_select_group.add_argument("--id", type=int, help="Device ID")
+    list_select_group.add_argument("--class", dest="dclass", help="Device class")
     list_parser.add_argument(
         "-v",
         "--verbose",
@@ -308,9 +308,9 @@ def main():
     )
 
     device_parser = subparsers.add_parser("device", help="Manage default devices")
-    select_group = device_parser.add_mutually_exclusive_group()
-    select_group.add_argument("--id", type=int, help="Device ID")
-    select_group.add_argument("--class", dest="dclass", help="Device class")
+    device_select_group = device_parser.add_mutually_exclusive_group()
+    device_select_group.add_argument("--id", type=int, help="Device ID")
+    device_select_group.add_argument("--class", dest="dclass", help="Device class")
     device_parser.add_argument(
         "-N",
         "--notification",
@@ -321,9 +321,9 @@ def main():
     volume_parser = subparsers.add_parser("volume", help="Manage volume")
     device_group = volume_parser.add_mutually_exclusive_group()
     device_group.add_argument(
-        "device_id",
-        nargs="?",
-        help="Choose device ID (otherwise default device)",
+        "--device-id",
+        type=int,
+        help="Device ID (instead of default device)",
     )
     device_group.add_argument(
         "--mic",
@@ -331,8 +331,8 @@ def main():
         help="Choose default source instead of sink",
     )
     volume_parser.add_argument(
-        "-o",
-        "--volume",
+        "volume",
+        nargs="?",
         type=float,
         help="Set volume percentage",
     )
