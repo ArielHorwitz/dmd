@@ -423,6 +423,56 @@ def swap_monitors(monitor_a, monitor_b):
         hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
 
 
+def rotate_cell(cell_name):
+    state = State.get()
+    parts = cell_name.split(".")
+    col = int(parts[0])
+    row = int(parts[1])
+    cell_coords = (col, row)
+
+    cell_workspaces = [
+        ws for ws in state.workspaces.values()
+        if not ws.is_special
+        and ws.geometry is not None
+        and ws.geometry.coords == cell_coords
+        and ws.geometry.monitor is not None
+    ]
+
+    if len(cell_workspaces) < 2:
+        return
+
+    cell_workspaces.sort(key=lambda ws: ws.geometry.monitor)
+    monitor_indices = [ws.geometry.monitor for ws in cell_workspaces]
+
+    for i, ws in enumerate(cell_workspaces):
+        new_monitor = monitor_indices[(i + 1) % len(monitor_indices)]
+        new_name = f"{col}.{row}.{new_monitor}"
+        hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
+
+
+def rotate_focused_cell():
+    state = State.get()
+    focused_ws = state.focused_workspace
+    if focused_ws.is_special or focused_ws.geometry is None or focused_ws.geometry.monitor is None:
+        raise ValueError("Focused workspace is not a gridable workspace")
+    col, row = focused_ws.geometry.coords
+    cell_name = f"{col}.{row}"
+    rotate_cell(cell_name)
+    switch_cell(cell_name)
+
+
+def rotate_all_cells():
+    state = State.get()
+    cells_to_rotate = set()
+    for ws in state.workspaces.values():
+        if ws.is_special:
+            continue
+        if ws.geometry is not None and ws.geometry.monitor is not None:
+            cells_to_rotate.add(ws.geometry.coords)
+    for col, row in cells_to_rotate:
+        rotate_cell(f"{col}.{row}")
+
+
 def toggle_special():
     state = State.get()
     x, y = state.focused_workspace.coords
@@ -627,6 +677,20 @@ def main():
         type=int,
         help="Second monitor index"
     )
+    rotate_parser = subparsers.add_parser(
+        "rotate",
+        help="Rotate monitor indices within a cell"
+    )
+    rotate_parser.add_argument(
+        "cell",
+        nargs="?",
+        help="Cell to rotate (e.g. 2.1). If omitted, rotates the focused cell."
+    )
+    rotate_parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Rotate all cells"
+    )
     show_parser = subparsers.add_parser("show", help="Show the current layout")
     show_parser.add_argument(
         "--notification-timeout",
@@ -673,6 +737,13 @@ def main():
             collect_windows(off_grid_only=True)
     elif args.command == "swap-monitors":
         swap_monitors(args.monitor_a, args.monitor_b)
+    elif args.command == "rotate":
+        if args.all:
+            rotate_all_cells()
+        elif args.cell:
+            rotate_cell(args.cell)
+        else:
+            rotate_focused_cell()
     elif args.command == "show":
         notification_timeout = args.notification_timeout
     elif args.command is None:

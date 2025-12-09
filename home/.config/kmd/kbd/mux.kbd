@@ -18,9 +18,9 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    @Xr11 @Xr21 @Xr31 @Xr41 @Xr51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    @Xr12 @Xr22 @Xr32 @Xr42 @Xr52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @Xr13 @Xr23 @Xr33 @Xr43 @Xr53 XX    XX                              XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xr13 @Xr23 @Xr33 @Xr43 @Xr53 XX    @Xrtt                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @Xr14 @Xr24 @Xr34 @Xr44 @Xr54 _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     _                 XX                _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     Xalt (layer-toggle multiplexer_alt)
@@ -31,6 +31,7 @@
     Xlck (cmd-button "spacemux lock")
     Xxsp (cmd-button "spacemux special toggle")
     Xmsp (cmd-button "spacemux special move")
+    Xrtt (cmd-button "spacemux rotate")
     Xx11 (cmd-button "spacemux switch 1.1")
     Xx12 (cmd-button "spacemux switch 1.2")
     Xx13 (cmd-button "spacemux switch 1.3")
