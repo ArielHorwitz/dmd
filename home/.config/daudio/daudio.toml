@@ -1,5 +1,7 @@
 [classes]
 speakers = [
+    # ugreen dock
+    "alsa_output.usb-KTMicro_KT_USB_Audio_2021-07-19-0000-0000-0000--00.analog-stereo",
     # zen USB
     "alsa_output.usb-Generic_USB_Audio-00.analog-stereo",
     # zen mobo
@@ -22,6 +24,8 @@ headphones = [
     "alsa_output.pci-0000_00_1b.0.analog-stereo",
     # lembay mobo
     "alsa_output.pci-0000_00_1f.3.analog-stereo",
+    # ugreen dock
+    "alsa_output.usb-KTMicro_KT_USB_Audio_2021-07-19-0000-0000-0000--00.analog-stereo",
 ]
 ambient = [
     # jabra micset
