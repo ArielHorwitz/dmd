@@ -62,7 +62,7 @@ def main():
         )
         output.append(table)
         output.append(split)
-    print(f"\n".join(output))
+    print("\n".join(output))
 
 
 if __name__ == "__main__":

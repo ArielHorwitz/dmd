@@ -29,7 +29,7 @@ def modify_hsv(hsv, saturation_factor, value_factor):
 def print_color_table(hsv, saturation_range, value_range):
     leading_ws = "" if args.hide_leading_hex else " "
     if args.show_legend:
-        print(f"sat\\val", end="")
+        print("sat\\val", end="")
         for v in value_range:
             print(f" {round(v, 2):^6}{leading_ws}", end="")
         print()

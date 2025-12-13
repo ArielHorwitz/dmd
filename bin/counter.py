@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 lines = sys.stdin.read().splitlines()
 counter = collections.Counter(lines)
-print(f"       Count | Line")
-print(f"---------------------------")
+print("       Count | Line")
+print("---------------------------")
 for line, count in counter.most_common():
     print(f"{count:>12,} | {line}")
