@@ -1,9 +1,9 @@
 #! /bin/python
 
 import argparse
-from pathlib import Path
-import sys
 import json
+import sys
+from pathlib import Path
 
 parser = argparse.ArgumentParser(
     "indent-json", description="Format JSON with or without indentation."

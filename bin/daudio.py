@@ -6,10 +6,10 @@ import json
 import subprocess
 import sys
 import time
-import tomllib
 from pathlib import Path
 from typing import Optional
 
+import tomllib
 
 ICONS = {
     "sink": "/usr/share/icons/dmd/speaker3.svg",
@@ -368,7 +368,9 @@ def main():
         help="Unmute device",
     )
     mute_group.add_argument(
-        "--mute-toggle", action="store_true", help="Toggle device mute",
+        "--mute-toggle",
+        action="store_true",
+        help="Toggle device mute",
     )
     volume_parser.add_argument(
         "-M",

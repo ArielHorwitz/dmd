@@ -1,8 +1,7 @@
 #! /bin/python
 
-import subprocess
 import argparse
-
+import subprocess
 
 MAX_STEPS = 10
 

@@ -6,7 +6,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 APP_DESCRIPTION = "Get monitor info from hyprctl with transformed dimensions"
 APP_NAME = Path(__file__).name.removesuffix(".py")
 ROTATED_90_DEGREES_TRANSFORMS = (1, 3, 5, 7)

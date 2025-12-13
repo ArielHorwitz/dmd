@@ -1,9 +1,8 @@
 #!/bin/python
 
 import shutil
-from pathlib import Path
 from configparser import ConfigParser
-
+from pathlib import Path
 
 FF_DIR = Path.home() / ".mozilla" / "firefox"
 PREF_SHEETS = (

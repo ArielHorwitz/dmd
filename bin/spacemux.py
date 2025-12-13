@@ -2,8 +2,8 @@
 
 import argparse
 import json
-import re
 import os
+import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -63,7 +63,8 @@ def print_layout(
     monitor_names = tuple(m.name for m in state.get_monitors_by_position())
     locked_monitors = tuple(m for m in get_locked_monitors(state) if m in monitor_names)
     visible_workspaces_repr = " ".join(
-        f"{state.monitor_workspace(m.id).name:<15}" for m in state.get_monitors_by_position()
+        f"{state.monitor_workspace(m.id).name:<15}"
+        for m in state.get_monitors_by_position()
     )
     locked_monitors_repr = " ".join(f"{m:<15}" for m in locked_monitors)
     print(f" Focused workspace: {state.focused_workspace.name}")
@@ -298,9 +299,8 @@ class State:
             return False
         if ws.is_special:
             return True
-        return (
-            ws.geometry.monitor is not None
-            and ws.geometry.monitor < len(self.monitors)
+        return ws.geometry.monitor is not None and ws.geometry.monitor < len(
+            self.monitors
         )
 
     @property
@@ -389,11 +389,12 @@ def move_workspace(cell_name, workspace=False, swap=False):
     else:
         target_workspace_name = cell_name
     target_ws = [
-        ws for ws in state.workspaces.values()
-        if ws.name == target_workspace_name
+        ws for ws in state.workspaces.values() if ws.name == target_workspace_name
     ]
     if target_ws and not swap:
-        raise ValueError(f"Workspace {target_workspace_name} already exists (use --swap)")
+        raise ValueError(
+            f"Workspace {target_workspace_name} already exists (use --swap)"
+        )
 
     hypr_dispatch(f"renameworkspace {source_ws.id} {target_workspace_name}")
     if swap:
@@ -404,14 +405,14 @@ def move_workspace(cell_name, workspace=False, swap=False):
 def swap_monitors(monitor_a, monitor_b):
     state = State.get()
     workspaces_a = [
-        ws for ws in state.workspaces.values()
-        if ws.geometry is not None
-        and ws.geometry.monitor == monitor_a
+        ws
+        for ws in state.workspaces.values()
+        if ws.geometry is not None and ws.geometry.monitor == monitor_a
     ]
     workspaces_b = [
-        ws for ws in state.workspaces.values()
-        if ws.geometry is not None
-        and ws.geometry.monitor == monitor_b
+        ws
+        for ws in state.workspaces.values()
+        if ws.geometry is not None and ws.geometry.monitor == monitor_b
     ]
     for ws in workspaces_a:
         col, row = ws.geometry.coords
@@ -431,7 +432,8 @@ def rotate_cell(cell_name):
     cell_coords = (col, row)
 
     cell_workspaces = [
-        ws for ws in state.workspaces.values()
+        ws
+        for ws in state.workspaces.values()
         if not ws.is_special
         and ws.geometry is not None
         and ws.geometry.coords == cell_coords
@@ -453,7 +455,11 @@ def rotate_cell(cell_name):
 def rotate_focused_cell():
     state = State.get()
     focused_ws = state.focused_workspace
-    if focused_ws.is_special or focused_ws.geometry is None or focused_ws.geometry.monitor is None:
+    if (
+        focused_ws.is_special
+        or focused_ws.geometry is None
+        or focused_ws.geometry.monitor is None
+    ):
         raise ValueError("Focused workspace is not a gridable workspace")
     col, row = focused_ws.geometry.coords
     cell_name = f"{col}.{row}"
@@ -612,8 +618,12 @@ def main():
         action="store_true",
         help="Treat argument as workspace name instead of cell coordinates",
     )
-    move_workspace_parser = subparsers.add_parser("move-workspace", help="Move focused workspace to cell")
-    move_workspace_parser.add_argument("cell", help="Cell to move workspace to (e.g. 2.3)")
+    move_workspace_parser = subparsers.add_parser(
+        "move-workspace", help="Move focused workspace to cell"
+    )
+    move_workspace_parser.add_argument(
+        "cell", help="Cell to move workspace to (e.g. 2.3)"
+    )
     move_workspace_parser.add_argument(
         "--workspace",
         action="store_true",
@@ -663,33 +673,33 @@ def main():
     )
     swap_monitors_parser = subparsers.add_parser(
         "swap-monitors",
-        help="Swap all workspaces between two monitor indices"
+        help="Swap all workspaces between two monitor indices",
     )
     swap_monitors_parser.add_argument(
         "monitor_a",
         metavar="A",
         type=int,
-        help="First monitor index"
+        help="First monitor index",
     )
     swap_monitors_parser.add_argument(
         "monitor_b",
         metavar="B",
         type=int,
-        help="Second monitor index"
+        help="Second monitor index",
     )
     rotate_parser = subparsers.add_parser(
         "rotate",
-        help="Rotate monitor indices within a cell"
+        help="Rotate monitor indices within a cell",
     )
     rotate_parser.add_argument(
         "cell",
         nargs="?",
-        help="Cell to rotate (e.g. 2.1). If omitted, rotates the focused cell."
+        help="Cell to rotate (e.g. 2.1). If omitted, rotates the focused cell.",
     )
     rotate_parser.add_argument(
         "--all",
         action="store_true",
-        help="Rotate all cells"
+        help="Rotate all cells",
     )
     show_parser = subparsers.add_parser("show", help="Show the current layout")
     show_parser.add_argument(

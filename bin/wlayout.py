@@ -2,8 +2,8 @@
 
 import argparse
 import json
-import subprocess
 import os
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -143,7 +143,9 @@ def focus_window_by_text(title, class_name, verbose, max_wait_seconds=5):
             return
         if class_name and class_name in active_class:
             return
-    raise RuntimeError(f"Timed out waiting for window with title {title!r} and class {class_name!r}")
+    raise RuntimeError(
+        f"Timed out waiting for window with title {title!r} and class {class_name!r}"
+    )
 
 
 def run_command(command_details, verbose):
@@ -179,7 +181,12 @@ def run_command(command_details, verbose):
         if focus_window:
             try:
                 if focus_window_title or focus_window_class:
-                    focus_window_by_text(focus_window_title, focus_window_class, verbose, wait_focus_seconds)
+                    focus_window_by_text(
+                        focus_window_title,
+                        focus_window_class,
+                        verbose,
+                        wait_focus_seconds,
+                    )
                 else:
                     focus_pid_window(process, verbose, wait_focus_seconds)
             except Exception as e:
@@ -204,10 +211,7 @@ def run_command(command_details, verbose):
 
 def resolve_user_arguments(arg_spec, user_args, verbose):
     arg_spec = tomllib.loads(arg_spec)
-    args = {
-        a["name"]: a.get("default")
-        for a in arg_spec.get("argument", [])
-    }
+    args = {a["name"]: a.get("default") for a in arg_spec.get("argument", [])}
     if not args:
         if verbose:
             print("No arguments found")

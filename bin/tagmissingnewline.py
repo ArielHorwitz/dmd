@@ -1,6 +1,6 @@
 #! /bin/python
-import sys
 import argparse
+import sys
 
 DESC = """Check for newline at end of text.
 
