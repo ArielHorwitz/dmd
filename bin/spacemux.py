@@ -322,6 +322,10 @@ class State:
     def focused_workspace(self):
         return self.workspaces[self.focused_workspace_id]
 
+    @property
+    def focused_window(self):
+        return self.windows[self.focused_window_address]
+
     def get_monitors_by_position(self):
         return sorted(self.monitors.values(), key=lambda m: (m.x, m.y, m.id))
 
@@ -493,6 +497,51 @@ def move_special():
     hypr_dispatch(f"movetoworkspacesilent special:{cell_name}")
 
 
+def move_cartesian(target, axis, rows, columns):
+    state = State.get()
+    ws = state.focused_workspace
+
+    if ws.geometry is None or ws.geometry.monitor is None:
+        raise ValueError("Focused workspace is not gridable")
+
+    col, row = ws.coords
+    monitor = ws.geometry.monitor
+
+    if axis == "monitor":
+        if target == "up":
+            new_monitor = monitor + 1
+        elif target == "down":
+            new_monitor = max(monitor - 1, 0)
+        else:
+            new_monitor = int(target)
+        new_col, new_row = col, row
+    elif axis == "col":
+        if target == "up":
+            new_col = col + 1
+        elif target == "down":
+            new_col = col - 1
+        else:
+            new_col = int(target)
+        if new_col < 1 or new_col > columns:
+            raise ValueError(f"Column {new_col} is out of bounds (1-{columns})")
+        new_row, new_monitor = row, monitor
+    elif axis == "row":
+        if target == "up":
+            new_row = row + 1
+        elif target == "down":
+            new_row = row - 1
+        else:
+            new_row = int(target)
+        if new_row < 1 or new_row > rows:
+            raise ValueError(f"Row {new_row} is out of bounds (1-{rows})")
+        new_col, new_monitor = col, monitor
+    else:
+        raise ValueError(f"Unknown axis: {axis}")
+
+    target_workspace_name = f"{new_col}.{new_row}.{new_monitor}"
+    hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
+
+
 def collect_windows(off_grid_only: bool = False):
     state = State.get()
     target_ws = state.focused_workspace
@@ -634,6 +683,20 @@ def main():
         action="store_true",
         help="Swap with target if it exists",
     )
+    move_cartesian_parser = subparsers.add_parser(
+        "move-cartesian",
+        help="Move focused window along an axis",
+    )
+    move_cartesian_parser.add_argument(
+        "target",
+        help="Target position: 'up', 'down', or absolute index",
+    )
+    move_cartesian_parser.add_argument(
+        "--axis",
+        choices=["monitor", "col", "row"],
+        default="monitor",
+        help="Axis to move along (default: monitor)",
+    )
     lock_parser = subparsers.add_parser("lock", help="Set or toggle monitor lock state")
     lock_parser.add_argument(
         "lock",
@@ -740,6 +803,8 @@ def main():
         move_window(args.cell, args.workspace)
     elif args.command == "move-workspace":
         move_workspace(args.cell, args.workspace, args.swap)
+    elif args.command == "move-cartesian":
+        move_cartesian(args.target, args.axis, rows, columns)
     elif args.command == "collect":
         if args.all:
             collect_windows()
