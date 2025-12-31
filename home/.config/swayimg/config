@@ -1,0 +1,10 @@
+[general]
+overlay = no
+mode = gallery
+# mode = viewer
+
+[viewer]
+window = #000000
+
+[gallery]
+window = #111111

@@ -15,6 +15,7 @@ librsvg
 words
 inxi
 imagemagick
+swayimg
 
 # desktop
 hyprland
