@@ -23,6 +23,7 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
   -r, --reload      Reload home config
   -f, --force       Do not stop on warnings
   -u, --user-mode   Install without root access (local user installation)
+  --force-paru      Force reinstall paru
   -h, --help        Show this help and exit
 "
 
@@ -54,6 +55,7 @@ while [[ $# -gt 0 ]]; do
         -r | --reload)       POST_INSTALL_RELOAD=1; shift ;;
         -f | --force)        INSTALL_FORCE=1; shift ;;
         -u | --user-mode)    USER_MODE=1; shift ;;
+        --force-paru)        FORCE_PARU=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
         *)                   exit_error "Unknown option: $1" ;;
     esac
@@ -137,11 +139,15 @@ install_packages() {
 
 install_packages_arch() {
     set -e
+    if [[ $FORCE_PARU && $(command -v paru) ]]; then
+        progress "Force reinstalling paru..."
+        sudo pacman -Rs paru-git --noconfirm
+    fi
     if [[ ! $(command -v paru) ]]; then
         progress "Installing paru..."
         local paru_build_dir=$(mktemp -d)
         sudo pacman -S --needed --noconfirm base-devel git
-        git clone --depth 1 --shallow-submodules https://aur.archlinux.org/paru-bin.git $paru_build_dir
+        git clone --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $paru_build_dir
         cd $paru_build_dir
         makepkg -si --needed --noconfirm
     fi
