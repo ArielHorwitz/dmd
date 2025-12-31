@@ -141,7 +141,7 @@ install_packages_arch() {
         progress "Installing paru..."
         local paru_build_dir=$(mktemp -d)
         sudo pacman -S --needed --noconfirm base-devel git
-        git clone --depth 1 --shallow-submodules https://aur.archlinux.org/paru-bin.git $paru_build_dir
+        git clone --depth 1 --shallow-submodules https://aur.archlinux.org/paru.git $paru_build_dir
         cd $paru_build_dir
         makepkg -si --needed --noconfirm
     fi
