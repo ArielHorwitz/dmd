@@ -52,7 +52,7 @@ class GridState:
     visible: bool = False
 
 
-def print_layout(
+def show(
     rows: int,
     columns: int,
     notification: bool,
@@ -81,7 +81,7 @@ def print_layout(
     }
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if ws.id in state.ungridable_workspaces:
+        if ws.id in state.external_workspaces:
             continue
         gs = grid_states[ws.coords]
         if ws.is_special:
@@ -112,12 +112,10 @@ def print_layout(
             col_reprs.append(ws_repr)
         row_reprs.append("".join(col_reprs))
     layout_reprs.append("\n".join(row_reprs))
-    if len(state.ungridable_workspaces) > 0:
-        ungridables = (
-            state.workspaces[wid].name for wid in state.ungridable_workspaces
-        )
-        layout_reprs.append("\nOther workspaces:")
-        layout_reprs.append(", ".join(ungridables))
+    if len(state.external_workspaces) > 0:
+        externals = (state.workspaces[wid].name for wid in state.external_workspaces)
+        layout_reprs.append("\nExternal workspaces:")
+        layout_reprs.append(", ".join(externals))
     layout_repr = "\n".join(layout_reprs)
 
     print(displays_repr)
@@ -304,7 +302,7 @@ class State:
         )
 
     @property
-    def ungridable_workspaces(self):
+    def external_workspaces(self):
         return [
             ws.id
             for ws in self.workspaces.values()
@@ -330,7 +328,7 @@ class State:
         return sorted(self.monitors.values(), key=lambda m: (m.x, m.y, m.id))
 
 
-def print_list(data_name, raw):
+def info(data_name, raw):
     state = State.get()
     if data_name == "monitors":
         items = sorted(state.monitors.values(), key=lambda m: m.id)
@@ -355,7 +353,7 @@ def print_list(data_name, raw):
         print("\n\n".join(item_reprs))
 
 
-def switch_cell(cell_name, workspace=False):
+def cell_focus(cell_name, workspace=False):
     if workspace:
         hypr_dispatch(f"focusworkspaceoncurrentmonitor name:{cell_name}")
         return
@@ -372,7 +370,7 @@ def switch_cell(cell_name, workspace=False):
     hypr_dispatch(*commands, batch_commands=True)
 
 
-def move_window(cell_name, workspace=False):
+def window_move(cell_name, workspace=False):
     if workspace:
         hypr_dispatch(f"movetoworkspacesilent name:{cell_name}")
         return
@@ -385,7 +383,7 @@ def move_window(cell_name, workspace=False):
     hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
 
 
-def move_workspace(cell_name, workspace=False, swap=False):
+def workspace_move(cell_name, workspace=False, swap=False):
     state = State.get()
     source_ws = state.focused_workspace
     if not workspace:
@@ -406,7 +404,7 @@ def move_workspace(cell_name, workspace=False, swap=False):
             hypr_dispatch(f"renameworkspace {ws.id} {source_ws.name}")
 
 
-def swap_monitors(monitor_a, monitor_b):
+def monitor_swap(monitor_a, monitor_b):
     state = State.get()
     workspaces_a = [
         ws
@@ -428,7 +426,7 @@ def swap_monitors(monitor_a, monitor_b):
         hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
 
 
-def rotate_cell(cell_name):
+def cell_rotate(cell_name):
     state = State.get()
     parts = cell_name.split(".")
     col = int(parts[0])
@@ -456,7 +454,7 @@ def rotate_cell(cell_name):
         hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
 
 
-def rotate_focused_cell():
+def cell_rotate_focused():
     state = State.get()
     focused_ws = state.focused_workspace
     if (
@@ -467,11 +465,11 @@ def rotate_focused_cell():
         raise ValueError("Focused workspace is not a gridable workspace")
     col, row = focused_ws.geometry.coords
     cell_name = f"{col}.{row}"
-    rotate_cell(cell_name)
-    switch_cell(cell_name)
+    cell_rotate(cell_name)
+    cell_focus(cell_name)
 
 
-def rotate_all_cells():
+def cell_rotate_all():
     state = State.get()
     cells_to_rotate = set()
     for ws in state.workspaces.values():
@@ -480,24 +478,24 @@ def rotate_all_cells():
         if ws.geometry is not None and ws.geometry.monitor is not None:
             cells_to_rotate.add(ws.geometry.coords)
     for col, row in cells_to_rotate:
-        rotate_cell(f"{col}.{row}")
+        cell_rotate(f"{col}.{row}")
 
 
-def toggle_special():
+def special_toggle():
     state = State.get()
     x, y = state.focused_workspace.coords
     cell_name = f"{x}.{y}"
     hypr_dispatch(f"togglespecialworkspace {cell_name}")
 
 
-def move_special():
+def special_move():
     state = State.get()
     x, y = state.focused_workspace.coords
     cell_name = f"{x}.{y}"
     hypr_dispatch(f"movetoworkspacesilent special:{cell_name}")
 
 
-def move_cartesian(target, axis, rows, columns):
+def window_shift(target, axis, rows, columns):
     state = State.get()
     ws = state.focused_workspace
 
@@ -542,19 +540,19 @@ def move_cartesian(target, axis, rows, columns):
     hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
 
 
-def collect_windows(off_grid_only: bool = False):
+def window_gather(external_only: bool = False):
     state = State.get()
     target_ws = state.focused_workspace
     eprint(f"Target: {target_ws}")
-    ungridable = state.ungridable_workspaces
-    if off_grid_only:
-        eprint(f"Ungridable: {[state.workspaces[wid] for wid in ungridable]}")
+    external = state.external_workspaces
+    if external_only:
+        eprint(f"External: {[state.workspaces[wid] for wid in external]}")
     for window in state.windows.values():
         ws = state.workspaces[window.workspace_id]
-        if off_grid_only and ws.id not in ungridable:
+        if external_only and ws.id not in external:
             eprint(f"Skipping: {window} {ws.id=}")
             continue
-        eprint(f"Collecting: {window}")
+        eprint(f"Gathering: {window}")
         hypr_dispatch(
             f"movetoworkspacesilent name:{target_ws.name},address:{window.address}"
         )
@@ -642,134 +640,177 @@ def main():
         help="config file path",
     )
     subparsers = parser.add_subparsers(dest="command")
-    info_parser = subparsers.add_parser("info", help="Show info")
-    info_parser.add_argument(
-        "info_type",
-        choices=["workspaces", "windows", "monitors"],
-        help="Info type",
+
+    cell_parser = subparsers.add_parser("cell", help="Cell operations")
+    cell_subparsers = cell_parser.add_subparsers(dest="subcommand", required=True)
+    cell_focus_parser = cell_subparsers.add_parser(
+        "focus",
+        help="Focus cell across",
     )
-    info_parser.add_argument(
-        "--raw",
-        action="store_true",
-        help="show raw data from hyprland",
-    )
-    switch_parser = subparsers.add_parser("switch", help="Switch to cell")
-    switch_parser.add_argument("cell", help="Cell to switch to (e.g. 2.3)")
-    switch_parser.add_argument(
+    cell_focus_parser.add_argument("cell", help="Cell to focus (e.g. 2.3)")
+    cell_focus_parser.add_argument(
         "--workspace",
         action="store_true",
-        help="Treat argument as workspace name instead of cell coordinates",
+        help="Treat argument as exact workspace name",
     )
-    move_parser = subparsers.add_parser("move", help="Move focused window to cell")
-    move_parser.add_argument("cell", help="Cell to move window to (e.g. 2.3)")
-    move_parser.add_argument(
+    cell_rotate_parser = cell_subparsers.add_parser(
+        "rotate",
+        help="Rotate monitors within cell(s)",
+    )
+    cell_rotate_parser.add_argument(
+        "cell",
+        nargs="?",
+        help="Cell to rotate (e.g. 2.1). If omitted, rotates the focused cell.",
+    )
+    cell_rotate_parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Rotate all cells",
+    )
+
+    workspace_parser = subparsers.add_parser("workspace", help="Workspace operations")
+    workspace_subparsers = workspace_parser.add_subparsers(
+        dest="subcommand", required=True
+    )
+    workspace_move_parser = workspace_subparsers.add_parser(
+        "move",
+        help="Move/rename focused workspace to cell",
+    )
+    workspace_move_parser.add_argument("cell", help="Target cell (e.g. 2.3)")
+    workspace_move_parser.add_argument(
         "--workspace",
         action="store_true",
-        help="Treat argument as workspace name instead of cell coordinates",
+        help="Treat argument as exact workspace name",
     )
-    move_workspace_parser = subparsers.add_parser(
-        "move-workspace", help="Move focused workspace to cell"
-    )
-    move_workspace_parser.add_argument(
-        "cell", help="Cell to move workspace to (e.g. 2.3)"
-    )
-    move_workspace_parser.add_argument(
-        "--workspace",
-        action="store_true",
-        help="Treat argument as workspace name instead of cell coordinates",
-    )
-    move_workspace_parser.add_argument(
+    workspace_move_parser.add_argument(
         "--swap",
         action="store_true",
         help="Swap with target if it exists",
     )
-    move_cartesian_parser = subparsers.add_parser(
-        "move-cartesian",
-        help="Move focused window along an axis",
-    )
-    move_cartesian_parser.add_argument(
-        "target",
-        help="Target position: 'up', 'down', or absolute index",
-    )
-    move_cartesian_parser.add_argument(
-        "--axis",
-        choices=["monitor", "col", "row"],
-        default="monitor",
-        help="Axis to move along (default: monitor)",
-    )
-    lock_parser = subparsers.add_parser("lock", help="Set or toggle monitor lock state")
-    lock_parser.add_argument(
-        "lock",
-        choices=["lock", "unlock", "toggle"],
-        default="toggle",
-        nargs="?",
-        help="Set the lock state (defaults to toggle)",
-    )
-    lock_parser.add_argument(
-        "--monitor",
-        help="Monitor to set lock state (defaults to focused monitor)",
-    )
-    special_parser = subparsers.add_parser(
-        "special",
-        help="Manage the special workspace",
-    )
-    special_subparser = special_parser.add_subparsers(
-        dest="subcommand",
-        required=True,
-    )
-    special_subparser.add_parser(
-        "toggle",
-        help="Toggle the special workspace",
-    )
-    special_subparser.add_parser(
+
+    window_parser = subparsers.add_parser("window", help="Window operations")
+    window_subparsers = window_parser.add_subparsers(dest="subcommand", required=True)
+    window_move_parser = window_subparsers.add_parser(
         "move",
-        help="Move the focused window to the special workspace",
+        help="Move focused window to cell",
     )
-    collect_parser = subparsers.add_parser(
-        "collect",
-        help="Collect windows from unknown workspaces to the current workspace",
+    window_move_parser.add_argument("cell", help="Target cell (e.g. 2.3)")
+    window_move_parser.add_argument(
+        "--workspace",
+        action="store_true",
+        help="Treat argument as exact workspace name",
     )
-    collect_parser.add_argument(
+    window_move_parser.add_argument(
+        "--monitor",
+        type=int,
+        help="Target monitor index",
+    )
+    window_shift_parser = window_subparsers.add_parser(
+        "shift",
+        help="Shift focused window along an axis",
+    )
+    window_shift_parser.add_argument(
+        "target",
+        help="Target position: +1, -1, or absolute index",
+    )
+    window_shift_parser.add_argument(
+        "--axis",
+        choices=["col", "row", "monitor"],
+        default="monitor",
+        help="Axis to shift along (default: monitor)",
+    )
+    window_gather_parser = window_subparsers.add_parser(
+        "gather",
+        help="Gather windows from external workspaces to current workspace",
+    )
+    window_gather_parser.add_argument(
         "--all",
         action="store_true",
-        help="Collect from all workspaces",
+        help="Gather from all workspaces",
     )
-    swap_monitors_parser = subparsers.add_parser(
-        "swap-monitors",
+
+    monitor_parser = subparsers.add_parser("monitor", help="Monitor operations")
+    monitor_subparsers = monitor_parser.add_subparsers(dest="subcommand", required=True)
+    monitor_swap_parser = monitor_subparsers.add_parser(
+        "swap",
         help="Swap all workspaces between two monitor indices",
     )
-    swap_monitors_parser.add_argument(
+    monitor_swap_parser.add_argument(
         "monitor_a",
         metavar="A",
         type=int,
         help="First monitor index",
     )
-    swap_monitors_parser.add_argument(
+    monitor_swap_parser.add_argument(
         "monitor_b",
         metavar="B",
         type=int,
         help="Second monitor index",
     )
-    rotate_parser = subparsers.add_parser(
-        "rotate",
-        help="Rotate monitor indices within a cell",
+    monitor_lock_parser = monitor_subparsers.add_parser(
+        "lock",
+        help="Lock monitor from focus operations",
     )
-    rotate_parser.add_argument(
-        "cell",
+    monitor_lock_parser.add_argument(
+        "name",
         nargs="?",
-        help="Cell to rotate (e.g. 2.1). If omitted, rotates the focused cell.",
+        help="Monitor name (defaults to focused monitor)",
     )
-    rotate_parser.add_argument(
-        "--all",
-        action="store_true",
-        help="Rotate all cells",
+    monitor_unlock_parser = monitor_subparsers.add_parser(
+        "unlock",
+        help="Unlock monitor",
     )
+    monitor_unlock_parser.add_argument(
+        "name",
+        nargs="?",
+        help="Monitor name (defaults to focused monitor)",
+    )
+    monitor_toggle_lock_parser = monitor_subparsers.add_parser(
+        "toggle-lock",
+        help="Toggle monitor lock state",
+    )
+    monitor_toggle_lock_parser.add_argument(
+        "name",
+        nargs="?",
+        help="Monitor name (defaults to focused monitor)",
+    )
+
+    special_parser = subparsers.add_parser(
+        "special",
+        help="Special workspace operations",
+    )
+    special_subparsers = special_parser.add_subparsers(
+        dest="subcommand",
+        required=True,
+    )
+    special_subparsers.add_parser(
+        "toggle",
+        help="Toggle special workspace visibility",
+    )
+    special_subparsers.add_parser(
+        "move",
+        help="Move focused window to special workspace",
+    )
+
     show_parser = subparsers.add_parser("show", help="Show the current layout")
     show_parser.add_argument(
-        "--notification-timeout",
+        "--timeout",
         type=int,
-        default=5000,
+        help="Notification timeout in milliseconds",
     )
+
+    info_parser = subparsers.add_parser("info", help="Show information")
+    info_parser.add_argument(
+        "info_type",
+        choices=["workspaces", "windows", "monitors"],
+        help="Information type",
+    )
+    info_parser.add_argument(
+        "--raw",
+        action="store_true",
+        help="Show raw data from Hyprland",
+    )
+
     args = parser.parse_args()
 
     create_missing_config(Path(args.config_file))
@@ -780,53 +821,58 @@ def main():
     icon = config["icon"]
 
     if args.command == "info":
-        print_list(args.info_type, args.raw)
+        info(args.info_type, args.raw)
         exit()
-    elif args.command == "lock":
-        if args.lock == "lock":
-            lock = True
-        elif args.lock == "unlock":
-            lock = False
-        else:
-            lock = None
-        set_monitor_lock(lock=lock, monitor=args.monitor)
+    elif args.command == "cell":
+        if args.subcommand == "focus":
+            cell_focus(args.cell, workspace=args.workspace)
+        elif args.subcommand == "rotate":
+            if args.all:
+                cell_rotate_all()
+            elif args.cell:
+                cell_rotate(args.cell)
+            else:
+                cell_rotate_focused()
+    elif args.command == "workspace":
+        if args.subcommand == "move":
+            workspace_move(args.cell, workspace=args.workspace, swap=args.swap)
+    elif args.command == "window":
+        if args.subcommand == "move":
+            if args.monitor is not None:
+                target_workspace_name = f"{args.cell}.{args.monitor}"
+                hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
+            else:
+                window_move(args.cell, workspace=args.workspace)
+        elif args.subcommand == "shift":
+            window_shift(args.target, args.axis, rows, columns)
+        elif args.subcommand == "gather":
+            if args.all:
+                window_gather()
+            else:
+                window_gather(external_only=True)
+    elif args.command == "monitor":
+        if args.subcommand == "swap":
+            monitor_swap(args.monitor_a, args.monitor_b)
+        elif args.subcommand == "lock":
+            set_monitor_lock(lock=True, monitor=args.name)
+        elif args.subcommand == "unlock":
+            set_monitor_lock(lock=False, monitor=args.name)
+        elif args.subcommand == "toggle-lock":
+            set_monitor_lock(lock=None, monitor=args.name)
     elif args.command == "special":
         if args.subcommand == "toggle":
-            toggle_special()
+            special_toggle()
         elif args.subcommand == "move":
-            move_special()
-        else:
-            raise ValueError(f"Unknown special subcommand: {args.special_subcommand}")
-    elif args.command == "switch":
-        switch_cell(args.cell, args.workspace)
-    elif args.command == "move":
-        move_window(args.cell, args.workspace)
-    elif args.command == "move-workspace":
-        move_workspace(args.cell, args.workspace, args.swap)
-    elif args.command == "move-cartesian":
-        move_cartesian(args.target, args.axis, rows, columns)
-    elif args.command == "collect":
-        if args.all:
-            collect_windows()
-        else:
-            collect_windows(off_grid_only=True)
-    elif args.command == "swap-monitors":
-        swap_monitors(args.monitor_a, args.monitor_b)
-    elif args.command == "rotate":
-        if args.all:
-            rotate_all_cells()
-        elif args.cell:
-            rotate_cell(args.cell)
-        else:
-            rotate_focused_cell()
+            special_move()
     elif args.command == "show":
-        notification_timeout = args.notification_timeout
+        if args.timeout is not None:
+            notification_timeout = args.timeout
     elif args.command is None:
         pass
     else:
         raise ValueError(f"Unknown command: {args.command}")
 
-    print_layout(
+    show(
         rows=rows,
         columns=columns,
         notification=not args.nonotification,
