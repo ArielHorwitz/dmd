@@ -6,13 +6,21 @@ import sys
 from pathlib import Path
 
 parser = argparse.ArgumentParser(
-    "indent-json", description="Format JSON with or without indentation."
+    "indent-json",
+    description="Format JSON with or without indentation.",
 )
 parser.add_argument(
-    "FILE", type=Path, nargs="?", help="Read from file instead of stdin"
+    "FILE",
+    type=Path,
+    nargs="?",
+    help="Read from file instead of stdin",
 )
 parser.add_argument(
-    "-I", "--indent", type=int, default=4, help="Indentation in characters [default: 4]"
+    "-I",
+    "--indent",
+    type=int,
+    default=4,
+    help="Indentation in characters [default: 4]",
 )
 parser.add_argument(
     "-m",

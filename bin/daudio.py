@@ -6,9 +6,10 @@ import json
 import subprocess
 import sys
 import time
-import tomllib
 from pathlib import Path
 from typing import Optional
+
+import tomllib
 
 ICONS = {
     "sink": "/usr/share/icons/dmd/speaker3.svg",
