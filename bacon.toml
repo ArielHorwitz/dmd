@@ -1,0 +1,17 @@
+
+default_job = "lint"
+summary = false
+
+[jobs.lint]
+command = ["ruffer", "--", "bin"]
+need_stdout = true
+watch = [
+    ".gitignore",
+    "./src",
+    "./bin",
+]
+
+[jobs.format]
+command = ["ruffer", "fix", "--", "bin"]
+need_stdout = true
+on_success = "back"
