@@ -23,6 +23,12 @@ parser.add_argument(
     help="Indentation in characters [default: 4]",
 )
 parser.add_argument(
+    "-L",
+    "--jsonl",
+    action="store_true",
+    help="Parse as JSONL (one JSON object per line)",
+)
+parser.add_argument(
     "-m",
     "--minify",
     action="store_true",
@@ -43,10 +49,14 @@ if args.FILE is not None:
     if not (input_file := args.FILE).exists():
         print(f"File {input_file} does not exist", file=sys.stderr)
         exit(1)
-    data = json.loads(input_file.read_text())
+    text = input_file.read_text()
 else:
-    data = json.loads(sys.stdin.read())
+    text = sys.stdin.read()
 
+if args.jsonl:
+    data = [json.loads(line) for line in text.splitlines()]
+else:
+    data = json.loads(text)
 
 indentation = args.indent if not args.minify else None
 output_string = json.dumps(data, indent=indentation)
