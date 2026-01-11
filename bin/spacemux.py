@@ -343,7 +343,7 @@ def info(data_name, raw):
         raise RuntimeError(f"Unknown data type {data_name!r}")
     if raw:
         for item in items:
-            print(item.raw_data)
+            print(json.dumps(item.raw_data))
     else:
         item_reprs = []
         for item in items:
