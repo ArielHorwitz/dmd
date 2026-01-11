@@ -300,6 +300,11 @@ def main():
     list_select_group.add_argument("--id", type=int, help="Device ID")
     list_select_group.add_argument("--class", dest="dclass", help="Device class")
     list_parser.add_argument(
+        "--reverse-class-order",
+        action="store_true",
+        help="Reverse order of class devices",
+    )
+    list_parser.add_argument(
         "-v",
         "--verbose",
         action="count",
@@ -311,6 +316,11 @@ def main():
     device_select_group = device_parser.add_mutually_exclusive_group()
     device_select_group.add_argument("--id", type=int, help="Device ID")
     device_select_group.add_argument("--class", dest="dclass", help="Device class")
+    device_parser.add_argument(
+        "--reverse-class-order",
+        action="store_true",
+        help="Reverse order of class devices",
+    )
     device_parser.add_argument(
         "-N",
         "--notification",
@@ -464,7 +474,7 @@ def command_list(args):
     if args.id:
         print_nodes = [state.node(id=args.id, allow_missing=False)]
     elif args.dclass:
-        print_nodes = get_class_nodes(state, args.dclass)
+        print_nodes = get_class_nodes(state, args.dclass, args.reverse_class_order)
     for node in print_nodes:
         print_node(node, args.verbose)
 
@@ -472,7 +482,7 @@ def command_list(args):
 def command_device(args):
     state = State.get()
     if args.dclass is not None:
-        nodes = get_class_nodes(state, args.dclass)
+        nodes = get_class_nodes(state, args.dclass, args.reverse_class_order)
         if not nodes:
             raise ValueError(f"No available devices found for class: {args.dclass}")
         node = nodes[0]
@@ -512,13 +522,19 @@ def get_device_classes():
     return user_config.get("classes", {})
 
 
-def get_class_nodes(state: State, dclass: str):
+def get_class_nodes(
+    state: State,
+    dclass: str,
+    reverse: bool = False,
+):
     device_names = get_device_classes().get(dclass)
     if device_names is None:
         raise ValueError(f"Unknown device class: {dclass}")
     result = list(filter(None, (state.node(name=n) for n in device_names)))
     if not result:
         raise ValueError(f"No devices found from: {dclass}")
+    if reverse:
+        result = list(reversed(result))
     return result
 
 

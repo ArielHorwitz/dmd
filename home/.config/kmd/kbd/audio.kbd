@@ -17,8 +17,8 @@
 (defalias
     Aalt (layer-toggle audio_alt)
     Ashw (cmd-button "daudio volume --notify-all")
-    AKss (cmd-button "daudio device -N --class speakers")
-    AKsh (cmd-button "daudio device -N --class headphones")
+    AKss (cmd-button "daudio device -N --class sink --reverse-class-order")
+    AKsh (cmd-button "daudio device -N --class sink")
     AKvu (cmd-button "daudio volume --increase 2")
     AKvd (cmd-button "daudio volume --decrease 2")
     AKvU (cmd-button "daudio volume --increase 10")
