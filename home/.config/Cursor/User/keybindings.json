@@ -110,5 +110,33 @@
     {
         "key": "ctrl+0",
         "command": "-workbench.action.focusSideBar"
+    },
+    {
+        "key": "ctrl+]",
+        "command": "-editor.action.indentLines",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+]",
+        "command": "-composer.nextChatTab",
+        "when": "composerFocused && !editorTextFocus"
+    },
+    {
+        "key": "ctrl+]",
+        "command": "workbench.action.increaseViewSize"
+    },
+    {
+        "key": "ctrl+[",
+        "command": "-editor.action.outdentLines",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+[",
+        "command": "-composer.previousChatTab",
+        "when": "composerFocused && !editorTextFocus"
+    },
+    {
+        "key": "ctrl+[",
+        "command": "workbench.action.decreaseViewSize"
     }
 ]
