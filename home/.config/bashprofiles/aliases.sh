@@ -28,6 +28,15 @@ alias pipr="pip install -r requirements.txt"
 alias py="python main.py"
 alias pycalc="python -qic 'from math import *; import cmath;'"
 
+pyproject_scripts() {
+    python -c "
+import tomllib
+from pathlib import Path
+project = tomllib.loads(Path('pyproject.toml').read_text())
+print('\n'.join(f'{k:<20} {v}' for k, v in project['project']['scripts'].items()))
+"
+}
+
 # Rust
 alias cr="cargo run --"
 alias crq="cargo run -q --"
