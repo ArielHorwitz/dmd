@@ -25,7 +25,7 @@ if [[ -z "$args_image" ]]; then
     exit
 fi
 
-hyprctl hyprpaper reload ,"$IMAGES_DIR/$args_image" >&2
+hyprctl hyprpaper wallpaper ,"$IMAGES_DIR/$args_image" >&2
 
 if [[ "$args_image" = *.png ]]; then
     cp "$IMAGES_DIR/$args_image" "$IMAGES_DIR/$IMG_NAME"
