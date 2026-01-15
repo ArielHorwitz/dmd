@@ -2,6 +2,10 @@
 default_job = "lint"
 summary = false
 
+[keybindings]
+i = "job:install"
+
+
 [jobs.lint]
 command = ["ruffer", "--", "bin"]
 need_stdout = true
@@ -13,5 +17,10 @@ watch = [
 
 [jobs.format]
 command = ["ruffer", "fix", "--", "bin"]
+need_stdout = true
+on_success = "back"
+
+[jobs.install]
+command = ["./install.sh", "h"]
 need_stdout = true
 on_success = "back"
