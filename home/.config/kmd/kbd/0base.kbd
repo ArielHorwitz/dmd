@@ -7,9 +7,9 @@
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    base (around (layer-switch base) (cmd-button "setlayer --layout 0 --led 0 --write base"))
-    txtu (around (layer-switch text) (cmd-button "setlayer --layout 0 --led 1 --write english"))
-    txti (around (layer-switch text) (cmd-button "setlayer --layout 1 --led 1 --write hebrew"))
+    base (around (layer-switch base) (cmd-button "setlayer --layout 0 --led 0 --write '{\"text\":\"󰣇\",\"class\":\"base\"}'"))
+    txtu (around (layer-switch text) (cmd-button "setlayer --layout 0 --led 1 --write '{\"text\":\"󰊄\",\"class\":\"english\"}'"))
+    txti (around (layer-switch text) (cmd-button "setlayer --layout 1 --led 1 --write '{\"text\":\"󱌩\",\"class\":\"hebrew\"}'"))
     txtt (layer-toggle normal_keyboard)
     sys  (layer-toggle system)
     wnav (layer-toggle window_navigation)

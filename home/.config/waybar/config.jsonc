@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    // "height": 24,
+    "height": 24,
     "spacing": 4,
     "modules-left": [
         "wireplumber#sink",
@@ -9,7 +9,7 @@
         "clock",
         "clock#date",
         "hyprland/workspaces",
-        "tray",
+        "custom/layer",
         // "custom/color#c9",
         // "custom/color#c8",
         // "custom/color#c7",
@@ -20,7 +20,7 @@
         // "custom/color#c2",
         // "custom/color#c1",
         // "custom/color#c0",
-        "custom/layer",
+        "tray",
     ],
     "modules-center": [
         "hyprland/window",
@@ -31,6 +31,7 @@
         "disk#black",
         "memory",
         "cpu",
+        "power-profiles-daemon",
         "battery",
     ],
     "tray": {
@@ -151,8 +152,7 @@
     },
     "power-profiles-daemon": {
       "format": "{icon} ",
-      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-      "tooltip": true,
+      "tooltip": false,
       "format-icons": {
             "default": "",
             "performance": "",
@@ -198,7 +198,8 @@
     },
     "custom/layer": {
         "exec": "setlayer --read-loop 0.2",
-        "format": "[{}]",
+        "format": "{}",
+        "return-type": "json",
         "restart-interval": 1,
     },
     "custom/color#c9": { "format": "99" },
