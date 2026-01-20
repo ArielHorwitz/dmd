@@ -33,7 +33,8 @@ configuration {
 //    parse-hosts: false;
 //    parse-known-hosts: true;
 //    combi-modes: "drun,window,run";
-    matching: "fuzzy";
+//    matching: "fuzzy";
+    matching: "normal";
 //    tokenize: true;
     m: "-1";
 //    filter: ;
