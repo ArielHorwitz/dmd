@@ -16,6 +16,7 @@ words
 inxi
 imagemagick
 swayimg
+power-profiles-daemon
 
 # desktop
 hyprland

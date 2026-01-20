@@ -1,5 +1,5 @@
 (deflayer system
-  @lock @wmmp @wmms @wmml @wmmd @wmmr _     _     _     _     _     _     _            XX    XX    XX
+  @lock @Spd0 @Spd1 @Spd2 _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @tst1 XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    _                               XX    XX    XX
@@ -37,4 +37,7 @@
     tst1 (cmd-button "bash -c ~/.test")
     Srdn (cmd-button "killall dunst")
     Saut (cmd-button "pvrun ~/temp/pyautogui")
+    Spd0 (cmd-button "powerprofilesctl set performance")
+    Spd1 (cmd-button "powerprofilesctl set balanced")
+    Spd2 (cmd-button "powerprofilesctl set power-saver")
 )
