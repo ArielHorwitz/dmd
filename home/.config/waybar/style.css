@@ -37,11 +37,42 @@ window#waybar.hidden {
     background-color: rgba(30, 30, 30, 0.75);
 }
 
+#custom-layer.base {
+    color: rgba(23, 147, 209, 1.0);
+    background-color: rgba(51, 51, 51, 1.0);
+}
 #custom-layer.hebrew {
-    background-color: rgba(0, 0, 255, 0.4);
+    background: linear-gradient(to right,
+        rgba(0, 0, 255, 1.0) 0%,
+        rgba(0, 0, 255, 1.0) 33.33%,
+        rgba(255, 255, 255, 1.0) 33.33%,
+        rgba(255, 255, 255, 1.0) 66.66%,
+        rgba(0, 0, 255, 1.0) 66.66%,
+        rgba(0, 0, 255, 1.0) 100%);
+    color: rgba(0, 0, 0, 1.0);
 }
 #custom-layer.english {
-    background-color: rgba(255, 0, 0, 0.4);
+    background:
+        linear-gradient(rgba(0, 0, 250, 1.0), rgba(0, 0, 250, 1.0)),
+        linear-gradient(to bottom,
+            rgba(255, 0, 0, 1.0) 0%,
+            rgba(255, 0, 0, 1.0) 14.29%,
+            rgba(255, 255, 255, 1.0) 14.29%,
+            rgba(255, 255, 255, 1.0) 28.57%,
+            rgba(255, 0, 0, 1.0) 28.57%,
+            rgba(255, 0, 0, 1.0) 42.86%,
+            rgba(255, 255, 255, 1.0) 42.86%,
+            rgba(255, 255, 255, 1.0) 57.14%,
+            rgba(255, 0, 0, 1.0) 57.14%,
+            rgba(255, 0, 0, 1.0) 71.43%,
+            rgba(255, 255, 255, 1.0) 71.43%,
+            rgba(255, 255, 255, 1.0) 85.71%,
+            rgba(255, 0, 0, 1.0) 85.71%,
+            rgba(255, 0, 0, 1.0) 100%);
+    background-size: 40% 46%, 100% 100%;
+    background-position: top left, top left;
+    background-repeat: no-repeat, no-repeat;
+    color: rgba(0, 0, 0, 1.0);
 }
 
 #network.disconnected,

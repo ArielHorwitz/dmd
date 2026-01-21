@@ -198,7 +198,7 @@
     },
     "custom/layer": {
         "exec": "setlayer --read-loop 0.2",
-        "format": "{}",
+        "format": " {} ",
         "return-type": "json",
         "restart-interval": 1,
     },
