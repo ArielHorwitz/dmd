@@ -10,7 +10,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wfkl  XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @wtmd @WOma @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @fulS XX    @WOmr @wmvl @wmvd @wmvr @wszd XX    XX                              XX    XX    XX
+  _     XX    XX    XX    @fulS XX    @WOmr @wmvl @wmvd @wmvr @wszd XX    @Wpin                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @WOcy @wsml @wmvc @wsmr @WOrs _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -55,6 +55,7 @@
     WOmr (cmd-button "hyprctl dispatch layoutmsg removemaster")
     WOcy (cmd-button "hyprctl dispatch layoutmsg orientationcycle left right top")
     WOrs (cmd-button "hyprctl dispatch layoutmsg mfact exact 0.5")
+    Wpin (cmd-button "hyprctl dispatch pin")
 
     ;; Window size
     wszr (cmd-button "hyprctl dispatch resizeactive 30 0")
