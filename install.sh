@@ -152,6 +152,7 @@ install_packages_arch() {
 install_crates() {
     set -e
     progress "Installing crates..."
+    rustup update
     run_with_privilege mkdir --parents $CRATES_TARGET
     if [[ -z $USER_MODE ]]; then
         sudo chown --recursive $USER $CRATES_TARGET
