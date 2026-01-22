@@ -137,7 +137,10 @@ install_packages() {
 
 install_packages_arch() {
     set -e
-    if [[ ! $(command -v paru) ]]; then
+    local aur_helper=paru
+    if command -v yay >/dev/null; then
+        aur_helper=yay
+    elif [[ ! $(command -v paru) ]]; then
         progress "Installing paru..."
         local paru_build_dir=$(mktemp -d)
         sudo pacman -S --needed --noconfirm base-devel git
@@ -146,7 +149,7 @@ install_packages_arch() {
         makepkg -si --needed --noconfirm
     fi
     progress "Installing packages..."
-    paru -S --needed --noconfirm $(decomment "$SETUP_DIR/aur.txt")
+    $aur_helper -S --needed --noconfirm $(decomment "$SETUP_DIR/aur.txt")
 }
 
 install_crates() {
