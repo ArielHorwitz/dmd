@@ -12,7 +12,7 @@ export XDG_VIDEOS_DIR=$HOME/media/video
 
 export PAGER=bat
 export VISUAL=lite-xl
-export EDITOR=lite-xl
+export EDITOR=rnano
 export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
