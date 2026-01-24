@@ -114,10 +114,16 @@ class State:
         self._nodes_by_nick = nicks
         self._default_source = self._nodes_by_name.get(default_source_name)
         self._default_sink = self._nodes_by_name.get(default_sink_name)
-        if self._default_source is None:
-            print(f"No default source found {default_source_name=}")
-        if self._default_sink is None:
-            print(f"No default sink found {default_sink_name=}")
+        self._default_source_name = default_source_name
+        self._default_sink_name = default_sink_name
+        if self._default_source is None and default_source_name:
+            print(
+                f"Default source '{default_source_name}' not available (device disconnected?)"
+            )
+        if self._default_sink is None and default_sink_name:
+            print(
+                f"Default sink '{default_sink_name}' not available (device disconnected?)"
+            )
 
     @property
     def default_source(self):
@@ -497,8 +503,14 @@ def command_device(args):
         if args.notification:
             notify(node.id)
     else:
-        print_node(state.default_sink)
-        print_node(state.default_source)
+        if state.default_sink is None:
+            print(f"     ⛔ No default sink (expected: {state._default_sink_name})")
+        else:
+            print_node(state.default_sink)
+        if state.default_source is None:
+            print(f"     ⛔ No default source (expected: {state._default_source_name})")
+        else:
+            print_node(state.default_source)
 
 
 def print_node(node: Node, verbosity: int = 0):
