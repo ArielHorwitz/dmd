@@ -17,7 +17,7 @@ alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
-alias printenv='printenv | sort'
+alias printenv='printenv -0 | sort -z | tr "\0" "\n"'
 
 alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 alias watcha="watch "
