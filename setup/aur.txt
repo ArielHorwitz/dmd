@@ -1,22 +1,14 @@
+# system
+libnotify
+dunst
+openssh
+power-profiles-daemon
+xdg-utils
+
 # hardware
 networkmanager
 sof-firmware
 pipewire-pulse
-
-# utilities
-ydotool
-rofi
-libnotify
-dunst
-xdg-utils
-openssh
-jq
-librsvg
-words
-inxi
-imagemagick
-swayimg
-power-profiles-daemon
 
 # desktop
 hyprland
@@ -24,6 +16,16 @@ hyprlock
 hyprpaper
 waybar
 xdg-desktop-portal-hyprland
+
+# utilities
+ydotool
+rofi
+jq
+librsvg
+words
+inxi
+imagemagick
+swayimg
 
 # apps
 alacritty
