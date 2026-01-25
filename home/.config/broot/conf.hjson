@@ -1,0 +1,131 @@
+# https://dystroy.org/broot
+
+default_flags: --show-git-info --git-ignored --show-root-fs --hidden
+
+# terminal_title: "[broot] {git-name}"
+# terminal_title: "{file} 🐄"
+# terminal_title: "-= {file-name} =-"
+
+# https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html
+# date_time_format: %Y/%m/%d %R
+
+# https://dystroy.org/broot/modal/
+# modal: true
+# initial_mode: command
+
+show_selection_mark: true
+
+# cols_order: [
+#     mark
+#     git
+#     size
+#     permission
+#     date
+#     count
+#     branch
+#     name
+# ]
+
+# true_colors: false
+
+# see https://dystroy.org/broot/icons
+# icon_theme: vscode
+icon_theme: nerdfont
+
+special_paths: {
+    "~/.config": {
+        show: always
+    }
+    "~/black": {
+        list: always
+        sum: always
+    }
+}
+
+# quit_on_last_cancel: false
+
+# https://dystroy.org/broot/input/#the-filtering-pattern
+# search_modes: {
+#     <empty>: fuzzy name
+#     /: regex name
+# }
+
+# ext_colors: {
+#     png: rgb(255, 128, 75)
+#     rs: yellow
+# }
+
+content_search_max_file_size: 10MB
+
+# max_panels_count: 2
+# update_work_dir: true
+enable_kitty_keyboard: false
+lines_before_match_in_preview: 1
+lines_after_match_in_preview: 1
+
+
+preview_transformers: [
+    // # Use mutool to render any PDF file as an image
+    // # In this example we use placeholders for the input and output files
+    // {
+    //     input_extensions: [ "pdf" ] // case doesn't matter
+    //     output_extension: png
+    //     mode: image
+    //     command: [ "mutool", "draw", "-w", "1000", "-o", "{output-path}", "{input-path}" ]
+    // }
+
+    // # Use LibreOffice to render Office files as images
+    // # In this example, {output-dir} is used to specify where LibreOffice must write the result
+    // {
+    //     input_extensions: [ "xls", "xlsx", "doc", "docx", "ppt", "pptx", "ods", "odt", "odp" ]
+    //     output_extension: png
+    //     mode: image
+    //     command: [
+    //         "libreoffice", "--headless",
+    //         "--convert-to", "png",
+    //         "--outdir", "{output-dir}",
+    //         "{input-path}"
+    //     ]
+    // }
+
+    // # Use jq to beautify JSON
+    // # In this example, the command refers to neither the input nor the output,
+    // # so broot pipes them to the stdin and stdout of the jq process
+    // {
+    //     input_extensions: [ "json" ] 
+    //     output_extension: json
+    //     mode: text
+    //     command: [ "jq" ]
+    // }
+]
+
+imports: [
+
+    # Verbs are better configured in verbs.hjson. But you
+    # can also add another files for your personal verbs
+    verbs.hjson
+
+    # This file contains the skin to use when the terminal
+    # is dark (or when this couldn't be determined)
+    {
+        luma: [
+            dark
+            unknown
+        ]
+        # (un)comment to choose your preferred skin
+        file: skins/dark-blue.hjson
+        //file: skins/catppuccin-macchiato.hjson
+        //file: skins/catppuccin-mocha.hjson
+        //file: skins/dark-gruvbox.hjson
+        //file: skins/dark-orange.hjson
+        //file: skins/solarized-dark.hjson
+    }
+
+    # This skin is imported when your terminal is light
+    {
+        luma: light
+        # (un)comment to choose your preferred skin
+        //file: skins/solarized-light.hjson
+        file: skins/white.hjson
+    }
+]
