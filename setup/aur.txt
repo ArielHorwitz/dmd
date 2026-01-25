@@ -1,4 +1,5 @@
 # system
+pacman-contrib
 libnotify
 dunst
 openssh

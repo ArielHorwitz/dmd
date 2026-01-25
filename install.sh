@@ -195,10 +195,14 @@ install_configs() {
     if [[ $USER_MODE ]]; then
         warn "Skipping system configurations in user mode:"
         warn "  - sudoers configuration"
+        warn "  - paccache timer"
         warn "  - hardware group and udev rules"
         warn "Some scripts or configurations may not work correctly"
         return
     fi
+
+    progress "Configuring pacman cache..."
+    sudo systemctl enable --now paccache.timer
 
     progress "Configuring profile..."
     cat $SETUP_DIR/profile.dropin \
