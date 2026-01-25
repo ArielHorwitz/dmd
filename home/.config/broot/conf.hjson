@@ -40,6 +40,9 @@ special_paths: {
         list: always
         sum: always
     }
+    ".git": {
+        list: never
+    }
 }
 
 # quit_on_last_cancel: false
