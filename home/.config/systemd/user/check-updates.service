@@ -1,0 +1,6 @@
+[Unit]
+Description=Check for system updates
+
+[Service]
+Type=oneshot
+ExecStart=/bin/dmd/check-updates --notify

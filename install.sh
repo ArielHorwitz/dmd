@@ -294,6 +294,10 @@ install_home() {
     progress "Applying home directory..."
     homux "${homux_args[@]}"
     set_perms
+
+    progress "Enabling check-updates timer..."
+    systemctl --user daemon-reload
+    systemctl --user enable --now check-updates.timer
 }
 
 
