@@ -94,12 +94,12 @@ preview_transformers: [
     // # Use jq to beautify JSON
     // # In this example, the command refers to neither the input nor the output,
     // # so broot pipes them to the stdin and stdout of the jq process
-    // {
-    //     input_extensions: [ "json" ] 
-    //     output_extension: json
-    //     mode: text
-    //     command: [ "jq" ]
-    // }
+    {
+        input_extensions: [ "json" ]
+        output_extension: json
+        mode: text
+        command: [ "jsonformatter" ]
+    }
 ]
 
 imports: [
