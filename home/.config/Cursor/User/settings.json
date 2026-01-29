@@ -8,6 +8,6 @@
     "window.menuBarVisibility": "hidden",
     "workbench.editor.enablePreview": false,
     "editor.fontSize": 16,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 3,
     "": 0
 }
