@@ -65,23 +65,6 @@ view-source() {
     bat $(which $@)
 }
 
-mkcd() {
-    mkdir -p $1 && cd $1
-}
-
-cdre() {
-    cd $PWD
-}
-
-cdl() {
-    cd $1 && lsl
-}
-
-starttest() {
-    mkcd /tmp/terminaltest-$RANDOM
-    printcolor -s debug "New test directory."
-}
-
 nohupout() {
     nohup "$@" >/dev/null 2>&1 &
 }
