@@ -11,6 +11,20 @@ verbs: [
     }
 
     {
+        invocation: copy_contents
+        shortcut: cpc
+        execution: "clipcatctl load -f {file}"
+        leave_broot: false
+    }
+
+    {
+        invocation: copy_name
+        shortcut: cpn
+        execution: "clipcatctl insert {file-stem}"
+        leave_broot: false
+    }
+
+    {
         invocation: view
         shortcut: v
         key: alt-v
@@ -31,12 +45,32 @@ verbs: [
     }
 
     {
+        invocation: litexl
+        apply_to: text_file
+        execution: "lite-xl {file}"
+        leave_broot: false
+    }
+
+    {
+        invocation: gedit
+        apply_to: text_file
+        execution: "gedit {file}"
+        leave_broot: false
+    }
+
+    {
         invocation: edit
         shortcut: e
         key: ctrl-e
         apply_to: text_file
         execution: "$EDITOR {file}"
         leave_broot: false
+    }
+
+    {
+        invocation: setmaxdepth {d}
+        shortcut: maxd
+        execution: ":set_max_depth {d}"
     }
 
     {
