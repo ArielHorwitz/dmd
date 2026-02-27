@@ -1,6 +1,18 @@
 # For details see: https://docs.anthropic.com/en/api/messages
 
 [[models]]
+id = "claude-sonnet-4-6"
+name = "Claude Sonnet 4.6"
+max_tokens = 64000
+temperature = 0.5
+
+[[models]]
+id = "claude-opus-4-6"
+name = "Claude Opus 4.6"
+max_tokens = 128000
+temperature = 0.5
+
+[[models]]
 id = "claude-sonnet-4-5"
 name = "Claude Sonnet 4.5"
 max_tokens = 64000

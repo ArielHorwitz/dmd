@@ -1,6 +1,24 @@
 # For details see: https://platform.openai.com/docs/api-reference/chat
 
 [[models]]
+id = "gpt-5.2"
+name = "GPT-5.2"
+max_completion_tokens = 128000
+temperature = 1.0
+top_p = 1.0
+frequency_penalty = 0.0
+presence_penalty = 0.0
+
+[[models]]
+id = "gpt-5.2-pro"
+name = "GPT-5.2 pro"
+max_completion_tokens = 128000
+temperature = 1.0
+top_p = 1.0
+frequency_penalty = 0.0
+presence_penalty = 0.0
+
+[[models]]
 id = "gpt-5"
 name = "GPT-5"
 max_completion_tokens = 128000
