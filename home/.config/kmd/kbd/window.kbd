@@ -3,7 +3,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wkil XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    @kltb XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls XX    XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
-  _     XX    XX    XX    @wspt XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer window_manipulation
@@ -41,7 +41,6 @@
     wflt (cmd-button "hyprctl dispatch togglefloating")
     wsml (cmd-button "hyprctl dispatch movecurrentworkspacetomonitor l")
     wsmr (cmd-button "hyprctl dispatch movecurrentworkspacetomonitor r")
-    wspt (cmd-button "hyprctl dispatch togglesplit")
     fuls (cmd-button "hyprctl dispatch fullscreen 1")
     fulS (cmd-button "hyprctl dispatch fullscreen 0")
 
