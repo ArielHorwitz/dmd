@@ -97,6 +97,7 @@
 	rihhhh = rebase -i HEAD~12
 	upm = branch -f master
 	# Remote
+	pff = pull --ff-only
 	fp = fetch --all --prune
 	ffup = git merge --ff-only @{u}
 	resetup = reset --hard @{u}
