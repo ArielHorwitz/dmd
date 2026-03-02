@@ -21,7 +21,11 @@ at = "00416A"
 delim = "00416A"
 prompt = "89A1D4"
 user = "1162EB"
+~>>>
+host = "EB6211"
+~>>> zen
 host = "1162EB"
+~<<<
 loc = "19A1D4"
 
 [command]
