@@ -68,6 +68,11 @@ verbs: [
     }
 
     {
+        key: ctrl-t
+        execution: ":toggle_tree"
+    }
+
+    {
         invocation: setmaxdepth {d}
         shortcut: maxd
         execution: ":set_max_depth {d}"
