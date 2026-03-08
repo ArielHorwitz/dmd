@@ -6,8 +6,8 @@ import os
 import subprocess
 import sys
 import time
-from typing import Optional
 import uuid
+from typing import Optional
 
 icon = "/usr/share/icons/dmd/clock.svg"
 notification_id = uuid.uuid4()
