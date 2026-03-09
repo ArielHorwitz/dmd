@@ -1,5 +1,7 @@
 #! /bin/bash
 
+[[ $- != *i* ]] && return
+
 source ~/.config/bashprofiles/init.sh
 
 shopt -s histappend
