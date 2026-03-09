@@ -1,10 +1,10 @@
 [Unit]
-Description=Check for system updates every 6 hours
+Description=Check for system updates every 24 hours
 
 [Timer]
 OnBootSec=30min
 OnActiveSec=20s
-OnUnitActiveSec=6h
+OnUnitActiveSec=24h
 Persistent=true
 
 [Install]
