@@ -630,14 +630,14 @@ def main():
     parser = argparse.ArgumentParser(TITLE, description="Manage workspaces")
     parser.add_argument(
         "-n",
-        "--nonotification",
+        "--notification",
         action="store_true",
-        help="disable notification",
+        help="Show notification",
     )
     parser.add_argument(
         "--config-file",
         default=DEFAULT_CONFIG_FILE,
-        help="config file path",
+        help="Config file path",
     )
     subparsers = parser.add_subparsers(dest="command")
 
@@ -875,7 +875,7 @@ def main():
     show(
         rows=rows,
         columns=columns,
-        notification=not args.nonotification,
+        notification=args.notification,
         notification_timeout=notification_timeout,
         icon_file=icon,
     )

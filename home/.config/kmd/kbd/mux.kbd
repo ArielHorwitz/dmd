@@ -25,7 +25,7 @@
 (defalias
     Xalt (layer-toggle multiplexer_alt)
     Xrnm (layer-toggle multiplexer_rename)
-    Xsum (cmd-button "spacemux show")
+    Xsum (cmd-button "spacemux --notification show")
     Xcol (cmd-button "spacemux window gather")
     XCol (cmd-button "spacemux window gather --all")
     Xlck (cmd-button "spacemux monitor toggle-lock")
