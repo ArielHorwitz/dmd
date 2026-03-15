@@ -1,32 +1,34 @@
 (deflayer audio
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @AKum @AKvu @AKvU XX    @AKvU @AKvu XX    @AKss XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @Aalt @AKmt @AKvd @AKvD XX    @AKvD @AKvd XX    @AKsh XX    @Ashw                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @prev @pp   @next XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    @AKum @AKvu @AKvU XX    @AKvU @AKvu XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @Aalt @AKmt @AKvd @AKvD XX    @AKvD @AKvd XX    XX    XX    @Ashw                           XX    XX    XX
+  _     @prev @next XX    XX    XX    XX    @ADk1 @ADk2 @ADk3 XX    _                        XX           XX    XX    XX    XX
   _     _     _                 @pp               _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer audio_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @ACum @ACvu @ACvU XX    @ACvU @ACvu XX    @ACse XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @ACmt @ACvd @ACvD XX    @ACvD @ACvd XX    @ACsi XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    @ACum @ACvu @ACvU XX    @ACvU @ACvu XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @ACmt @ACvd @ACvD XX    @ACvD @ACvd XX    XX    XX    _                               XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @ADc1 @ADc2 @ADc3 XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     Aalt (layer-toggle audio_alt)
     Ashw (cmd-button "daudio volume --notify-all")
-    AKss (cmd-button "daudio device -N --class sink")
-    AKsh (cmd-button "daudio device -N --class sink --reverse-class-order")
+    ADk1 (cmd-button "daudio device -N --class sink_speakers_internal")
+    ADk2 (cmd-button "daudio device -N --class sink_speakers_external")
+    ADk3 (cmd-button "daudio device -N --class sink_headphones")
+    ADc1 (cmd-button "daudio device -N --class source_ambient_internal")
+    ADc2 (cmd-button "daudio device -N --class source_ambient_external")
+    ADc3 (cmd-button "daudio device -N --class source_headphones")
     AKvu (cmd-button "daudio volume --increase 2")
     AKvd (cmd-button "daudio volume --decrease 2")
     AKvU (cmd-button "daudio volume --increase 10")
     AKvD (cmd-button "daudio volume --decrease 10")
     AKmt (cmd-button "daudio volume -N --mute")
     AKum (cmd-button "daudio volume -N --unmute")
-    ACse (cmd-button "daudio device -N --class source")
-    ACsi (cmd-button "daudio device -N --class source --reverse-class-order")
     ACvu (cmd-button "daudio volume --mic --increase 2")
     ACvd (cmd-button "daudio volume --mic --decrease 2")
     ACvU (cmd-button "daudio volume --mic --increase 10")
