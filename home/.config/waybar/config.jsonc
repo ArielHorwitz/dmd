@@ -6,7 +6,7 @@
     "modules-left": [
         "wireplumber#sink",
         "wireplumber#source",
-        "clock",
+        "clock#time",
         "clock#date",
         "hyprland/workspaces",
         "custom/layer",
@@ -38,7 +38,7 @@
         // "icon-size": 21,
         "spacing": 10,
     },
-    "clock": {
+    "clock#time": {
         "format": "{:%H:%M:%S}",
         "interval": 1,
         "tooltip": false,

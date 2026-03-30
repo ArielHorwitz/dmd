@@ -75,6 +75,13 @@ window#waybar.hidden {
     color: rgba(0, 0, 0, 1.0);
 }
 
+#clock.time {
+    background-color: rgba(6, 36, 36, 1.0);
+}
+#clock.date {
+    background-color: rgba(36, 6, 24, 1.0);
+}
+
 #network.disconnected,
 #network.disabled
 {
