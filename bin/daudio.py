@@ -472,6 +472,7 @@ def command_config(args):
             if node is not None:
                 found_repr = f"{node.id:>2} ✅"
             print(f"  {found_repr} {name}")
+        print()
 
 
 def command_list(args):
