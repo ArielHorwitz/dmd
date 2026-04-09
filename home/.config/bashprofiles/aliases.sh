@@ -23,9 +23,7 @@ alias historylog="HISTTIMEFORMAT='%c ' history | bat"
 alias watcha="watch "
 
 # Python
-alias pyactivate="source venv/bin/activate"
-alias pipr="pip install -r requirements.txt"
-alias py="python main.py"
+alias uvr="uv run"
 alias pycalc="python -qic 'from math import *; import cmath;'"
 
 pyproject_scripts() {
