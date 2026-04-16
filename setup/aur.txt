@@ -6,8 +6,11 @@ openssh
 power-profiles-daemon
 xdg-utils
 
+# network
+iwd
+impala
+
 # hardware
-networkmanager
 sof-firmware
 pipewire-pulse
 

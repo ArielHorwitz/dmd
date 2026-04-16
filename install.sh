@@ -215,6 +215,13 @@ install_configs() {
         | sed "s|<BIN_TARGET>|$BIN_TARGET|g" \
         | sudo tee /etc/sudoers.d/dmd
     sudo cp $SETUP_DIR/udev.rules /etc/udev/rules.d/80-dmd.rules
+
+    progress "Configuring network..."
+    sudo mkdir -p /etc/iwd/
+    sudo cp $SETUP_DIR/iwd.conf /etc/iwd/main.conf
+    sudo systemctl enable --now iwd
+    sudo systemctl enable --now systemd-resolved
+
     run_with_privilege mkdir -p "$DMD_DATA_DIR"
     sudo chgrp hardware "$DMD_DATA_DIR"
     sudo chmod g+w "$DMD_DATA_DIR"
