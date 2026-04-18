@@ -9,9 +9,9 @@
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wfkl  XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    @wtmd @WOma @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @fulS XX    @WOmr @wmvl @wmvd @wmvr @wszd XX    @Wpin                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    @WOcy @wsml @wmvc @wsmr @WOrs _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    @Wpin                           XX    XX    XX
+  _     XX    XX    XX    XX    XX    @wsml @Wsde XX    @Wsin @wsmr _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -49,11 +49,8 @@
     wmvr (cmd-button "hyprctl dispatch movewindow r")
     wmvu (cmd-button "hyprctl dispatch movewindow u")
     wmvd (cmd-button "hyprctl dispatch movewindow d")
-    wmvc (cmd-button "i3-msg move position center")
-    WOma (cmd-button "hyprctl dispatch layoutmsg addmaster")
-    WOmr (cmd-button "hyprctl dispatch layoutmsg removemaster")
-    WOcy (cmd-button "hyprctl dispatch layoutmsg orientationcycle left right top")
-    WOrs (cmd-button "hyprctl dispatch layoutmsg mfact exact 0.5")
+    Wsde (cmd-button "hyprctl dispatch layoutmsg 'colresize -conf'")
+    Wsin (cmd-button "hyprctl dispatch layoutmsg 'colresize +conf'")
     Wpin (cmd-button "hyprctl dispatch pin")
 
     ;; Window size
@@ -62,4 +59,3 @@
     wszu (cmd-button "hyprctl dispatch resizeactive 0 -30")
     wszd (cmd-button "hyprctl dispatch resizeactive 0 30")
 )
-
