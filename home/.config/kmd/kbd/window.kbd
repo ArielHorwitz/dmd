@@ -11,7 +11,7 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wfkl  XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    @Wpin                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    @wsml @Wsde XX    @Wsin @wsmr _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @Wsde @Wmpr @Wsin XX    _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -39,8 +39,6 @@
 
     ;; Workspaces
     wflt (cmd-button "hyprctl dispatch togglefloating")
-    wsml (cmd-button "hyprctl dispatch movecurrentworkspacetomonitor l")
-    wsmr (cmd-button "hyprctl dispatch movecurrentworkspacetomonitor r")
     fuls (cmd-button "hyprctl dispatch fullscreen 1")
     fulS (cmd-button "hyprctl dispatch fullscreen 0")
 
@@ -49,6 +47,7 @@
     wmvr (cmd-button "hyprctl dispatch movewindow r")
     wmvu (cmd-button "hyprctl dispatch movewindow u")
     wmvd (cmd-button "hyprctl dispatch movewindow d")
+    Wmpr (cmd-button "hyprctl dispatch layoutmsg promote")
     Wsde (cmd-button "hyprctl dispatch layoutmsg 'colresize -conf'")
     Wsin (cmd-button "hyprctl dispatch layoutmsg 'colresize +conf'")
     Wpin (cmd-button "hyprctl dispatch pin")
