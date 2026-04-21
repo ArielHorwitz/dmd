@@ -24,6 +24,7 @@
     ],
     "modules-center": [
         "hyprland/window",
+        "hyprland/windowcount",
     ],
     "modules-right": [
         "network",
@@ -195,6 +196,13 @@
     "hyprland/window": {
         "icon": true,
         "separate-outputs": true,
+    },
+    "hyprland/windowcount": {
+        "format": "[{}]",
+        "format-empty": " ",
+        // "format-windowed": "[T]",
+        // "format-fullscreen": "[{}]",
+        "separate-outputs": true
     },
     "custom/layer": {
         "exec": "setlayer --read-loop 0.2",

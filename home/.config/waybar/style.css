@@ -8,8 +8,7 @@
 }
 
 window#waybar {
-	background: transparent;
-    background-color: rgba(0, 0, 0, 1);
+    background: transparent;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -27,6 +26,7 @@ window#waybar.hidden {
 #network,
 #wireplumber,
 #window,
+#windowcount,
 #temperature,
 #workspaces,
 #tray,
@@ -34,7 +34,25 @@ window#waybar.hidden {
 #custom-color
 {
     padding: 0 10px;
-    background-color: rgba(30, 30, 30, 0.75);
+    background-color: rgb(30, 30, 30);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* #windowcount {
+    margin-left: 0px;
+    padding: 0px 5px;
+} */
+
+window#waybar.empty #windowcount {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+
+window#waybar.empty #window {
+    padding: 0;
+    background-color: transparent;
+    border: none;
 }
 
 #custom-layer.base {
@@ -85,32 +103,32 @@ window#waybar.hidden {
 #network.disconnected,
 #network.disabled
 {
-    background-color: rgba(255, 0, 0, 0.4);
+    background-color: rgb(102, 0, 0);
 }
 
 
 #wireplumber.sink.muted {
-    background-color: rgba(255, 20, 20, 0.3);
+    background-color: rgb(76, 6, 6);
 }
 #wireplumber.source {
-    background-color: rgba(20, 255, 20, 0.3);
+    background-color: rgb(6, 76, 6);
 }
 #wireplumber.source.muted {
-    background-color: rgba(30, 30, 30, 0.75);
+    background-color: rgb(30, 30, 30);
 }
 
 
 #power-profiles-daemon.power-saver {
-    background-color: rgba(255, 0, 0, 0.4);
+    background-color: rgb(102, 0, 0);
 }
 #power-profiles-daemon.balanced {
-    background-color: rgba(255, 128, 0, 0.4);
+    background-color: rgb(102, 51, 0);
 }
 
 
 @keyframes pulse {
     to {
-        background-color: rgba(160, 50, 140, 0.5);
+        background-color: rgb(80, 25, 70);
     }
 }
 
@@ -120,7 +138,7 @@ window#waybar.hidden {
 #memory.level-9,
 #custom-color.c9
 {
-    background-color: rgba(60, 100, 180, 0.3);
+    background-color: rgb(18, 30, 54);
     color: #ffffff;
 }
 
@@ -130,7 +148,7 @@ window#waybar.hidden {
 #memory.level-8,
 #custom-color.c8
 {
-    background-color: rgba(70, 110, 200, 0.35);
+    background-color: rgb(24, 38, 70);
     color: #ffffff;
 }
 
@@ -140,7 +158,7 @@ window#waybar.hidden {
 #memory.level-7,
 #custom-color.c7
 {
-    background-color: rgba(100, 80, 180, 0.4);
+    background-color: rgb(40, 32, 72);
     color: #ffffff;
 }
 
@@ -150,7 +168,7 @@ window#waybar.hidden {
 #memory.level-6,
 #custom-color.c6
 {
-    background-color: rgba(130, 60, 180, 0.45);
+    background-color: rgb(58, 27, 81);
     color: #ffffff;
 }
 
@@ -160,7 +178,7 @@ window#waybar.hidden {
 #memory.level-5,
 #custom-color.c5
 {
-    background-color: rgba(160, 50, 140, 0.5);
+    background-color: rgb(80, 25, 70);
     color: #ffffff;
     animation-name: pulse;
 }
@@ -171,7 +189,7 @@ window#waybar.hidden {
 #memory.level-4,
 #custom-color.c4
 {
-    background-color: rgba(180, 40, 100, 0.5);
+    background-color: rgb(90, 20, 50);
     color: #ffffff;
     animation-name: pulse;
     animation-duration: 2s;
@@ -186,7 +204,7 @@ window#waybar.hidden {
 #memory.level-3,
 #custom-color.c3
 {
-    background-color: rgba(190, 30, 60, 0.55);
+    background-color: rgb(104, 16, 33);
     color: #ffffff;
     animation-name: pulse;
     animation-duration: 2s;
@@ -201,7 +219,7 @@ window#waybar.hidden {
 #memory.level-2,
 #custom-color.c2
 {
-    background-color: rgba(200, 20, 40, 0.6);
+    background-color: rgb(120, 12, 24);
     color: #ffffff;
     animation-name: pulse;
     animation-duration: 2s;
@@ -216,7 +234,7 @@ window#waybar.hidden {
 #memory.level-1,
 #custom-color.c1
 {
-    background-color: rgba(210, 15, 30, 0.65);
+    background-color: rgb(136, 9, 19);
     color: #ffffff;
     animation-name: pulse;
     animation-duration: 1s;
@@ -231,7 +249,7 @@ window#waybar.hidden {
 #memory.level-0,
 #custom-color.c0
 {
-    background-color: rgba(220, 10, 20, 0.7);
+    background-color: rgb(154, 7, 14);
     color: #ffffff;
     animation-name: pulse;
     animation-duration: 500ms;
