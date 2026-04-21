@@ -9,9 +9,9 @@
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wfkl  XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    @wtmd XX    @wszl @wmvu @wszr @wszu XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    @fulS XX    XX    @wmvl @wmvd @wmvr @wszd XX    @Wpin                           XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Wsde @Wmpr @Wsin XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    @wtmd @wszu @Wsde @wmvu @Wsin XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    @fulS XX    @wszd @wmvl @wmvd @wmvr XX    XX    @Wpin                           XX    XX    XX
+  _     XX    XX    XX    XX    XX    @wszl @Wmml @Wmpr @Wmmr @wszr _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -47,6 +47,8 @@
     wmvr (cmd-button "hyprctl dispatch movewindow r")
     wmvu (cmd-button "hyprctl dispatch movewindow u")
     wmvd (cmd-button "hyprctl dispatch movewindow d")
+    Wmml (cmd-button "spacemux window shift --axis monitor down")
+    Wmmr (cmd-button "spacemux window shift --axis monitor up")
     Wmpr (cmd-button "hyprctl dispatch layoutmsg promote")
     Wsde (cmd-button "hyprctl dispatch layoutmsg 'colresize -conf'")
     Wsin (cmd-button "hyprctl dispatch layoutmsg 'colresize +conf'")
