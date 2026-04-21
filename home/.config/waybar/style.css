@@ -1,8 +1,8 @@
 * {
+	min-height: 0px;
+    font-size: 22px;
+	border-radius: 22px;
 	border: none;
-	border-radius: 10px;
-	min-height: 21px;
-    font-size: 18px;
     font-family: Mononoki, FontAwesome, Roboto, Helvetica, Arial, sans-serif;
     color: rgba(255, 255, 255, 0.8);
 }
@@ -38,10 +38,9 @@ window#waybar.hidden {
     border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-/* #windowcount {
-    margin-left: 0px;
-    padding: 0px 5px;
-} */
+#tray {
+    background-color: rgb(80, 80, 80);
+}
 
 window#waybar.empty #windowcount {
     padding: 0;
