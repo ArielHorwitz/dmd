@@ -23,7 +23,7 @@ xdg-desktop-portal-hyprland
 
 # utilities
 ydotool
-rofi
+fuzzel
 jq
 librsvg
 words
