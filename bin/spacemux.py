@@ -495,7 +495,7 @@ def special_move():
     hypr_dispatch(f"movetoworkspacesilent special:{cell_name}")
 
 
-def window_shift(target, axis, rows, columns):
+def window_shift(target, axis, rows, columns, wrap=False, follow=True):
     state = State.get()
     ws = state.focused_workspace
 
@@ -509,10 +509,12 @@ def window_shift(target, axis, rows, columns):
         if target == "up":
             new_monitor = monitor + 1
         elif target == "down":
-            new_monitor = max(monitor - 1, 0)
+            new_monitor = monitor - 1
         else:
             new_monitor = int(target)
         new_col, new_row = col, row
+        low, high = 0, len(state.monitors) - 1
+        new_monitor = _bound(new_monitor, low, high, wrap, axis)
     elif axis == "col":
         if target == "up":
             new_col = col + 1
@@ -520,9 +522,8 @@ def window_shift(target, axis, rows, columns):
             new_col = col - 1
         else:
             new_col = int(target)
-        if new_col < 1 or new_col > columns:
-            raise ValueError(f"Column {new_col} is out of bounds (1-{columns})")
         new_row, new_monitor = row, monitor
+        new_col = _bound(new_col, 1, columns, wrap, axis)
     elif axis == "row":
         if target == "up":
             new_row = row + 1
@@ -530,14 +531,23 @@ def window_shift(target, axis, rows, columns):
             new_row = row - 1
         else:
             new_row = int(target)
-        if new_row < 1 or new_row > rows:
-            raise ValueError(f"Row {new_row} is out of bounds (1-{rows})")
         new_col, new_monitor = col, monitor
+        new_row = _bound(new_row, 1, rows, wrap, axis)
     else:
         raise ValueError(f"Unknown axis: {axis}")
 
     target_workspace_name = f"{new_col}.{new_row}.{new_monitor}"
-    hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
+    dispatch = "movetoworkspace" if follow else "movetoworkspacesilent"
+    hypr_dispatch(f"{dispatch} name:{target_workspace_name}")
+
+
+def _bound(value, low, high, wrap, axis):
+    if low <= value <= high:
+        return value
+    if wrap:
+        size = high - low + 1
+        return ((value - low) % size) + low
+    raise ValueError(f"{axis.capitalize()} {value} is out of bounds ({low}-{high})")
 
 
 def window_gather(external_only: bool = False):
@@ -719,6 +729,18 @@ def main():
         default="monitor",
         help="Axis to shift along (default: monitor)",
     )
+    window_shift_parser.add_argument(
+        "--wrap",
+        action="store_true",
+        help="Wrap around when target is out of bounds",
+    )
+    window_shift_parser.add_argument(
+        "--no-follow",
+        action="store_false",
+        dest="follow",
+        default=True,
+        help="Do not follow the moved window",
+    )
     window_gather_parser = window_subparsers.add_parser(
         "gather",
         help="Gather windows from external workspaces to current workspace",
@@ -844,7 +866,14 @@ def main():
             else:
                 window_move(args.cell, workspace=args.workspace)
         elif args.subcommand == "shift":
-            window_shift(args.target, args.axis, rows, columns)
+            window_shift(
+                args.target,
+                args.axis,
+                rows,
+                columns,
+                wrap=args.wrap,
+                follow=args.follow,
+            )
         elif args.subcommand == "gather":
             if args.all:
                 window_gather()
