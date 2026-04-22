@@ -1,14 +1,15 @@
-(deflayer launch
+(deflayer run
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
-  _     XX    XX    @Lcmd XX    XX    XX    @LTcp @LTbt XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 @Lrun             _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    @Rcmd @Rfuz XX    XX    XX    @RTcp @RTbt XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     _                 @Rcfm             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
-    Lrun (cmd-button "fuzzel")
-    Lcmd (cmd-button "run-menu")
-    LTcp #(spc | spc c l i p c a t c t l spc l o a d spc)
-    LTbt #(spc | spc b a t spc)
+    Rfuz (cmd-button "fuzzel")
+    Rcmd (cmd-button "run-menu")
+    RTcp #(spc | spc c l i p c a t c t l spc l o a d spc)
+    RTbt #(spc | spc b a t spc)
+    Rcfm (cmd-button "crowfish")
 )

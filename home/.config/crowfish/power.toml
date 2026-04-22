@@ -1,0 +1,27 @@
+[metadata]
+title = "Power menu"
+
+[[entry]]
+name = "lock"
+description = "Lock the screen"
+execute = "hyprlock"
+
+[[entry]]
+name = "suspend"
+description = "Suspend the system"
+execute = "hyprlock & sleep 1 && systemctl suspend"
+
+[[entry]]
+name = "hibernate"
+description = "Hibernate the system"
+execute = "systemctl hibernate"
+
+[[entry]]
+name = "poweroff"
+description = "Power off the system"
+execute = "systemctl poweroff"
+
+[[entry]]
+name = "reboot"
+description = "Reboot the system"
+execute = "systemctl reboot"

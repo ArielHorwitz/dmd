@@ -1,0 +1,42 @@
+[metadata]
+title = "crowfish"
+
+[[entry]]
+name = "cmd"
+description = "Run a command"
+execute = "run-menu"
+
+[[entry]]
+name = "apps"
+description = "Launch an application"
+execute = "fuzzel"
+
+[[entry]]
+name = "emoji"
+description = "Emoji picker"
+execute = "emoji-picker"
+
+[[entry]]
+name = "unicode"
+description = "Unicode picker"
+execute = "unicode-picker"
+
+[[entry]]
+name = "wallpaper"
+description = "Wallpaper picker"
+execute = "wallpaper-picker"
+
+[[entry]]
+name = "lockscreen"
+description = "Lockscreen picker"
+execute = "lockscreen-picker"
+
+[[entry]]
+name = "power"
+description = "Power menu"
+dispatch = "power.toml"
+
+[[entry]]
+name = "update"
+description = "System update"
+execute = "alacritty --hold -e bash -c 'checkupdates; sudo pacman -Syu; echo Done.'"

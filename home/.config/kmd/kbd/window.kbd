@@ -4,7 +4,7 @@
   _     XX    XX    @kltb XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @scrw @scrd @fuls XX    XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
-  _     _     @wman             @wrof             _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     @wman             XX                _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
@@ -21,7 +21,6 @@
 
     ;; Launch and close
     wtrm (cmd-button "alacritty & disown")
-    wrof (cmd-button "pkill rofi; rofi -show drun & disown")
     Wkil (cmd-button "hyprctl dispatch killactive")
     Wfkl (cmd-button "hyprctl dispatch forcekillactive")
     kltb C-w

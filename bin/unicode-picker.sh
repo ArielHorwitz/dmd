@@ -1,21 +1,15 @@
 #! /bin/bash
 set -e
 
-# CLI
 APP_NAME=$(basename "${0%.*}")
-ABOUT="Select unicode characters from rofi"
+ABOUT="Pick a unicode character via fuzzel and load into clipboard"
 CLI=(
     --prefix "args_"
-    -o "character;Selected character"
     -f "force-generate;Force generating from scratch;;f"
-    -f "run;Run in rofi;;r"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
-# echo "$CLI" >&2
 eval "$CLI" || exit 1
 
-
-# Category mapping
 declare -A categories=(
     ["Lu"]="uppercase letter"
     ["Ll"]="lowercase letter"
@@ -49,7 +43,7 @@ declare -A categories=(
     ["Cn"]="unassigned"
 )
 
-DATA_DIR="${HOME}/.local/share/rofimenu-unicode"
+DATA_DIR="${HOME}/.local/share/unicode-picker"
 SOURCE_DATA_FILE="${DATA_DIR}/UnicodeData.txt"
 PROCESSED_DATA_FILE="${DATA_DIR}/unicode_processed.txt"
 UNICODE_SOURCE_DATA_URL="https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt"
@@ -90,21 +84,8 @@ if [[ $do_process ]]; then
     process_source_data > "$PROCESSED_DATA_FILE"
 fi
 
+selection=$(fuzzel --dmenu --mesg "Pick a unicode character and copy to clipboard" < "$PROCESSED_DATA_FILE")
+[[ -n $selection ]] || exit 0
 
-extract_first_unicode() {
-    set -e
-    printf "%s" "$args_character" | python3 -c 'import sys; print(sys.stdin.read(1), end="")'
-}
-
-if [[ $args_run ]]; then
-    rofi -show "unicode" -modes "unicode:$0"
-    exit
-fi
-
-if [[ $args_character ]]; then
-    char=$(extract_first_unicode "$args_character")
-    printf "%s" "$char" | clipcatctl load
-    exit
-fi
-
-cat "$PROCESSED_DATA_FILE"
+char=$(printf '%s' "$selection" | python3 -c 'import sys; print(sys.stdin.read(1), end="")')
+printf '%s' "$char" | clipcatctl load
