@@ -20,6 +20,7 @@ hyprlock
 hyprpaper
 waybar
 xdg-desktop-portal-hyprland
+papirus-icon-theme
 
 # utilities
 ydotool
