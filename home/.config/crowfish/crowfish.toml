@@ -2,41 +2,76 @@
 title = "crowfish"
 
 [[entry]]
-name = "cmd"
-description = "Run a command"
-execute = "run-menu"
+description = "Dev commands"
+dispatch = "dev.toml"
+icon = "applications-development"
 
 [[entry]]
-name = "apps"
-description = "Launch an application"
+description = "Launch applications"
 execute = "fuzzel"
+icon = "applications-all"
 
 [[entry]]
-name = "emoji"
+description = "Run arbitrary commands"
+execute = "run-menu"
+icon = "system-run"
+
+[[entry]]
+description = "System menu"
+dispatch = "system.toml"
+icon = "preferences-system"
+
+[[entry]]
+description = "Clipboard menu"
+dispatch = "clipboard.toml"
+icon = "paperclip"
+
+[[entry]]
+description = "Text menu"
+dispatch = "text.toml"
+icon = "accessories-text-editor"
+
+[[entry]]
+description = "Hyprsunset menu"
+dispatch = "hyprsunset.toml"
+icon = "weather-clear-night"
+
+[[entry]]
+description = "Power profile menu"
+dispatch = "power-profile.toml"
+icon = "battery"
+
+[[entry]]
+description = "Audio device picker"
+execute = "audio-device-picker"
+icon = "audio-card"
+
+[[entry]]
 description = "Emoji picker"
 execute = "emoji-picker"
+icon = "face-smile"
 
 [[entry]]
-name = "unicode"
 description = "Unicode picker"
 execute = "unicode-picker"
+icon = "accessories-character-map"
 
 [[entry]]
-name = "wallpaper"
+description = "Icon picker"
+execute = "icon-picker"
+icon = "preferences-desktop-icons"
+
+[[entry]]
 description = "Wallpaper picker"
 execute = "wallpaper-picker"
+icon = "preferences-desktop-wallpaper"
 
 [[entry]]
-name = "lockscreen"
 description = "Lockscreen picker"
 execute = "lockscreen-picker"
+icon = "system-lock-screen"
 
 [[entry]]
-name = "power"
-description = "Power menu"
-dispatch = "power.toml"
-
-[[entry]]
-name = "update"
-description = "System update"
-execute = "alacritty --hold -e bash -c 'checkupdates; sudo pacman -Syu; echo Done.'"
+description = "Debug menu"
+dispatch = "debug.toml"
+icon = "utilities-system-monitor"

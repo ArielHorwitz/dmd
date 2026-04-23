@@ -1,0 +1,18 @@
+[metadata]
+title = "Power profile menu"
+sort_method = "manual"
+
+[[entry]]
+description = "Performance"
+execute = "powerprofilesctl set performance"
+icon = "battery-100-profile-performance"
+
+[[entry]]
+description = "Balanced"
+execute = "powerprofilesctl set balanced"
+icon = "battery-100-profile-balanced"
+
+[[entry]]
+description = "Power saver"
+execute = "powerprofilesctl set power-saver"
+icon = "battery-100-profile-powersave"

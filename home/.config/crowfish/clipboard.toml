@@ -1,0 +1,42 @@
+[metadata]
+title = "Clipboard menu"
+
+[[entry]]
+description = "Copy from history"
+execute = "dclipboard --copy-history"
+icon = "edit-paste"
+
+[[entry]]
+description = "Delete from history"
+execute = "dclipboard --delete-history"
+icon = "edit-delete"
+
+[[entry]]
+description = "Clear clipboard"
+execute = "dclipboard --clear"
+icon = "edit-clear"
+
+[[entry]]
+description = "Clear history"
+execute = "dclipboard --clear-history"
+icon = "edit-clear-history"
+
+[[entry]]
+description = "Suspend watcher (20s)"
+execute = "dclipboard --suspend-watcher 20"
+icon = "media-playback-pause"
+
+[[entry]]
+description = "Toggle watcher"
+execute = "dclipboard --toggle-watcher"
+icon = "view-refresh"
+
+[[entry]]
+description = "Enable watcher"
+execute = "dclipboard --enable-watcher"
+icon = "media-playback-start"
+
+[[entry]]
+description = "Disable watcher"
+execute = "dclipboard --disable-watcher"
+icon = "process-stop"

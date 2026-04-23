@@ -1,0 +1,6 @@
+[metadata]
+title = "Dev menu"
+
+[[entry]]
+description = "dmd dev"
+execute = "wlayout -c dev --dir .dmd"

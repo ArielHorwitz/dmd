@@ -1,0 +1,7 @@
+[metadata]
+title = "Debug menu"
+
+[[entry]]
+description = "Active window info"
+execute = "activewindow"
+icon = "utilities-system-monitor"

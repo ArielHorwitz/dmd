@@ -1,0 +1,59 @@
+[metadata]
+title = "Hyprsunset menu"
+sort_method = "manual"
+
+[[entry]]
+description = "Show current profile"
+execute = "notify-send --urgency=low 'Hyprsunset' \"$(hyprctl hyprsunset profile)\""
+
+[[entry]]
+description = "Reset to scheduled profile"
+execute = "hyprctl hyprsunset reset"
+
+[[entry]]
+description = "Off"
+execute = "hyprctl hyprsunset identity"
+
+[[entry]]
+description = "Evening (4000K)"
+execute = "hyprctl hyprsunset temperature 4000"
+
+[[entry]]
+description = "Night (2800K)"
+execute = "hyprctl hyprsunset temperature 2800"
+
+[[entry]]
+description = "Very warm (2200K)"
+execute = "hyprctl hyprsunset temperature 2200"
+
+[[entry]]
+description = "Gamma 100%"
+execute = "hyprctl hyprsunset gamma 100"
+
+[[entry]]
+description = "Gamma 75%"
+execute = "hyprctl hyprsunset gamma 75"
+
+[[entry]]
+description = "Gamma 50%"
+execute = "hyprctl hyprsunset gamma 50"
+
+[[entry]]
+description = "Gamma 25%"
+execute = "hyprctl hyprsunset gamma 25"
+
+[[entry]]
+description = "Gamma +25%"
+execute = "hyprctl hyprsunset gamma +25"
+
+[[entry]]
+description = "Gamma +10%"
+execute = "hyprctl hyprsunset gamma +10"
+
+[[entry]]
+description = "Gamma -10%"
+execute = "hyprctl hyprsunset gamma -10"
+
+[[entry]]
+description = "Gamma -25%"
+execute = "hyprctl hyprsunset gamma -25"

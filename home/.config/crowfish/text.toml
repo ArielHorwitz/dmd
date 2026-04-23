@@ -1,0 +1,37 @@
+[metadata]
+title = "Text menu"
+
+[[entry]]
+description = "Random string (20 alnum)"
+execute = "prng 20 alnum"
+icon = "insert-text"
+
+[[entry]]
+description = "Random digits (6)"
+execute = "prng 6 digits"
+icon = "insert-text"
+
+[[entry]]
+description = "Random digits (12)"
+execute = "prng 12 digits"
+icon = "insert-text"
+
+[[entry]]
+description = "Random hex (16)"
+execute = "prng 16 hex"
+icon = "insert-text"
+
+[[entry]]
+description = "Random hex (32)"
+execute = "prng 32 hex"
+icon = "insert-text"
+
+[[entry]]
+description = "Timestamp"
+execute = "timestamp -C"
+icon = "appointment-new"
+
+[[entry]]
+description = "Date"
+execute = "timestamp -tC"
+icon = "x-office-calendar"

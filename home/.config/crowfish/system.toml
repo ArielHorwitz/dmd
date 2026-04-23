@@ -1,0 +1,63 @@
+[metadata]
+title = "System menu"
+sort_method = "manual"
+
+[[entry]]
+description = "Screensaver"
+execute = "mscreensaver"
+icon = "preferences-desktop-screensaver"
+
+[[entry]]
+description = "Screensaver lock"
+execute = "mscreensaver --lock"
+icon = "system-lock-screen"
+
+[[entry]]
+description = "Lock"
+execute = "hyprlock"
+icon = "system-lock-screen"
+
+[[entry]]
+description = "Suspend"
+execute = "hyprlock & sleep 1 && systemctl suspend"
+icon = "system-suspend"
+
+[[entry]]
+description = "Hibernate"
+execute = "systemctl hibernate"
+icon = "system-hibernate"
+
+[[entry]]
+description = "Shut down"
+execute = "systemctl poweroff"
+icon = "system-shutdown"
+
+[[entry]]
+description = "Reboot"
+execute = "systemctl reboot"
+icon = "system-reboot"
+
+[[entry]]
+description = "Logout"
+execute = "hyprctl dispatch exit"
+icon = "system-log-out"
+
+[[entry]]
+description = "Restart desktop"
+execute = "reload-config"
+icon = "view-refresh"
+
+[[entry]]
+description = "Restore windows"
+execute = "frestore"
+icon = "view-restore"
+
+[[entry]]
+description = "System update"
+execute = "alacritty --hold -e bash -c 'checkupdates; sudo pacman -Syu; echo Done.'"
+icon = "system-software-update"
+
+[[entry]]
+description = "Edit run menu cache"
+execute = "alacritty -e $VISUAL ~/.cache/run-menu-history"
+icon = "document-edit"
