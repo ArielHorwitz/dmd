@@ -20,6 +20,7 @@ hyprlock
 hyprpaper
 waybar
 hyprsunset
+hypridle
 xdg-desktop-portal-hyprland
 papirus-icon-theme
 
