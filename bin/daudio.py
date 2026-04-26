@@ -19,6 +19,10 @@ ICONS = {
 }
 
 
+def eprint(*args):
+    print(*args, file=sys.stderr)
+
+
 @dataclasses.dataclass
 class Node:
     id: int
@@ -117,11 +121,11 @@ class State:
         self._default_source_name = default_source_name
         self._default_sink_name = default_sink_name
         if self._default_source is None and default_source_name:
-            print(
+            eprint(
                 f"Default source '{default_source_name}' not available (device disconnected?)"
             )
         if self._default_sink is None and default_sink_name:
-            print(
+            eprint(
                 f"Default sink '{default_sink_name}' not available (device disconnected?)"
             )
 
@@ -317,6 +321,11 @@ def main():
         default=0,
         help="Print more details",
     )
+    list_parser.add_argument(
+        "--json",
+        action="store_true",
+        help="One JSON object per line (for scripting)",
+    )
 
     device_parser = subparsers.add_parser("device", help="Manage default devices")
     device_select_group = device_parser.add_mutually_exclusive_group()
@@ -483,7 +492,10 @@ def command_list(args):
     elif args.dclass:
         print_nodes = get_class_nodes(state, args.dclass, args.reverse_class_order)
     for node in print_nodes:
-        print_node(node, args.verbose)
+        if args.json:
+            print(json.dumps(node_json_record(node), ensure_ascii=False))
+        else:
+            print_node(node, args.verbose)
 
 
 def command_device(args):
@@ -512,6 +524,16 @@ def command_device(args):
             print(f"     ⛔ No default source (expected: {state._default_source_name})")
         else:
             print_node(state.default_source)
+
+
+def node_json_record(node: Node) -> dict:
+    return {
+        "id": node.id,
+        "name": node.name,
+        "nick": node.nick,
+        "is_source": node.is_source,
+        "is_default": node.is_default,
+    }
 
 
 def print_node(node: Node, verbosity: int = 0):
