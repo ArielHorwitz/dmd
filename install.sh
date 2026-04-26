@@ -337,14 +337,6 @@ set_perms() {
 }
 
 
-post_install_user_config() {
-    set -e
-    killall -SIGUSR2 waybar || :
-    hyprctl dispatch forcerendererreload || :
-    killall dunst || :
-    kmdrun
-}
-
 [[ -z $INSTALL_PACKAGES ]] || install_packages
 [[ -z $INSTALL_CRATES ]] || install_crates
 [[ -z $INSTALL_SCRIPTS ]] || install_scripts
@@ -354,7 +346,7 @@ post_install_user_config() {
 [[ -z $INSTALL_HOME ]] || install_home
 
 if [[ $POST_INSTALL_RELOAD ]]; then
-    "$SOURCE_DIR"/bin/reloadhome.sh
+    "$SOURCE_DIR"/bin/reload-config.sh
 fi
 
 progress "Done."
