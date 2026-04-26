@@ -1,14 +1,14 @@
 (deflayer system
-  @lock @Spd0 @Spd1 @Spd2 _     _     _     _     _     _     _     _     _            XX    XX    XX
+  @lock XX    XX    XX    _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    @tst1 XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    _                               XX    XX    XX
-  _     XX    @Sres XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     @sysa             @Saut             _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    @Sawn                           XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     _     @sysa             XX                _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer systemalt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Sres  XX    XX    XX     XX    XX    XX    XX
   _     @kill XX    XX    @wmrb XX    XX    XX    XX    @wmlo @wmpo XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    @Ssvr XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
@@ -20,24 +20,15 @@
     wmlk (cmd-button "hyprlock")
     wmlo (cmd-button "hyprctl dispatch exit")
     wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
+    Sawn (cmd-button "activewindow")
     Sres (cmd-button "frestore")
     Ssvr (cmd-button "mscreensaver --lock")
     wmhb (cmd-button "systemctl hibernate")
     wmpo (cmd-button "systemctl poweroff")
     wmrb (cmd-button "systemctl reboot")
-    wmmp (cmd-button "mons -o")
-    wmms (cmd-button "mons -s")
-    wmmd (cmd-button "mons -m")
-    wmml (cmd-button "mons -e left")
-    wmmr (cmd-button "mons -e right")
     brtu (cmd-button "setmonbrightness --increase")
     brtd (cmd-button "setmonbrightness --decrease")
     brtm (cmd-button "setmonbrightness")
     brt0 (cmd-button "setmonbrightness --set 0")
-    tst1 (cmd-button "bash -c ~/.test")
     Srdn (cmd-button "killall dunst")
-    Saut (cmd-button "pvrun ~/temp/pyautogui")
-    Spd0 (cmd-button "powerprofilesctl set performance")
-    Spd1 (cmd-button "powerprofilesctl set balanced")
-    Spd2 (cmd-button "powerprofilesctl set power-saver")
 )
