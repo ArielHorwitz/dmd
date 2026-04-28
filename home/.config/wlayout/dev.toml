@@ -1,37 +1,47 @@
 argument = [
     { name = "dir" }
 ]
-
 #>> END OF ARGUMENTS
 
+
+# Lazygit
 [[command]]
 command = [
     "alacritty", "--working-directory", "$dir$",
     "--command", "bash", "-c", "lazygit",
 ]
 focus_window = true
-
 [[command]]
 command = ["spacemux", "special", "move"]
 pause_seconds = 0.25
 
+# Lite-xl
+[[command]]
+command = ["lite-xl", "$dir$"]
+focus_window = true
+monitor = "eDP-1"
+[[command]]
+command = ["hyprctl", "dispatch layoutmsg colresize 0.667"]
+pause_seconds = 0.25
+
+# Main Terminal
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
+[[command]]
+command = ["hyprctl", "dispatch layoutmsg colresize 0.8"]
+pause_seconds = 0.25
 
+# Support terminals
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
-
 [[command]]
-command = ["cursor", "$dir$"]
+command = ["alacritty", "--working-directory", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
-
 [[command]]
-command = ["hyprctl", "dispatch layoutmsg swapwithmaster master ignoremaster"]
-
-[[command]]
-command = ["hyprctl", "dispatch layoutmsg mfact exact 0.6"]
+command = ["hyprctl", "dispatch movewindow l"]
+pause_seconds = 0.25

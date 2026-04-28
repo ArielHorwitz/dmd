@@ -2,9 +2,9 @@
 title = "crowfish"
 
 [[entry]]
-description = "Dev commands"
-dispatch = "dev.toml"
-icon = "applications-development"
+description = "Layouts"
+dispatch = "layout.toml"
+icon = "preferences-system-windows-effect-presentwindows"
 
 [[entry]]
 description = "Launch applications"
