@@ -8,7 +8,7 @@
 )
 (deflayer systemalt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Sres  XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    @Sgm0 @Sgmr @Sgmd @Sgmu @Sres  XX    XX    XX     XX    XX    XX    XX
   _     @kill XX    XX    @wmrb XX    XX    XX    XX    @wmlo @wmpo XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    @Ssvr XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
@@ -31,4 +31,8 @@
     brtm (cmd-button "setmonbrightness")
     brt0 (cmd-button "setmonbrightness --set 0")
     Srdn (cmd-button "killall dunst")
+    Sgm0 (cmd-button "hyprctl hyprsunset gamma 5")
+    Sgmd (cmd-button "hyprctl hyprsunset gamma -10")
+    Sgmu (cmd-button "hyprctl hyprsunset gamma +10")
+    Sgmr (cmd-button "hyprctl hyprsunset gamma 100")
 )
