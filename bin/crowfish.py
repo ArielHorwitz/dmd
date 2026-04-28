@@ -83,9 +83,15 @@ def load_hits() -> dict:
                 die(f"{path}: entry {entry_key!r} must have only count and last")
             hit_count = entry_object["count"]
             last_hit_raw = entry_object["last"]
-            if isinstance(hit_count, bool) or not isinstance(hit_count, int) or hit_count < 0:
+            if (
+                isinstance(hit_count, bool)
+                or not isinstance(hit_count, int)
+                or hit_count < 0
+            ):
                 die(f"{path}: entry {entry_key!r} count must be a non-negative integer")
-            if isinstance(last_hit_raw, bool) or not isinstance(last_hit_raw, (int, float)):
+            if isinstance(last_hit_raw, bool) or not isinstance(
+                last_hit_raw, (int, float)
+            ):
                 die(f"{path}: entry {entry_key!r} last must be a number")
             last_hit_timestamp = float(last_hit_raw)
             if not math.isfinite(last_hit_timestamp) or last_hit_timestamp <= 0:

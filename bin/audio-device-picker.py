@@ -13,7 +13,10 @@ def load_nodes():
         text=True,
     )
     if r.returncode != 0:
-        print(r.stderr.strip() or r.stdout.strip() or "daudio list failed", file=sys.stderr)
+        print(
+            r.stderr.strip() or r.stdout.strip() or "daudio list failed",
+            file=sys.stderr,
+        )
         sys.exit(r.returncode or 1)
     out = []
     for line in r.stdout.splitlines():
