@@ -22,6 +22,7 @@ waybar
 hyprsunset
 hypridle
 xdg-desktop-portal-hyprland
+breeze-icons
 papirus-icon-theme
 
 # utilities
