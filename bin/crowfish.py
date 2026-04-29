@@ -109,7 +109,7 @@ def save_hits(hits: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temp_path = path.with_suffix(".json.tmp")
     try:
-        temp_path.write_text(json.dumps(hits, ensure_ascii=False) + "\n")
+        temp_path.write_text(json.dumps(hits, ensure_ascii=False, indent=4))
         os.replace(temp_path, path)
     except OSError as exc:
         die(f"cannot write {path}: {exc}")
