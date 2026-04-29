@@ -58,6 +58,11 @@ execute = "alacritty --hold -e bash -c 'checkupdates; sudo pacman -Syu; echo Don
 icon = "system-software-update"
 
 [[entry]]
+description = "Edit crowfish cache"
+execute = "alacritty -e $VISUAL ~/.cache/crowfish/hits.json"
+icon = "document-edit"
+
+[[entry]]
 description = "Edit run menu cache"
 execute = "alacritty -e $VISUAL ~/.cache/run-menu-history"
 icon = "document-edit"
