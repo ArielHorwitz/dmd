@@ -83,3 +83,5 @@ function br {
         return "$code"
     fi
 }
+
+bri="br -I"
