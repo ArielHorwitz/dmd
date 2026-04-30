@@ -13,6 +13,7 @@ alias batn="bat --style=rule,snip,numbers"
 alias batf="bat --style=full"
 alias batj="bat --style=full -l json"
 
+alias bri="br -I"
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
@@ -83,5 +84,3 @@ function br {
         return "$code"
     fi
 }
-
-bri="br -I"
