@@ -20,18 +20,18 @@ pause_seconds = 0.25
 command = ["lite-xl", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
+pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch layoutmsg colresize 0.667"]
-pause_seconds = 0.25
 
 # Main Terminal
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 focus_window = true
 monitor = "eDP-1"
+pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch layoutmsg colresize 0.8"]
-pause_seconds = 0.25
 
 # Support terminals
 [[command]]
