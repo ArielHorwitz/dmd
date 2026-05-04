@@ -3,7 +3,7 @@ local config = require "core.config"
 config.plugins.autosave.enabled = false
 config.plugins.autocomplete.max_height = 15
 config.plugins.autocomplete.min_len = 1
-config.plugins.autoreload.always_show_nagview = true
+config.plugins.autoreload.always_show_nagview = false
 config.plugins.bracketmatch.line_size = 4
 config.plugins.drawwhitespace = { enabled = true, show_leading = false, show_middle_min = 2 }
 config.plugins.lineguide.width = 3
