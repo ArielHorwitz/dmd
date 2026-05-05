@@ -11,15 +11,46 @@ command = [
     "--command", "bash", "-c", "lazygit",
 ]
 focus_window = true
+pause_seconds = 0.25
 [[command]]
 command = ["spacemux", "special", "move"]
 pause_seconds = 0.25
 
+# Extra terminals
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+~>>>
+monitor = "eDP-1"
+~>>> desk
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+~<<<
+focus_window = true
+pause_seconds = 0.25
+[[command]]
+command = ["hyprctl", "dispatch layoutmsg colresize 0.333"]
+~>>>
+~>>> desk
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+focus_window = true
+pause_seconds = 0.5
+[[command]]
+command = ["hyprctl", "dispatch layoutmsg colresize 0.667"]
+[[command]]
+command = ["hyprctl", "dispatch focuswindow r"]
+~<<<
+
+
 # Lite-xl
 [[command]]
 command = ["lite-xl", "$dir$"]
-focus_window = true
+~>>>
 monitor = "eDP-1"
+~>>> desk
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+~<<<
+focus_window = true
 pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch layoutmsg colresize 0.667"]
@@ -27,21 +58,40 @@ command = ["hyprctl", "dispatch layoutmsg colresize 0.667"]
 # Main Terminal
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-focus_window = true
+~>>>
 monitor = "eDP-1"
+~>>> desk
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+~<<<
+focus_window = true
 pause_seconds = 0.25
 [[command]]
-command = ["hyprctl", "dispatch layoutmsg colresize 0.8"]
+command = ["hyprctl", "dispatch layoutmsg colresize 0.667"]
 
 # Support terminals
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-focus_window = true
+~>>>
 monitor = "eDP-1"
+~>>> desk
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+~<<<
+focus_window = true
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-focus_window = true
+~>>>
 monitor = "eDP-1"
+~>>> desk
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+~<<<
+focus_window = true
+pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch movewindow l"]
-pause_seconds = 0.25
+pause_seconds = 0.1
+[[command]]
+command = ["hyprctl", "dispatch movefocus l"]
+pause_seconds = 0.1
+[[command]]
+command = ["hyprctl", "dispatch movefocus l"]
+pause_seconds = 0.1
