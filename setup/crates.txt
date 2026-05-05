@@ -5,6 +5,7 @@ du-dust
 cargo-release
 bacon
 broot
+tabiew
 
 spongecrab
 tigerturtle
