@@ -249,7 +249,7 @@ def run_menu(menu: Menu, hits: dict) -> Entry | None:
     except FileNotFoundError:
         die("fuzzel not found in PATH")
 
-    if result.returncode not in (0, 1):
+    if result.returncode not in (0, 1, 2):
         die(f"fuzzel exited {result.returncode}: {result.stderr.strip()}")
 
     fuzzel_stdout = result.stdout.strip()
