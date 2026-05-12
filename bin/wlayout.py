@@ -89,7 +89,7 @@ def get_hyprland_json(*args):
 
 def focus_window(pid, verbose):
     result = subprocess.run(
-        ["hyprctl", "focuswindow", f"pid:{pid}"],
+        ["hyprctl", "dispatch", f"hl.dsp.focus({{ window = 'pid:{pid}' }})"],
         capture_output=True,
         check=True,
     )
@@ -167,7 +167,7 @@ def run_command(command_details, verbose):
         print(command)
     if monitor:
         subprocess.run(
-            ["hyprctl", "dispatch", "focusmonitor", monitor],
+            ["hyprctl", "dispatch", f"hl.dsp.focus({{ monitor = '{monitor}' }})"],
             capture_output=True,
             check=True,
         )
@@ -193,13 +193,17 @@ def run_command(command_details, verbose):
                 print(f"Error focusing window: {e!r}")
     if monitor:
         subprocess.run(
-            ["hyprctl", "dispatch", "movewindow", f"mon:{monitor}"],
+            ["hyprctl", "dispatch", f"hl.dsp.window.move({{ monitor = '{monitor}' }})"],
             capture_output=True,
             check=True,
         )
     if fullscreen:
         subprocess.run(
-            ["hyprctl", "dispatch", "fullscreen", "2"],
+            [
+                "hyprctl",
+                "dispatch",
+                "hl.dsp.window.fullscreen({ mode = 'fullscreen' })",
+            ],
             capture_output=True,
             check=True,
         )

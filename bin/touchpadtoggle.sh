@@ -49,7 +49,7 @@ notification_args=(-u low -t 1500 -h string:synchronous:touchpadtoggle)
 
 # Set status
 for device in $all_touchpads; do
-    hyprctl -r -- keyword device["$device"]:enabled "$setas" >/dev/null
+    hyprctl -r eval "hl.device({ name = '$device', enabled = $setas })" >/dev/null
 done
 # Save status to file
 printf "%s" "$setas" >"$status_file"

@@ -1,0 +1,6 @@
+require("hyprland.monitors")
+require("hyprland.input")
+require("hyprland.binding")
+require("hyprland.look")
+require("hyprland.rules")
+require("hyprland.exec")

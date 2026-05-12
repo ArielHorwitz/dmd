@@ -41,10 +41,10 @@ while [[ ! $(hyprctl clients -j | jq -r '.[].class' | grep "$terminal_window_cla
     sleep 0.05
 done
 
-hyprctl dispatch focuswindow "initialclass:$terminal_window_class" >/dev/null
-hyprctl dispatch setfloating >/dev/null
-hyprctl dispatch resizeactive exact "$args_width" "$args_height" >/dev/null
-hyprctl dispatch centerwindow >/dev/null
+hyprctl dispatch "hl.dsp.focus({ window = 'initialclass:$terminal_window_class' })" >/dev/null
+hyprctl dispatch "hl.dsp.window.float({ action = 'set' })" >/dev/null
+hyprctl dispatch "hl.dsp.window.resize({ x = $args_width, y = $args_height, relative = false })" >/dev/null
+hyprctl dispatch "hl.dsp.window.center()" >/dev/null
 
 while ps -p $alacritty_pid >/dev/null; do sleep 0.05; done
 printf "%s" "$(< "$temp_file")"

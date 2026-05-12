@@ -18,7 +18,7 @@
     kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
     sysa (layer-toggle systemalt)
     wmlk (cmd-button "hyprlock")
-    wmlo (cmd-button "hyprctl dispatch exit")
+    wmlo (cmd-button "hyprctl dispatch 'hl.dsp.exit()'")
     wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
     Sawn (cmd-button "activewindow")
     Sres (cmd-button "frestore")

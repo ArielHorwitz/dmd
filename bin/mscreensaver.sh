@@ -33,7 +33,7 @@ for i in ${!monitors[@]}; do
         color=${colors[0]}
     fi
     echo "Monitor: $monitor [color: $color]" >&2
-    hyprctl dispatch focusmonitor "$monitor"
+    hyprctl dispatch "hl.dsp.focus({ monitor = '$monitor' })"
     command=(r-matrix --colour $color --update $args_scroll_speed -s)
     alacritty --class "mscreensaver__make_window_float_" --command ${command[@]} &
     pid=$!
@@ -41,7 +41,7 @@ for i in ${!monitors[@]}; do
     pids+=("$pid")
     sleep 0.3
     ps "$pid" >/dev/null || exit_error "r-matrix command failed"
-    hyprctl dispatch fullscreen 2
+    hyprctl dispatch "hl.dsp.window.fullscreen_state({ internal = 2, client = 0, action = 'set' })"
 done
 
 wait_any_pid() {

@@ -14,7 +14,7 @@ _restart_app hypridle
 _restart_app hyprsunset
 _restart_app hyprpaper
 
-hyprctl dispatch forcerendererreload || :
+hyprctl reload || :
 
 killall dunst || :
 kmdrun

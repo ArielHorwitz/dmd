@@ -21,41 +21,41 @@
 
     ;; Launch and close
     wtrm (cmd-button "alacritty & disown")
-    Wkil (cmd-button "hyprctl dispatch killactive")
-    Wfkl (cmd-button "hyprctl dispatch forcekillactive")
+    Wkil (cmd-button "hyprctl dispatch 'hl.dsp.window.close()'")
+    Wfkl (cmd-button "hyprctl dispatch 'hl.dsp.window.kill()'")
     kltb C-w
     tabr C-tab
     tabl C-S-tab
 
     ;; Focus
-    frgt (cmd-button "hyprctl dispatch movefocus r")
-    flft (cmd-button "hyprctl dispatch movefocus l")
-    fup  (cmd-button "hyprctl dispatch movefocus u")
-    fdwn (cmd-button "hyprctl dispatch movefocus d")
-    folt (cmd-button "hyprctl dispatch focusmonitor l")
-    fort (cmd-button "hyprctl dispatch focusmonitor r")
-    wtmd (cmd-button "hyprctl cyclenext prev hist")
+    frgt (cmd-button "hyprctl dispatch 'hl.dsp.focus({ direction = \"r\" })'")
+    flft (cmd-button "hyprctl dispatch 'hl.dsp.focus({ direction = \"l\" })'")
+    fup  (cmd-button "hyprctl dispatch 'hl.dsp.focus({ direction = \"u\" })'")
+    fdwn (cmd-button "hyprctl dispatch 'hl.dsp.focus({ direction = \"d\" })'")
+    folt (cmd-button "hyprctl dispatch 'hl.dsp.focus({ monitor = \"l\" })'")
+    fort (cmd-button "hyprctl dispatch 'hl.dsp.focus({ monitor = \"r\" })'")
+    wtmd (cmd-button "hyprctl dispatch 'hl.dsp.window.cycle_next({ next = false })'")
 
     ;; Workspaces
-    wflt (cmd-button "hyprctl dispatch togglefloating")
-    fuls (cmd-button "hyprctl dispatch fullscreen 1")
-    fulS (cmd-button "hyprctl dispatch fullscreen 0")
+    wflt (cmd-button "hyprctl dispatch 'hl.dsp.window.float({ action = \"toggle\" })'")
+    fuls (cmd-button "hyprctl dispatch 'hl.dsp.window.fullscreen_state({ internal = 2, client = 0, action = \"toggle\" })'")
+    fulS (cmd-button "hyprctl dispatch 'hl.dsp.window.fullscreen({ mode = \"fullscreen\" })'")
 
     ;; Window movement
-    wmvl (cmd-button "hyprctl dispatch movewindow l")
-    wmvr (cmd-button "hyprctl dispatch movewindow r")
-    wmvu (cmd-button "hyprctl dispatch movewindow u")
-    wmvd (cmd-button "hyprctl dispatch movewindow d")
+    wmvl (cmd-button "hyprctl dispatch 'hl.dsp.window.move({ direction = \"l\" })'")
+    wmvr (cmd-button "hyprctl dispatch 'hl.dsp.window.move({ direction = \"r\" })'")
+    wmvu (cmd-button "hyprctl dispatch 'hl.dsp.window.move({ direction = \"u\" })'")
+    wmvd (cmd-button "hyprctl dispatch 'hl.dsp.window.move({ direction = \"d\" })'")
     Wmml (cmd-button "spacemux window shift --axis monitor down")
     Wmmr (cmd-button "spacemux window shift --axis monitor up")
-    Wmpr (cmd-button "hyprctl dispatch layoutmsg promote")
-    Wsde (cmd-button "hyprctl dispatch layoutmsg 'colresize -conf'")
-    Wsin (cmd-button "hyprctl dispatch layoutmsg 'colresize +conf'")
-    Wpin (cmd-button "hyprctl dispatch pin")
+    Wmpr (cmd-button "hyprctl dispatch 'hl.dsp.layout(\"promote\")'")
+    Wsde (cmd-button "hyprctl dispatch 'hl.dsp.layout(\"colresize -conf\")'")
+    Wsin (cmd-button "hyprctl dispatch 'hl.dsp.layout(\"colresize +conf\")'")
+    Wpin (cmd-button "hyprctl dispatch 'hl.dsp.window.pin()'")
 
     ;; Window size
-    wszr (cmd-button "hyprctl dispatch resizeactive 30 0")
-    wszl (cmd-button "hyprctl dispatch resizeactive -30 0")
-    wszu (cmd-button "hyprctl dispatch resizeactive 0 -30")
-    wszd (cmd-button "hyprctl dispatch resizeactive 0 30")
+    wszr (cmd-button "hyprctl dispatch 'hl.dsp.window.resize({ x = 30, y = 0, relative = true })'")
+    wszl (cmd-button "hyprctl dispatch 'hl.dsp.window.resize({ x = -30, y = 0, relative = true })'")
+    wszu (cmd-button "hyprctl dispatch 'hl.dsp.window.resize({ x = 0, y = -30, relative = true })'")
+    wszd (cmd-button "hyprctl dispatch 'hl.dsp.window.resize({ x = 0, y = 30, relative = true })'")
 )

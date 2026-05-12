@@ -39,7 +39,7 @@ icon = "system-reboot"
 
 [[entry]]
 description = "Logout"
-execute = "hyprctl dispatch exit"
+execute = "hyprctl dispatch 'hl.dsp.exit()'"
 icon = "system-log-out"
 
 [[entry]]

@@ -355,7 +355,9 @@ def info(data_name, raw):
 
 def cell_focus(cell_name, workspace=False):
     if workspace:
-        hypr_dispatch(f"focusworkspaceoncurrentmonitor name:{cell_name}")
+        hypr_dispatch(
+            f"hl.dsp.focus({{ workspace = 'name:{cell_name}', on_current_monitor = true }})"
+        )
         return
     state = State.get()
     focused_monitor = state.focused_monitor
@@ -364,15 +366,19 @@ def cell_focus(cell_name, workspace=False):
     for i, monitor in enumerate(state.get_monitors_by_position()):
         if monitor.name in locked_monitors:
             continue
-        commands.append(f"focusmonitor {monitor.name}")
-        commands.append(f"focusworkspaceoncurrentmonitor name:{cell_name}.{i}")
-    commands.append(f"focusmonitor {focused_monitor.name}")
+        commands.append(f"hl.dsp.focus({{ monitor = '{monitor.name}' }})")
+        commands.append(
+            f"hl.dsp.focus({{ workspace = 'name:{cell_name}.{i}', on_current_monitor = true }})"
+        )
+    commands.append(f"hl.dsp.focus({{ monitor = '{focused_monitor.name}' }})")
     hypr_dispatch(*commands, batch_commands=True)
 
 
 def window_move(cell_name, workspace=False):
     if workspace:
-        hypr_dispatch(f"movetoworkspacesilent name:{cell_name}")
+        hypr_dispatch(
+            f"hl.dsp.window.move({{ workspace = 'name:{cell_name}', follow = false }})"
+        )
         return
     current_ws = State.get().focused_workspace
     if current_ws.geometry is not None and current_ws.geometry.monitor is not None:
@@ -380,7 +386,9 @@ def window_move(cell_name, workspace=False):
         target_workspace_name = f"{cell_name}.{monitor_index}"
     else:
         target_workspace_name = f"{cell_name}.0"
-    hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
+    hypr_dispatch(
+        f"hl.dsp.window.move({{ workspace = 'name:{target_workspace_name}', follow = false }})"
+    )
 
 
 def workspace_move(cell_name, workspace=False, swap=False):
@@ -398,10 +406,14 @@ def workspace_move(cell_name, workspace=False, swap=False):
             f"Workspace {target_workspace_name} already exists (use --swap)"
         )
 
-    hypr_dispatch(f"renameworkspace {source_ws.id} {target_workspace_name}")
+    hypr_dispatch(
+        f"hl.dsp.workspace.rename({{ workspace = {source_ws.id}, name = '{target_workspace_name}' }})"
+    )
     if swap:
         for ws in target_ws:
-            hypr_dispatch(f"renameworkspace {ws.id} {source_ws.name}")
+            hypr_dispatch(
+                f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{source_ws.name}' }})"
+            )
 
 
 def monitor_swap(monitor_a, monitor_b):
@@ -419,11 +431,15 @@ def monitor_swap(monitor_a, monitor_b):
     for ws in workspaces_a:
         col, row = ws.geometry.coords
         new_name = f"{col}.{row}.{monitor_b}"
-        hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
+        hypr_dispatch(
+            f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{new_name}' }})"
+        )
     for ws in workspaces_b:
         col, row = ws.geometry.coords
         new_name = f"{col}.{row}.{monitor_a}"
-        hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
+        hypr_dispatch(
+            f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{new_name}' }})"
+        )
 
 
 def cell_rotate(cell_name):
@@ -451,7 +467,9 @@ def cell_rotate(cell_name):
     for i, ws in enumerate(cell_workspaces):
         new_monitor = monitor_indices[(i + 1) % len(monitor_indices)]
         new_name = f"{col}.{row}.{new_monitor}"
-        hypr_dispatch(f"renameworkspace {ws.id} {new_name}")
+        hypr_dispatch(
+            f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{new_name}' }})"
+        )
 
 
 def cell_rotate_focused():
@@ -485,14 +503,16 @@ def special_toggle():
     state = State.get()
     x, y = state.focused_workspace.coords
     cell_name = f"{x}.{y}"
-    hypr_dispatch(f"togglespecialworkspace {cell_name}")
+    hypr_dispatch(f"hl.dsp.workspace.toggle_special('{cell_name}')")
 
 
 def special_move():
     state = State.get()
     x, y = state.focused_workspace.coords
     cell_name = f"{x}.{y}"
-    hypr_dispatch(f"movetoworkspacesilent special:{cell_name}")
+    hypr_dispatch(
+        f"hl.dsp.window.move({{ workspace = 'special:{cell_name}', follow = false }})"
+    )
 
 
 def window_shift(target, axis, rows, columns, wrap=False, follow=True):
@@ -537,8 +557,10 @@ def window_shift(target, axis, rows, columns, wrap=False, follow=True):
         raise ValueError(f"Unknown axis: {axis}")
 
     target_workspace_name = f"{new_col}.{new_row}.{new_monitor}"
-    dispatch = "movetoworkspace" if follow else "movetoworkspacesilent"
-    hypr_dispatch(f"{dispatch} name:{target_workspace_name}")
+    follow_lua = "true" if follow else "false"
+    hypr_dispatch(
+        f"hl.dsp.window.move({{ workspace = 'name:{target_workspace_name}', follow = {follow_lua} }})"
+    )
 
 
 def _bound(value, low, high, wrap, axis):
@@ -564,7 +586,7 @@ def window_gather(external_only: bool = False):
             continue
         eprint(f"Gathering: {window}")
         hypr_dispatch(
-            f"movetoworkspacesilent name:{target_ws.name},address:{window.address}"
+            f"hl.dsp.window.move({{ workspace = 'name:{target_ws.name}', window = 'address:{window.address}', follow = false }})"
         )
 
 
@@ -862,7 +884,9 @@ def main():
         if args.subcommand == "move":
             if args.monitor is not None:
                 target_workspace_name = f"{args.cell}.{args.monitor}"
-                hypr_dispatch(f"movetoworkspacesilent name:{target_workspace_name}")
+                hypr_dispatch(
+                    f"hl.dsp.window.move({{ workspace = 'name:{target_workspace_name}', follow = false }})"
+                )
             else:
                 window_move(args.cell, workspace=args.workspace)
         elif args.subcommand == "shift":

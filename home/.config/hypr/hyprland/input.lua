@@ -1,0 +1,30 @@
+hl.config({
+    input = {
+        kb_layout = "us,il",
+        kb_variant = "",
+        kb_model = "",
+        kb_options = "",
+        kb_rules = "",
+
+        follow_mouse = 0,
+        mouse_refocus = false,
+        float_switch_override_focus = 0,
+
+        accel_profile = "flat",
+        sensitivity = 0,
+
+        touchpad = {
+            natural_scroll = false,
+        },
+    },
+
+    cursor = {
+        no_warps = true,
+        no_hardware_cursors = true,
+    },
+
+    binds = {
+        hide_special_on_workspace_change = true,
+        window_direction_monitor_fallback = false,
+    },
+})
