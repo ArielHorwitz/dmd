@@ -353,6 +353,31 @@ def info(data_name, raw):
         print("\n\n".join(item_reprs))
 
 
+def cell_list(special=False):
+    state = State.get()
+    focused_ws = state.focused_workspace
+    if focused_ws.geometry is None:
+        raise ValueError("Focused workspace is not a gridable workspace")
+    col, row = focused_ws.coords
+    workspace_names = []
+    for ws in state.workspaces.values():
+        if ws.geometry is None:
+            continue
+        if ws.coords != (col, row):
+            continue
+        if ws.is_special:
+            if special:
+                workspace_names.append(ws.name)
+        else:
+            workspace_names.append(ws.name)
+    if special:
+        special_name = f"special:{col}.{row}"
+        if special_name not in workspace_names:
+            workspace_names.append(special_name)
+    for name in sorted(workspace_names):
+        print(name)
+
+
 def cell_focus(cell_name, workspace=False):
     if workspace:
         hypr_dispatch(
@@ -685,6 +710,15 @@ def main():
         action="store_true",
         help="Treat argument as exact workspace name",
     )
+    cell_list_parser = cell_subparsers.add_parser(
+        "list",
+        help="List workspace names in the focused cell",
+    )
+    cell_list_parser.add_argument(
+        "--special",
+        action="store_true",
+        help="Include the special workspace",
+    )
     cell_rotate_parser = cell_subparsers.add_parser(
         "rotate",
         help="Rotate monitors within cell(s)",
@@ -868,7 +902,10 @@ def main():
         info(args.info_type, args.raw)
         exit()
     elif args.command == "cell":
-        if args.subcommand == "focus":
+        if args.subcommand == "list":
+            cell_list(special=args.special)
+            exit()
+        elif args.subcommand == "focus":
             cell_focus(args.cell, workspace=args.workspace)
         elif args.subcommand == "rotate":
             if args.all:
