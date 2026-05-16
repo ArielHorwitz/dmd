@@ -27,6 +27,11 @@ execute = "dclipboard --suspend-watcher 20"
 icon = "media-playback-pause"
 
 [[entry]]
+description = "Suspend watcher (120s)"
+execute = "dclipboard --suspend-watcher 120"
+icon = "media-playback-pause"
+
+[[entry]]
 description = "Toggle watcher"
 execute = "dclipboard --toggle-watcher"
 icon = "view-refresh"
