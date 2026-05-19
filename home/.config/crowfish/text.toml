@@ -35,3 +35,18 @@ icon = "appointment-new"
 description = "Date"
 execute = "timestamp -tC"
 icon = "x-office-calendar"
+
+[[entry]]
+description = "Name"
+execute = "clipcatctl insert 'Ariel Horwitz'"
+icon = "avatar-default"
+
+[[entry]]
+description = "Email"
+execute = "clipcatctl insert 'ariel.horwitz@gmail.com'"
+icon = "mail-unread"
+
+[[entry]]
+description = "Website"
+execute = "clipcatctl insert 'https://ariel.ninja'"
+icon = "applications-internet"
