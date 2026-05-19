@@ -3,16 +3,8 @@
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @undo XX    @redo XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     @sela @save XX    XX    XX    XX    bspc  XX    del   XX    XX    XX    _                               XX    XX
-  _     XX    XX    XX    XX    XX    XX    @copy @cut  @past XX    _                        XX           XX    XX    XX    XX
-  _     _     @Ealt             _                 _     _     _     _                  XX    XX    XX     XX    XX
-)
-(deflayer editing_alt
-  _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Ecbr @Ecbc @EcbC XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    @Ecbf @Ecbs XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     XX    XX    XX    XX    XX    XX    @copy @cut  @past @Ecbf _                        XX           XX    XX    XX    XX
+  _     _     XX                _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer text
   _     _     _     _     _     _     _     _     _     _     _     _     _            _     _     _
@@ -34,7 +26,7 @@
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
   _     XX    @webs XX    @prng XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @tmsp @Ttsd XX    XX    XX    XX    XX    @lnkd XX    XX    _                               XX    XX    XX
+  _     XX    @tmsp @Ttsd XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    @name @mail XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -44,12 +36,7 @@
     sftc (tap-next-press caps rsft)
 
 
-    Ealt (layer-toggle editing_alt)
-    Ecbc (cmd-button "dclipboard --clear")
-    EcbC (cmd-button "dclipboard --clear-history")
     Ecbf (cmd-button "clipcat-menu insert")
-    Ecbr (cmd-button "clipcat-menu remove")
-    Ecbs (cmd-button "dclipboard --suspend-watcher 20")
     copy C-c
     past C-v
     cut  C-x
@@ -65,5 +52,4 @@
     name #(A r i e l spc H o r w i t z)
     mail #(a r i e l . h o r w i t z @ g m a i l . c o m)
     webs #(h t t p s : / / a r i e l . n i n j a)
-    lnkd #(h t t p s : / / w w w . l i n k e d i n . c o m / i n / a r i e l - h o r w i t z /)
 )

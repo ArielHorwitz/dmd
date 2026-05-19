@@ -9,8 +9,8 @@
 (deflayer systemalt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    @Sgm0 @Sgmr @Sgmd @Sgmu @Sres  XX    XX    XX     XX    XX    XX    XX
-  _     @kill XX    XX    @wmrb XX    XX    XX    XX    @wmlo @wmpo XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    XX    XX    XX    @Ssvr XX    XX    _                               XX    XX    XX
+  _     @kill XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
@@ -18,14 +18,10 @@
     kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
     sysa (layer-toggle systemalt)
     wmlk (cmd-button "hyprlock")
-    wmlo (cmd-button "hyprctl dispatch 'hl.dsp.exit()'")
+
     wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
     Sawn (cmd-button "activewindow")
     Sres (cmd-button "frestore")
-    Ssvr (cmd-button "mscreensaver --lock")
-    wmhb (cmd-button "systemctl hibernate")
-    wmpo (cmd-button "systemctl poweroff")
-    wmrb (cmd-button "systemctl reboot")
     brtu (cmd-button "setmonbrightness --increase")
     brtd (cmd-button "setmonbrightness --decrease")
     brtm (cmd-button "setmonbrightness")
