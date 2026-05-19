@@ -19,4 +19,4 @@ hyprctl dispatch forcerendererreload || :
 killall dunst || :
 kmdrun
 
-clipcatd --replace
+clipcatd || clipcatd --replace
