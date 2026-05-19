@@ -11,6 +11,7 @@ alias rp="rhinopuffin"
 alias gp="geckopanda"
 alias batn="bat --style=rule,snip,numbers"
 alias batf="bat --style=full"
+alias batw="bat --wrap=never"
 alias batj="bat --style=full -l json"
 
 alias bri="br -I"
