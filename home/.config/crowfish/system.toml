@@ -66,3 +66,8 @@ icon = "document-edit"
 description = "Edit run menu cache"
 execute = "alacritty -e $VISUAL ~/.cache/run-menu-history"
 icon = "document-edit"
+
+[[entry]]
+description = "Edit fuzzel cache"
+execute = "alacritty -e $VISUAL ~/.cache/fuzzel"
+icon = "document-edit"
