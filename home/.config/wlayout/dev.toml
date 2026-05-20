@@ -76,13 +76,12 @@ focus_window = true
 pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
+pause_seconds = 0.1
 
 ~>>>
 ~>>> desk
-pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-pause_seconds = 0.1
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 pause_seconds = 0.1
