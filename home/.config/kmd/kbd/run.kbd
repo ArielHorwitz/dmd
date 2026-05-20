@@ -1,7 +1,7 @@
 (deflayer run
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @Rcmd XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @Rcmd XX    @Rtrm XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Rfuz                           XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
   _     _     _                 @Rcrf             _     _     _     _                  XX    XX    XX     XX    XX
@@ -10,4 +10,5 @@
     Rfuz (cmd-button "fuzzel")
     Rcmd (cmd-button "run-menu")
     Rcrf (cmd-button "crowfish")
+    Rtrm (cmd-button "alacritty & disown")
 )
