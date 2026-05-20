@@ -16,10 +16,10 @@ export EDITOR=rnano
 export BROWSER=firefox
 export HISTSIZE=10000
 export HISTFILESIZE=100000
-~>>>
-~>>> zen
+# ~>>>
+# ~>>> zen
 export QT_SCALE_FACTOR=2.0
-~<<<
+# ~<<<
 
 extra_paths_prepend=(
     "$HOME/.cargo/bin"

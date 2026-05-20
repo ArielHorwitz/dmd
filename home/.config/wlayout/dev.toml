@@ -22,11 +22,11 @@ pause_seconds = 0.25
 # Lite-xl
 [[command]]
 command = ["lite-xl", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
@@ -37,11 +37,11 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 # Main Terminal
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
@@ -54,22 +54,22 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 # Support terminals
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
@@ -78,8 +78,8 @@ pause_seconds = 0.25
 command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
 pause_seconds = 0.1
 
-~>>>
-~>>> desk
+# ~>>>
+# ~>>> home
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
@@ -92,11 +92,11 @@ pause_seconds = 0.1
 # Extra terminals
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
@@ -107,11 +107,11 @@ pause_seconds = 0.25
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
@@ -122,11 +122,11 @@ pause_seconds = 0.25
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
 ~<<<
 focus_window = true
@@ -134,18 +134,18 @@ pause_seconds = 0.25
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
-~>>>
+# ~>>>
 monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
-~>>> desk home
+# ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-~>>> road
+# ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 
 
-~>>>
+# ~>>>
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
@@ -158,7 +158,7 @@ command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-~>>> desk
+# ~>>> home
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
 [[command]]

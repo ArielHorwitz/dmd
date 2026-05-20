@@ -13,12 +13,12 @@ hl.monitor({
 hl.monitor({
     output = "eDP-1",
     mode = "preferred",
-    ~>>>
+    -- ~>>>
     scale = 1.0,
-    ~>>> desk
+    -- ~>>> home
     scale = "auto",
     mirror = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT",
-    ~<<<
+    -- ~<<<
 })
 hl.monitor({
     output = "",
