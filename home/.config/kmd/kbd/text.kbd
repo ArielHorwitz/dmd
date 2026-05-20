@@ -25,9 +25,9 @@
 (deflayer text_macros
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
   XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    @webs XX    @prng XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @webs @mail @prng XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @tmsp @Ttsd XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
-  _     XX    XX    XX    XX    XX    @name @mail XX    XX    XX    _                        XX           XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @name @TTcp @TTbt @TTtw XX    _                        XX           XX    XX    XX    XX
   _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -44,6 +44,10 @@
     redo C-y
     save C-s
     sela C-a
+
+    TTcp #(spc | spc c l i p c a t c t l spc l o a d spc)
+    TTbt #(spc | spc b a t spc)
+    TTtw #(spc | spc t w spc)
 
     prng (cmd-button "prng 20 alnum")
     tmsp (cmd-button "timestamp -C")

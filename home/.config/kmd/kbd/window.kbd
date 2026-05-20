@@ -1,15 +1,15 @@
 (deflayer window_navigation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wkil XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @kltb XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    @scrw @scrd @fuls XX    XX    @flft @fdwn @frgt XX    XX    @wtrm                           XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @kltb  XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    XX    @tabl @fup  @tabr XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    @scrw @scrd @fuls XX    XX    @flft @fdwn @frgt XX    XX    XX                              XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    @folt XX    @fort XX    _                        XX           XX    XX    XX    XX
   _     _     @wman             XX                _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer window_manipulation
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wfkl  XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    @wtmd @wszu @Wsde @wmvu @Wsin XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    @Wkil  XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    @wtmd @wszu @Wsde @wmvu @Wsin XX    XX    XX    XX     @Wfkl XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    @fulS XX    @wszd @wmvl @wmvd @wmvr XX    XX    @Wpin                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @wszl @Wmml @Wmpr @Wmmr @wszr _                        XX           XX    XX    XX    XX
   _     _     _                 @wflt             _     _     _     _                  XX    XX    XX     XX    XX
@@ -19,10 +19,10 @@
     scrw (cmd-button "screenshot -p")
     scrd (cmd-button "screenshot -pd")
 
-    ;; Launch and close
-    wtrm (cmd-button "alacritty & disown")
+    ;; Close
     Wkil (cmd-button "hyprctl dispatch 'hl.dsp.window.close()'")
     Wfkl (cmd-button "hyprctl dispatch 'hl.dsp.window.kill()'")
+
     kltb C-w
     tabr C-tab
     tabl C-S-tab
