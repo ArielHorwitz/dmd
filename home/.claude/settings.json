@@ -5,7 +5,7 @@
   },
   "effortLevel": "high",
   "tui": "fullscreen",
-  "verbose": true,
+  "verbose": false,
   "preferredNotifChannel": "auto",
   "fileCheckpointingEnabled": false,
   "terminalProgressBarEnabled": true,
