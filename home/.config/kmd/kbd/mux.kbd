@@ -1,17 +1,17 @@
 (deflayer multiplexer
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    @Xx11 @Xx21 @Xx31 @Xx41 @Xx51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @Xx12 @Xx22 @Xx32 @Xx42 @Xx52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @Xsum XX    XX    @Xx13 @Xx23 @Xx33 @Xx43 @Xx53 XX    @Xxsp                           XX    XX    XX
-  _     XX    XX    @Xcol XX    XX    @Xx14 @Xx24 @Xx34 @Xx44 @Xx54 _                        XX           XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xx11 @Xx21 @Xx31 @Xx41 @Xx51 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @Xsum XX    XX    @Xx12 @Xx22 @Xx32 @Xx42 @Xx52 XX    @Xxsp                           XX    XX    XX
+  _     XX    XX    @Xcol XX    XX    @Xx13 @Xx23 @Xx33 @Xx43 @Xx53 _                        XX           XX    XX    XX    XX
   _     _     @Xalt             _                 _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer multiplexer_alt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    @Xm11 @Xm21 @Xm31 @Xm41 @Xm51 XX    XX    _      XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    XX    XX    XX    @Xm12 @Xm22 @Xm32 @Xm42 @Xm52 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
-  _     XX    XX    @Xlck XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 @Xm53 XX    @Xmsp                           XX    XX    XX
-  _     XX    XX    @XCol XX    XX    @Xm14 @Xm24 @Xm34 @Xm44 @Xm54 _                        XX           XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _      XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    XX    XX    XX    @Xm11 @Xm21 @Xm31 @Xm41 @Xm51 XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
+  _     XX    XX    @Xlck XX    XX    @Xm12 @Xm22 @Xm32 @Xm42 @Xm52 XX    @Xmsp                           XX    XX    XX
+  _     XX    XX    @XCol XX    XX    @Xm13 @Xm23 @Xm33 @Xm43 @Xm53 _                        XX           XX    XX    XX    XX
   _     _     _                 @Xrtt             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
@@ -26,41 +26,31 @@
     Xx11 (cmd-button "spacemux cell focus 1.1")
     Xx12 (cmd-button "spacemux cell focus 1.2")
     Xx13 (cmd-button "spacemux cell focus 1.3")
-    Xx14 (cmd-button "spacemux cell focus 1.4")
     Xx21 (cmd-button "spacemux cell focus 2.1")
     Xx22 (cmd-button "spacemux cell focus 2.2")
     Xx23 (cmd-button "spacemux cell focus 2.3")
-    Xx24 (cmd-button "spacemux cell focus 2.4")
     Xx31 (cmd-button "spacemux cell focus 3.1")
     Xx32 (cmd-button "spacemux cell focus 3.2")
     Xx33 (cmd-button "spacemux cell focus 3.3")
-    Xx34 (cmd-button "spacemux cell focus 3.4")
     Xx41 (cmd-button "spacemux cell focus 4.1")
     Xx42 (cmd-button "spacemux cell focus 4.2")
     Xx43 (cmd-button "spacemux cell focus 4.3")
-    Xx44 (cmd-button "spacemux cell focus 4.4")
     Xx51 (cmd-button "spacemux cell focus 5.1")
     Xx52 (cmd-button "spacemux cell focus 5.2")
     Xx53 (cmd-button "spacemux cell focus 5.3")
-    Xx54 (cmd-button "spacemux cell focus 5.4")
     Xm11 (cmd-button "spacemux window move 1.1")
     Xm12 (cmd-button "spacemux window move 1.2")
     Xm13 (cmd-button "spacemux window move 1.3")
-    Xm14 (cmd-button "spacemux window move 1.4")
     Xm21 (cmd-button "spacemux window move 2.1")
     Xm22 (cmd-button "spacemux window move 2.2")
     Xm23 (cmd-button "spacemux window move 2.3")
-    Xm24 (cmd-button "spacemux window move 2.4")
     Xm31 (cmd-button "spacemux window move 3.1")
     Xm32 (cmd-button "spacemux window move 3.2")
     Xm33 (cmd-button "spacemux window move 3.3")
-    Xm34 (cmd-button "spacemux window move 3.4")
     Xm41 (cmd-button "spacemux window move 4.1")
     Xm42 (cmd-button "spacemux window move 4.2")
     Xm43 (cmd-button "spacemux window move 4.3")
-    Xm44 (cmd-button "spacemux window move 4.4")
     Xm51 (cmd-button "spacemux window move 5.1")
     Xm52 (cmd-button "spacemux window move 5.2")
     Xm53 (cmd-button "spacemux window move 5.3")
-    Xm54 (cmd-button "spacemux window move 5.4")
 )
