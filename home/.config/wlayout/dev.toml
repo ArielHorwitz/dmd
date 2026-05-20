@@ -28,7 +28,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 [[command]]
@@ -43,7 +43,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 [[command]]
@@ -60,7 +60,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 
 [[command]]
@@ -71,7 +71,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 [[command]]
@@ -85,7 +85,7 @@ command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 pause_seconds = 0.1
-~<<<
+# ~<<<
 
 
 
@@ -98,7 +98,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 [[command]]
@@ -113,7 +113,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 [[command]]
@@ -128,7 +128,7 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
 # ~>>> road
 monitor = "eDP-1"
-~<<<
+# ~<<<
 focus_window = true
 pause_seconds = 0.25
 
@@ -167,4 +167,4 @@ command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
-~<<<
+# ~<<<
