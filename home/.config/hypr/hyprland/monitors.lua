@@ -17,7 +17,8 @@ hl.monitor({
     position = "auto",
     -- ~>>>
     -- ~>>> home
-    mirror = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT",
+    disabled = true,
+    -- mirror = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT",
     -- ~<<<
 })
 hl.monitor({
