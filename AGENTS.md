@@ -22,10 +22,10 @@ The hostname is automatically added as a selection, so machine-specific config b
 ## bin/ scripts
 
 - File extensions are stripped during installation (e.g. `foo.sh` becomes `foo`).
-- Most shell scripts use [spongecrab](https://github.com/ArielHorwitz/spongecrab) for argument parsing. Look for the `CLI=(...)` array pattern followed by `eval "$(spongecrab ...)"`.
 - Scripts are invoked by KMonad, crowfish menus, or directly from the terminal. There is no strict mapping between KMonad layers and scripts.
 - Notifications use `notify-send` with dmd icons from `/usr/share/icons/dmd/`.
 - Several internal tools (crowfish, spacemux, wlayout, daudio) are scripts in `bin/`, not external dependencies. They follow the same conventions as other scripts in this directory.
+- See `.agents/skills/` for language-specific conventions (bash with spongecrab, python). Symlinked from `.claude/skills/`.
 
 ## KMonad keyboard layers
 
