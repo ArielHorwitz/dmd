@@ -5,6 +5,7 @@ dunst
 openssh
 power-profiles-daemon
 xdg-utils
+socat
 
 # network
 iwd

@@ -1,6 +1,6 @@
 (deflayer system
   @lock XX    XX    XX    _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu @Sapp  XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    @Sawn                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
@@ -21,6 +21,7 @@
 
     wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
     Sawn (cmd-button "activewindow")
+    Sapp (cmd-button "install-home --reload")
     Sres (cmd-button "frestore")
     brtu (cmd-button "setmonbrightness --increase")
     brtd (cmd-button "setmonbrightness --decrease")

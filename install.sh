@@ -18,9 +18,6 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
   h | home          Apply home data using homux
 
 \e[1;4mOPTIONS\e[0m
-  -s, --select      Homux selections
-  --no-hostname     Do not implicitly add hostname to homux selections
-  -r, --reload      Reload home config
   -f, --force       Do not stop on warnings
   -u, --user-mode   Install without root access (local user installation)
   -h, --help        Show this help and exit
@@ -37,8 +34,6 @@ warn () { printf "\e[1;38;2;255;96;0m$1\e[0m\n" | tee /dev/fd/3 ; }
 error () { printf "\e[31m$1\e[0m\n" | tee /dev/fd/3 ; }
 exit_error() { error "$1"; exit 1; }
 
-HOMUX_HOSTNAME=1
-HOMUX_SELECTIONS=()
 while [[ $# -gt 0 ]]; do
     case "$1" in
         a | all)             INSTALL_ALL=1; shift ;;
@@ -49,9 +44,6 @@ while [[ $# -gt 0 ]]; do
         i | icons)           INSTALL_ICONS=1; shift ;;
         f | fonts)           INSTALL_FONTS=1; shift ;;
         h | home)            INSTALL_HOME=1; shift ;;
-        -s | --select )      shift; HOMUX_SELECTIONS+=("$1"); shift ;;
-        --no-hostname )      HOMUX_HOSTNAME= ; shift ;;
-        -r | --reload)       POST_INSTALL_RELOAD=1; shift ;;
         -f | --force)        INSTALL_FORCE=1; shift ;;
         -u | --user-mode)    USER_MODE=1; shift ;;
         -h | --help)         printhelp; exit 0 ;;
@@ -283,57 +275,8 @@ install_fonts() {
 
 install_home() {
     set -e
-    local selection
-    local homux_args=(
-        --config-file "$SOURCE_DIR/home/.config/homux/config.toml"
-        apply --verbose
-    )
-    for selection in "${HOMUX_SELECTIONS[@]}"; do
-        debug "Adding homux selection: $selection"
-        homux_args+=(-s "$selection")
-    done
-    if [[ "${HOMUX_SELECTIONS[*]}" && $HOMUX_HOSTNAME ]]; then
-        local hostname
-        hostname=$(hostnamectl hostname)
-        debug "Adding hostname as homux selection: $hostname"
-        homux_args+=(-s "$hostname")
-    fi
     progress "Applying home directory..."
-    homux "${homux_args[@]}"
-    set_perms
-
-    progress "Enabling check-updates timer..."
-    systemctl --user daemon-reload
-    systemctl --user enable --now check-updates.timer
-}
-
-
-set_perms() {
-    set -e
-    local perm
-    local target_path
-    local perm_file
-    local file_paths
-    local old_mode
-    local perms_dir="$SOURCE_DIR/setup/perms"
-    debug "Setting permissions according to $perms_dir (user: $USER $EUID)"
-    for perm_file in "$perms_dir"/*; do
-        [[ -f "$perm_file" ]] || continue
-        debug "Reading $perm_file"
-        perm=$(basename "$perm_file")
-        readarray -t file_paths < "$perm_file"
-        for path in "${file_paths[@]}"; do
-            [[ -n "$path" ]] || continue
-            target_path="$HOME/$path"
-            if [[ ! -e "$target_path" ]]; then
-                warn "Ignoring chmod for non-existent path $target_path"
-                continue
-            fi
-            old_mode=$(stat -c %a "$target_path")
-            debug "chmodding $target_path [$old_mode -> $perm]"
-            chmod "$perm" "$target_path"
-        done
-    done
+    "$SOURCE_DIR"/bin/install-home.sh -c "$SOURCE_DIR/home/.config/homux/config.toml"
 }
 
 
@@ -344,9 +287,5 @@ set_perms() {
 [[ -z $INSTALL_ICONS ]] || install_icons
 [[ -z $INSTALL_FONTS ]] || install_fonts
 [[ -z $INSTALL_HOME ]] || install_home
-
-if [[ $POST_INSTALL_RELOAD ]]; then
-    "$SOURCE_DIR"/bin/reload-config.sh
-fi
 
 progress "Done."
