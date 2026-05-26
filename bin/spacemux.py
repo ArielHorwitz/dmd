@@ -487,7 +487,16 @@ def cell_rotate(cell_name):
         return
 
     cell_workspaces.sort(key=lambda ws: ws.geometry.monitor)
-    monitor_indices = [ws.geometry.monitor for ws in cell_workspaces]
+    monitor_indices = []
+    for ws in cell_workspaces:
+        wsm = ws.geometry.monitor
+        if wsm not in monitor_indices:
+            monitor_indices.append(wsm)
+            continue
+        for i in range(len(monitor_indices) + 1):
+            if i not in monitor_indices:
+                monitor_indices.append(i)
+                break
 
     for i, ws in enumerate(cell_workspaces):
         new_monitor = monitor_indices[(i + 1) % len(monitor_indices)]
