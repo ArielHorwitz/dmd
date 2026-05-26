@@ -6,8 +6,6 @@ If anything is unclear or missing, stop and ask for clarification, particularly 
 # Code
 Prioritize simplicity and avoid unnecessary dependencies or complexity.
 
-Do not, ever, under anycircumstances, write docstrings or other explanatory comments in code.
-
 Use descriptive names for variables and functions. Variable names like `n/m/x/y/p/q` are offensive. The only exceptions are `i/j/k` in case of loops, though even then it is sometimes preferable to name the iterated variable e.g. `rotation_number` or `attempt`.
 
 ## Python
