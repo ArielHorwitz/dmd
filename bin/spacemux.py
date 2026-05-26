@@ -432,12 +432,12 @@ def workspace_move(cell_name, workspace=False, swap=False):
         )
 
     hypr_dispatch(
-        f"hl.dsp.workspace.rename({{ workspace = {source_ws.id}, name = '{target_workspace_name}' }})"
+        f"hl.dsp.workspace.rename({{ workspace = '{source_ws.name}', name = '{target_workspace_name}' }})"
     )
     if swap:
         for ws in target_ws:
             hypr_dispatch(
-                f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{source_ws.name}' }})"
+                f"hl.dsp.workspace.rename({{ workspace = '{ws.name}', name = '{source_ws.name}' }})"
             )
 
 
@@ -453,17 +453,21 @@ def monitor_swap(monitor_a, monitor_b):
         for ws in state.workspaces.values()
         if ws.geometry is not None and ws.geometry.monitor == monitor_b
     ]
+    swapped = set()
     for ws in workspaces_a:
         col, row = ws.geometry.coords
         new_name = f"{col}.{row}.{monitor_b}"
+        swapped.add(new_name)
         hypr_dispatch(
-            f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{new_name}' }})"
+            f"hl.dsp.workspace.rename({{ workspace = '{ws.name}', name = '{new_name}' }})"
         )
     for ws in workspaces_b:
+        if ws.name in swapped:
+            continue
         col, row = ws.geometry.coords
         new_name = f"{col}.{row}.{monitor_a}"
         hypr_dispatch(
-            f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{new_name}' }})"
+            f"hl.dsp.workspace.rename({{ workspace = '{ws.name}', name = '{new_name}' }})"
         )
 
 
@@ -498,12 +502,19 @@ def cell_rotate(cell_name):
                 monitor_indices.append(i)
                 break
 
+    first_batch = []
+    second_batch = []
     for i, ws in enumerate(cell_workspaces):
         new_monitor = monitor_indices[(i + 1) % len(monitor_indices)]
         new_name = f"{col}.{row}.{new_monitor}"
-        hypr_dispatch(
-            f"hl.dsp.workspace.rename({{ workspace = {ws.id}, name = '{new_name}' }})"
+        intermediate_name = f"{new_name}-temp"
+        first_batch.append(
+            f"hl.dsp.workspace.rename({{ workspace = '{ws.name}', name = '{intermediate_name}' }})"
         )
+        second_batch.append(
+            f"hl.dsp.workspace.rename({{ workspace = '{intermediate_name}', name = '{new_name}' }})"
+        )
+    hypr_dispatch(*first_batch, *second_batch, batch_commands=True)
 
 
 def cell_rotate_focused():
