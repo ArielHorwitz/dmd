@@ -1,0 +1,9 @@
+[__default__]
+icon = ""
+
+[home]
+icon = ""
+monitors = [
+    "HOMUX_VARIABLE_MONITOR_HOME_LEFT",
+    "HOMUX_VARIABLE_MONITOR_HOME_RIGHT",
+]

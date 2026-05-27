@@ -10,6 +10,7 @@
         "clock#date",
         "hyprland/workspaces",
         "custom/layer",
+        "custom/location",
         // "custom/color#c9",
         // "custom/color#c8",
         // "custom/color#c7",
@@ -203,6 +204,12 @@
         // "format-windowed": "[T]",
         // "format-fullscreen": "[{}]",
         "separate-outputs": true
+    },
+    "custom/location": {
+        "exec": "location-status -j -w 5",
+        "format": " {} ",
+        "return-type": "json",
+        "restart-interval": 1,
     },
     "custom/layer": {
         "exec": "setlayer --read-loop 0.2",
