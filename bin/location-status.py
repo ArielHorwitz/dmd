@@ -3,10 +3,10 @@
 import argparse
 import json
 import subprocess
-import sys
 import time
-import tomllib
 from pathlib import Path
+
+import tomllib
 
 DEFAULT_CONFIG = Path.home() / ".config" / "dmd" / "locations.toml"
 DEFAULT_STATE_FILE = Path.home() / ".local" / "state" / "dmd" / "location"
@@ -40,20 +40,26 @@ def main():
         description="Show current detected location",
     )
     parser.add_argument(
-        "-c", "--config",
+        "-c",
+        "--config",
         type=Path,
         default=DEFAULT_CONFIG,
         help="Path to locations config file",
     )
     parser.add_argument(
-        "-s", "--state-file",
+        "-s",
+        "--state-file",
         type=Path,
         default=DEFAULT_STATE_FILE,
         help="Path to location state file",
     )
-    parser.add_argument("-n", "--notify", action="store_true", help="Send a notification")
+    parser.add_argument(
+        "-n", "--notify", action="store_true", help="Send a notification"
+    )
     parser.add_argument("-j", "--json", action="store_true", help="Output waybar JSON")
-    parser.add_argument("-w", "--watch", type=float, help="Continuously print on interval in seconds")
+    parser.add_argument(
+        "-w", "--watch", type=float, help="Continuously print on interval in seconds"
+    )
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -74,12 +80,15 @@ def main():
 
     location = read_location(args.state_file)
     if args.notify:
-        subprocess.run([
-            "notify-send",
-            "-h", "string:synchronous:location-status",
-            "Location",
-            location or "(none)",
-        ])
+        subprocess.run(
+            [
+                "notify-send",
+                "-h",
+                "string:synchronous:location-status",
+                "Location",
+                location or "(none)",
+            ]
+        )
     print_location()
 
 

@@ -8,8 +8,9 @@ import socket
 import subprocess
 import sys
 import time
-import tomllib
 from pathlib import Path
+
+import tomllib
 
 DEFAULT_CONFIG = Path.home() / ".config" / "dmd" / "locations.toml"
 DEFAULT_STATE_FILE = Path.home() / ".local" / "state" / "dmd" / "location"
@@ -50,12 +51,15 @@ def write_location(config: dict, state_file: Path):
     print(f"Location changed: '{current}' -> '{detected}'")
     state_file.parent.mkdir(parents=True, exist_ok=True)
     state_file.write_text(detected)
-    subprocess.run([
-        "notify-send",
-        "-h", f"string:synchronous:{APP_NAME}",
-        "Monitor Watchdog",
-        f"Location: {detected or '(none)'}",
-    ])
+    subprocess.run(
+        [
+            "notify-send",
+            "-h",
+            f"string:synchronous:{APP_NAME}",
+            "Monitor Watchdog",
+            f"Location: {detected or '(none)'}",
+        ]
+    )
 
 
 def acquire_pidfile(pidfile: Path):
@@ -95,13 +99,15 @@ def main():
         description="Watch for monitor changes to detect location",
     )
     parser.add_argument(
-        "-c", "--config",
+        "-c",
+        "--config",
         type=Path,
         default=DEFAULT_CONFIG,
         help="Path to locations config file",
     )
     parser.add_argument(
-        "-s", "--state-file",
+        "-s",
+        "--state-file",
         type=Path,
         default=DEFAULT_STATE_FILE,
         help="Path to write location state",
@@ -118,12 +124,15 @@ def main():
         config = load_config(args.config)
         location = detect_location(config)
         print(f"Started (location: {location or '(none)'})")
-        subprocess.run([
-            "notify-send",
-            "-h", f"string:synchronous:{APP_NAME}",
-            "Monitor Watchdog started",
-            f"Location: {location or '(none)'}",
-        ])
+        subprocess.run(
+            [
+                "notify-send",
+                "-h",
+                f"string:synchronous:{APP_NAME}",
+                "Monitor Watchdog started",
+                f"Location: {location or '(none)'}",
+            ]
+        )
         args.state_file.parent.mkdir(parents=True, exist_ok=True)
         args.state_file.write_text(location)
         listen_hyprland(config, args.state_file)
