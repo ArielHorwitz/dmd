@@ -2,6 +2,6 @@
 title = "Layout menu"
 
 [[entry]]
-description = "[dev] dmd"
+description = "dmd"
 execute = "wlayout -c dev --dir /home/wiw/.dmd"
 icon = "applications-development"
