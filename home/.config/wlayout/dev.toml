@@ -23,11 +23,9 @@ pause_seconds = 0.25
 [[command]]
 command = ["lite-xl", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
@@ -38,11 +36,9 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
@@ -55,22 +51,18 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_RIGHT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
@@ -93,11 +85,9 @@ pause_seconds = 0.1
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
@@ -108,11 +98,9 @@ pause_seconds = 0.25
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
@@ -123,11 +111,9 @@ pause_seconds = 0.25
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
@@ -135,11 +121,9 @@ pause_seconds = 0.25
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
-monitor = "desc:HOMUX_VARIABLE_MONITOR_OFFICE_LEFT"
+monitor = "eDP-1"
 # ~>>> home
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~>>> road
-monitor = "eDP-1"
 # ~<<<
 focus_window = true
 pause_seconds = 0.25
