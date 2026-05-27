@@ -9,27 +9,25 @@ local mononoki_font = "/usr/share/fonts/Mononoki/mononoki-Regular.ttf"
 style.code_font = renderer.font.load(
   fira_font,
 -- ~>>>
-  14
--- ~>>> lemnos
-  15
--- ~>>> zen
   24
+-- ~>>> home
+  20
 -- ~<<<
 )
 style.font = renderer.font.load(
   mononoki_font,
 -- ~>>>
-  12
--- ~>>> zen
   24
+-- ~>>> home
+  20
 -- ~<<<
 )
 style.big_font = renderer.font.load(
   mononoki_font,
 -- ~>>>
-  12
--- ~>>> zen
   42
+-- ~>>> home
+  32
 -- ~<<<
 )
 -- style.icon_font
