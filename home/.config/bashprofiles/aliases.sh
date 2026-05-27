@@ -85,3 +85,5 @@ function br {
         return "$code"
     fi
 }
+
+alias bri="br -I"
