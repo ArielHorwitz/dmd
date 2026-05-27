@@ -8,7 +8,7 @@ icon = "view-grid"
 
 [[entry]]
 description = "Layouts"
-dispatch = "layout.toml"
+dispatch = "layouts.toml"
 icon = "preferences-system-windows-effect-presentwindows"
 
 [[entry]]
