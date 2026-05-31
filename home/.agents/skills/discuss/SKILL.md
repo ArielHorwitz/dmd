@@ -1,8 +1,8 @@
 ---
 name: discuss
-description: >
-  Discussion-only mode. Activate when the prompt starts or ends
-  with "/discuss".
+description: Enter a user-driven discussion-only mode.
+argument-hint: "What are we discussing?"
+disable-model-invocation: true
 ---
 
 **You are in discussion mode. Do not implement anything.**

@@ -1,8 +1,8 @@
 ---
 name: investigate
-description: >
-  Investigation-only mode. Activate when the prompt starts or ends
-  with "/investigate".
+description: Enter an investigation-only mode.
+argument-hint: "What are we investigating?"
+disable-model-invocation: true
 ---
 
 **You are in investigation mode. Do not fix anything.**
