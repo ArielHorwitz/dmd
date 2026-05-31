@@ -3,14 +3,29 @@ title = "Workspace menu"
 sort_method = "manual"
 
 [[entry]]
-description = "Rotate focused cell"
-execute = "spacemux cell rotate"
-icon = "object-rotate-right"
+description = "Show workspace info"
+execute = "spacemux --notification show"
+icon = "dialog-information"
 
 [[entry]]
 description = "Toggle monitor lock"
 execute = "spacemux monitor toggle-lock"
 icon = "object-locked"
+
+[[entry]]
+description = "Toggle special workspace"
+execute = "spacemux special toggle"
+icon = "window-new"
+
+[[entry]]
+description = "Move to special workspace"
+execute = "spacemux special move"
+icon = "go-jump"
+
+[[entry]]
+description = "Rotate focused cell"
+execute = "spacemux cell rotate"
+icon = "object-rotate-right"
 
 [[entry]]
 description = "Gather external windows"
@@ -36,18 +51,3 @@ icon = "edit-clear-all"
 description = "Close cell + special windows"
 execute = "workspace-close --visible --special"
 icon = "edit-delete"
-
-[[entry]]
-description = "Show workspace info"
-execute = "spacemux --notification show"
-icon = "dialog-information"
-
-[[entry]]
-description = "Toggle special workspace"
-execute = "spacemux special toggle"
-icon = "window-new"
-
-[[entry]]
-description = "Move to special workspace"
-execute = "spacemux special move"
-icon = "go-jump"
