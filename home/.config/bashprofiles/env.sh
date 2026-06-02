@@ -21,6 +21,23 @@ export HISTFILESIZE=100000
 export QT_SCALE_FACTOR=2.0
 # ~<<<
 
+
+# Claude
+# https://code.claude.com/docs/en/env-vars
+# https://code.claude.com/docs/en/data-usage
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
+export DISABLE_ERROR_REPORTING=1
+export DISABLE_TELEMETRY=1
+export DO_NOT_TRACK=1
+export DISABLE_AUTO_COMPACT=1
+export DISABLE_FEEDBACK_COMMAND=1
+export DISABLE_DOCTOR_COMMAND=1
+export DISABLE_INSTALL_GITHUB_APP_COMMAND=1
+export DISABLE_LOGIN_COMMAND=1
+export DISABLE_LOGOUT_COMMAND=1
+
+
 extra_paths_prepend=(
     "$HOME/.cargo/bin"
     "$HOME/.local/bin/testing"
