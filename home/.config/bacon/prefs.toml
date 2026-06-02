@@ -6,7 +6,7 @@ wrap = true
 reverse = false
 help_line = false
 
-default_job = "clippy-pedantic"
+default_job = "clippy"
 
 env.CARGO_TERM_COLOR = "always"
 
@@ -39,6 +39,9 @@ d = "job:doc-open"
 command = ["cargo", "check", "--all-features", "--all-targets"]
 
 [jobs.clippy]
+command = ["cargo", "clippy", "--all-features", "--all-targets"]
+
+[jobs.clippy-personal]
 command = [
     "cargo", "clippy", "--all-features", "--all-targets",
     "--",
@@ -47,9 +50,6 @@ command = [
     "--warn", "clippy::unwrap_in_result",
     "--allow", "clippy::missing_errors_doc",
 ]
-
-[jobs.clippy-plain]
-command = ["cargo", "clippy", "--all-features", "--all-targets"]
 
 [jobs.clippy-pedantic]
 command = [
