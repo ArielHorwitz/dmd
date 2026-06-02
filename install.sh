@@ -211,8 +211,10 @@ install_configs() {
     progress "Configuring network..."
     sudo mkdir -p /etc/iwd/
     sudo cp $SETUP_DIR/iwd.conf /etc/iwd/main.conf
+    sudo systemctl disable --now NetworkManager 2>/dev/null || :
     sudo systemctl enable --now iwd
     sudo systemctl enable --now systemd-resolved
+    sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
     run_with_privilege mkdir -p "$DMD_DATA_DIR"
     sudo chgrp hardware "$DMD_DATA_DIR"
