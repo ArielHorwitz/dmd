@@ -34,7 +34,7 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 
 # Main Terminal
 [[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
+command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "claude"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
@@ -83,7 +83,7 @@ pause_seconds = 0.1
 
 # Extra terminals
 [[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
+command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "bacon"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
@@ -96,7 +96,7 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.333')"]
 pause_seconds = 0.25
 
 [[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
+command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "--", "broot", "-I"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
