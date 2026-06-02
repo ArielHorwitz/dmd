@@ -9,5 +9,6 @@
   "preferredNotifChannel": "auto",
   "fileCheckpointingEnabled": false,
   "terminalProgressBarEnabled": true,
+  "awaySummaryEnabled": false,
   "skipAutoPermissionPrompt": true
 }
