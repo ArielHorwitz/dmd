@@ -79,6 +79,10 @@ available_devices=$(find /dev/input/by-* -type l)
 mapfile devices_from_file <<< $(decomment $args_device_file)
 enable_devices=(${args_devices[@]} ${devices_from_file[@]})
 
+notify-send -h ${NOTIFY_SYNC_ARG}-warn -i ${ICON_LOAD} -u critical "Starting KMonad..." "Release all keys!"
+sleep 2
+notify-send -h ${NOTIFY_SYNC_ARG}-warn -t 1 "Starting KMonad..."
+
 for some_device in ${enable_devices[@]} ; do
     device_path=$(echo "$available_devices" | grep $some_device || echo '')
     if [[ -z $device_path ]]; then
