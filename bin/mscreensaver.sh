@@ -10,7 +10,6 @@ CLI=(
     -o "color;Choose color instead of random (overrides --multi-color)"
     -O "scroll-speed;Scrolling animation speed;4;s"
     -f "multi-color;Use different color for each screen"
-    -f "lock;Lock after screensaver;;L"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 # echo "$CLI" >&2
@@ -61,11 +60,6 @@ wait_any_pid() {
 }
 
 wait_any_pid
-
-if [[ $args_lock ]]; then
-    echo "Locking"
-    nohup hyprlock
-fi
 
 echo "Closing all screensavers"
 killall r-matrix

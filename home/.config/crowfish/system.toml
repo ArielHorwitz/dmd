@@ -8,11 +8,6 @@ execute = "mscreensaver"
 icon = "preferences-desktop-screensaver"
 
 [[entry]]
-description = "Screensaver lock"
-execute = "mscreensaver --lock"
-icon = "system-lock-screen"
-
-[[entry]]
 description = "Lock"
 execute = "hyprlock"
 icon = "system-lock-screen"
