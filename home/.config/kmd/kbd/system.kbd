@@ -19,7 +19,7 @@
     sysa (layer-toggle systemalt)
     wmlk (cmd-button "hyprlock")
 
-    wmss (cmd-button "nohup hyprlock & sleep 1 && systemctl suspend")
+    wmss (cmd-button "loginctl lock-session && sleep 2 && systemctl suspend")
     Sawn (cmd-button "activewindow")
     Sapp (cmd-button "install-home --reload")
     Sres (cmd-button "frestore")

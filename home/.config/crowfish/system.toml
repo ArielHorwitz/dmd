@@ -9,12 +9,12 @@ icon = "preferences-desktop-screensaver"
 
 [[entry]]
 description = "Lock"
-execute = "hyprlock"
+execute = "loginctl lock-session"
 icon = "system-lock-screen"
 
 [[entry]]
 description = "Suspend"
-execute = "hyprlock & sleep 1 && systemctl suspend"
+execute = "loginctl lock-session && sleep 2 && systemctl suspend"
 icon = "system-suspend"
 
 [[entry]]
