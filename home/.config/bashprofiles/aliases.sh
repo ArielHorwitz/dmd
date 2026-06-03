@@ -67,10 +67,6 @@ view-source() {
     bat $(which $@)
 }
 
-nohupout() {
-    nohup "$@" >/dev/null 2>&1 &
-}
-
 
 function br {
     local cmd cmd_file code
