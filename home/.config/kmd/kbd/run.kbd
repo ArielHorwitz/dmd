@@ -10,5 +10,5 @@
     Rfuz (cmd-button "fuzzel")
     Rcmd (cmd-button "run-menu")
     Rcrf (cmd-button "crowfish")
-    Rtrm (cmd-button "alacritty & disown")
+    Rtrm (cmd-button "detach -q alacritty")
 )
