@@ -8,6 +8,7 @@
         "wireplumber#source",
         "clock#time",
         "clock#date",
+        "clock#utc",
         "custom/location",
         "custom/layer",
         "hyprland/workspaces",
@@ -44,6 +45,12 @@
         "format": "{:%H:%M:%S}",
         "interval": 1,
         "tooltip": false,
+    },
+    "clock#utc": {
+        "format": "{:%H:%M} UTC",
+        "interval": 1,
+        "tooltip": false,
+        "timezone":"UTC",
     },
     "clock#date": {
         "format": "{:%d-%m-%Y}",

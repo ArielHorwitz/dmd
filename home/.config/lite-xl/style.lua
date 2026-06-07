@@ -11,7 +11,7 @@ style.code_font = renderer.font.load(
 -- ~>>>
   24
 -- ~>>> home
-  20
+  16
 -- ~<<<
 )
 style.font = renderer.font.load(
@@ -19,7 +19,7 @@ style.font = renderer.font.load(
 -- ~>>>
   24
 -- ~>>> home
-  20
+  16
 -- ~<<<
 )
 style.big_font = renderer.font.load(
@@ -27,7 +27,7 @@ style.big_font = renderer.font.load(
 -- ~>>>
   42
 -- ~>>> home
-  32
+  28
 -- ~<<<
 )
 -- style.icon_font

@@ -1,5 +1,40 @@
+[cursor]
+blink_interval = 350
+
+[cursor.style]
+blinking = "On"
+shape = "Beam"
+
+[font]
+# ~>>>
+size = 16
+# ~>>> home
+size = 11
+# ~<<<
+
+# [font.normal]
+# family = "FiraCode Nerd Font"
+
+[window]
+dynamic_title = true
+startup_mode = "Windowed"
+
+[window.padding]
+x = 4
+y = 4
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
+
+
 [colors]
 draw_bold_text_with_bright_colors = false
+
+[colors.primary]
+background = "0x111111"
+foreground = "0xffffff"
 
 # ~>>>
 [colors.normal]
@@ -40,37 +75,3 @@ blue =    "0xCCACED"
 magenta = "0xF2A1C2"
 cyan =    "0x74C3E4"
 # ~<<<
-
-[colors.primary]
-background = "0x111111"
-foreground = "0xffffff"
-
-[cursor]
-blink_interval = 350
-
-[cursor.style]
-blinking = "On"
-shape = "Beam"
-
-[font]
-# ~>>>
-size = 16
-# ~>>> home
-size = 12
-# ~<<<
-
-# [font.normal]
-# family = "FiraCode Nerd Font"
-
-[window]
-dynamic_title = true
-startup_mode = "Windowed"
-
-[window.padding]
-x = 2
-y = 2
-
-[[keyboard.bindings]]
-key = "Return"
-mods = "Shift"
-chars = "\u001B\r"
