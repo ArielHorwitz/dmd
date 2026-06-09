@@ -73,7 +73,7 @@ view-source() {
 function br {
     local cmd cmd_file code
     cmd_file=$(mktemp)
-    if broot --outcmd "$cmd_file" -sphd "$@"; then
+    if broot --outcmd "$cmd_file" -dsh "$@"; then
         cmd=$(<"$cmd_file")
         command rm -f "$cmd_file"
         eval "$cmd"
@@ -83,5 +83,3 @@ function br {
         return "$code"
     fi
 }
-
-alias bri="br -I"

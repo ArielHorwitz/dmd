@@ -15,16 +15,16 @@ default_flags: --show-git-info --git-ignored --show-root-fs --hidden
 
 show_selection_mark: true
 
-# cols_order: [
-#     mark
-#     git
-#     size
-#     permission
-#     date
-#     count
-#     branch
-#     name
-# ]
+cols_order: [
+    mark
+    permission
+    size
+    date
+    count
+    git
+    branch
+    name
+]
 
 # true_colors: false
 

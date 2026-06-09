@@ -45,6 +45,11 @@ verbs: [
     }
 
     {
+        key: alt-p
+        execution: ":toggle_perm"
+    }
+
+    {
         invocation: litexl
         apply_to: text_file
         execution: "lite-xl {file}"

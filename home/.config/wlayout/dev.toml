@@ -96,7 +96,7 @@ command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.333')"]
 pause_seconds = 0.25
 
 [[command]]
-command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "--", "broot", "-I"]
+command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "--", "broot", "-Idsh"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
