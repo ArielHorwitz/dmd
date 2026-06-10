@@ -6,7 +6,7 @@ _restart_app() {
     name=${2:-$app}
     killall "$name" || :
     sleep 0.1
-    detach -q "$app"
+    detach -q -- "$app"
 }
 
 _restart_app waybar

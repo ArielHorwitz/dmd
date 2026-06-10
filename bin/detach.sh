@@ -9,7 +9,7 @@ CLI=(
     -O "log-name;Override the log filename base (default: command name)"
     -f "unique-log;Use a unique log filename per invocation;;U"
     -f "truncate-log;Truncate log file before writing;;T"
-    -C "command;Command and arguments to run"
+    -e "command;Command and arguments to run"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1

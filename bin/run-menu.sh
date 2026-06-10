@@ -11,4 +11,4 @@ cmd=$(fuzzel --dmenu --prompt '$ ' --mesg "Run a command" < "$HIST")
 { printf '%s\n' "$cmd"; grep -vxF -- "$cmd" "$HIST" || :; } > "$HIST.tmp"
 mv "$HIST.tmp" "$HIST"
 
-detach --log-name run-menu sh -c "$cmd"
+detach --log-name run-menu -- sh -c "$cmd"
