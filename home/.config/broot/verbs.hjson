@@ -33,6 +33,14 @@ verbs: [
     }
 
     {
+        invocation: mdhtml
+        key: alt-m
+        apply_to: text_file
+        execution: "mdhtml {file}"
+        leave_broot: false
+    }
+
+    {
         invocation: tabiew
         shortcut: tw
         execution: "tw {file}"

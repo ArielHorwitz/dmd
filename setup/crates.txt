@@ -6,6 +6,7 @@ cargo-release
 bacon
 broot
 tabiew
+comrak
 
 spongecrab
 tigerturtle
