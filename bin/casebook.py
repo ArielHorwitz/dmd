@@ -55,21 +55,21 @@ docs/casebook/
 
 - New cases are created by the user via `casebook new` — agents should
   work within existing cases rather than creating new ones.
-- Start by reading `case.toml` for the case metadata: title, status, keywords,
-  and any other fields that have been added. Then list the case directory to see
-  what files are available — you may consider reading whichever files are
-  relevant to your task.
-- The `title` field in `case.toml` is the primary way cases are discovered. It
-  should capture the full scope of the case so that anyone looking for
-  information from this case can find it. New cases may have a default title of
-  "Unnamed case" — update it early and refine it as the scope becomes clearer.
-- Update `case.toml` as the work evolves. The `status` field is typically `open`
-  or `closed`, but other values like `blocked` or `paused` are fine. Update
-  `keywords` to help future sessions find relevant cases. Other fields like
-  `description` or `summary` can be added freely.
-- Case directories are for documentation and historical context — analysis,
-  reports, decisions, designs, transcripts, etc. Code typically belongs in the
-  source tree, not in the case directory.
+- `case.toml` is the `casebook` CLI's interface to the case — a fixed schema the
+  tool parses for listing and discovery (`title`, `status`, `keywords`,
+  `created`). It is owned by the tool: keep its fields current as the work
+  evolves, but don't use it to record the case's content.
+- `title` is the primary way cases are discovered, so it should capture the full
+  scope of the case — anyone looking for this case's information should be able
+  to find it by title. New cases default to "Unnamed case"; rename early and
+  refine as the scope becomes clearer.
+- `status` is typically `open` or `closed`, though others such as `blocked` or
+  `paused` are fine too. Keep `keywords` updated to help future sessions find
+  relevant cases.
+- Beyond `case.toml`, list the case directory to see what files are available
+  and read whichever are relevant to your task. These files hold the case's
+  actual content — analysis, reports, decisions, designs, transcripts, etc.
+  Code typically belongs in the source tree, not in the case directory.
 - Use highly descriptive filenames so that an agent can understand what a file
   contains by reading its name alone. Prefer names like
   `websocket-reconnection-backoff-strategy.md` or
