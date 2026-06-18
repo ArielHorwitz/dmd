@@ -1,10 +1,10 @@
 (deflayer system
   @lock XX    XX    XX    _     _     _     _     _     _     _     _     _            XX    XX    XX
-  XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu @Sapp  XX    XX    XX     XX    XX    XX    XX
+  XX    XX    XX    XX    XX    XX    XX    XX    XX    @brt0 @brtm @brtd @brtu XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    @wmss XX    XX    XX    XX    XX    XX    @wmlk XX    XX    @Sawn                           XX    XX    XX
   _     XX    XX    XX    XX    XX    @Srdn XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     @sysa             XX                _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     @sysa             @Sihm             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (deflayer systemalt
   _     _     _     _     _     _     _     _     _     _     _     _     _            XX    XX    _
@@ -12,7 +12,7 @@
   _     @kill XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX     XX    XX    XX     XX    XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                               XX    XX    XX
   _     XX    XX    XX    XX    XX    XX    XX    XX    XX    XX    _                        XX           XX    XX    XX    XX
-  _     _     _                 _                 _     _     _     _                  XX    XX    XX     XX    XX
+  _     _     _                 @Sihr             _     _     _     _                  XX    XX    XX     XX    XX
 )
 (defalias
     kill (cmd-button "sleep 0.1 ; pkill -x kmonad")
@@ -21,7 +21,8 @@
 
     wmss (cmd-button "loginctl lock-session && sleep 2 && systemctl suspend")
     Sawn (cmd-button "activewindow")
-    Sapp (cmd-button "install-home --reload")
+    Sihm (cmd-button "install-home")
+    Sihr (cmd-button "install-home --reload")
     Sres (cmd-button "frestore")
     brtu (cmd-button "setmonbrightness --increase")
     brtd (cmd-button "setmonbrightness --decrease")
