@@ -14,3 +14,5 @@ Prefer using `pathlib.Path` where appropriate.
 Prefer functional patterns over parenthesized expressions where appropriate, e.g.
 - `(path / otherpath).read_text()` -> `path.joinpath(otherpath).read_text()`
 - `(polars.col("a") / polars.col("b")).sum()` -> `polars.col("a").truediv(polars.col("b")).sum()`
+
+Use `Optional[T]` instead of `T | None`.
