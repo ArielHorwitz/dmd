@@ -10,6 +10,7 @@ CLI=(
     -O "config-file;Path to homux config file;;c"
     -f "verbose;Verbose homux output;v"
     -f "reload;Reload config after applying;r"
+    -f "notify;Send a desktop notification at start and end;n"
 )
 CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exit 1
 eval "$CLI" || exit 1
@@ -40,6 +41,10 @@ if [[ ${#selections[@]} -gt 0 ]]; then
     homux_args+=(-s "$hostname")
 fi
 
+if [[ "$args_notify" ]]; then
+    notify-send -u low -h "string:synchronous:$APP_NAME" -i /usr/share/icons/dmd/loading.svg "$APP_NAME" "Applying home directory..."
+fi
+
 echo "Applying homux: ${homux_args[*]}"
 homux "${homux_args[@]}"
 
@@ -65,4 +70,8 @@ fi
 
 if [[ "$args_reload" ]]; then
     reload-config
+fi
+
+if [[ "$args_notify" ]]; then
+    notify-send -h "string:synchronous:$APP_NAME" -i /usr/share/icons/dmd/arch.svg "$APP_NAME" "Home directory applied."
 fi

@@ -21,8 +21,8 @@
 
     wmss (cmd-button "loginctl lock-session && sleep 2 && systemctl suspend")
     Sawn (cmd-button "activewindow")
-    Sihm (cmd-button "install-home")
-    Sihr (cmd-button "install-home --reload")
+    Sihm (cmd-button "install-home --notify")
+    Sihr (cmd-button "install-home --notify --reload")
     Sres (cmd-button "frestore")
     brtu (cmd-button "setmonbrightness --increase")
     brtd (cmd-button "setmonbrightness --decrease")
