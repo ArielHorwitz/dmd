@@ -1,3 +1,5 @@
+-- Tiling / floating
+
 hl.window_rule({
     name = "tiling-by-default",
     match = { class = ".*" },
@@ -6,7 +8,7 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    name = "fix-file-upload",
+    name = "firefox-float-file-upload",
     match = { initial_class = "firefox", initial_title = "(File Upload)" },
     float = true,
 })
@@ -17,19 +19,29 @@ hl.window_rule({
     float = true,
 })
 
-hl.workspace_rule({ workspace = "s[true]", gaps_in = 10, gaps_out = 50 })
+
+-- Style
+
+hl.workspace_rule({
+    workspace = "s[true]",
+    gaps_in = 10,
+    gaps_out = 50,
+})
 
 hl.window_rule({
-    name = "fullscreen-maximized",
+    name = "fullscreen-maximized-color",
     match = { fullscreen_state_internal = 1 },
     border_color = { colors = { "rgba(ff6666ee)", "rgba(1155ffee)" }, angle = 30 },
 })
 
 hl.window_rule({
-    name = "fullscreen-full",
+    name = "fullscreen-full-color",
     match = { fullscreen_state_internal = 2 },
     border_color = { colors = { "rgba(ff6666ee)", "rgba(1155ffee)" }, angle = 30 },
 })
+
+
+-- Behavior
 
 hl.window_rule({
     name = "ignore-maximize-requests",
