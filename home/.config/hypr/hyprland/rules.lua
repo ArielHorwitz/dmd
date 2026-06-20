@@ -14,6 +14,17 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "audacity-float-popups",
+    match = { class = "Audacity" },
+    float = true,
+})
+hl.window_rule({
+    name = "audacity-tile-main",
+    match = { class = "Audacity", initial_title = "^Audacity$" },
+    tile = true,
+})
+
+hl.window_rule({
     name = "explicit-floating",
     match = { class = ".*_make_window_float_.*" },
     float = true,
