@@ -83,6 +83,12 @@ notify-send -u critical "Script Name" "Something went wrong"
 notify-send -t 3000 -i /usr/share/icons/dmd/monitor.svg "Done" "Task completed"
 ```
 
+**Synchronous notifications:** use the `string:synchronous:<tag>` hint when appropriate so successive notifications sharing a tag replace each other in place instead of stacking. This suits progress updates and start/end pairs. Give the in-progress notification `-u low` so it stays unobtrusive, and let the final one use normal urgency — the transient status shouldn't demand attention, but the meaningful outcome should:
+```bash
+notify-send -u low -h "string:synchronous:$APP_NAME" -i /usr/share/icons/dmd/loading.svg "$APP_NAME" "Working..."
+notify-send -h "string:synchronous:$APP_NAME" -i /usr/share/icons/dmd/arch.svg "$APP_NAME" "Done."
+```
+
 **Example: printcolor for status:**
 ```bash
 printcolor -s ok "Operation succeeded"
