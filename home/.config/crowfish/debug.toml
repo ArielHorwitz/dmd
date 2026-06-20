@@ -2,6 +2,6 @@
 title = "Debug menu"
 
 [[entry]]
-description = "Active window info"
-execute = "activewindow"
+description = "Dump window info"
+execute = "dump-window-info --notify"
 icon = "utilities-system-monitor"

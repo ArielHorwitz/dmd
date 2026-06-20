@@ -20,7 +20,7 @@
     wmlk (cmd-button "hyprlock")
 
     wmss (cmd-button "loginctl lock-session && sleep 2 && systemctl suspend")
-    Sawn (cmd-button "activewindow")
+    Sawn (cmd-button "dump-window-info --watch 10 --notify")
     Sihm (cmd-button "install-home --notify")
     Sihr (cmd-button "install-home --notify --reload")
     Sres (cmd-button "frestore")
