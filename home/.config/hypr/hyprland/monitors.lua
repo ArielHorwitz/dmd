@@ -1,3 +1,5 @@
+-- https://github.com/hyprwm/Hyprland/discussions/12918
+
 hl.monitor({
     output = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT",
     mode = "preferred",
