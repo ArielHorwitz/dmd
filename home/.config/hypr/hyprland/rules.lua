@@ -25,6 +25,23 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "gimp-float-popups",
+    match = { class = "gimp" },
+    float = true,
+})
+hl.window_rule({
+    name = "gimp-float-export",
+    match = { initial_title = "^Export Image as " },
+    float = true,
+})
+
+hl.window_rule({
+    name = "gimp-tile-main",
+    match = { class = "gimp", initial_title = "^GNU Image Manipulation Program$" },
+    tile = true,
+})
+
+hl.window_rule({
     name = "explicit-floating",
     match = { class = ".*_make_window_float_.*" },
     float = true,
