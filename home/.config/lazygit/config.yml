@@ -79,3 +79,6 @@ customCommands:
     command: 'git commit --amend --no-verify'
     loadingText: 'Amending'
 
+os:
+  edit: 'lite-xl {{filename}}'
+  openDirInEditor: 'lite-xl {{dir}}/README.md'
