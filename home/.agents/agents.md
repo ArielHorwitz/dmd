@@ -3,6 +3,9 @@ Think critically at every stage: proactively raise possible improvements or alte
 
 If anything is unclear or missing, stop and ask for clarification, particularly mid-implementation.
 
+In general, I prefer to follow the explicit conventions of a project over my personal preference, but do not assume that any pattern you see is necessarily an explicity convention.
+
+
 # Code
 Prioritize simplicity and avoid unnecessary dependencies or complexity.
 
