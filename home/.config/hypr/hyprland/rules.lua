@@ -34,11 +34,15 @@ hl.window_rule({
     match = { initial_title = "^Export Image as " },
     float = true,
 })
-
 hl.window_rule({
     name = "gimp-tile-main",
     match = { class = "gimp", initial_title = "^GNU Image Manipulation Program$" },
     tile = true,
+})
+
+hl.window_rule({
+    name = "zoom-floating",
+    match = { class = "zoom" },
 })
 
 hl.window_rule({
