@@ -22,6 +22,9 @@ export QT_SCALE_FACTOR=2.0
 # ~<<<
 
 
+export CASEBOOK_LOG_LEVEL=DEBUG
+
+
 # Claude
 # https://code.claude.com/docs/en/env-vars
 # https://code.claude.com/docs/en/data-usage
