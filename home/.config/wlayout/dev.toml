@@ -47,7 +47,7 @@ command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
 # ~<<<
 focus_window = true
 
