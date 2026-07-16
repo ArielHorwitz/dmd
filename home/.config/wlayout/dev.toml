@@ -18,6 +18,38 @@ command = ["spacemux", "special", "move"]
 pause_seconds = 0.25
 
 
+# Left terminals
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+[[command]]
+command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
+pause_seconds = 0.1
+
+
+
+# Main Terminal
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+# ~<<<
+focus_window = true
 
 # Lite-xl
 [[command]]
@@ -32,22 +64,9 @@ pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 
-# Main Terminal
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "claude"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~<<<
-focus_window = true
-pause_seconds = 0.25
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.5')"]
 
 
-
-# Support terminals
+# Right terminals
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
@@ -56,7 +75,6 @@ monitor = "eDP-1"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~<<<
 focus_window = true
-
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
@@ -65,42 +83,18 @@ monitor = "eDP-1"
 monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~<<<
 focus_window = true
-pause_seconds = 0.25
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
 pause_seconds = 0.1
 
-# ~>>>
-# ~>>> home
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-pause_seconds = 0.1
-# ~<<<
-
-
 
 # Extra terminals
 [[command]]
-command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "bacon"]
+command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~<<<
-focus_window = true
-pause_seconds = 0.25
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.layout('colresize 0.333')"]
-pause_seconds = 0.25
-
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$", "-e", "persist", "--", "broot", "-Idsh"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~<<<
 focus_window = true
 
@@ -109,44 +103,18 @@ command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~<<<
 focus_window = true
-
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~<<<
-focus_window = true
-pause_seconds = 0.25
-
-
-# ~>>>
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
-# ~>>> home
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'r' })"]
 pause_seconds = 0.1
+
+
+# Focus
 [[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ monitor = 'r' })"]
-# ~<<<
+command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
+[[command]]
+command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
+[[command]]
+command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
+[[command]]
+command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
