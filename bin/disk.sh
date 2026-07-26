@@ -41,7 +41,7 @@ print_disks() {
 path_to_label() {
     set -e
     local label=$(lsblk --noheadings --output LABEL "$1" | head -n1)
-    [[ $(get_path "$label") = $1 ]] && echo $label | tr '[:upper:]' '[:lower:]'
+    [[ $(get_path "$label") = $1 ]] && echo $label | tr '[:upper:]' '[:lower:]' | tr -cs '[:alnum:]._-' '-' | sed 's/-*$//'
 }
 
 mount_path_exists() {
