@@ -73,6 +73,15 @@ mountpoint=${MOUNTPOINT_DIR}/${label}
 
 [[ -z "$args_mountpoint" ]] || { echo $mountpoint && exit 0; }
 
+if [[ -n $args_verbose ]]; then
+    printcolor -ns notice 'Label: '
+    echo "$label"
+    printcolor -ns notice 'Path: '
+    echo "$path"
+    printcolor -ns notice 'Mountpoint: '
+    echo "$mountpoint"
+fi
+
 if [[ -n "$args_unmount" ]]; then
 
     printcolor -s notice "Syncing and unmounting $path <- $mountpoint" >&2
