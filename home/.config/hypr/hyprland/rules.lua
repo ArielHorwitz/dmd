@@ -87,8 +87,3 @@ hl.window_rule({
     },
     no_focus = true,
 })
-
--- ~>>>
--- ~>>> home
-hl.workspace_rule({ workspace = "n[e:0]", layout_opts = { direction = "left" } })
--- ~<<<
