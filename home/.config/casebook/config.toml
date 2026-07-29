@@ -2,7 +2,7 @@ default_backend = "claude"
 default_always_allow = true
 
 [ui]
-session_width = "66%"
+session_width = "100%"
 
 [ui.case_colors]
 open = "#9ece6a"
@@ -12,12 +12,14 @@ paused = "#e0af68"
 
 
 [backends.claude]
-command = [
-    "npx",
-    "-y",
-    "@agentclientprotocol/claude-agent-acp",
-    "--",
-    "--model",
-    "claude-opus-4-8",
-]
-default_model = "claude-opus-4-8"
+command = ["npx", "-y", "@agentclientprotocol/claude-agent-acp"]
+# env = { ANTHROPIC_MODEL = "claude-opus-4-8" }
+[backends.claude.config_options]
+model = "opus"
+mode = "auto"
+effort = "high"
+fast = "off"
+
+
+[backends.codex]
+command = ["codex-acp"]
