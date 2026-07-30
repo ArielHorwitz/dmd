@@ -43,6 +43,7 @@ hl.window_rule({
 hl.window_rule({
     name = "zoom-floating",
     match = { class = "zoom" },
+    float = true,
 })
 
 hl.window_rule({
