@@ -27,6 +27,7 @@ This is more than dotfiles. The installer provisions an entire workstation:
 | **User configuration** | All dotfiles and app config, applied via homux | `home/` |
 | **Fonts** | Nerd Fonts, Mononoki, Ubuntu, Noto Color Emoji | downloaded by installer |
 | **Icons** | Notification and status bar icons | `icons/` |
+| **Agent skills** | [agent-skills](https://github.com/ArielHorwitz/agent-skills), cloned/pulled and installed into `~/.agents/skills`; its `fix-claude.sh` is also installed globally as `fix-claude` for use in any project | `~/.local/share/dmd/agent-skills` |
 
 ## Directory structure
 
@@ -93,6 +94,7 @@ This repo is continuously evolving — changes touch config files, scripts, pack
 - **Scripts** (`bin/`): run `install.sh scripts`
 - **Config + scripts together**: run `install.sh h s` (the most common case in practice)
 - **Packages or crates** (`setup/`): run `install.sh packages` or `install.sh crates`
+- **Agent skills**: run `install.sh skills` to pull the latest [agent-skills](https://github.com/ArielHorwitz/agent-skills) (needs network); `install.sh home`/`install-home` then reinstalls from that local clone (no network) on every apply, so skills stay in sync without the fast `install-home` path ever touching the network itself
 - **Any combination**: `install.sh` accepts multiple components in one invocation
 
 After applying config changes, run `reload-config` if the change affects a running service (Hyprland, waybar, dunst, etc.).

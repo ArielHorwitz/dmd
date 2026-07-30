@@ -11,6 +11,7 @@ USAGE_HELP="\e[3;32mInstall dmd.\e[0m
   a | all           All components
   p | packages      Sync system packages
   c | crates        Cargo crate installations
+  k | skills        Sync agent-skills repo (clone/pull)
   s | scripts       Bin scripts
   g | config        System configurations
   i | icons         Icons
@@ -39,6 +40,7 @@ while [[ $# -gt 0 ]]; do
         a | all)             INSTALL_ALL=1; shift ;;
         p | packages)        INSTALL_PACKAGES=1; shift ;;
         c | crates)          INSTALL_CRATES=1; shift ;;
+        k | skills)          INSTALL_SKILLS=1; shift ;;
         s | scripts)         INSTALL_SCRIPTS=1; shift ;;
         g | config)          INSTALL_CONFIG=1; shift ;;
         i | icons)           INSTALL_ICONS=1; shift ;;
@@ -52,7 +54,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 INSTALLATION_OPERATION=
-INSTALLATION_COMPONENTS=(packages crates scripts config icons fonts home)
+INSTALLATION_COMPONENTS=(packages crates skills scripts config icons fonts home)
 for component_name in ${INSTALLATION_COMPONENTS[@]}; do
     installation_component_name="INSTALL_${component_name^^}"
     [[ -z $INSTALL_ALL ]] || declare "${installation_component_name}=1"
@@ -86,6 +88,9 @@ else
     FONTS_TARGET_DIR=/usr/share/fonts
 fi
 
+
+AGENT_SKILLS_REPO=https://github.com/ArielHorwitz/agent-skills
+AGENT_SKILLS_DIR=$HOME/.local/share/dmd/agent-skills
 
 [[ -d $SETUP_DIR ]] || exit_error "Setup directory not found: ${SETUP_DIR}"
 [[ $EUID -ne 0 ]] || exit_error "Do not run as root."
@@ -162,12 +167,25 @@ install_crates() {
 }
 
 
+install_agent_skills() {
+    set -e
+    progress "Syncing agent-skills..."
+    if [[ -d $AGENT_SKILLS_DIR ]]; then
+        git -C "$AGENT_SKILLS_DIR" pull
+    else
+        mkdir -p "$(dirname "$AGENT_SKILLS_DIR")"
+        git clone "$AGENT_SKILLS_REPO" "$AGENT_SKILLS_DIR"
+    fi
+}
+
+
 install_scripts() {
     set -e
     progress "Installing scripts..."
     local staging=$(mktemp -d)
     # stage and remove suffixes
     cp -rt $staging $SOURCE_DIR/bin/*
+    [[ -f "$AGENT_SKILLS_DIR/fix-claude.sh" ]] && cp "$AGENT_SKILLS_DIR/fix-claude.sh" $staging/
     find $staging -type f -name "*.*" -execdir bash -c 'mv "$0" "${0%.*}"' {} \;
     # install from staging
     run_with_privilege rm -rf $BIN_TARGET
@@ -284,6 +302,7 @@ install_home() {
 
 [[ -z $INSTALL_PACKAGES ]] || install_packages
 [[ -z $INSTALL_CRATES ]] || install_crates
+[[ -z $INSTALL_SKILLS ]] || install_agent_skills
 [[ -z $INSTALL_SCRIPTS ]] || install_scripts
 [[ -z $INSTALL_CONFIG ]] || install_configs
 [[ -z $INSTALL_ICONS ]] || install_icons

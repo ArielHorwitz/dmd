@@ -16,6 +16,7 @@ CLI=$(spongecrab --name "$APP_NAME" --about "$ABOUT" "${CLI[@]}" -- "$@") || exi
 eval "$CLI" || exit 1
 PERMS_DIR="$HOME/.config/dmd/perms"
 POST_HOOK="$HOME/.config/dmd/hooks/post.sh"
+AGENT_SKILLS_DIR="$HOME/.local/share/dmd/agent-skills"
 
 selections=()
 if [[ ${#args_select[@]} -gt 0 ]]; then
@@ -66,6 +67,10 @@ fi
 
 if [[ -f "$POST_HOOK" ]]; then
     bash "$POST_HOOK"
+fi
+
+if [[ -d "$AGENT_SKILLS_DIR" ]]; then
+    (cd "$AGENT_SKILLS_DIR" && ./install.sh --upgrade && ./fix-claude.sh ~)
 fi
 
 if [[ "$args_reload" ]]; then
