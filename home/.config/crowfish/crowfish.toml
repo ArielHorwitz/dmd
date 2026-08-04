@@ -7,11 +7,6 @@ dispatch = "workspace.toml"
 icon = "view-grid"
 
 [[entry]]
-description = "Layouts"
-dispatch = "layouts.toml"
-icon = "preferences-system-windows-effect-presentwindows"
-
-[[entry]]
 description = "Launch applications"
 execute = "fuzzel"
 icon = "applications-all"

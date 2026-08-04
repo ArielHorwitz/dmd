@@ -1,7 +1,0 @@
-[metadata]
-title = "Layout menu"
-
-[[entry]]
-description = "dmd"
-execute = "wlayout -c dev --dir /home/wiw/.dmd"
-icon = "applications-development"
