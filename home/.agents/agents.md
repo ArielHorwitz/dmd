@@ -13,6 +13,8 @@ My personal preference for working with worktrees is to use a directory inside t
 
 I personally prefer using rebase for linear history. Refinements of the same work should preferably be amended/squashed into one commit, not stacked. Pushed git history should not be modified for main branches like `main` or `dev` (no force push). All unpushed commits or branches without collaborators may have their history modified.
 
+Do not consider or suggest pushing to remote unless *explicitly* requested to.
+
 
 # Code
 Prioritize simplicity and avoid unnecessary dependencies or complexity.
