@@ -1,3 +1,7 @@
+# Conversation
+When printing local paths to files prefer absolute paths, especially if these are meant to be opened in another program like a browser that doesn't have a convenient way to search for said file.
+
+
 # Process
 Think critically at every stage: proactively raise possible improvements or alternatives, and never defer critique.
 
