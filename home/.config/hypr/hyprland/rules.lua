@@ -47,6 +47,12 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    name = "nondescript-floating",
+    match = { initial_class = "^$", initial_title = "^$" },
+    float = true,
+})
+
+hl.window_rule({
     name = "explicit-floating",
     match = { class = ".*_make_window_float_.*" },
     float = true,
