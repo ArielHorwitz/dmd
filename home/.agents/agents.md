@@ -1,6 +1,8 @@
 # Conversation
 When printing local paths to files prefer absolute paths, especially if these are meant to be opened in another program like a browser that doesn't have a convenient way to search for said file.
 
+Avoid using em-dashes as if I would be manually typing them for any copy that is meant to be public or read by others. These are a tell-tale sign of LLM writing and considered "cringe". The only exception is if it's unequivocally reasonable to expect and accept that the text be LLM-generated.
+
 
 # Process
 Think critically at every stage: proactively raise possible improvements or alternatives, and never defer critique.
