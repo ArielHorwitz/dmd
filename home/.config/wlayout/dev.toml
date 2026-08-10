@@ -41,7 +41,7 @@ pause_seconds = 0.1
 
 
 
-# Main Terminal
+# Main workspace
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
@@ -51,7 +51,15 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
 # ~<<<
 focus_window = true
 
-# Lite-xl
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+
 [[command]]
 command = ["lite-xl", "$dir$"]
 # ~>>>
@@ -61,6 +69,14 @@ monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
 # ~<<<
 focus_window = true
 
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+# ~<<<
+focus_window = true
 
 
 # Right terminals
@@ -85,30 +101,7 @@ command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
 pause_seconds = 0.1
 
 
-# Extra terminals
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~<<<
-focus_window = true
-
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~<<<
-focus_window = true
-pause_seconds = 0.1
-
-
 # Focus
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
