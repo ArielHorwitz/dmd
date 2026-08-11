@@ -9,6 +9,6 @@ hyprctl --instance 0 eval 'hl.monitor({ output = "", mode = "preferred", positio
 hyprctl --instance 0 eval 'hl.monitor({ output = "eDP-1", mode = "preferred", position = "auto", scale = "auto" })'
 
 # Restore lockscreen
-hyprctl --instance 0 eval 'hl.config({ misc = { allow_session_lock_restore = true } })'
-sleep 0.2
-hyprctl --instance 0 dispatch 'hl.dsp.exec_cmd("hyprlock")'
+hyprctl --instance 0 eval 'hl.clear_crashed_lockscreen()'
+# sleep 0.2
+# hyprctl --instance 0 dispatch 'hl.dsp.exec_cmd("hyprlock")'
