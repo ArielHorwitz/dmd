@@ -14,5 +14,6 @@
   "terminalProgressBarEnabled": true,
   "awaySummaryEnabled": false,
   "enableWorkflows": false,
+  "autoMemoryEnabled": false,
   "skipAutoPermissionPrompt": true
 }
