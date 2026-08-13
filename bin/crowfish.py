@@ -276,12 +276,16 @@ def dispatch_entry(menu: Menu, entry: Entry) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="crowfish")
+    parser = argparse.ArgumentParser(
+        prog="crowfish",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     parser.add_argument(
         "file",
         type=Path,
         nargs="?",
         default=Path.home() / ".config" / "crowfish" / "crowfish.toml",
+        help="Menu config file",
     )
     args = parser.parse_args()
 

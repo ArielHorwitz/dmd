@@ -693,7 +693,11 @@ def set_monitor_lock(*, lock=None, monitor=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(TITLE, description="Manage workspaces")
+    parser = argparse.ArgumentParser(
+        TITLE,
+        description="Manage workspaces",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
     parser.add_argument(
         "-n",
         "--notification",

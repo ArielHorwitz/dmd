@@ -97,6 +97,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog=APP_NAME,
         description="Watch for monitor changes to detect location",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "-c",

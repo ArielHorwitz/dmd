@@ -66,6 +66,7 @@ def custom_range(n, factor):
 parser = argparse.ArgumentParser(
     "colormod",
     description="Get more shades out of your colors palettes",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 parser.add_argument("COLORS", nargs="+", help="Base color in hex")
 parser.add_argument(

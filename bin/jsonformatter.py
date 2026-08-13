@@ -20,7 +20,7 @@ parser.add_argument(
     "--indent",
     type=int,
     default=4,
-    help="Indentation in characters [default: 4]",
+    help="Indentation in characters (default: %(default)s)",
 )
 parser.add_argument(
     "-L",

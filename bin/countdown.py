@@ -133,7 +133,7 @@ def main():
         "-t",
         "--title",
         default="Countdown",
-        help="Title of the countdown",
+        help="Title of the countdown (default: %(default)s)",
     )
     parser.add_argument(
         "-c",

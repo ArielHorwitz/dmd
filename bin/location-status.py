@@ -38,6 +38,7 @@ def main():
     parser = argparse.ArgumentParser(
         prog="location-status",
         description="Show current detected location",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "-c",
