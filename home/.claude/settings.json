@@ -15,5 +15,6 @@
   "awaySummaryEnabled": false,
   "enableWorkflows": false,
   "autoMemoryEnabled": false,
+  "workflowKeywordTriggerEnabled": false,
   "skipAutoPermissionPrompt": true
 }
