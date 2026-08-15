@@ -48,6 +48,13 @@ verbs: [
     }
 
     {
+        invocation: swayimg
+        shortcut: swi
+        execution: "swayimg {file}"
+        leave_broot: false
+    }
+
+    {
         key: alt-i
         execution: ":toggle_git_ignore"
     }
