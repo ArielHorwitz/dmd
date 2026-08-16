@@ -83,3 +83,16 @@ function br {
         return "$code"
     fi
 }
+
+flashiso() {
+    if [ "$#" -ne 2 ]; then
+        echo "usage: flashiso <image> <device>" >&2
+        return 2
+    fi
+    local image="$1" device="$2"
+    echo "About to OVERWRITE $device with $image"
+    lsblk -o NAME,SIZE,VENDOR,MODEL,TRAN "$device" || return 1
+    read -rp "Type YES to proceed: " confirm
+    [ "$confirm" = "YES" ] || { echo "aborted"; return 1; }
+    sudo dd if="$image" of="$device" bs=4M status=progress oflag=direct conv=fsync && sync
+}
