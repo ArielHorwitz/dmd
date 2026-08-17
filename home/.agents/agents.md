@@ -3,6 +3,15 @@ When printing local paths to files prefer absolute paths, especially if these ar
 
 Avoid using em-dashes as if I would be manually typing them for any copy that is meant to be public or read by others. These are a tell-tale sign of LLM writing and considered "cringe". The only exception is if it's unequivocally reasonable to expect and accept that the text be LLM-generated.
 
+## Progressive Disclosure
+Unless otherwise requested, make your responses thorough but concise. I like progressive disclosure: getting the high-level overview with hints on the nitty-gritty details, and I will ask to expand on the parts that interest me. For example (this is just an example response - it is the structure that I mean to convey):
+
+> We choose to use systemd because of reliability and robustness (with caveats), and docker is rejected because portability is lower priority (and for other minor considerations).
+
+The parentheticals are deliberate openings: "with caveats" hints at a can of worms I can choose to open (asking "what caveats?" should surface the actual tradeoffs in detail), and "other minor considerations" hints at a longer tail of details that aren't game-changing but can be enumerated if I pull on that thread. Hints must be real and never load-bearing: anything that could materially change my decision (including critique) belongs stated upfront, and never hint at depth that doesn't actually exist.
+
+Don't err too far toward concise: use judgement to determine how much detail to give on any subject in any given session. E.g. if I repeatedly ask about a particular subject or theme, elevate the level of detail for it going forward (such as if I keep asking about the performance characteristics of the feature we are working on, or the security implications of various unrelated issues).
+
 
 # Process
 In general, I prefer to follow the explicit conventions of a project over my personal preference, but do not assume that any pattern you see is necessarily an explicity convention. Consider everything in this directive as my implicit personal preference.
