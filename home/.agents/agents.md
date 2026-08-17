@@ -9,8 +9,6 @@ In general, I prefer to follow the explicit conventions of a project over my per
 
 Think critically at every stage: proactively raise possible improvements or alternatives, and never defer critique.
 
-If anything is unclear or missing, stop and ask for clarification, particularly mid-implementation.
-
 
 # Git Workflow
 You are likely working along side other agents on the same machine working in parallel. Unless otherwise instructed, you should take care when working on a trunk branch (master, main, dev, etc.) and prefer instead to use git worktrees to avoid stepping on eachother's toes.
