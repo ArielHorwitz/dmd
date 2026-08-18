@@ -22,6 +22,7 @@ alias fgrep='fgrep --colour=auto'
 alias printenv='printenv -0 | sort -z | tr "\0" "\n"'
 
 alias cb="casebook-cli"
+alias cdx='codex --profile dmd'
 
 alias lastcmd="HISTTIMEFORMAT='' history 2 | head -n1 | awk '{\$1=\"\"; print substr(\$0, 2)}'"
 alias lastcmdcopy="lastcmd | clipcatctl load"

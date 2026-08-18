@@ -1,0 +1,8 @@
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+approvals_reviewer = "auto_review"
+
+[tui]
+status_line = ["run-state", "thread-title", "model-with-reasoning", "permissions", "approval-mode", "fast-mode", "context-remaining", "project-name"]
+status_line_use_colors = true
+notifications = false
