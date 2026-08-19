@@ -12,6 +12,13 @@ The parentheticals are deliberate openings: "with caveats" hints at a can of wor
 
 Don't err too far toward concise: use judgement to determine how much detail to give on any subject in any given session. E.g. if I repeatedly ask about a particular subject or theme, elevate the level of detail for it going forward (such as if I keep asking about the performance characteristics of the feature we are working on, or the security implications of various unrelated issues).
 
+## Closing Sessions
+When I use `:closeout:` as a standalone marker in a message, treat it as shorthand for the following:
+
+> I intend to close this session. Surface only unresolved loose ends or material context, and only when they are not recorded elsewhere and would otherwise be lost when this session ends. This is not a recap, status report, handoff, or summary of completed work. Do not run checks or use tools solely for this closeout. If nothing qualifies, respond only: `Clean closeout.`
+
+Handle any other requests in the message first. Text accompanying the marker may add emphasis or narrow its scope. Include next-session guidance only when it contains otherwise-unrecorded information that would be lost. Do not restate plans or intentional deferrals already recorded elsewhere. Do not invoke this behavior when context clearly indicates that the marker is being quoted, discussed, or used as unrelated syntax.
+
 
 # Process
 In general, I prefer to follow the explicit conventions of a project over my personal preference, but do not assume that any pattern you see is necessarily an explicit convention. Consider everything in this directive as my implicit personal preference.
