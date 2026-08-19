@@ -14,13 +14,13 @@ Don't err too far toward concise: use judgement to determine how much detail to 
 
 
 # Process
-In general, I prefer to follow the explicit conventions of a project over my personal preference, but do not assume that any pattern you see is necessarily an explicity convention. Consider everything in this directive as my implicit personal preference.
+In general, I prefer to follow the explicit conventions of a project over my personal preference, but do not assume that any pattern you see is necessarily an explicit convention. Consider everything in this directive as my implicit personal preference.
 
 Think critically at every stage: proactively raise possible improvements or alternatives, and never defer critique.
 
 
 # Git Workflow
-You are likely working along side other agents on the same machine working in parallel. Unless otherwise instructed, you should take care when working on a trunk branch (master, main, dev, etc.) and prefer instead to use git worktrees to avoid stepping on eachother's toes.
+You are likely working alongside other agents on the same machine working in parallel. Unless otherwise instructed, you should take care when working on a trunk branch (master, main, dev, etc.) and prefer instead to use git worktrees to avoid stepping on each other's toes.
 
 Worktrees belong in a `.worktrees` directory. If such a directory does not exist, create it and add a `.gitignore` inside it with a catch-all `*`. Once the work is done it should be merged back onto the appropriate branch.
 
