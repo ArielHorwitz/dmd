@@ -1,7 +1,12 @@
 # Install and upgrade agent-skills as part of home install flow
 
 **Status: closed.** Implemented on branch `agent-skills-install`, reviewed,
-and merged to `master`.
+and merged to `master`; reopened once after trying it out in practice (see
+"Follow-up: consolidate into the `skills` component" below), then that
+follow-up was itself implemented, reviewed, and merged. Not yet exercised
+end-to-end on this machine (`install.sh skills` has never actually been
+run) — first real run will create `~/.local/share/dmd/agent-skills` and
+exercise the full clone+install+symlink path for the first time.
 
 ## Goal
 
@@ -191,3 +196,25 @@ into the staging dir alongside dmd's own `bin/*` before installing to
 - `bin/install-home.sh`'s own `./fix-claude.sh ~` invocation still calls
   the copy inside the clone directly (unaffected by whether the global
   `fix-claude` command has been installed yet).
+
+### Follow-up: consolidate into the `skills` component
+
+After using this for a while, Ariel decided he didn't like `install-home`
+implicitly doing part of the agent-skills sync on every apply — he'd
+rather both the repo sync (clone/pull) *and* the local install
+(`./install.sh --upgrade` + `./fix-claude.sh ~`) live entirely inside the
+`skills` component, and `install-home` know nothing about agent-skills at
+all.
+
+This reverses the earlier "separate concerns" decision above (network step
+in `install.sh`, local step in `install-home.sh`) in favor of a simpler
+single-owner model: `install_agent_skills()` now does clone-or-pull *and*
+the local reinstall/symlink step, all in one function, only ever run
+explicitly via `install.sh skills` (or `all`). `bin/install-home.sh` is
+back to knowing nothing about agent-skills — no `AGENT_SKILLS_DIR`, no
+conditional block.
+
+Net effect: `install-home` (including the hotkey-triggered path) is simpler
+and has one less thing to reason about, at the cost of skills no longer
+auto-resyncing on every home apply — now only on an explicit
+`install.sh skills`.

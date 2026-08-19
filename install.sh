@@ -176,6 +176,7 @@ install_agent_skills() {
         mkdir -p "$(dirname "$AGENT_SKILLS_DIR")"
         git clone "$AGENT_SKILLS_REPO" "$AGENT_SKILLS_DIR"
     fi
+    (cd "$AGENT_SKILLS_DIR" && ./install.sh --upgrade && ./fix-claude.sh ~)
 }
 
 

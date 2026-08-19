@@ -94,7 +94,7 @@ This repo is continuously evolving — changes touch config files, scripts, pack
 - **Scripts** (`bin/`): run `install.sh scripts`
 - **Config + scripts together**: run `install.sh h s` (the most common case in practice)
 - **Packages or crates** (`setup/`): run `install.sh packages` or `install.sh crates`
-- **Agent skills**: run `install.sh skills` to pull the latest [agent-skills](https://github.com/ArielHorwitz/agent-skills) (needs network); `install.sh home`/`install-home` then reinstalls from that local clone (no network) on every apply, so skills stay in sync without the fast `install-home` path ever touching the network itself
+- **Agent skills**: run `install.sh skills` to pull and (re)install the latest [agent-skills](https://github.com/ArielHorwitz/agent-skills) (needs network); `install-home` no longer touches this, so it stays fast and network-free
 - **Any combination**: `install.sh` accepts multiple components in one invocation
 
 After applying config changes, run `reload-config` if the change affects a running service (Hyprland, waybar, dunst, etc.).
