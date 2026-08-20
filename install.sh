@@ -159,7 +159,7 @@ install_crates() {
     fi
     for crate_name in $(decomment "$SETUP_DIR/crates.txt"); do
         subprogress "> $crate_name"
-        cargo install --root $CRATES_TARGET $crate_name
+        cargo install --root $CRATES_TARGET $crate_name || warn "Failed to install: $crate_name"
     done
     if [[ -z $USER_MODE ]]; then
         sudo chown --recursive 0 $CRATES_TARGET
