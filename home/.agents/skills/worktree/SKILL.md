@@ -5,7 +5,7 @@ argument-hint: "Which worktree to use (description or an exact name)"
 disable-model-invocation: true
 ---
 
-For the rest of this session, work inside a dedicated git worktree rather than the main one, unless explicitly requested otherwise.
+For the rest of this session, work inside a dedicated git worktree rather than the main one, unless explicitly requested otherwise. Defer creating the worktree until you're about to change a file on disk.
 
 The argument identifies which worktree to use — an exact name, or a description that points at one. Resolve it:
 
