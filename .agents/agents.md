@@ -2,13 +2,11 @@
 
 See [README.md](README.md) for a high-level overview of the repo structure, philosophy, and key tools.
 
-Code style and development directives are in `home/.config/AGENTS.md` — do not duplicate them here.
+The global agents directive that is applied to the home directory is `home/.agents/agents.md`.
 
 ## Editing workflow
 
-**Always edit source files in this repo, never in `~` or system paths directly.**
-
-Never run `install.sh`, `homux apply`, or `reload-config` — the user will apply changes themselves.
+**Always edit source files in this repo, never in `~` or system paths directly.** Do not install or apply (e.g. `install.sh`, `homux apply`, or `install-home.sh`) - the user will apply changes themselves.
 
 ## homux and matchpick
 
@@ -32,12 +30,3 @@ The hostname is automatically added as a selection, so machine-specific config b
 KMonad config lives in `home/.config/kmd/kbd/`. The base layer (`0base.kbd`) dispatches to modal layers when home-row keys are held. Text input layers (`text.kbd`) are toggle-based instead of hold. Each `.kbd` file defines one layer or a closely related group.
 
 `kmdrun` launches KMonad with device config from `home/.config/kmd/devices`. `setlayer` tracks the active layer for display in waybar.
-
-## Casebook
-
-This project uses a **casebook** at `docs/casebook/` to organize bounded units
-of work — investigations, brainstorms, features, designs, and similar efforts
-that benefit from a dedicated directory of files and documentation.
-
-Historical cases and their context can be found there. See
-`docs/casebook/agents.md` for structure and conventions.
