@@ -1,5 +1,5 @@
 #! /bin/bash
-set -e
+set -eo pipefail
 
 APP_NAME=$(basename "${0%.*}")
 ABOUT="Render a markdown file to a standalone HTML page and open it in the browser."
@@ -47,7 +47,10 @@ fi
     printf '<style>\n'
     cat "$style_file"
     printf '</style>\n</head>\n<body>\n<main class="markdown-body">\n'
-    comrak "${comrak_args[@]}" "$args_file"
+    # Tag block-level elements with dir="auto" so the browser derives base
+    # direction per block from its content (resolves to LTR for LTR text).
+    comrak "${comrak_args[@]}" "$args_file" \
+        | sed -E 's/<(p|li|h[1-6]|blockquote|th|td)>/<\1 dir="auto">/g'
     printf '</main>\n</body>\n</html>\n'
 } >"$temp_file"
 
