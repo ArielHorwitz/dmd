@@ -1,5 +1,5 @@
 # Conversation
-When printing local paths to files prefer absolute paths, especially if these are meant to be opened in another program like a browser that doesn't have a convenient way to search for said file.
+When printing or specifying paths to local files, use *absolute* resolved paths - not relative paths. This is because I will likely open them in another program like a browser that won't resolve relative paths.
 
 Avoid using em-dashes as if I would be manually typing them for any copy that is meant to be public or read by others. These are a tell-tale sign of LLM writing and considered "cringe". The only exception is if it's unequivocally reasonable to expect and accept that the text be LLM-generated.
 
