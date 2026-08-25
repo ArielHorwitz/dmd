@@ -27,13 +27,13 @@ Think critically at every stage: proactively raise possible improvements or alte
 
 
 # Git Workflow
-You are likely working alongside other agents on the same machine working in parallel. Unless otherwise instructed, you should take care when working on a trunk branch (master, main, dev, etc.) and prefer instead to use git worktrees to avoid stepping on each other's toes.
+You are likely working in parallel alongside other agents on the same machine. The main working tree is a shared space prone to collisions. You *MUST* do *ALL* of your work inside a dedicated git worktree and not in the main working tree, unless I explicitly ask you to work in it directly. Defer creating the worktree until you're about to change a file on disk, to avoid useless clutter of worktrees.
 
-Worktrees belong in a `.worktrees` directory. If such a directory does not exist, create it and add a `.gitignore` inside it with a catch-all `*`. Once the work is done it should be merged back onto the appropriate branch.
+Worktrees belong in a `.worktrees` directory. If such a directory does not exist, create it and add a `.gitignore` inside it with a catch-all `*`. By default, create your own new worktree, named descriptively after the task. Only join an existing worktree when I clearly and explicitly direct you to it, since another agent may be working in it. If your work likely belongs in an existing worktree, or I direct you to one but you're uncertain which, ask rather than guess.
 
-I expect regular, atomic commits. Refinements of the same work should be amended/squashed into one commit, not stacked. Pushed git history should not be modified (no force push). All unpushed commits or branches without collaborators may have their history modified. I prefer using rebase for linear history.
+Always commit your work rather than leaving uncommitted changes sitting in a dirty worktree. I would rather have a messy, work-in-progress commit history, which is local and unpushed and can be rebased later into clean, atomic commits. When later work refines or reverses a recent commit, fold it into that commit instead of stacking a redundant or self-cancelling one: amend if it is the latest commit, or use fixup with an autosquash rebase to reach an earlier one even when unrelated commits sit on top. Pushed git history should not be modified (no force push); unpushed commits or branches without collaborators may be freely rebased or amended.
 
-Do not consider or suggest pushing to remote unless *explicitly* requested to.
+Do not merge or tear down a worktree on your own initiative; a task being complete is not a signal to merge. Merge only when I *EXPLICITLY* instruct it, and when I do, rebase onto the target branch and then fast-forward so history stays linear (never a merge commit), then remove the worktree and its branch. Do not push, suggest pushing, or point out that changes are unpushed unless I *explicitly* raise it. I track push state myself and will tell you when I want to push; unprompted reminders that work is unpushed are noise.
 
 
 # Code
