@@ -9,15 +9,15 @@ local mononoki_font = "/usr/share/fonts/Mononoki/mononoki-Regular.ttf"
 style.code_font = renderer.font.load(
   fira_font,
 -- ~>>>
-  24
+  22
 -- ~>>> home
-  16
+  18
 -- ~<<<
 )
 style.font = renderer.font.load(
   mononoki_font,
 -- ~>>>
-  24
+  22
 -- ~>>> home
   16
 -- ~<<<
