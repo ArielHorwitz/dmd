@@ -25,6 +25,6 @@ hl.config({
 
     binds = {
         hide_special_on_workspace_change = true,
-        window_direction_monitor_fallback = true,
+        window_direction_monitor_fallback = false,
     },
 })
