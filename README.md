@@ -1,5 +1,7 @@
 # Delete the Mouse Dependency
 
+![DMD keyboard control plane banner](docs/assets/dmd-banner.png)
+
 A complete workstation provisioning and configuration system for a fully keyboard-driven Arch Linux setup. This repo contains everything needed to go from a bare Arch installation to a fully configured, mouseless workstation — system packages, keyboard remapping, window management, utility scripts, fonts, icons, and all user configuration.
 
 I use arch, btw.
