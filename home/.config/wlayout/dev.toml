@@ -18,30 +18,25 @@ command = ["spacemux", "special", "move"]
 pause_seconds = 0.25
 
 
-# Left terminals
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~<<<
-focus_window = true
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
-# ~<<<
-focus_window = true
-[[command]]
-command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
-pause_seconds = 0.1
-
-
-
 # Main workspace
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
@@ -65,21 +60,12 @@ command = ["lite-xl", "$dir$"]
 # ~>>>
 monitor = "eDP-1"
 # ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
-# ~<<<
-focus_window = true
-
-[[command]]
-command = ["alacritty", "--working-directory", "$dir$"]
-# ~>>>
-monitor = "eDP-1"
-# ~>>> home
-monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_RIGHT"
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
 # ~<<<
 focus_window = true
 
 
-# Right terminals
+# Extra terminals
 [[command]]
 command = ["alacritty", "--working-directory", "$dir$"]
 # ~>>>
@@ -100,8 +86,30 @@ focus_window = true
 command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
 pause_seconds = 0.1
 
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+[[command]]
+command = ["alacritty", "--working-directory", "$dir$"]
+# ~>>>
+monitor = "eDP-1"
+# ~>>> home
+monitor = "desc:HOMUX_VARIABLE_MONITOR_HOME_LEFT"
+# ~<<<
+focus_window = true
+[[command]]
+command = ["hyprctl", "dispatch", "hl.dsp.window.move({ direction = 'l' })"]
+pause_seconds = 0.1
+
 
 # Focus
+[[command]]
+command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
 command = ["hyprctl", "dispatch", "hl.dsp.focus({ direction = 'l' })"]
 [[command]]
