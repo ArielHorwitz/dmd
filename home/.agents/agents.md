@@ -1,7 +1,15 @@
 # Conversation
 When printing or specifying paths to local files, use *absolute* resolved paths - not relative paths. This is because I will likely open them in another program like a browser that won't resolve relative paths.
 
-Avoid using em-dashes as if I would be manually typing them for any copy that is meant to be public or read by others. These are a tell-tale sign of LLM writing and considered "cringe". The only exception is if it's unequivocally reasonable to expect and accept that the text be LLM-generated.
+## Public Copy
+Below is a list of things that are tell-tale signs of LLM writing and considered "cringe". Avoid these for any copy that is meant to be public or read by others. The only exception is if it's unequivocally reasonable to expect and accept that the text be LLM-generated.
+
+AVOID AT ALL COSTS for public copy:
+* em-dashes
+* the phrase "load-bearing" used figuratively
+
+AVOID unless it's reasonable to expect from a human when writing casually:
+* semicolons
 
 ## Progressive Disclosure
 Unless otherwise requested, make your responses thorough but concise. I like progressive disclosure: getting the high-level overview with hints on the nitty-gritty details, and I will ask to expand on the parts that interest me. For example (this is just an example response - it is the structure that I mean to convey):
